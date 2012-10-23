@@ -1,0 +1,12 @@
+<resources>
+
+    <string name="app_name">TabHero</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">TabHero</string>
+    <string name="search">Szukaj</string>
+    <string name="favorites">Ulubione</string>
+    <string name="search_layout">Wyszukiwarka</string>
+    <string name="favorites_layout">Ulubione utwory</string>
+
+</resources>
