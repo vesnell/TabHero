@@ -8,5 +8,9 @@
     <string name="favorites">Ulubione</string>
     <string name="search_layout">Wyszukiwarka</string>
     <string name="favorites_layout">Ulubione utwory</string>
+    <string name="hint_title">Wpisz tytuł</string>
+    <string name="hint_author">Wpisz wykonawcę</string>
+    <string name="start">Start</string>
+    
 
 </resources>
