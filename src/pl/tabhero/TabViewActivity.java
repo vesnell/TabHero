@@ -19,9 +19,11 @@ public class TabViewActivity extends Activity {
         Bundle extras = i.getExtras();
     	String performer = extras.getString("performer");
     	String title = extras.getString("title");
+    	String listOfSections = extras.getString("tab");
 
     	head.setText(performer + " - " + title);
-    	tab.setText("Jakaś sobie tabulaturka typu\n----------------------------------------------------------------------------------------\n--------4--------3-------");
+    	//tab.setText("Jakaś sobie tabulaturka typu\n----------------------------------------------------------------------------------------\n--------4--------3-------");
+    	tab.setText(listOfSections);
     	
   
     }
