@@ -1,8 +1,7 @@
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
  
   <!-- <TextView android:text="@string/search_layout"
             android:padding="15dip"
@@ -19,6 +18,8 @@
             android:id="@+id/editTitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/editPerformer"
             android:ems="10"
             android:hint="@string/hint_title" />
 
@@ -26,12 +27,28 @@
             android:id="@+id/searchBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/search"
-            android:onClick="searchView" />
-        
-        <ListView 
-            android:layout_width="fill_parent"   
-      		android:layout_height="fill_parent"   
-      		android:id="@+id/searchListView" />
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/editTitle"
+            android:onClick="searchView"
+            android:text="@string/search" />
+
+        <ListView
+            android:id="@+id/searchListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/searchBtn" >
+
+        </ListView>
+
+        <ListView
+            android:id="@+id/searchListView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/searchBtn" >
+        </ListView>
  
-</LinearLayout>
+</RelativeLayout>
