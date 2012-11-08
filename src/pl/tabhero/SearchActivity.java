@@ -50,8 +50,11 @@ public class SearchActivity extends Activity {
 		if(!(performer.length() > 0)) 
 			Toast.makeText(getApplicationContext(), "Musisz wpisać wykonawcę!", Toast.LENGTH_LONG).show();
 		else {
+			
 			List<String[]> artists = findPerf(performer);
-			artists = removeEmptyTitleArtists(artists, title); // <--------
+			List<List<String[]>> listOflists = removeEmptyTitleArtists(artists, title);
+			artists = listOflists.get(0);
+			final List<String[]> titles = listOflists.get(1);// <-------- tu już powinno też również zwracać listę utworów
 			final ArrayList<String> artistNames = new ArrayList<String>();
 			final ArrayList<String> artistUrl = new ArrayList<String>();
 			for(String[] art : artists) {
@@ -69,9 +72,9 @@ public class SearchActivity extends Activity {
 			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 	            	//Object listItem = searchListView.getItemAtPosition(position);
-	            	try {
+	            	//try {
 	            		//Log.d("11111", "11111");
-						List<String[]> titles = findTitle(artistUrl.get(position), title);
+						//List<String[]> titles = findTitle(artistUrl.get(position), title);
 						//Log.d("22222", titles.get(0)[1]);
 						final String perfName = artistNames.get(position);
 						final ArrayList<String> songTitles = new ArrayList<String>();
@@ -105,11 +108,11 @@ public class SearchActivity extends Activity {
 								}
 				            }
 						} );
-					} catch (IOException e) {
+					//} catch (IOException e) {
 						// TODO Auto-generated catch block
 						//Log.d("DUPA", "DUPAAAA");
-						e.printStackTrace();
-					}
+						//e.printStackTrace();
+					//}
 	            	//Toast.makeText(getApplicationContext(), artistUrl.get(position), Toast.LENGTH_SHORT).show();
 	            	//Toast.makeText(getApplicationContext(), ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
 	            }
@@ -168,14 +171,24 @@ public class SearchActivity extends Activity {
     	return chosenPerformers;
     }
     
-    private List<String[]> removeEmptyTitleArtists(List<String[]> artists, String title) throws IOException {
+    private List<List<String[]>> removeEmptyTitleArtists(List<String[]> artists, String title) throws IOException {
+    	List<String[]> titlesOfCheckedArtists = new ArrayList<String[]>();
 		for(int i = 0; i < artists.size(); i++) {
-			if(findTitle(artists.get(i)[0], title).size() == 0) {
+			List<String[]> matchedTitles = findTitle(artists.get(i)[0], title);
+			if(matchedTitles.size() == 0) {
 				artists.remove(i);
 				i--;
 			}
+			else {
+				for(String[] a : matchedTitles)
+					titlesOfCheckedArtists.add(a);
+			}
 		}
-    	return artists;
+		List<List<String[]>> artsAndTitles = new ArrayList<List<String[]>>();
+		artsAndTitles.add(artists); 
+		artsAndTitles.add(titlesOfCheckedArtists);
+		return artsAndTitles;
+    	//return artists;
     }
     
     private List<String[]> findTitle(String urlPerformerSongs, String title) throws IOException {
