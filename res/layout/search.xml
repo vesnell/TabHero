@@ -14,23 +14,14 @@
         	android:layout_height="wrap_content"
         	android:hint="@string/hint_author" />
 
-        <EditText
-            android:id="@+id/editTitle"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/editPerformer"
-            android:ems="10"
-            android:hint="@string/hint_title" />
-
         <Button
             android:id="@+id/searchBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/editTitle"
             android:onClick="searchView"
-            android:text="@string/search" />
+            android:text="@string/search"
+            android:layout_below="@+id/editPerformer" />
 
         <ListView
             android:id="@+id/searchListView"
@@ -40,15 +31,6 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/searchBtn" >
 
-        </ListView>
-
-        <ListView
-            android:id="@+id/searchListView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/searchBtn" >
         </ListView>
  
 </RelativeLayout>

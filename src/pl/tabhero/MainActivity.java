@@ -12,16 +12,35 @@ import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
-@SuppressWarnings("deprecation")
-public class MainActivity extends /*Activity*/ TabActivity {
+//@SuppressWarnings("deprecation")
+public class MainActivity extends Activity /*TabActivity*/ {
 
+	private Button btnOnline;
+	private Button btnOnBase;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.main);
         
+        btnOnline = (Button) findViewById(R.id.online);
+        btnOnBase = (Button) findViewById(R.id.favorites);
         
+        btnOnline.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent i = new Intent(MainActivity.this, SearchActivity.class);
+				startActivity(i);
+			}
+		});
+        
+        btnOnBase.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent i = new Intent(MainActivity.this, FavoritesActivity.class);
+				startActivity(i);
+			}
+		});
         
         /*requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -39,7 +58,7 @@ public class MainActivity extends /*Activity*/ TabActivity {
 			}
 		});*/
         
-        TabHost tabhost = getTabHost();
+        /*TabHost tabhost = getTabHost();
         String search = getString(R.string.search);
         String favorites = getString(R.string.favorites);
         
@@ -54,7 +73,7 @@ public class MainActivity extends /*Activity*/ TabActivity {
         favspec.setContent(favIntent);
         
         tabhost.addTab(searchspec);
-        tabhost.addTab(favspec);
+        tabhost.addTab(favspec);*/
     }
 
     @Override

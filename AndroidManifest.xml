@@ -21,12 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchActivity" />
-            <!--  android:screenOrientation="landscape"-->
-        <activity android:name=".FavoritesActivity" />
-            <!-- android:screenOrientation="landscape" -->
-         <activity android:name=".TabViewActivity" 
-            android:screenOrientation="landscape" />
+        <activity android:name=".SearchActivity"
+          	      android:screenOrientation = "portrait" />
+        <activity android:name=".SearchTitleActivity"
+        		  android:screenOrientation = "portrait" />
+        <activity android:name=".FavoritesActivity"
+            	  android:screenOrientation = "portrait" />
+        <activity android:name=".TabViewActivity" 
+            	  android:screenOrientation="landscape" />
     </application>
 
 </manifest>

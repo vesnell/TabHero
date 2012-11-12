@@ -1,27 +1,39 @@
-<!-- <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageView
+    <!-- <ImageView
         android:id="@+id/startImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/start" />
+        android:src="@drawable/start" /> -->
+		<!-- android:layout_below="@+id/startImg" -->
 
     <Button
-        android:id="@+id/startBtn"
+        android:id="@+id/online"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/startImg"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="74dp"
-        android:text="@string/start" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="152dp"
+        android:text="@string/online" />
 
-</RelativeLayout> -->
-<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    <Button
+        android:id="@+id/favorites"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/online"
+        android:layout_marginTop="30dp"
+        android:text="@string/favorites" />
+
+</RelativeLayout>
+<!-- <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/tabhost"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -38,4 +50,4 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"/>
     </LinearLayout>
-</TabHost>
+</TabHost> -->

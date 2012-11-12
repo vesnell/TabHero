@@ -17,8 +17,8 @@ public class TabViewActivity extends Activity {
     	
         Intent i = getIntent();
         Bundle extras = i.getExtras();
-    	String performer = extras.getString("performer");
-    	String title = extras.getString("title");
+    	String performer = extras.getString("performerName");
+    	String title = extras.getString("songTitle");
     	String listOfSections = extras.getString("tab");
 
     	head.setText(performer + " - " + title);
