@@ -3,13 +3,10 @@ package pl.tabhero;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang3.text.WordUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SearchTitleActivity extends Activity {
 	
@@ -58,9 +54,9 @@ public class SearchTitleActivity extends Activity {
 		final ArrayList<String> songUrl = new ArrayList<String>();
 		
 		for(String[] sng : songs) {
-			Log.d("ART1", sng[1]);
-			songTitle.add(WordUtils.capitalize(sng[1]));
-			Log.d("ART0", sng[0]);
+			//Log.d("ART1", sng[1]);
+			songTitle.add(sng[1]);
+			//Log.d("ART0", sng[0]);
 			songUrl.add(sng[0]);
 		}
 		
@@ -102,11 +98,11 @@ public class SearchTitleActivity extends Activity {
     	for(int i = 0; i < chosenLineSong.size(); i++) {
     		array[i][0] = chosenLineSong.get(i).attr("href");
     		array[i][0] = url + array[i][0];
-    		array[i][1] = chosenLineSong.get(i).toString().toLowerCase();
+    		array[i][1] = chosenLineSong.get(i).toString();
     		array[i][1] = Jsoup.parse(array[i][1]).select("a").first().ownText();
     		array[i][1] = array[i][1].replace("\\", "");
-    		String e = array[i][1];
-    		checkContains = e.contains(title);
+    		String p = array[i][1].toLowerCase();
+    		checkContains = p.contains(title);
     		if(checkContains == true) {
     			chosenTitles.add(array[i]);
     		}
