@@ -7,9 +7,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import pl.tabhero.SearchActivity.connect;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,11 +35,12 @@ public class SearchTitleActivity extends Activity {
         
         Intent i = getIntent();
 		Bundle extras = i.getExtras();
-		final String performerName = extras.getString("performerName");
+		final String performerName = extras.getString("performerNameHead");
         TextView chosenPerformer = (TextView) findViewById(R.id.chosenPerformer);
         chosenPerformer.setText(performerName);
     }
 	
+	@SuppressWarnings("unchecked")
 	public void searchTitleView(View v) throws IOException {
 		String title = new String();
 		editTitle = (EditText) findViewById(R.id.editTitle);
@@ -45,11 +49,15 @@ public class SearchTitleActivity extends Activity {
 		hideKeyboard();
 		Intent i = getIntent();
 		Bundle extras = i.getExtras();
-		final String performerName = extras.getString("performerName");
+		//String performerName = extras.getString("performerName");
 		String performerUrl = extras.getString("performerUrl");
+
+		ArrayList<String> passing = new ArrayList<String>();
+		passing.add(performerUrl);
+		passing.add(title);
 		
-		
-		List<String[]> songs = findTitle(performerUrl, title);
+		new connect().execute(passing);
+		/*List<String[]> songs = findTitle(performerUrl, title);
 		final ArrayList<String> songTitle = new ArrayList<String>();
 		final ArrayList<String> songUrl = new ArrayList<String>();
 		
@@ -81,11 +89,11 @@ public class SearchTitleActivity extends Activity {
 					e.printStackTrace();
 				}
             }
-		} );
+		} );*/
 		
 	}
 	
-	private List<String[]> findTitle(String urlPerformerSongs, String title) throws IOException {
+	/*private List<String[]> findTitle(String urlPerformerSongs, String title) throws IOException {
     	String url = "http://www.chords.pl";
     	//Log.d("AAAAAA", urlPerformerSongs);
     	List<String[]> chosenTitles = new ArrayList<String[]>();
@@ -108,7 +116,101 @@ public class SearchTitleActivity extends Activity {
     		}
     	}
     	return chosenTitles;
-    }
+    }*/
+	
+	public class connect extends AsyncTask<ArrayList<String>, List<String[]>, Void>{
+
+		@SuppressWarnings("unchecked")
+		@Override
+		protected Void doInBackground(ArrayList<String>... params) {
+			ArrayList<String> passing = params[0];
+			String urlPerformerSongs = passing.get(0);
+			String title = passing.get(1);
+			Log.d("urlPerformerSongs", urlPerformerSongs);
+			Log.d("title", title);
+			//String performerName = params[0][2];
+			// TODO Auto-generated method stub
+			String url = "http://www.chords.pl";
+	    	//Log.d("AAAAAA", urlPerformerSongs);
+	    	List<String[]> chosenTitles = new ArrayList<String[]>();
+	    	Document doc = null;
+			try {
+				doc = Jsoup.connect(url + urlPerformerSongs).get();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	String codeSongs = doc.select("table.piosenki").toString();
+	    	Document songs = Jsoup.parse(codeSongs);
+	    	Elements chosenLineSong = songs.select("a[href]");
+	    	String[][] array = new String[chosenLineSong.size()][2];
+	    	boolean checkContains;
+	    	for(int i = 0; i < chosenLineSong.size(); i++) {
+	    		array[i][0] = chosenLineSong.get(i).attr("href");
+	    		array[i][0] = url + array[i][0];
+	    		array[i][1] = chosenLineSong.get(i).toString();
+	    		array[i][1] = Jsoup.parse(array[i][1]).select("a").first().ownText();
+	    		array[i][1] = array[i][1].replace("\\", "");
+	    		String p = array[i][1].toLowerCase();
+	    		checkContains = p.contains(title);
+	    		if(checkContains == true) {
+	    			chosenTitles.add(array[i]);
+	    		}
+	    	}
+	    	publishProgress(chosenTitles);
+			return null;
+		}
+		
+		@Override
+	    protected void onProgressUpdate(List<String[]>... ct) {
+			List<String[]> songs = ct[0];
+			//Intent i = getIntent();
+			//Bundle extras = i.getExtras();
+			//final String performerName = extras.getString("performerName");
+			final ArrayList<String> songTitle = new ArrayList<String>();
+			final ArrayList<String> songUrl = new ArrayList<String>();
+			
+			for(String[] sng : songs) {
+				Log.d("ART1", sng[1]);
+				songTitle.add(sng[1]);
+				Log.d("ART0", sng[0]);
+				songUrl.add(sng[0]);
+			}
+			
+			listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.artists, songTitle);
+			searchListView.setAdapter(listAdapter);
+			Log.d("AAAAA", "AAAAA");
+			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+	            @SuppressWarnings("unchecked")
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	            	//Toast.makeText(getApplicationContext(), songUrl.get(position), Toast.LENGTH_SHORT).show();
+	            	
+	            		Log.d("BBBBB", "BBBBB");
+						//String tablature = getTablature(songUrl.get(position));
+	            		String posUrl = songUrl.get(position);
+	            		String posTitle = songTitle.get(position);
+	            		ArrayList<String> passing = new ArrayList<String>();
+	            		passing.add(posUrl);
+	            		passing.add(posTitle);
+	            		new getTablature().execute(passing);
+	            		
+						/*Intent i = getIntent();
+						Bundle extras = i.getExtras();
+						final String performerName = extras.getString("performerName");
+						Intent intent = new Intent(SearchTitleActivity.this, TabViewActivity.class);
+						Bundle bun = new Bundle();
+						bun.putString("performerName", performerName);
+						bun.putString("songTitle", songTitle.get(position));
+						bun.putString("songUrl", songUrl.get(position));
+						bun.putString("tab", tablature);
+						intent.putExtras(bun);
+						startActivity(intent);*/
+	            	
+	            }
+			} );
+		}
+		
+	}
 	
 	private void hideKeyboard() {
 		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -124,7 +226,59 @@ public class SearchTitleActivity extends Activity {
 	       return Character.toUpperCase(string.charAt(0)) + string.substring(1);
 	    }*/
     
-    private String getTablature(String url) throws IOException {
+	public class getTablature extends AsyncTask<ArrayList<String>, ArrayList<String>, Void>{
+
+		@SuppressWarnings("unchecked")
+		@Override
+		protected Void doInBackground(ArrayList<String>... params) {
+			ArrayList<String> passing = params[0];
+			String url = passing.get(0);
+			String title = passing.get(1);
+			
+			// TODO Auto-generated method stub
+			Document doc = null;
+			try {
+				doc = Jsoup.connect(url).get();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	Element elements = doc.select("pre").first();
+	    	String tab = elements.text();
+	    	String[] table = tab.split("\n");
+	    	tab = "";
+	    	for (int i = 3; i < table.length; i++)
+	    		tab += table[i] + "\n";
+	    	ArrayList<String> passing2 = new ArrayList<String>();
+	    	passing2.add(tab);
+	    	passing2.add(title);
+	    	passing2.add(url);
+	    	publishProgress(passing2);
+			return null;
+		}
+		
+		@Override
+	    protected void onProgressUpdate(ArrayList<String>... params) {
+			ArrayList<String> passing = params[0];
+			String tablature = passing.get(0);
+			String songTitle = passing.get(1);
+			String songUrl = passing.get(2);
+			Intent i = getIntent();
+			Bundle extras = i.getExtras();
+			final String performerName = extras.getString("performerName");
+			Intent intent = new Intent(SearchTitleActivity.this, TabViewActivity.class);
+			Bundle bun = new Bundle();
+			bun.putString("performerName", performerName);
+			bun.putString("songTitle", songTitle);
+			bun.putString("songUrl", songUrl);
+			bun.putString("tab", tablature);
+			intent.putExtras(bun);
+			startActivity(intent);
+		}
+		
+	}
+	
+    /*private String getTablature(String url) throws IOException {
     	Document doc = Jsoup.connect(url).get();
     	Element elements = doc.select("pre").first();
     	String tab = elements.text();
@@ -133,6 +287,6 @@ public class SearchTitleActivity extends Activity {
     	for (int i = 3; i < table.length; i++)
     		tab += table[i] + "\n";
     	return tab;
-    }
+    }*/
 	
 }

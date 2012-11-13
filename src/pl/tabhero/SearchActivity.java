@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +31,7 @@ public class SearchActivity extends Activity {
         setContentView(R.layout.search);
     }
     
-    public void searchView(View v) throws IOException {
+    public void searchView(View v) {
 		String performer = new String();
 		editPerformer = (EditText) findViewById(R.id.editPerformer);
 		performer = editPerformer.getText().toString().toLowerCase();
@@ -42,7 +43,8 @@ public class SearchActivity extends Activity {
 		if(!(performer.length() > 0)) 
 			Toast.makeText(getApplicationContext(), "Musisz wpisać wykonawcę!", Toast.LENGTH_LONG).show();
 		else {
-			List<String[]> artists = findPerf(performer);
+			new connect().execute(performer);
+			/*List<String[]> artists = findPerf(performer);
 			final ArrayList<String> artistNames = new ArrayList<String>();
 			final ArrayList<String> artistUrl = new ArrayList<String>();
 			for(String[] art : artists) {
@@ -65,7 +67,7 @@ public class SearchActivity extends Activity {
 	    			i.putExtras(bun);
 	    			startActivity(i);	
 	            }
-	        } );
+	        } );*/
 		}
     }
     
@@ -78,15 +80,21 @@ public class SearchActivity extends Activity {
        return Character.toUpperCase(string.charAt(0)) + string.substring(1);
     }*/
     
-    private List<String[]> findPerf(String performer) throws IOException {
-    	String url = "http://www.chords.pl/wykonawcy/";
+    private /*List<String[]>*/ void findPerf(String performer) {
+    	new connect().execute(performer);
+    	/*String url = "http://www.chords.pl/wykonawcy/";
     	List<String[]> chosenPerformers = new ArrayList<String[]>();
+    	Log.d("11111", "111111");
     	Document doc = null;
+    	Log.d("22222", "222222");
     	if(Character.isDigit(performer.charAt(0))) {
-    		doc = Jsoup.connect(url + "1").get();
+    		url = url + "1";
+    		doc = Jsoup.connect(url).get();
     	}
     	else {
-    		doc = Jsoup.connect(url + performer).get();
+    		url = url + performer;
+    		doc = Jsoup.connect(url).get();
+    		Log.d("33333", "333333");
     	}
     	String codeFind0 = doc.select("tr.v0").toString();
     	String codeFind1 = doc.select("tr.v1").toString();
@@ -107,8 +115,98 @@ public class SearchActivity extends Activity {
     			//Log.d("1111111", array[i][1]);
     			chosenPerformers.add(array[i]);
     		}
-    	}
-    	return chosenPerformers;
+    	}*/
+    	//return chosenPerformers;
+    }
+    
+    public class connect extends AsyncTask<String, List<String[]>, Void>{
+    	//String url = "http://www.chords.pl/wykonawcy/";
+		@SuppressWarnings("unchecked")
+		@Override
+		protected Void doInBackground(String... params) {
+			String performer = params[0];
+			// TODO Auto-generated method stub
+			String url = "http://www.chords.pl/wykonawcy/";
+	    	List<String[]> chosenPerformers = new ArrayList<String[]>();
+	    	Log.d("11111", "111111");
+	    	Document doc = null;
+	    	Log.d("22222", "222222");
+	    	if(Character.isDigit(performer.charAt(0))) {
+	    		url = url + "1";
+	    		try {
+					doc = Jsoup.connect(url).get();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
+	    	else {
+	    		url = url + performer;
+	    		try {
+					doc = Jsoup.connect(url).get();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    		Log.d("33333", "333333");
+	    	}
+	    	String codeFind0 = doc.select("tr.v0").toString();
+	    	String codeFind1 = doc.select("tr.v1").toString();
+	    	String codeFind = codeFind0 + codeFind1;
+	    	Document docFind = Jsoup.parse(codeFind);
+	    	Elements performers = docFind.select("a[href]");
+	    	String[][] array = new String[performers.size()][2];
+	    	boolean checkContains;
+	    	for(int i = 0; i < performers.size(); i++) {
+	    		array[i][0] = performers.get(i).attr("href");
+	    		array[i][1] = performers.get(i).toString();
+	    		array[i][1] = Jsoup.parse(array[i][1]).select("a").first().ownText();
+	    		array[i][1] = array[i][1].replace("\\", "");
+	    		String p = array[i][1].toLowerCase();
+	    		checkContains = p.contains(performer);
+	    		if(checkContains == true) {
+	    			//Log.d("0000000", array[i][0]);
+	    			//Log.d("1111111", array[i][1]);
+	    			chosenPerformers.add(array[i]);
+	    		}
+	    	}
+	    	publishProgress(chosenPerformers);
+			return null;
+		}
+		
+		@Override
+	    protected void onProgressUpdate(List<String[]>... cp) {
+			List<String[]> artists = cp[0];
+			final ArrayList<String> artistNames = new ArrayList<String>();
+			final ArrayList<String> artistUrl = new ArrayList<String>();
+			for(String[] art : artists) {
+				//Log.d("ART1", art[1]);
+				artistNames.add(art[1]);
+				//Log.d("ART0", art[0]);
+				artistUrl.add(art[0]);
+			}
+			
+			listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artists, artistNames);
+			searchListView.setAdapter(listAdapter);
+			
+			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	            	//Toast.makeText(getApplicationContext(), artistUrl.get(position), Toast.LENGTH_SHORT).show();
+	            	//Intent intent = new Intent(SearchActivity.this, SearchTitleActivity.class);
+	            	//Bundle bundle = new Bundle();
+	            	//bundle.putString("performerName", artistNames.get(position));
+	            	//intent.putExtras(bundle);
+	            	Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
+	            	Bundle bun = new Bundle();
+	            	bun.putString("performerName", artistNames.get(position));
+	    			bun.putString("performerNameHead", artistNames.get(position));
+	    			bun.putString("performerUrl", artistUrl.get(position));
+	    			i.putExtras(bun);
+	    			startActivity(i);	
+	            }
+	        } );
+	    }
+    	
     }
     
     private void hideKeyboard() {
