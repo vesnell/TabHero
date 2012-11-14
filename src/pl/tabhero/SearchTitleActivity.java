@@ -44,19 +44,6 @@ public class SearchTitleActivity extends Activity {
         chosenPerformer.setText(performerName);
     }
 	
-	@Override
-    public void onConfigurationChanged(Configuration newConfig)
-    {
-        super.onConfigurationChanged(newConfig);
-        setContentView(R.layout.main);
-        
-        Intent i = getIntent();
-		Bundle extras = i.getExtras();
-		final String performerName = extras.getString("performerNameHead");
-        TextView chosenPerformer = (TextView) findViewById(R.id.chosenPerformer);
-        chosenPerformer.setText(performerName);
-    }
-	
 	@SuppressWarnings("unchecked")
 	public void searchTitleView(View v) throws IOException {
 		String title = new String();

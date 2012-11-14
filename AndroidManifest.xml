@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SearchActivity"
-            	    android:configChanges="keyboardHidden|keyboard|orientation" />
+            	    android:configChanges="orientation|keyboardHidden|keyboard" />
           	      <!-- android:screenOrientation = "portrait" />  -->
         <activity android:name=".SearchTitleActivity"  
             	  android:configChanges="keyboardHidden|keyboard|orientation"/>
