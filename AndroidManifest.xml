@@ -14,7 +14,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main"
+            android:configChanges="keyboardHidden|keyboard|orientation" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,11 +23,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".SearchActivity"
-          	      android:screenOrientation = "portrait" />
-        <activity android:name=".SearchTitleActivity"
-        		  android:screenOrientation = "portrait" />
-        <activity android:name=".FavoritesActivity"
-            	  android:screenOrientation = "portrait" />
+            	    android:configChanges="keyboardHidden|keyboard|orientation" />
+          	      <!-- android:screenOrientation = "portrait" />  -->
+        <activity android:name=".SearchTitleActivity"  
+            	  android:configChanges="keyboardHidden|keyboard|orientation"/>
+        		 <!--  android:screenOrientation = "portrait" />  -->
+        <activity android:name=".FavoritesActivity" 
+            	  android:configChanges="keyboardHidden|keyboard|orientation"/>
+            	 <!--  android:screenOrientation = "portrait" />  -->
         <activity android:name=".TabViewActivity" 
             	  android:screenOrientation="landscape" />
     </application>

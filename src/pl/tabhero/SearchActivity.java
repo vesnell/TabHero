@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,12 +29,58 @@ public class SearchActivity extends Activity {
 	private EditText editPerformer;
 	private ArrayAdapter<String> listAdapter;
 	ProgressDialog progressDialog;
+	ArrayList<String> artistNames = new ArrayList<String>();
+	ArrayList<String> artistUrl = new ArrayList<String>();
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.search);
+        /*int orient = getResources().getConfiguration().orientation;
+        if(orient == 1) 
+			setRequestedOrientation(1);
+		if(orient == 2)
+			setRequestedOrientation(2);*/
     }
+    
+    /*@Override
+    protected void onSaveInstanceState(Bundle outState) {
+     // TODO Auto-generated method stub
+     super.onSaveInstanceState(outState);
+     //outState.putString("TEXT", (String)text.getText());
+     outState.putStringArrayList("artistNames", artistNames);
+     outState.putStringArrayList("artistUrl", artistUrl);
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+     // TODO Auto-generated method stub
+     super.onRestoreInstanceState(savedInstanceState);
+     //text.setText(savedInstanceState.getString("TEXT"));
+		artistNames = savedInstanceState.getStringArrayList("artistNames");
+		artistUrl = savedInstanceState.getStringArrayList("artistUrl");
+		Log.d("NOWE_USTAWIENIE", "NOWE_USTAWIENIE");
+		listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artists, artistNames);
+		searchListView.setAdapter(listAdapter);
+		searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+         	Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
+         	Bundle bun = new Bundle();
+         	bun.putString("performerName", artistNames.get(position));
+ 			bun.putString("performerUrl", artistUrl.get(position));
+ 			i.putExtras(bun);
+ 			startActivity(i);
+         }
+     } );
+    }*/
+    
+    /*@Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        setContentView(R.layout.main);
+        
+    }*/
     
     public void searchView(View v) {
     	
@@ -49,83 +96,10 @@ public class SearchActivity extends Activity {
 			Toast.makeText(getApplicationContext(), "Musisz wpisać wykonawcę!", Toast.LENGTH_LONG).show();
 		else {
 			new connect().execute(performer);
-			/*List<String[]> artists = findPerf(performer);
-			final ArrayList<String> artistNames = new ArrayList<String>();
-			final ArrayList<String> artistUrl = new ArrayList<String>();
-			for(String[] art : artists) {
-				//Log.d("ART1", art[1]);
-				artistNames.add(art[1]);
-				//Log.d("ART0", art[0]);
-				artistUrl.add(art[0]);
-			}
-			
-			listAdapter = new ArrayAdapter<String>(this, R.layout.artists, artistNames);
-			searchListView.setAdapter(listAdapter);
-			
-			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	            	//Toast.makeText(getApplicationContext(), artistUrl.get(position), Toast.LENGTH_SHORT).show();
-	            	Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
-	            	Bundle bun = new Bundle();
-	    			bun.putString("performerName", artistNames.get(position));
-	    			bun.putString("performerUrl", artistUrl.get(position));
-	    			i.putExtras(bun);
-	    			startActivity(i);	
-	            }
-	        } );*/
 		}
     }
     
-    /*private String capitalize(final String string) {
-       if (string == null)
-          throw new NullPointerException("string");
-       if (string.equals(""))
-          throw new NullPointerException("string");
-
-       return Character.toUpperCase(string.charAt(0)) + string.substring(1);
-    }*/
-    
-    private /*List<String[]>*/ void findPerf(String performer) {
-    	new connect().execute(performer);
-    	/*String url = "http://www.chords.pl/wykonawcy/";
-    	List<String[]> chosenPerformers = new ArrayList<String[]>();
-    	Log.d("11111", "111111");
-    	Document doc = null;
-    	Log.d("22222", "222222");
-    	if(Character.isDigit(performer.charAt(0))) {
-    		url = url + "1";
-    		doc = Jsoup.connect(url).get();
-    	}
-    	else {
-    		url = url + performer;
-    		doc = Jsoup.connect(url).get();
-    		Log.d("33333", "333333");
-    	}
-    	String codeFind0 = doc.select("tr.v0").toString();
-    	String codeFind1 = doc.select("tr.v1").toString();
-    	String codeFind = codeFind0 + codeFind1;
-    	Document docFind = Jsoup.parse(codeFind);
-    	Elements performers = docFind.select("a[href]");
-    	String[][] array = new String[performers.size()][2];
-    	boolean checkContains;
-    	for(int i = 0; i < performers.size(); i++) {
-    		array[i][0] = performers.get(i).attr("href");
-    		array[i][1] = performers.get(i).toString();
-    		array[i][1] = Jsoup.parse(array[i][1]).select("a").first().ownText();
-    		array[i][1] = array[i][1].replace("\\", "");
-    		String p = array[i][1].toLowerCase();
-    		checkContains = p.contains(performer);
-    		if(checkContains == true) {
-    			//Log.d("0000000", array[i][0]);
-    			//Log.d("1111111", array[i][1]);
-    			chosenPerformers.add(array[i]);
-    		}
-    	}*/
-    	//return chosenPerformers;
-    }
-    
     public class connect extends AsyncTask<String, List<String[]>, Void>{
-    	//String url = "http://www.chords.pl/wykonawcy/";
     	
     	@Override
     	 protected void onPreExecute() {
@@ -137,6 +111,8 @@ public class SearchActivity extends Activity {
     	 protected void onPostExecute(Void result) {
     		setProgressBarIndeterminateVisibility(false);
     		progressDialog.dismiss();
+    		
+    		
     	 }
     	
 		@SuppressWarnings("unchecked")
@@ -195,8 +171,8 @@ public class SearchActivity extends Activity {
 		@Override
 	    protected void onProgressUpdate(List<String[]>... cp) {
 			List<String[]> artists = cp[0];
-			final ArrayList<String> artistNames = new ArrayList<String>();
-			final ArrayList<String> artistUrl = new ArrayList<String>();
+			//final ArrayList<String> artistNames = new ArrayList<String>();
+			//final ArrayList<String> artistUrl = new ArrayList<String>();
 			for(String[] art : artists) {
 				//Log.d("ART1", art[1]);
 				artistNames.add(art[1]);
@@ -204,9 +180,16 @@ public class SearchActivity extends Activity {
 				artistUrl.add(art[0]);
 			}
 			
+			/*Intent intent = new Intent(SearchActivity.this, SearchActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putStringArrayList("artistNames", artistNames);
+			bundle.putStringArrayList("artistUrl", artistUrl);
+			intent.putExtras(bundle);*/
+			
+			
 			listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artists, artistNames);
 			searchListView.setAdapter(listAdapter);
-			
+			//onSaveInstanceState();
 			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 	            	//Toast.makeText(getApplicationContext(), artistUrl.get(position), Toast.LENGTH_SHORT).show();
@@ -217,7 +200,7 @@ public class SearchActivity extends Activity {
 	            	Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
 	            	Bundle bun = new Bundle();
 	            	bun.putString("performerName", artistNames.get(position));
-	    			bun.putString("performerNameHead", artistNames.get(position));
+	    			//bun.putString("performerNameHead", artistNames.get(position));
 	    			bun.putString("performerUrl", artistUrl.get(position));
 	    			i.putExtras(bun);
 	    			startActivity(i);	

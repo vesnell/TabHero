@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,19 @@ public class SearchTitleActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.searchtitle);
+        
+        Intent i = getIntent();
+		Bundle extras = i.getExtras();
+		final String performerName = extras.getString("performerName");
+        TextView chosenPerformer = (TextView) findViewById(R.id.chosenPerformer);
+        chosenPerformer.setText(performerName);
+    }
+	
+	@Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        setContentView(R.layout.main);
         
         Intent i = getIntent();
 		Bundle extras = i.getExtras();
