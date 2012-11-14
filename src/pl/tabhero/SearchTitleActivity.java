@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
 
 import pl.tabhero.SearchActivity.connect;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -28,6 +29,8 @@ public class SearchTitleActivity extends Activity {
 	private ListView searchListView;
 	private EditText editTitle;
 	private ArrayAdapter<String> listAdapter;
+	ProgressDialog progressDialog;
+	ProgressDialog progressDialogTab;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +122,18 @@ public class SearchTitleActivity extends Activity {
     }*/
 	
 	public class connect extends AsyncTask<ArrayList<String>, List<String[]>, Void>{
+		
+		@Override
+   	 	protected void onPreExecute() {
+			setProgressBarIndeterminateVisibility(true);
+			progressDialog = ProgressDialog.show(SearchTitleActivity.this, getString(R.string.srchSong), getString(R.string.wait));
+   	 	}
+   	
+		@Override
+		protected void onPostExecute(Void result) {
+			setProgressBarIndeterminateVisibility(false);
+   			progressDialog.dismiss();
+   	 	}
 
 		@SuppressWarnings("unchecked")
 		@Override
@@ -227,6 +242,18 @@ public class SearchTitleActivity extends Activity {
 	    }*/
     
 	public class getTablature extends AsyncTask<ArrayList<String>, ArrayList<String>, Void>{
+		
+		@Override
+   	 	protected void onPreExecute() {
+			setProgressBarIndeterminateVisibility(true);
+			progressDialogTab = ProgressDialog.show(SearchTitleActivity.this, getString(R.string.srchTab), getString(R.string.wait));
+   	 	}
+   	
+		@Override
+		protected void onPostExecute(Void result) {
+			setProgressBarIndeterminateVisibility(false);
+   			progressDialogTab.dismiss();
+   	 	}
 
 		@SuppressWarnings("unchecked")
 		@Override

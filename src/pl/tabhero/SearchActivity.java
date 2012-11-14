@@ -7,12 +7,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,13 +27,16 @@ public class SearchActivity extends Activity {
 	private ListView searchListView;
 	private EditText editPerformer;
 	private ArrayAdapter<String> listAdapter;
+	ProgressDialog progressDialog;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.search);
     }
     
     public void searchView(View v) {
+    	
 		String performer = new String();
 		editPerformer = (EditText) findViewById(R.id.editPerformer);
 		performer = editPerformer.getText().toString().toLowerCase();
@@ -121,6 +126,19 @@ public class SearchActivity extends Activity {
     
     public class connect extends AsyncTask<String, List<String[]>, Void>{
     	//String url = "http://www.chords.pl/wykonawcy/";
+    	
+    	@Override
+    	 protected void onPreExecute() {
+    		setProgressBarIndeterminateVisibility(true);
+            progressDialog = ProgressDialog.show(SearchActivity.this, getString(R.string.srchPerf), getString(R.string.wait));
+    	 }
+    	
+    	@Override
+    	 protected void onPostExecute(Void result) {
+    		setProgressBarIndeterminateVisibility(false);
+    		progressDialog.dismiss();
+    	 }
+    	
 		@SuppressWarnings("unchecked")
 		@Override
 		protected Void doInBackground(String... params) {

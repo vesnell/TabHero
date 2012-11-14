@@ -13,5 +13,9 @@
     <string name="start">Start</string>
     <string name="online">Internet</string>
     <string name="chosen_performer">Wybrany wykonawca</string>
+    <string name="srchPerf">Szukam wykonawcy...</string>
+    <string name="srchSong">Szukam utworu...</string>
+    <string name="srchTab">Szukam tabulatury...</string>
+    <string name="wait">Czekaj!</string>
 
 </resources>
