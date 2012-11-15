@@ -61,10 +61,8 @@ public class SearchActivity extends Activity {
 			Toast.makeText(getApplicationContext(), R.string.hintEmpty, Toast.LENGTH_LONG).show();
 		else if (performer.charAt(0) == ' ')
 			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
-		else if(performer.charAt(0) == 'ą' || performer.charAt(0) == 'ć' || performer.charAt(0) == 'ę' || performer.charAt(0) == 'ł' || performer.charAt(0) == 'ń' || performer.charAt(0) == 'ó' || performer.charAt(0) == 'ś' || performer.charAt(0) == 'ź' || performer.charAt(0) == 'ż')
-			Toast.makeText(getApplicationContext(), R.string.hintPolishChar, Toast.LENGTH_LONG).show();
 		else if(!(checkInternetConnection()))
-			Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
 		else {
 				new connect().execute(performer);
 		}
@@ -107,8 +105,27 @@ public class SearchActivity extends Activity {
 				}
 	    	}
 	    	else {
-	    		url = url + performer;
 	    		try {
+	    			String temp = null;
+	    			if(performer.charAt(0) == 'ą')
+	    				temp = performer.replaceAll("^ą", "a");
+	    			else if(performer.charAt(0) == 'ć')
+	    				temp = performer.replaceAll("^ć", "c");
+	    			else if(performer.charAt(0) == 'ę')
+	    				temp = performer.replaceAll("^ę", "e");
+	    			if(performer.charAt(0) == 'ł')
+	    				temp = performer.replaceAll("^ł", "l");
+	    			if(performer.charAt(0) == 'ń')
+	    				temp = performer.replaceAll("^ń", "n");
+	    			if(performer.charAt(0) == 'ó')
+	    				temp = performer.replaceAll("^ó", "o");
+	    			if(performer.charAt(0) == 'ś')
+	    				temp = performer.replaceAll("^ś", "s");
+	    			if(performer.charAt(0) == 'ź')
+	    				temp = performer.replaceAll("^ź", "z");
+	    			if(performer.charAt(0) == 'ż')
+	    				temp = performer.replaceAll("^ż", "z");
+	    			url = url + temp;
 					doc = Jsoup.connect(url).get();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

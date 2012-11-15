@@ -19,6 +19,6 @@
     <string name="wait">Czekaj!</string>
     <string name="hintEmpty">Musisz wpisać wykonawcę!</string>
     <string name="hintSpace">Pierwszy znak nie może być spacją.</string>
-    <string name="hintPolishChar">Pierwszy znak musi być literą z alfabetu łacińskiego lub liczbą.</string>
+    <string name="connectionError">Problem z połączeniem z Internetem</string>
 
 </resources>

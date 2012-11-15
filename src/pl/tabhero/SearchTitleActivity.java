@@ -70,7 +70,7 @@ public class SearchTitleActivity extends Activity {
 		passing.add(performerUrl);
 		passing.add(title);
 		if(!(checkInternetConnection()))
-			Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
 		else 
 			new connect().execute(passing);
 	}
@@ -152,7 +152,7 @@ public class SearchTitleActivity extends Activity {
 	            		passing.add(posUrl);
 	            		passing.add(posTitle);
 	            		if(!(checkInternetConnection()))
-	            			Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
+	            			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
 	            		else
 	            			new getTablature().execute(passing);      		
 	            }
