@@ -106,7 +106,7 @@ public class SearchActivity extends Activity {
 	    	}
 	    	else {
 	    		try {
-	    			String temp = null;
+	    			String temp = performer;
 	    			if(performer.charAt(0) == 'ą')
 	    				temp = performer.replaceAll("^ą", "a");
 	    			else if(performer.charAt(0) == 'ć')
