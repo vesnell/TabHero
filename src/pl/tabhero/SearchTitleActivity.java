@@ -14,6 +14,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,12 +25,16 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SearchTitleActivity extends Activity {
 	
 	private ListView searchListView;
 	private EditText editTitle;
 	private ArrayAdapter<String> listAdapter;
+	List<String[]> songs = new ArrayList<String[]>();
+	ArrayList<String> songTitle = new ArrayList<String>();
+	ArrayList<String> songUrl = new ArrayList<String>();
 	ProgressDialog progressDialog;
 	ProgressDialog progressDialogTab;
 	
@@ -45,7 +50,12 @@ public class SearchTitleActivity extends Activity {
     }
 	
 	@SuppressWarnings("unchecked")
-	public void searchTitleView(View v) throws IOException {
+	public void searchTitleView(View v) {
+		
+		songs.clear();
+		songTitle.clear();
+		songUrl.clear();
+		
 		String title = new String();
 		editTitle = (EditText) findViewById(R.id.editTitle);
 		title = editTitle.getText().toString().toLowerCase();
@@ -59,68 +69,11 @@ public class SearchTitleActivity extends Activity {
 		ArrayList<String> passing = new ArrayList<String>();
 		passing.add(performerUrl);
 		passing.add(title);
-		
-		new connect().execute(passing);
-		/*List<String[]> songs = findTitle(performerUrl, title);
-		final ArrayList<String> songTitle = new ArrayList<String>();
-		final ArrayList<String> songUrl = new ArrayList<String>();
-		
-		for(String[] sng : songs) {
-			//Log.d("ART1", sng[1]);
-			songTitle.add(sng[1]);
-			//Log.d("ART0", sng[0]);
-			songUrl.add(sng[0]);
-		}
-		
-		listAdapter = new ArrayAdapter<String>(this, R.layout.artists, songTitle);
-		searchListView.setAdapter(listAdapter);
-		
-		searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            	//Toast.makeText(getApplicationContext(), songUrl.get(position), Toast.LENGTH_SHORT).show();
-            	try {
-					String tablature = getTablature(songUrl.get(position));
-					Intent i = new Intent(SearchTitleActivity.this, TabViewActivity.class);
-					Bundle bun = new Bundle();
-					bun.putString("performerName", performerName);
-					bun.putString("songTitle", songTitle.get(position));
-					bun.putString("songUrl", songUrl.get(position));
-					bun.putString("tab", tablature);
-					i.putExtras(bun);
-					startActivity(i);
-            	} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            }
-		} );*/
-		
+		if(!(checkInternetConnection()))
+			Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
+		else 
+			new connect().execute(passing);
 	}
-	
-	/*private List<String[]> findTitle(String urlPerformerSongs, String title) throws IOException {
-    	String url = "http://www.chords.pl";
-    	//Log.d("AAAAAA", urlPerformerSongs);
-    	List<String[]> chosenTitles = new ArrayList<String[]>();
-    	Document doc = Jsoup.connect(url + urlPerformerSongs).get();
-    	String codeSongs = doc.select("table.piosenki").toString();
-    	Document songs = Jsoup.parse(codeSongs);
-    	Elements chosenLineSong = songs.select("a[href]");
-    	String[][] array = new String[chosenLineSong.size()][2];
-    	boolean checkContains;
-    	for(int i = 0; i < chosenLineSong.size(); i++) {
-    		array[i][0] = chosenLineSong.get(i).attr("href");
-    		array[i][0] = url + array[i][0];
-    		array[i][1] = chosenLineSong.get(i).toString();
-    		array[i][1] = Jsoup.parse(array[i][1]).select("a").first().ownText();
-    		array[i][1] = array[i][1].replace("\\", "");
-    		String p = array[i][1].toLowerCase();
-    		checkContains = p.contains(title);
-    		if(checkContains == true) {
-    			chosenTitles.add(array[i]);
-    		}
-    	}
-    	return chosenTitles;
-    }*/
 	
 	public class connect extends AsyncTask<ArrayList<String>, List<String[]>, Void>{
 		
@@ -144,10 +97,7 @@ public class SearchTitleActivity extends Activity {
 			String title = passing.get(1);
 			Log.d("urlPerformerSongs", urlPerformerSongs);
 			Log.d("title", title);
-			//String performerName = params[0][2];
-			// TODO Auto-generated method stub
 			String url = "http://www.chords.pl";
-	    	//Log.d("AAAAAA", urlPerformerSongs);
 	    	List<String[]> chosenTitles = new ArrayList<String[]>();
 	    	Document doc = null;
 			try {
@@ -179,12 +129,7 @@ public class SearchTitleActivity extends Activity {
 		
 		@Override
 	    protected void onProgressUpdate(List<String[]>... ct) {
-			List<String[]> songs = ct[0];
-			//Intent i = getIntent();
-			//Bundle extras = i.getExtras();
-			//final String performerName = extras.getString("performerName");
-			final ArrayList<String> songTitle = new ArrayList<String>();
-			final ArrayList<String> songUrl = new ArrayList<String>();
+			songs = ct[0];
 			
 			for(String[] sng : songs) {
 				Log.d("ART1", sng[1]);
@@ -201,27 +146,15 @@ public class SearchTitleActivity extends Activity {
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 	            	//Toast.makeText(getApplicationContext(), songUrl.get(position), Toast.LENGTH_SHORT).show();
 	            	
-	            		Log.d("BBBBB", "BBBBB");
-						//String tablature = getTablature(songUrl.get(position));
 	            		String posUrl = songUrl.get(position);
 	            		String posTitle = songTitle.get(position);
 	            		ArrayList<String> passing = new ArrayList<String>();
 	            		passing.add(posUrl);
 	            		passing.add(posTitle);
-	            		new getTablature().execute(passing);
-	            		
-						/*Intent i = getIntent();
-						Bundle extras = i.getExtras();
-						final String performerName = extras.getString("performerName");
-						Intent intent = new Intent(SearchTitleActivity.this, TabViewActivity.class);
-						Bundle bun = new Bundle();
-						bun.putString("performerName", performerName);
-						bun.putString("songTitle", songTitle.get(position));
-						bun.putString("songUrl", songUrl.get(position));
-						bun.putString("tab", tablature);
-						intent.putExtras(bun);
-						startActivity(intent);*/
-	            	
+	            		if(!(checkInternetConnection()))
+	            			Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
+	            		else
+	            			new getTablature().execute(passing);      		
 	            }
 			} );
 		}
@@ -305,6 +238,17 @@ public class SearchTitleActivity extends Activity {
 		}
 		
 	}
+	
+	public boolean checkInternetConnection() {
+        ConnectivityManager cm = (ConnectivityManager) SearchTitleActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable() && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+
+        } else {
+            return false;
+        }
+    }
 	
     /*private String getTablature(String url) throws IOException {
     	Document doc = Jsoup.connect(url).get();

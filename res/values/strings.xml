@@ -15,7 +15,10 @@
     <string name="chosen_performer">Wybrany wykonawca</string>
     <string name="srchPerf">Szukam wykonawcy...</string>
     <string name="srchSong">Szukam utworu...</string>
-    <string name="srchTab">Szukam tabulatury...</string>
+    <string name="srchTab">Pobieram tabulaturę...</string>
     <string name="wait">Czekaj!</string>
+    <string name="hintEmpty">Musisz wpisać wykonawcę!</string>
+    <string name="hintSpace">Pierwszy znak nie może być spacją.</string>
+    <string name="hintPolishChar">Pierwszy znak musi być literą z alfabetu łacińskiego lub liczbą.</string>
 
 </resources>

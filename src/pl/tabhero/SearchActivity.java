@@ -1,6 +1,7 @@
 package pl.tabhero;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.jsoup.Jsoup;
@@ -11,6 +12,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +32,7 @@ public class SearchActivity extends Activity {
 	private EditText editPerformer;
 	private ArrayAdapter<String> listAdapter;
 	ProgressDialog progressDialog;
+	List<String[]> artists = new ArrayList<String[]>();
 	ArrayList<String> artistNames = new ArrayList<String>();
 	ArrayList<String> artistUrl = new ArrayList<String>();
 	
@@ -36,53 +40,13 @@ public class SearchActivity extends Activity {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.search);
-        /*int orient = getResources().getConfiguration().orientation;
-        if(orient == 1) 
-			setRequestedOrientation(1);
-		if(orient == 2)
-			setRequestedOrientation(2);*/
     }
-    
-    /*@Override
-    protected void onSaveInstanceState(Bundle outState) {
-     // TODO Auto-generated method stub
-     super.onSaveInstanceState(outState);
-     //outState.putString("TEXT", (String)text.getText());
-     outState.putStringArrayList("artistNames", artistNames);
-     outState.putStringArrayList("artistUrl", artistUrl);
-    }
-    
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-     // TODO Auto-generated method stub
-     super.onRestoreInstanceState(savedInstanceState);
-     //text.setText(savedInstanceState.getString("TEXT"));
-		artistNames = savedInstanceState.getStringArrayList("artistNames");
-		artistUrl = savedInstanceState.getStringArrayList("artistUrl");
-		Log.d("NOWE_USTAWIENIE", "NOWE_USTAWIENIE");
-		listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artists, artistNames);
-		searchListView.setAdapter(listAdapter);
-		searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-         	Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
-         	Bundle bun = new Bundle();
-         	bun.putString("performerName", artistNames.get(position));
- 			bun.putString("performerUrl", artistUrl.get(position));
- 			i.putExtras(bun);
- 			startActivity(i);
-         }
-     } );
-    }*/
-    
-    /*@Override
-    public void onConfigurationChanged(Configuration newConfig)
-    {
-        super.onConfigurationChanged(newConfig);
-        setContentView(R.layout.main);
-        
-    }*/
     
     public void searchView(View v) {
+    	
+    	artists.clear();
+    	artistNames.clear();
+    	artistUrl.clear();
     	
 		String performer = new String();
 		editPerformer = (EditText) findViewById(R.id.editPerformer);
@@ -92,10 +56,17 @@ public class SearchActivity extends Activity {
 		//setVisibilityOf(searchListView, true);
 		//setVisibilityOf(searchListView2, false);
 		
+		Log.d("CONNECTION", String.valueOf(checkInternetConnection()));
 		if(!(performer.length() > 0)) 
-			Toast.makeText(getApplicationContext(), "Musisz wpisać wykonawcę!", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), R.string.hintEmpty, Toast.LENGTH_LONG).show();
+		else if (performer.charAt(0) == ' ')
+			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
+		else if(performer.charAt(0) == 'ą' || performer.charAt(0) == 'ć' || performer.charAt(0) == 'ę' || performer.charAt(0) == 'ł' || performer.charAt(0) == 'ń' || performer.charAt(0) == 'ó' || performer.charAt(0) == 'ś' || performer.charAt(0) == 'ź' || performer.charAt(0) == 'ż')
+			Toast.makeText(getApplicationContext(), R.string.hintPolishChar, Toast.LENGTH_LONG).show();
+		else if(!(checkInternetConnection()))
+			Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
 		else {
-			new connect().execute(performer);
+				new connect().execute(performer);
 		}
     }
     
@@ -132,6 +103,7 @@ public class SearchActivity extends Activity {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					//Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
 				}
 	    	}
 	    	else {
@@ -140,7 +112,9 @@ public class SearchActivity extends Activity {
 					doc = Jsoup.connect(url).get();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
+					Log.d("NIE MA NETA!!", "NIE MA NETA!!");
+					//Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
 				}
 	    		Log.d("33333", "333333");
 	    	}
@@ -159,8 +133,6 @@ public class SearchActivity extends Activity {
 	    		String p = array[i][1].toLowerCase();
 	    		checkContains = p.contains(performer);
 	    		if(checkContains == true) {
-	    			//Log.d("0000000", array[i][0]);
-	    			//Log.d("1111111", array[i][1]);
 	    			chosenPerformers.add(array[i]);
 	    		}
 	    	}
@@ -170,37 +142,19 @@ public class SearchActivity extends Activity {
 		
 		@Override
 	    protected void onProgressUpdate(List<String[]>... cp) {
-			List<String[]> artists = cp[0];
-			//final ArrayList<String> artistNames = new ArrayList<String>();
-			//final ArrayList<String> artistUrl = new ArrayList<String>();
+			artists = cp[0];
 			for(String[] art : artists) {
-				//Log.d("ART1", art[1]);
 				artistNames.add(art[1]);
-				//Log.d("ART0", art[0]);
 				artistUrl.add(art[0]);
 			}
 			
-			/*Intent intent = new Intent(SearchActivity.this, SearchActivity.class);
-			Bundle bundle = new Bundle();
-			bundle.putStringArrayList("artistNames", artistNames);
-			bundle.putStringArrayList("artistUrl", artistUrl);
-			intent.putExtras(bundle);*/
-			
-			
 			listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artists, artistNames);
 			searchListView.setAdapter(listAdapter);
-			//onSaveInstanceState();
 			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	            	//Toast.makeText(getApplicationContext(), artistUrl.get(position), Toast.LENGTH_SHORT).show();
-	            	//Intent intent = new Intent(SearchActivity.this, SearchTitleActivity.class);
-	            	//Bundle bundle = new Bundle();
-	            	//bundle.putString("performerName", artistNames.get(position));
-	            	//intent.putExtras(bundle);
 	            	Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
 	            	Bundle bun = new Bundle();
 	            	bun.putString("performerName", artistNames.get(position));
-	    			//bun.putString("performerNameHead", artistNames.get(position));
 	    			bun.putString("performerUrl", artistUrl.get(position));
 	    			i.putExtras(bun);
 	    			startActivity(i);	
@@ -219,4 +173,15 @@ public class SearchActivity extends Activity {
 		int visibility = visible ? View.VISIBLE : View.GONE;
 		v.setVisibility(visibility);
 	}*/
+    
+    public boolean checkInternetConnection() {
+        ConnectivityManager cm = (ConnectivityManager) SearchActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable() && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+
+        } else {
+            return false;
+        }
+    }
 }
