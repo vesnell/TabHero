@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,15 +19,15 @@ public class TabViewActivity extends Activity {
 	
 	private WakeLock mWakeLock = null;
 	private ImageButton btnPlus;
+	private ImageButton btnMinus;
 	private TextView tab;
-	float scaleText;
+	
+	int scaleText = 12;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tabview);
-        
-        btnPlus = (ImageButton) findViewById(R.id.btnPlus);
         
         PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "lockScreenApp");
@@ -47,18 +48,36 @@ public class TabViewActivity extends Activity {
     	tab.setText(listOfSections);
     	
     	initBtnPlusOnClick();
+    	initBtnMinusOnClick();
     	
   
     }
 	
 	private void initBtnPlusOnClick() {
+		
+		btnPlus = (ImageButton) findViewById(R.id.btnPlus);
+		
 		btnPlus.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				scaleText = tab.getTextSize();
-				scaleText += 0.5;
-				tab.setTextSize(scaleText);
+				scaleText++;
+				tab.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaleText);
+			}
+			
+		});
+	}
+	
+	private void initBtnMinusOnClick() {
+		
+		btnPlus = (ImageButton) findViewById(R.id.btnMinus);
+		
+		btnPlus.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				scaleText--;
+				tab.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaleText);
 			}
 			
 		});

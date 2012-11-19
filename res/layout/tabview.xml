@@ -1,42 +1,60 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical" >
+
     <!-- android:keepScreenOn="true" > -->
 
     <TextView
         android:id="@+id/performerAndTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+
         android:padding="15dip"
         android:textSize="18dip" />
     
     <LinearLayout
-            android:id="@+id/buttons"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_alignParentBottom="true">
-    
-    <ImageButton
-        android:id="@+id/btnPlus"
-        android:layout_width="wrap_content"
+        android:id="@+id/buttons"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:background="@null"
-        android:src="@drawable/plussmall" >
-    </ImageButton>
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/btnMinus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.06"
+            android:background="@null"
+            android:src="@drawable/minussmall" >
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/btnPlus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:background="@null"
+            android:src="@drawable/plussmall" >
+
+        </ImageButton>
     </LinearLayout>
+
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/buttons"
+	    android:layout_below="@+id/performerAndTitle"
+	    android:orientation="horizontal" >
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollInTabView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/performerAndTitle" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+         android:fillViewport="true" >
         
         <ScrollView
             android:id="@+id/scrollInTabView"
@@ -44,14 +62,13 @@
             android:layout_height="match_parent" >
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="horizontal" >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
             
             <TextView
                 android:id="@+id/tabInTabView"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:padding="15dip"
                 android:textSize="12sp"
@@ -60,5 +77,6 @@
         </LinearLayout>
         </ScrollView>
     </HorizontalScrollView>
+    </LinearLayout>
 
 </RelativeLayout>
