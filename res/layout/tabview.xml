@@ -54,7 +54,7 @@
         android:id="@+id/horizontalScrollInTabView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-         android:fillViewport="true" >
+        android:fillViewport="true" >
         
         <ScrollView
             android:id="@+id/scrollInTabView"
