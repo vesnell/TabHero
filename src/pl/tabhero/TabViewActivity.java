@@ -1,8 +1,12 @@
 package pl.tabhero;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -20,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
  
 public class TabViewActivity extends Activity {
 	
@@ -134,8 +139,31 @@ public class TabViewActivity extends Activity {
 	
 	public void addToFav() {
 		db.open();
-		db.insertRecord(performer, title, listOfSections, songUrl);
+		if(isExistRecord() == false) {
+			db.insertRecord(performer, title, listOfSections, songUrl);
+			Toast.makeText(getApplicationContext(), R.string.addToBaseSuccess, Toast.LENGTH_LONG).show();
+		} else
+			Toast.makeText(getApplicationContext(), R.string.recordExist, Toast.LENGTH_LONG).show();
 		db.close();
+	}
+	
+	public boolean isExistRecord() {
+        Cursor c = db.getAllRecords();
+        if (c.moveToFirst())
+        {
+            do {
+            	Log.d("Performer", performer);
+            	Log.d("PerformerDB", c.getString(1));
+            	Log.d("Title", title);
+            	Log.d("TitleDB", c.getString(2));
+            	Log.d("Song", songUrl);
+            	Log.d("SongDB", c.getString(4));
+            	if(performer.equals(c.getString(1)) && title.equals(c.getString(2)) && songUrl.equals(c.getString(4))) {
+            		return true;
+            	}
+            } while (c.moveToNext());
+        }
+		return false;
 	}
     
 	 public void onPause() {

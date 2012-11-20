@@ -22,7 +22,7 @@ public class DBAdapter {
     private static final int DATABASE_VERSION = 2;
 
     private static final String DATABASE_CREATE =
-        "create table if not exists assignments (id integer primary key autoincrement, "
+        "create table if not exists tabhero (id integer primary key autoincrement, "
         + "performer VARCHAR not null, title VARCHAR not null, tab VARCHAR, url VARCHAR );";
         
     private final Context context;    

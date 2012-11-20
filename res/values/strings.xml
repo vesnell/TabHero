@@ -21,5 +21,7 @@
     <string name="hintSpace">Pierwszy znak nie może być spacją.</string>
     <string name="connectionError">Problem z połączeniem z Internetem</string>
     <string name="addToFav">Dodaj do ulubionych</string>
+    <string name="addToBaseSuccess">Dodano do ulubionych</string>
+    <string name="recordExist">Tabulatura znajduje się już w ulubionych</string>
 
 </resources>

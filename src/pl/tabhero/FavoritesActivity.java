@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -30,20 +31,24 @@ public class FavoritesActivity extends Activity {
         
         editFavPerformer = (EditText) findViewById(R.id.editFavPerformer);
         searchListView = (ListView) findViewById(R.id.searchFavListView);
-        hideKeyboard();
         
-        listOfFavPerfs = addRecord();
-        //listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfFavPerfs);
-        //searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        //    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        
+        listOfFavPerfs = addPerfFromBase();
+        
+        Log.d("ZESPOL Z BAZY", listOfFavPerfs.get(0));
+        listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfFavPerfs);
+        searchListView.setAdapter(listAdapter);
+        hideKeyboard();
+        searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             	//Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
             	//Bundle bun = new Bundle();
             	//bun.putString("performerName", artistNames.get(position));
     			//bun.putString("performerUrl", artistUrl.get(position));
     			//i.putExtras(bun);
     			//startActivity(i);	
-         //   }
-        //} );
+           }
+        } );
         
     }
     
@@ -51,14 +56,15 @@ public class FavoritesActivity extends Activity {
     	
     }
     
-    public List<String> addRecord() {
+    public List<String> addPerfFromBase() {
     	List<String> list = new ArrayList<String>();
     	db.open();
         Cursor c = db.getAllRecords();
         if (c.moveToFirst())
         {
-            do {          
-            	list.add(c.getString(1));
+            do {
+            	if(!list.contains(c.getString(1)))
+            		list.add(c.getString(1));
             } while (c.moveToNext());
         }
         db.close();
