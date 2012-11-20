@@ -10,6 +10,9 @@ import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +31,12 @@ public class TabViewActivity extends Activity {
 	
 	int scaleText = 12;
 	
+	DBAdapter db = new DBAdapter(this); 
+	String performer;
+	String title;
+	String listOfSections;
+	String songUrl;
+	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +54,10 @@ public class TabViewActivity extends Activity {
     	
         Intent i = getIntent();
         Bundle extras = i.getExtras();
-    	String performer = extras.getString("performerName");
-    	String title = extras.getString("songTitle");
-    	String listOfSections = extras.getString("tab");
+    	performer = extras.getString("performerName");
+    	title = extras.getString("songTitle");
+    	listOfSections = extras.getString("tab");
+    	songUrl = extras.getString("songUrl");
 
     	head.setText(performer + " - " + title);
     	//tab.setText("Jakaś sobie tabulaturka typu\n----------------------------------------------------------------------------------------\n--------4--------3-------");
@@ -62,13 +72,6 @@ public class TabViewActivity extends Activity {
 		buttons.setVisibility(View.VISIBLE);
 		initBtnPlusOnClick();
     	initBtnMinusOnClick();
-	    /*if (event.getAction() == MotionEvent.ACTION_DOWN) {
-	        System.out.println("Touch Down X:" + event.getX() + " Y:" + event.getY());
-	    } 
-	    if (event.getAction() == MotionEvent.ACTION_UP) {
-	        System.out.println("Touch Up X:" + event.getX() + " Y:" + event.getY());
-	    }*/
-	    //return super.onTouchEvent(event);
     	new Handler().postDelayed(new Runnable() {
             public void run() {
             	buttons.setVisibility(View.GONE);
@@ -105,6 +108,34 @@ public class TabViewActivity extends Activity {
 			}
 			
 		});
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.tabview, menu);
+	    return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	    case R.id.addToFav:
+	        addToFav();
+	        return true;
+	    //case R.id.help:
+	    //    showHelp();
+	    //    return true;
+	    default:
+	        return super.onOptionsItemSelected(item);
+	    }
+	}
+	
+	public void addToFav() {
+		db.open();
+		db.insertRecord(performer, title, listOfSections, songUrl);
+		db.close();
 	}
     
 	 public void onPause() {

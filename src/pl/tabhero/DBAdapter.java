@@ -12,18 +12,18 @@ public class DBAdapter {
     public static final String KEY_ROWID = "id";
     public static final String KEY_PERFORMER = "performer";
     public static final String KEY_TITLE = "title";
-    public static final String KEY_RATE = "rate";
+    //public static final String KEY_RATE = "rate";
     public static final String KEY_TAB = "tab";
     public static final String KEY_URL = "url";
     private static final String TAG = "DBAdapter";
     
     private static final String DATABASE_NAME = "TabHeroDB";
-    private static final String DATABASE_TABLE = "TabHeroTable";
+    private static final String DATABASE_TABLE = "tabhero";
     private static final int DATABASE_VERSION = 2;
 
     private static final String DATABASE_CREATE =
         "create table if not exists assignments (id integer primary key autoincrement, "
-        + "performer VARCHAR not null, title VARCHAR not null, rate INTEGER, tab VARCHAR, url VARCHAR );";
+        + "performer VARCHAR not null, title VARCHAR not null, tab VARCHAR, url VARCHAR );";
         
     private final Context context;    
 
@@ -77,12 +77,12 @@ public class DBAdapter {
     }
     
     //---insert a record into the database---
-    public long insertRecord(String performer, String title, String rate, String tab, String url) 
+    public long insertRecord(String performer, String title, String tab, String url) 
     {
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_PERFORMER, performer);
         initialValues.put(KEY_TITLE, title);
-        initialValues.put(KEY_RATE, rate);
+        //initialValues.put(KEY_RATE, rate);
         initialValues.put(KEY_TAB, tab);
         initialValues.put(KEY_URL, url);
         return db.insert(DATABASE_TABLE, null, initialValues);
@@ -97,8 +97,8 @@ public class DBAdapter {
     //---retrieves all the records---
     public Cursor getAllRecords() 
     {
-        return db.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_PERFORMER, KEY_TITLE,
-                KEY_RATE, KEY_TAB, KEY_URL}, null, null, null, null, null);
+        return db.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_PERFORMER, KEY_TITLE, 
+        		KEY_TAB, KEY_URL}, null, null, null, null, null);
     }
 
     //---retrieves a particular record---
@@ -106,7 +106,7 @@ public class DBAdapter {
     {
         Cursor mCursor =
                 db.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
-                KEY_PERFORMER, KEY_TITLE, KEY_RATE, KEY_TAB, KEY_URL}, 
+                KEY_PERFORMER, KEY_TITLE, KEY_TAB, KEY_URL}, 
                 KEY_ROWID + "=" + rowId, null, null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -115,12 +115,12 @@ public class DBAdapter {
     }
 
     //---updates a record---
-    public boolean updateRecord(long rowId, String performer, String title, String rate, String tab, String url) 
+    public boolean updateRecord(long rowId, String performer, String title, String tab, String url) 
     {
         ContentValues args = new ContentValues();
         args.put(KEY_PERFORMER, performer);
         args.put(KEY_TITLE, title);
-        args.put(KEY_RATE, rate);
+        //args.put(KEY_RATE, rate);
         args.put(KEY_TAB, tab);
         args.put(KEY_URL, url);
         return db.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;

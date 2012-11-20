@@ -20,5 +20,6 @@
     <string name="hintEmpty">Musisz wpisać wykonawcę!</string>
     <string name="hintSpace">Pierwszy znak nie może być spacją.</string>
     <string name="connectionError">Problem z połączeniem z Internetem</string>
+    <string name="addToFav">Dodaj do ulubionych</string>
 
 </resources>
