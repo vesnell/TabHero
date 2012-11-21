@@ -45,6 +45,7 @@ public class FavoritesTitleActivity extends Activity {
         List<List<String>> listOfLists = addTitleFromBase(performerName);
         List<String> listTitle = listOfLists.get(0);
         final List<String> listTab = listOfLists.get(1);
+        final List<String> listUrl = listOfLists.get(2);
         listOfFavTitle = listTitle;
         
         listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfFavTitle);
@@ -57,6 +58,7 @@ public class FavoritesTitleActivity extends Activity {
             	bun.putString("performerName", performerName);
             	bun.putString("songTitle", listOfFavTitle.get(position));
             	bun.putString("songTab", listTab.get(position));
+            	bun.putString("songUrl", listUrl.get(position));
     			i.putExtras(bun);
     			startActivity(i);	
            }
@@ -71,10 +73,12 @@ public class FavoritesTitleActivity extends Activity {
 		List<List<String>> listOfLists = addTitleFromBase(performerName);
         List<String> listTitle = listOfLists.get(0);
         final List<String> listTab = listOfLists.get(1);
+        final List<String> listUrl = listOfLists.get(2);
 		listOfFavTitle = listTitle;
 		String title = new String();
 		final List<String> listOfChosenTitleFromBase = new ArrayList<String>();
 		final List<String> listOfChosenTabFromBase = new ArrayList<String>();
+		final List<String> listOfChosenUrlFromBase = new ArrayList<String>();
     	title = editFavTitle.getText().toString().toLowerCase();
     	if(title.length() > 0) {
     		if(title.charAt(0) == ' ')
@@ -90,6 +94,7 @@ public class FavoritesTitleActivity extends Activity {
     					//listOfChosenTitleFromBase.add(p);
     					listOfChosenTitleFromBase.add(listOfLists.get(0).get(i));
     					listOfChosenTabFromBase.add(listOfLists.get(1).get(i));
+    					listOfChosenUrlFromBase.add(listOfLists.get(2).get(i));
     				}
     			}
     			listOfFavTitle.clear();
@@ -102,6 +107,7 @@ public class FavoritesTitleActivity extends Activity {
     					bun.putString("performerName", performerName);
     					bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
     					bun.putString("songTab", listOfChosenTabFromBase.get(position));
+    					bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
     					i.putExtras(bun);
     					startActivity(i);	
     				}
@@ -118,6 +124,7 @@ public class FavoritesTitleActivity extends Activity {
 					bun.putString("performerName", performerName);
 					bun.putString("songTitle", listOfFavTitle.get(position));
 					bun.putString("songTab", listTab.get(position));
+					bun.putString("songUrl", listUrl.get(position));
 					i.putExtras(bun);
 					startActivity(i);	
 				}
@@ -129,6 +136,7 @@ public class FavoritesTitleActivity extends Activity {
 	public List<List<String>> addTitleFromBase(String perfName) {
     	List<String> listTitles = new ArrayList<String>();
     	List<String> listTabs = new ArrayList<String>();
+    	List<String> listUrl = new ArrayList<String>();
     	List<List<String>> listOfList = new ArrayList<List<String>>();
     	db.open();
         Cursor c = db.getRecordPerf(perfName);
@@ -139,6 +147,7 @@ public class FavoritesTitleActivity extends Activity {
             	//if(performerName.equals(c.getString(1))) {
             		listTitles.add(c.getString(2));
             		listTabs.add(c.getString(3));
+            		listUrl.add(c.getString(4));
             		//Log.d("TITLE", c.getString(2));
             		//Log.d("TITLE", c.getString(0));
             		//Log.d("AAA","AAA");
@@ -148,6 +157,7 @@ public class FavoritesTitleActivity extends Activity {
         db.close();
         listOfList.add(listTitles);
         listOfList.add(listTabs);
+        listOfList.add(listUrl);
         return listOfList;      
     }
 	

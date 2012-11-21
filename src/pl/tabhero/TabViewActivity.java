@@ -34,7 +34,7 @@ public class TabViewActivity extends Activity {
 	private TextView tab;
 	private LinearLayout buttons;
 	
-	int scaleText = 12;
+	private int scaleText = 12;
 	
 	DBAdapter db = new DBAdapter(this); 
 	String performer;
