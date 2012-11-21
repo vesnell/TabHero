@@ -56,9 +56,9 @@ public class FavoritesActivity extends Activity {
     	listOfFavPerfs = addPerfFromBase();
     	String performer = new String();
     	final List<String> listOfChosenPerfsFromBase = new ArrayList<String>();
-    	Log.d("1111","1111");
+    	//Log.d("1111","1111");
     	performer = editFavPerformer.getText().toString().toLowerCase();
-    	Log.d("2222", "2222");
+    	//Log.d("2222", "2222");
     	if(performer.length() > 0) {
     		if(performer.charAt(0) == ' ')
     			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();

@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class FavoritesTitleActivity extends Activity {
 	
@@ -26,6 +27,7 @@ public class FavoritesTitleActivity extends Activity {
 	private ListView searchFavTitleListView;
 	private ArrayAdapter<String> listAdapter;
 	private List<String> listOfFavTitle;
+	String performerName;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,19 +39,24 @@ public class FavoritesTitleActivity extends Activity {
         
         Intent i = getIntent();
         Bundle extras = i.getExtras();
-        String performerName = extras.getString("performerName");
+        performerName = extras.getString("performerName");
         chosenFavPerf.setText(performerName);
         
-        listOfFavTitle = addTitleFromBase(performerName);
+        List<List<String>> listOfLists = addTitleFromBase(performerName);
+        List<String> listTitle = listOfLists.get(0);
+        final List<String> listTab = listOfLists.get(1);
+        listOfFavTitle = listTitle;
         
         listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfFavTitle);
         searchFavTitleListView.setAdapter(listAdapter);
         hideKeyboard();
         searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            	Intent i = new Intent(FavoritesTitleActivity.this, SearchTitleActivity.class);
+            	Intent i = new Intent(FavoritesTitleActivity.this, FavTabViewActivity.class);
             	Bundle bun = new Bundle();
-            	bun.putString("songTab", listOfFavTitle.get(position));
+            	bun.putString("performerName", performerName);
+            	bun.putString("songTitle", listOfFavTitle.get(position));
+            	bun.putString("songTab", listTab.get(position));
     			i.putExtras(bun);
     			startActivity(i);	
            }
@@ -59,27 +66,89 @@ public class FavoritesTitleActivity extends Activity {
 	}
 	
 	public void searchTitleView(View v) {
+		hideKeyboard();
+		listOfFavTitle.clear();
+		List<List<String>> listOfLists = addTitleFromBase(performerName);
+        List<String> listTitle = listOfLists.get(0);
+        final List<String> listTab = listOfLists.get(1);
+		listOfFavTitle = listTitle;
+		String title = new String();
+		final List<String> listOfChosenTitleFromBase = new ArrayList<String>();
+		final List<String> listOfChosenTabFromBase = new ArrayList<String>();
+    	title = editFavTitle.getText().toString().toLowerCase();
+    	if(title.length() > 0) {
+    		if(title.charAt(0) == ' ')
+    			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
+    		else {
+    			boolean checkContains;
+    			listOfChosenTitleFromBase.clear();
+    			//for(String p : listOfFavTitle) {
+    			for(int i = 0; i < listOfLists.get(0).size(); i++) {
+    				//checkContains = p.toLowerCase().contains(title);
+    				checkContains = listOfLists.get(0).get(i).toLowerCase().contains(title);
+    				if(checkContains == true) {
+    					//listOfChosenTitleFromBase.add(p);
+    					listOfChosenTitleFromBase.add(listOfLists.get(0).get(i));
+    					listOfChosenTabFromBase.add(listOfLists.get(1).get(i));
+    				}
+    			}
+    			listOfFavTitle.clear();
+    			listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenTitleFromBase);
+    			searchFavTitleListView.setAdapter(listAdapter);
+    			searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    					Intent i = new Intent(FavoritesTitleActivity.this, FavTabViewActivity.class);
+    					Bundle bun = new Bundle();
+    					bun.putString("performerName", performerName);
+    					bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
+    					bun.putString("songTab", listOfChosenTabFromBase.get(position));
+    					i.putExtras(bun);
+    					startActivity(i);	
+    				}
+    			} );
+    		}
+    		
+    	} else {
+    		listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfFavTitle);
+			searchFavTitleListView.setAdapter(listAdapter);
+			searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					Intent i = new Intent(FavoritesTitleActivity.this, FavTabViewActivity.class);
+					Bundle bun = new Bundle();
+					bun.putString("performerName", performerName);
+					bun.putString("songTitle", listOfFavTitle.get(position));
+					bun.putString("songTab", listTab.get(position));
+					i.putExtras(bun);
+					startActivity(i);	
+				}
+			} );
+    	}
 		
 	}
 	
-	public List<String> addTitleFromBase(String performerName) {
-    	List<String> list = new ArrayList<String>();
+	public List<List<String>> addTitleFromBase(String perfName) {
+    	List<String> listTitles = new ArrayList<String>();
+    	List<String> listTabs = new ArrayList<String>();
+    	List<List<String>> listOfList = new ArrayList<List<String>>();
     	db.open();
-        Cursor c = db.getRecordPerf(performerName);
+        Cursor c = db.getRecordPerf(perfName);
     	//Cursor c = db.getAllRecords();
         if (c.moveToFirst())
         {
             do {
             	//if(performerName.equals(c.getString(1))) {
-            		list.add(c.getString(2));
-            		Log.d("TITLE", c.getString(2));
-            		Log.d("TITLE", c.getString(0));
-            		Log.d("AAA","AAA");
+            		listTitles.add(c.getString(2));
+            		listTabs.add(c.getString(3));
+            		//Log.d("TITLE", c.getString(2));
+            		//Log.d("TITLE", c.getString(0));
+            		//Log.d("AAA","AAA");
             	//}
             } while (c.moveToNext());
         }
         db.close();
-        return list;      
+        listOfList.add(listTitles);
+        listOfList.add(listTabs);
+        return listOfList;      
     }
 	
 	private void hideKeyboard() {

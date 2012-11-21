@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <!-- android:keepScreenOn="true" > -->
+
+    <TextView
+        android:id="@+id/favPerformerAndTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:padding="15dip"
+        android:textSize="18dip" />
+    
+    <LinearLayout
+        android:id="@+id/favButtons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@null"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/favBtnMinus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.06"
+            android:background="@null"
+            android:src="@drawable/minussmall" >
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/favBtnPlus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:background="@null"
+            android:src="@drawable/plussmall" >
+
+        </ImageButton>
+    </LinearLayout>
+
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/favButtons"
+	    android:layout_below="@+id/favPerformerAndTitle"
+	    android:orientation="horizontal" >
+
+    <HorizontalScrollView
+        android:id="@+id/favHorizontalScrollInTabView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true" >
+        
+        <ScrollView
+            android:id="@+id/favScrollInTabView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            
+            <TextView
+                android:id="@+id/favTabInTabView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:padding="15dip"
+                android:textSize="12sp"
+                android:typeface="monospace" />
+            
+        </LinearLayout>
+        </ScrollView>
+    </HorizontalScrollView>
+    </LinearLayout>
+
+</RelativeLayout>

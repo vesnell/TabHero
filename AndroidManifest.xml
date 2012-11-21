@@ -37,6 +37,8 @@
             	  android:screenOrientation="landscape" />
         <activity android:name=".FavoritesTitleActivity" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
+        <activity android:name=".FavTabViewActivity" 
+            	  android:screenOrientation="landscape" />
     </application>
 
 </manifest>
