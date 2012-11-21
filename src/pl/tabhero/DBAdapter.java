@@ -113,6 +113,22 @@ public class DBAdapter {
         }
         return mCursor;
     }
+    
+    public Cursor getRecordPerf(String rowPerf) throws SQLException 
+    {
+        Cursor mCursor =
+                db.query(DATABASE_TABLE, new String[] {KEY_ROWID,
+                KEY_PERFORMER, KEY_TITLE, KEY_TAB, KEY_URL}, 
+                KEY_PERFORMER + "=?", new String[] { rowPerf }, null, null, null, null);
+        if ((mCursor != null) && (mCursor.getCount() > 0)) {
+            mCursor.moveToFirst();
+        } 
+        else if (mCursor != null) {
+            mCursor.close();
+        }
+        
+        return mCursor;
+    }
 
     //---updates a record---
     public boolean updateRecord(long rowId, String performer, String title, String tab, String url) 

@@ -7,8 +7,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import pl.tabhero.SearchActivity.connect;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;

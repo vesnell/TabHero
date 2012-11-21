@@ -34,26 +34,68 @@ public class FavoritesActivity extends Activity {
         
         
         listOfFavPerfs = addPerfFromBase();
-        
-        Log.d("ZESPOL Z BAZY", listOfFavPerfs.get(0));
+
         listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfFavPerfs);
         searchListView.setAdapter(listAdapter);
         hideKeyboard();
         searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            	//Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
-            	//Bundle bun = new Bundle();
-            	//bun.putString("performerName", artistNames.get(position));
-    			//bun.putString("performerUrl", artistUrl.get(position));
-    			//i.putExtras(bun);
-    			//startActivity(i);	
+            	Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
+            	Bundle bun = new Bundle();
+            	bun.putString("performerName", listOfFavPerfs.get(position));
+    			i.putExtras(bun);
+    			startActivity(i);	
            }
         } );
         
     }
     
     public void searchView(View v) {
-    	
+    	hideKeyboard();
+    	listOfFavPerfs.clear();
+    	listOfFavPerfs = addPerfFromBase();
+    	String performer = new String();
+    	final List<String> listOfChosenPerfsFromBase = new ArrayList<String>();
+    	Log.d("1111","1111");
+    	performer = editFavPerformer.getText().toString().toLowerCase();
+    	Log.d("2222", "2222");
+    	if(performer.length() > 0) {
+    		if(performer.charAt(0) == ' ')
+    			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
+    		else {
+    			boolean checkContains;
+    			listOfChosenPerfsFromBase.clear();
+    			for(String p : listOfFavPerfs) {
+    				checkContains = p.toLowerCase().contains(performer);
+    				if(checkContains == true)
+    					listOfChosenPerfsFromBase.add(p);
+    			}
+    			listOfFavPerfs.clear();
+    			listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenPerfsFromBase);
+    			searchListView.setAdapter(listAdapter);
+    			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    					Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
+    					Bundle bun = new Bundle();
+    					bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
+    					i.putExtras(bun);
+    					startActivity(i);	
+    				}
+    			} );
+    		}
+    	} else {
+			listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfFavPerfs);
+			searchListView.setAdapter(listAdapter);
+			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
+					Bundle bun = new Bundle();
+					bun.putString("performerName", listOfFavPerfs.get(position));
+					i.putExtras(bun);
+					startActivity(i);	
+				}
+			} );
+    	}
     }
     
     public List<String> addPerfFromBase() {
@@ -68,13 +110,7 @@ public class FavoritesActivity extends Activity {
             } while (c.moveToNext());
         }
         db.close();
-        return list;
-    	
-        //Toast.makeText(this, 
-         //       "id: " + c.getString(0) + "\n" +
-          //      "Title: " + c.getString(1) + "\n" +
-           //     "Due Date:  " + c.getString(2),
-            //    Toast.LENGTH_SHORT).show();        
+        return list;      
     } 
     
     private void hideKeyboard() {
