@@ -93,6 +93,11 @@ public class DBAdapter {
     {
         return db.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
     }
+    
+    public boolean deleteTab(String songUrl) 
+    {
+        return db.delete(DATABASE_TABLE, KEY_URL + "='" + songUrl + "'", null) > 0;
+    }
 
     //---retrieves all the records---
     public Cursor getAllRecords() 
