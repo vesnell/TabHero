@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -22,7 +25,8 @@ public class FavoritesActivity extends Activity {
 	
 	private ListView searchListView;
 	private EditText editFavPerformer;
-	private List<String> listOfFavPerfs;
+	private ArrayList<String> listOfFavPerfs;
+	private ArrayList<String> listOfChosenPerfsFromBase;
 	private ArrayAdapter<String> listAdapter;
 	
     public void onCreate(Bundle savedInstanceState) {
@@ -33,16 +37,17 @@ public class FavoritesActivity extends Activity {
         searchListView = (ListView) findViewById(R.id.searchFavListView);
         
         
-        listOfFavPerfs = addPerfFromBase();
+        //listOfFavPerfs = addPerfFromBase();
+        listOfChosenPerfsFromBase = addPerfFromBase();
 
-        listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfFavPerfs);
+        listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenPerfsFromBase);
         searchListView.setAdapter(listAdapter);
         hideKeyboard();
         searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             	Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
             	Bundle bun = new Bundle();
-            	bun.putString("performerName", listOfFavPerfs.get(position));
+            	bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
     			i.putExtras(bun);
     			startActivity(i);	
            }
@@ -50,12 +55,51 @@ public class FavoritesActivity extends Activity {
         
     }
     
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.faveeditcheckbox, menu);
+	    return true;
+	}
+    
+    @Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    case R.id.delFromFavWithCheckBox:
+	        startEditActivity();
+	        return true;
+	    default:
+	        return super.onOptionsItemSelected(item);
+	    }
+	}
+    
+    private void startEditActivity() {
+    	Log.d("1111", "1111");
+    	ArrayList<String> listToEdit = new ArrayList<String>();
+    	//if(listOfChosenPerfsFromBase.size() > 0) {
+    		Log.d("2222", "2222");
+    		listToEdit = listOfChosenPerfsFromBase;
+    	//} else {
+    		//Log.d("3333", "3333;");
+    		//listToEdit = listOfFavPerfs;
+    	//}
+    	Intent i = new Intent(FavoritesActivity.this, EditFavPerfs.class);
+		Bundle bun = new Bundle();
+		Log.d("4444", "4444");
+		bun.putStringArrayList("listOfPerformers", listToEdit);
+		i.putExtras(bun);
+		Log.d("5555", "5555");
+		startActivity(i);	
+    }
+    
     public void searchView(View v) {
     	hideKeyboard();
+    	listOfChosenPerfsFromBase.clear();
+    	listOfChosenPerfsFromBase = addPerfFromBase();
     	listOfFavPerfs.clear();
     	listOfFavPerfs = addPerfFromBase();
     	String performer = new String();
-    	final List<String> listOfChosenPerfsFromBase = new ArrayList<String>();
+    	//final List<String> listOfChosenPerfsFromBase = new ArrayList<String>();
     	//Log.d("1111","1111");
     	performer = editFavPerformer.getText().toString().toLowerCase();
     	//Log.d("2222", "2222");
@@ -84,13 +128,13 @@ public class FavoritesActivity extends Activity {
     			} );
     		}
     	} else {
-			listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfFavPerfs);
+			listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenPerfsFromBase);
 			searchListView.setAdapter(listAdapter);
 			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
 					Bundle bun = new Bundle();
-					bun.putString("performerName", listOfFavPerfs.get(position));
+					bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
 					i.putExtras(bun);
 					startActivity(i);	
 				}
@@ -98,8 +142,8 @@ public class FavoritesActivity extends Activity {
     	}
     }
     
-    public List<String> addPerfFromBase() {
-    	List<String> list = new ArrayList<String>();
+    public ArrayList<String> addPerfFromBase() {
+    	ArrayList<String> list = new ArrayList<String>();
     	db.open();
         Cursor c = db.getAllRecords();
         if (c.moveToFirst())

@@ -1,0 +1,20 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width = "fill_parent"
+    android:layout_height="fill_parent">
+<TextView
+	
+	android:id="@+id/rowDelArtistsView"   
+	android:layout_width="fill_parent"   
+	android:layout_height="wrap_content"  
+	android:padding="10dp"  
+	android:textSize="16sp" />  
+	
+<CheckBox android:id="@+id/checkbox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="10sp"
+    android:layout_alignParentRight="true"
+    android:layout_marginRight = "5sp" >
+    
+</CheckBox>
+</RelativeLayout>

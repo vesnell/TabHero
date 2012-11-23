@@ -25,5 +25,7 @@
     <string name="addToBaseSuccess">Dodano do ulubionych</string>
     <string name="recordExist">Tabulatura znajduje się już w ulubionych</string>
     <string name="delFromBaseSuccess">Tabulatura została usunięta</string>
+    <string name="edit">Edytuj listę</string>
+    <string name="deleteFavPerfs">Usuń wykonowaców z Ulubionych</string>
 
 </resources>
