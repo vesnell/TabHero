@@ -173,4 +173,10 @@ public class FavoritesActivity extends Activity {
 		Button btn = (Button) findViewById(R.id.searchFavBtn);
 		btn.performClick();
 	}
+    
+    @Override
+    public void onBackPressed() {
+    	Intent intent = new Intent(this, MainActivity.class);
+    	startActivity(intent);
+    }
 }
