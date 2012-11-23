@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EditFavPerfs extends Activity{
 	DBAdapter db = new DBAdapter(this);
@@ -22,7 +23,8 @@ public class EditFavPerfs extends Activity{
 	private Button btnDeleteFavPerfs;
 	private ListView delFavListView;
 	private ArrayAdapter<mItems> listAdapter;
-	private mItems[] itemss;
+	private ArrayList<mItems> planetList;
+	//private mItems[] itemss;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,7 +52,7 @@ public class EditFavPerfs extends Activity{
 		//itemss = (mItems[]) getLastNonConfigurationInstance();
 		
 		ArrayList<String> listToEdit = extras.getStringArrayList("listOfPerformers");
-		ArrayList<mItems> planetList = new ArrayList<mItems>();
+		planetList = new ArrayList<mItems>();
 		for(String perf : listToEdit) {
 			planetList.add(new mItems(perf));
 		}
@@ -58,6 +60,19 @@ public class EditFavPerfs extends Activity{
 		listAdapter = new SelectArralAdapter(this, planetList);
 		delFavListView.setAdapter(listAdapter);
 		
+	}
+	
+	public void deleteAndBackToFavorites(View v) {
+		db.open();
+		for(mItems perf : planetList) {
+			if(perf.isChecked() == true) {	
+				db.deletePerf(perf.getName());
+			}
+		}
+		Toast.makeText(getApplicationContext(), R.string.delPerfFromBase, Toast.LENGTH_LONG).show();
+		db.close();
+		Intent i = new Intent(EditFavPerfs.this, FavoritesActivity.class);
+		startActivity(i);
 	}
 	
 	/** Holds planet data. */
@@ -156,8 +171,7 @@ public class EditFavPerfs extends Activity{
 				convertView = inflater.inflate(R.layout.listwithcheckbox, null);
 
 				// Find the child views.
-				textView = (TextView) convertView
-						.findViewById(R.id.rowDelArtistsView);
+				textView = (TextView) convertView.findViewById(R.id.rowDelArtistsView);
 				checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
 				// Optimization: Tag the row with it's child views, so we don't
 				// have to

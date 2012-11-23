@@ -98,6 +98,11 @@ public class DBAdapter {
     {
         return db.delete(DATABASE_TABLE, KEY_URL + "='" + songUrl + "'", null) > 0;
     }
+    
+    public boolean deletePerf(String perfName) 
+    {
+        return db.delete(DATABASE_TABLE, KEY_PERFORMER + "='" + perfName + "'", null) > 0;
+    }
 
     //---retrieves all the records---
     public Cursor getAllRecords() 
