@@ -93,16 +93,21 @@ public class FavoritesActivity extends Activity {
     }
     
     public void searchView(View v) {
+    	Log.d("START_BTN", "START_BTN");
     	hideKeyboard();
     	listOfChosenPerfsFromBase.clear();
+    	//Log.d("1111","1111");
     	listOfChosenPerfsFromBase = addPerfFromBase();
-    	listOfFavPerfs.clear();
+    	//Log.d("2222", "2222");
+    	//listOfFavPerfs.clear();
+    	//Log.d("3333", "3333");
     	listOfFavPerfs = addPerfFromBase();
+    	//Log.d("4444", "4444");
     	String performer = new String();
     	//final List<String> listOfChosenPerfsFromBase = new ArrayList<String>();
-    	//Log.d("1111","1111");
+    	Log.d("1111","1111");
     	performer = editFavPerformer.getText().toString().toLowerCase();
-    	//Log.d("2222", "2222");
+    	
     	if(performer.length() > 0) {
     		if(performer.charAt(0) == ' ')
     			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
