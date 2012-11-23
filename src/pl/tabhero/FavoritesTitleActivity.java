@@ -3,6 +3,7 @@ package pl.tabhero;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -164,6 +166,18 @@ public class FavoritesTitleActivity extends Activity {
 	private void hideKeyboard() {
 		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(editFavTitle.getWindowToken(), 0);
+	}
+	
+	//protected void onPause() {
+	    // TODO Auto-generated method stub
+	//    super.onPause();
+	//    finish();
+	//}
+	
+	protected void onResume() {
+		super.onResume();
+		Button btn = (Button) findViewById(R.id.searchFavTitleBtn);
+		btn.performClick();
 	}
 
 }

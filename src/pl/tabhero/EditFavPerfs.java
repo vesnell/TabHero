@@ -209,5 +209,12 @@ public class EditFavPerfs extends Activity{
 	//public Object onRetainNonConfigurationInstance() {
 	//	return itemss;
 	//}
+	
+	@Override
+	protected void onPause() {
+	    // TODO Auto-generated method stub
+	    super.onPause();
+	    finish();
+	}
 
 }

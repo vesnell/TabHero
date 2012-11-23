@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -165,5 +166,11 @@ public class FavoritesActivity extends Activity {
     private void hideKeyboard() {
 		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(editFavPerformer.getWindowToken(), 0);
+	}
+    
+    protected void onResume() {
+		super.onResume();
+		Button btn = (Button) findViewById(R.id.searchFavBtn);
+		btn.performClick();
 	}
 }
