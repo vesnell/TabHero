@@ -183,6 +183,7 @@ public class FavoritesTitleActivity extends Activity {
 	@Override
     public void onBackPressed() {
     	Intent intent = new Intent(this, FavoritesActivity.class);
+    	//finish();
     	startActivity(intent);
     }
 
