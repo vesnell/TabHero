@@ -10,6 +10,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -28,7 +31,12 @@ public class FavoritesTitleActivity extends Activity {
 	private EditText editFavTitle;
 	private ListView searchFavTitleListView;
 	private ArrayAdapter<String> listAdapter;
-	private List<String> listOfFavTitle;
+	private ArrayList<String> listOfFavTitle;
+	private ArrayList<String> listOfChosenTitleFromBase;
+	private ArrayList<String> listOfChosenTabFromBase;
+	private ArrayList<String> listOfChosenUrlFromBase;
+	private ArrayList<String> listOfChosenTitleFromBase2;
+	private ArrayList<String> listOfChosenUrlFromBase2;
 	String performerName;
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,13 +52,17 @@ public class FavoritesTitleActivity extends Activity {
         performerName = extras.getString("performerName");
         chosenFavPerf.setText(performerName);
         
-        List<List<String>> listOfLists = addTitleFromBase(performerName);
-        List<String> listTitle = listOfLists.get(0);
-        final List<String> listTab = listOfLists.get(1);
-        final List<String> listUrl = listOfLists.get(2);
-        listOfFavTitle = listTitle;
+        ArrayList<ArrayList<String>> listOfLists = addTitleFromBase(performerName);
+        ArrayList<String> listTitle = listOfLists.get(0);
+        ArrayList<String> listTab = listOfLists.get(1);
+        ArrayList<String> listUrl = listOfLists.get(2);
+        listOfChosenTitleFromBase = listTitle;
+        listOfChosenTabFromBase = listTab;
+        listOfChosenUrlFromBase = listUrl;
         
-        listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfFavTitle);
+        Log.d("SIZE2", Integer.toString(listOfLists.get(0).size()));
+        
+        listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenTitleFromBase);
         searchFavTitleListView.setAdapter(listAdapter);
         hideKeyboard();
         searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -58,9 +70,9 @@ public class FavoritesTitleActivity extends Activity {
             	Intent i = new Intent(FavoritesTitleActivity.this, FavTabViewActivity.class);
             	Bundle bun = new Bundle();
             	bun.putString("performerName", performerName);
-            	bun.putString("songTitle", listOfFavTitle.get(position));
-            	bun.putString("songTab", listTab.get(position));
-            	bun.putString("songUrl", listUrl.get(position));
+            	bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
+            	bun.putString("songTab", listOfChosenTabFromBase.get(position));
+            	bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
     			i.putExtras(bun);
     			startActivity(i);	
            }
@@ -69,47 +81,114 @@ public class FavoritesTitleActivity extends Activity {
         
 	}
 	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.faveeditcheckbox, menu);
+	    return true;
+	}
+    
+    @Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    case R.id.delFromFavWithCheckBox:
+	        startEditActivity();
+	        return true;
+	    default:
+	        return super.onOptionsItemSelected(item);
+	    }
+	}
+    
+    private void startEditActivity() {
+    	//Log.d("1111", "1111");
+    	ArrayList<String> listToEditTitles = new ArrayList<String>();
+    	ArrayList<String> listToEditUrl = new ArrayList<String>();
+    	//if(listOfChosenPerfsFromBase.size() > 0) {
+    		//Log.d("2222", "2222");
+    	if(listOfChosenTitleFromBase2.size() == 0) {
+    		listToEditTitles = listOfChosenTitleFromBase;
+    		listToEditUrl = listOfChosenUrlFromBase;
+    	} else {
+    		listToEditTitles = listOfChosenTitleFromBase2;
+    		listToEditUrl = listOfChosenUrlFromBase2;
+    	}
+    	//} else {
+    		//Log.d("3333", "3333;");
+    		//listToEdit = listOfFavPerfs;
+    	//}
+    	Intent i = new Intent(FavoritesTitleActivity.this, EditFavTitles.class);
+		Bundle bun = new Bundle();
+		//Log.d("4444", "4444");
+		bun.putStringArrayList("listOfTitles", listToEditTitles);
+		bun.putStringArrayList("listOfUrl", listToEditUrl);
+		i.putExtras(bun);
+		//Log.d("5555", "5555");
+		startActivity(i);	
+    }
+	
 	public void searchTitleView(View v) {
 		hideKeyboard();
-		listOfFavTitle.clear();
-		List<List<String>> listOfLists = addTitleFromBase(performerName);
-        List<String> listTitle = listOfLists.get(0);
-        final List<String> listTab = listOfLists.get(1);
-        final List<String> listUrl = listOfLists.get(2);
-		listOfFavTitle = listTitle;
+		//listOfFavTitle.clear();
+		//listOfChosenTitleFromBase.clear();
+		//ArrayList<ArrayList<String>> listOfLists = addTitleFromBase(performerName);
+        //ArrayList<String> listTitle = listOfLists.get(0);
+        //final ArrayList<String> listTab = listOfLists.get(1);
+        //final ArrayList<String> listUrl = listOfLists.get(2);
+        //listOfChosenTitleFromBase = listTitle;
+		
+		ArrayList<ArrayList<String>> listOfLists = addTitleFromBase(performerName);
+        ArrayList<String> listTitle = listOfLists.get(0);
+        ArrayList<String> listTab = listOfLists.get(1);
+        ArrayList<String> listUrl = listOfLists.get(2);
+        listOfChosenTitleFromBase = listTitle;
+        listOfChosenTabFromBase = listTab;
+        listOfChosenUrlFromBase = listUrl;
+        
 		String title = new String();
-		final List<String> listOfChosenTitleFromBase = new ArrayList<String>();
-		final List<String> listOfChosenTabFromBase = new ArrayList<String>();
-		final List<String> listOfChosenUrlFromBase = new ArrayList<String>();
+		listOfChosenTitleFromBase2 = new ArrayList<String>(); //listOfChosenTitleFromBase;
+		final ArrayList<String> listOfChosenTabFromBase2 = new ArrayList<String>(); //listOfChosenTabFromBase;
+		listOfChosenUrlFromBase2 = new ArrayList<String>(); //listOfChosenUrlFromBase;
+		//listOfChosenTitleFromBase2.clear();
+		//listOfChosenTabFromBase2.clear();
+		//listOfChosenUrlFromBase2.clear();
+		//listOfChosenUrlFromBase.clear();
     	title = editFavTitle.getText().toString().toLowerCase();
+    	Log.d("TITLE1", title);
     	if(title.length() > 0) {
     		if(title.charAt(0) == ' ')
     			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
     		else {
     			boolean checkContains;
-    			listOfChosenTitleFromBase.clear();
+    			//listOfChosenTitleFromBase.clear();
+    			Log.d("111", "111");
+    			Log.d("SIZE", Integer.toString(listOfChosenTitleFromBase.size()));
     			//for(String p : listOfFavTitle) {
-    			for(int i = 0; i < listOfLists.get(0).size(); i++) {
+    			for(int i = 0; i < listOfChosenTitleFromBase.size(); i++) {
     				//checkContains = p.toLowerCase().contains(title);
-    				checkContains = listOfLists.get(0).get(i).toLowerCase().contains(title);
+    				Log.d("222", "222");
+    				Log.d("TITLE", title);
+    				Log.d("DO LISTY", listOfChosenTitleFromBase.get(i));
+    				checkContains = listOfChosenTitleFromBase.get(i).toLowerCase().contains(title);
     				if(checkContains == true) {
     					//listOfChosenTitleFromBase.add(p);
-    					listOfChosenTitleFromBase.add(listOfLists.get(0).get(i));
-    					listOfChosenTabFromBase.add(listOfLists.get(1).get(i));
-    					listOfChosenUrlFromBase.add(listOfLists.get(2).get(i));
+    					Log.d("333", "333");
+    					listOfChosenTitleFromBase2.add(listOfChosenTitleFromBase.get(i));
+    					listOfChosenTabFromBase2.add(listOfChosenTabFromBase.get(i));
+    					listOfChosenUrlFromBase2.add(listOfChosenUrlFromBase.get(i));
     				}
     			}
-    			listOfFavTitle.clear();
-    			listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenTitleFromBase);
+    			Log.d("444", "444");
+    			//listOfFavTitle.clear();
+    			listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenTitleFromBase2);
     			searchFavTitleListView.setAdapter(listAdapter);
     			searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
     				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
     					Intent i = new Intent(FavoritesTitleActivity.this, FavTabViewActivity.class);
     					Bundle bun = new Bundle();
     					bun.putString("performerName", performerName);
-    					bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
-    					bun.putString("songTab", listOfChosenTabFromBase.get(position));
-    					bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
+    					bun.putString("songTitle", listOfChosenTitleFromBase2.get(position));
+    					bun.putString("songTab", listOfChosenTabFromBase2.get(position));
+    					bun.putString("songUrl", listOfChosenUrlFromBase2.get(position));
     					i.putExtras(bun);
     					startActivity(i);	
     				}
@@ -117,16 +196,17 @@ public class FavoritesTitleActivity extends Activity {
     		}
     		
     	} else {
-    		listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfFavTitle);
+    		//listOfChosenUrlFromBase = listUrl;
+    		listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenTitleFromBase);
 			searchFavTitleListView.setAdapter(listAdapter);
 			searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					Intent i = new Intent(FavoritesTitleActivity.this, FavTabViewActivity.class);
 					Bundle bun = new Bundle();
 					bun.putString("performerName", performerName);
-					bun.putString("songTitle", listOfFavTitle.get(position));
-					bun.putString("songTab", listTab.get(position));
-					bun.putString("songUrl", listUrl.get(position));
+					bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
+					bun.putString("songTab", listOfChosenTabFromBase.get(position));
+					bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
 					i.putExtras(bun);
 					startActivity(i);	
 				}
@@ -135,11 +215,11 @@ public class FavoritesTitleActivity extends Activity {
 		
 	}
 	
-	public List<List<String>> addTitleFromBase(String perfName) {
-    	List<String> listTitles = new ArrayList<String>();
-    	List<String> listTabs = new ArrayList<String>();
-    	List<String> listUrl = new ArrayList<String>();
-    	List<List<String>> listOfList = new ArrayList<List<String>>();
+	public ArrayList<ArrayList<String>> addTitleFromBase(String perfName) {
+    	ArrayList<String> listTitles = new ArrayList<String>();
+    	ArrayList<String> listTabs = new ArrayList<String>();
+    	ArrayList<String> listUrl = new ArrayList<String>();
+    	ArrayList<ArrayList<String>> listOfList = new ArrayList<ArrayList<String>>();
     	db.open();
         Cursor c = db.getRecordPerf(perfName);
     	//Cursor c = db.getAllRecords();

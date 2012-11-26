@@ -44,6 +44,8 @@
             	  android:screenOrientation="landscape" />
         <activity android:name=".EditFavPerfs" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
+        <activity android:name=".EditFavTitles" 
+            	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
     </application>
 
 </manifest>

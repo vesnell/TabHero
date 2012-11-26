@@ -75,8 +75,8 @@ public class EditFavPerfs extends Activity{
 		startActivity(i);
 	}
 	
-	/** Holds planet data. */
-	private static class mItems {
+	 /** Holds planet data. */
+	/*private static class mItems {
 		private String name = "";
 		private boolean checked = false;
 
@@ -115,10 +115,10 @@ public class EditFavPerfs extends Activity{
 		public void toggleChecked() {
 			checked = !checked;
 		}
-	}
+	} */
 	
 	/** Holds child views for one row. */
-	private static class SelectViewHolder {
+	/*private static class SelectViewHolder {
 		private CheckBox checkBox;
 		private TextView textView;
 
@@ -145,10 +145,10 @@ public class EditFavPerfs extends Activity{
 		public void setTextView(TextView textView) {
 			this.textView = textView;
 		}
-	}
+	} */
 	
 	/** Custom adapter for displaying an array of Planet objects. */
-	private static class SelectArralAdapter extends ArrayAdapter<mItems> {
+	/*private static class SelectArralAdapter extends ArrayAdapter<mItems> {
 		private LayoutInflater inflater;
 
 		public SelectArralAdapter(Context context, List<mItems> planetList) {
@@ -204,7 +204,7 @@ public class EditFavPerfs extends Activity{
 			textView.setText(planet.getName());
 			return convertView;
 		}
-	}
+	} */
 	
 	//public Object onRetainNonConfigurationInstance() {
 	//	return itemss;
