@@ -100,7 +100,7 @@ public class SearchActivity extends Activity {
 			String performer = params[0];
 			String url = "http://www.chords.pl/wykonawcy/";
 	    	List<String[]> chosenPerformers = new ArrayList<String[]>();
-	    	Document doc = connectUrl(performer, url);
+	    	Document doc = preperAndConnect(performer, url);
 	    	String codeFind0 = doc.select("tr.v0").toString();
 	    	String codeFind1 = doc.select("tr.v1").toString();
 	    	String codeFind = codeFind0 + codeFind1;
@@ -120,62 +120,51 @@ public class SearchActivity extends Activity {
 	    		}
 	    	}
 			return chosenPerformers;
+		} 
+    }
+    
+    private Document preperAndConnect(String performer, String url) {
+		Document doc = null;
+		if(Character.isDigit(performer.charAt(0))) {
+    		url = url + "1";
+    		doc = connect(url);
+    	}
+    	else {
+    		String temp = performer;
+    		if(performer.charAt(0) == 'ą')
+    			temp = performer.replaceAll("^ą", "a");
+    		else if(performer.charAt(0) == 'ć')
+    			temp = performer.replaceAll("^ć", "c");
+    		else if(performer.charAt(0) == 'ę')
+    			temp = performer.replaceAll("^ę", "e");
+    		if(performer.charAt(0) == 'ł')
+    			temp = performer.replaceAll("^ł", "l");
+    		if(performer.charAt(0) == 'ń')
+    			temp = performer.replaceAll("^ń", "n");
+    		if(performer.charAt(0) == 'ó')
+    			temp = performer.replaceAll("^ó", "o");
+    		if(performer.charAt(0) == 'ś')
+    			temp = performer.replaceAll("^ś", "s");
+    		if(performer.charAt(0) == 'ź')
+    			temp = performer.replaceAll("^ź", "z");
+    		if(performer.charAt(0) == 'ż')
+    			temp = performer.replaceAll("^ż", "z");
+    		url = url + temp;
+    		doc = connect(url);
+    	}
+		return doc;
+	}
+    
+    private Document connect(String url) {
+    	Document doc = null;
+    	try {
+			doc = Jsoup.connect(url).get();
+		} catch (MalformedURLException ep) {
+			Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
+		} catch (IOException e) {
+			Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
 		}
-		
-		private Document connectUrl(String performer, String url) {
-			Document doc = null;
-			if(Character.isDigit(performer.charAt(0))) {
-	    		url = url + "1";
-	    		try {
-					doc = Jsoup.connect(url).get();
-	    		} catch (MalformedURLException ep) {
-	    			// TODO Auto-generated catch block
-	    			//Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
-					//Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
-				}
-	    	}
-	    	else {
-	    		try {
-	    			String temp = performer;
-	    			if(performer.charAt(0) == 'ą')
-	    				temp = performer.replaceAll("^ą", "a");
-	    			else if(performer.charAt(0) == 'ć')
-	    				temp = performer.replaceAll("^ć", "c");
-	    			else if(performer.charAt(0) == 'ę')
-	    				temp = performer.replaceAll("^ę", "e");
-	    			if(performer.charAt(0) == 'ł')
-	    				temp = performer.replaceAll("^ł", "l");
-	    			if(performer.charAt(0) == 'ń')
-	    				temp = performer.replaceAll("^ń", "n");
-	    			if(performer.charAt(0) == 'ó')
-	    				temp = performer.replaceAll("^ó", "o");
-	    			if(performer.charAt(0) == 'ś')
-	    				temp = performer.replaceAll("^ś", "s");
-	    			if(performer.charAt(0) == 'ź')
-	    				temp = performer.replaceAll("^ź", "z");
-	    			if(performer.charAt(0) == 'ż')
-	    				temp = performer.replaceAll("^ż", "z");
-	    			url = url + temp;
-					doc = Jsoup.connect(url).get();
-	    		}  catch (MalformedURLException ep) {
-	    			// TODO Auto-generated catch block
-	    			//Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
-					//Log.d("NIE MA NETA!!", "NIE MA NETA!!");
-					//Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
-				}
-	    	}
-			return doc;
-		}
-		/*@Override
-	    protected void onProgressUpdate(List<String[]>... cp) {
-			
-	    }*/  
+    	return doc;
     }
     
     private void hideKeyboard() {
