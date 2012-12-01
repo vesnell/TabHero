@@ -160,9 +160,9 @@ public class SearchActivity extends Activity {
     	try {
 			doc = Jsoup.connect(url).get();
 		} catch (MalformedURLException ep) {
-			Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
 		} catch (IOException e) {
-			Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
 		}
     	return doc;
     }

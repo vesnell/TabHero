@@ -24,10 +24,15 @@
     <string name="delFromFav">Usuń z ulubionych</string>
     <string name="addToBaseSuccess">Dodano do ulubionych</string>
     <string name="recordExist">Tabulatura znajduje się już w ulubionych</string>
+    <string name="areYouSure">Jesteś pewien, że chcesz usunąć?</string>
     <string name="delFromBaseSuccess">Tabulatura została usunięta</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="notDelFromBase">Nie usunięto tabulatury</string>
     <string name="delPerfFromBase">Artyści zostali usunięci</string>
     <string name="edit">Edytuj listę</string>
     <string name="deleteFavPerfs">Usuń z Ulubionych</string>
     <string name="delTitleFromBase">Utwory zostały usunięte</string>
+    <string name="errorInInternetConnection">Problem z połączeniem z Internetem</string>
 
 </resources>

@@ -1,7 +1,9 @@
 package pl.tabhero;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,13 +30,14 @@ public class FavTabViewActivity extends Activity{
 	private ImageButton btnMinus;
 	private LinearLayout buttons;
 	
+	
 	private int scaleText = 12;
 	
 	DBAdapter db = new DBAdapter(this); 
-	String performer;
-	String title;
-	String tablature;
-	String songUrl;
+	private String performer;
+	private String title;
+	private String tablature;
+	private String songUrl;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,10 +125,26 @@ public class FavTabViewActivity extends Activity{
 	}
 	
 	public void delFromFav() {
-		db.open();
-		db.deleteTab(songUrl);
-		Toast.makeText(getApplicationContext(), R.string.delFromBaseSuccess, Toast.LENGTH_LONG).show();
-		db.close();
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    //builder.setTitle("Confirm");
+	    builder.setMessage(R.string.areYouSure);
+	    builder.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	        	db.open();
+	    		db.deleteTab(songUrl);
+	    		Toast.makeText(getApplicationContext(), R.string.delFromBaseSuccess, Toast.LENGTH_LONG).show();
+	    		db.close();
+	            dialog.dismiss();
+	        }
+	    });
+	    builder.setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	        	Toast.makeText(getApplicationContext(), R.string.notDelFromBase, Toast.LENGTH_LONG).show();
+	            dialog.dismiss();
+	        }
+	    });
+	    AlertDialog alert = builder.create();
+	    alert.show();
 	}
 	
 	public void onPause() {
