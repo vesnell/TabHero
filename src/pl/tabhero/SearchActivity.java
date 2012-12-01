@@ -100,7 +100,7 @@ public class SearchActivity extends Activity {
 			String performer = params[0];
 			String url = "http://www.chords.pl/wykonawcy/";
 	    	List<String[]> chosenPerformers = new ArrayList<String[]>();
-	    	Document doc = connect(performer, url);
+	    	Document doc = connectUrl(performer, url);
 	    	String codeFind0 = doc.select("tr.v0").toString();
 	    	String codeFind1 = doc.select("tr.v1").toString();
 	    	String codeFind = codeFind0 + codeFind1;
@@ -122,7 +122,7 @@ public class SearchActivity extends Activity {
 			return chosenPerformers;
 		}
 		
-		private Document connect(String performer, String url) {
+		private Document connectUrl(String performer, String url) {
 			Document doc = null;
 			if(Character.isDigit(performer.charAt(0))) {
 	    		url = url + "1";

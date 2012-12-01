@@ -1,6 +1,7 @@
 package pl.tabhero;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.jsoup.Jsoup;
@@ -61,7 +62,6 @@ public class SearchTitleActivity extends Activity {
 		hideKeyboard();
 		Intent i = getIntent();
 		Bundle extras = i.getExtras();
-		//String performerName = extras.getString("performerName");
 		String performerUrl = extras.getString("performerUrl");
 
 		ArrayList<String> passing = new ArrayList<String>();
@@ -73,37 +73,48 @@ public class SearchTitleActivity extends Activity {
 			new connect().execute(passing);
 	}
 	
-	public class connect extends AsyncTask<ArrayList<String>, List<String[]>, Void>{
+	public class connect extends AsyncTask<ArrayList<String>, Void, List<String[]>> {
 		
 		@Override
    	 	protected void onPreExecute() {
-			setProgressBarIndeterminateVisibility(true);
-			progressDialog = ProgressDialog.show(SearchTitleActivity.this, getString(R.string.srchSong), getString(R.string.wait));
-   	 	}
+			startProgressBar(getString(R.string.srchSong));
+		}
    	
 		@Override
-		protected void onPostExecute(Void result) {
-			setProgressBarIndeterminateVisibility(false);
-   			progressDialog.dismiss();
+		protected void onPostExecute(List<String[]> chosenTitles) {
+			for(String[] sng : chosenTitles) {
+				Log.d("ART1", sng[1]);
+				songTitle.add(sng[1]);
+				Log.d("ART0", sng[0]);
+				songUrl.add(sng[0]);
+			}
+			listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.artists, songTitle);
+			searchListView.setAdapter(listAdapter);
+			closeProgressBar();
+			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+	            @SuppressWarnings("unchecked")
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	            	String posUrl = songUrl.get(position);
+	            	String posTitle = songTitle.get(position);
+	            	ArrayList<String> passing = new ArrayList<String>();
+	            	passing.add(posUrl);
+	            	passing.add(posTitle);
+	            	if(!(checkInternetConnection()))
+	            		Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
+	            	else
+	            		new getTablature().execute(passing);      		
+	            }
+			} );
    	 	}
 
-		@SuppressWarnings("unchecked")
 		@Override
-		protected Void doInBackground(ArrayList<String>... params) {
+		protected List<String[]> doInBackground(ArrayList<String>... params) {
 			ArrayList<String> passing = params[0];
 			String urlPerformerSongs = passing.get(0);
 			String title = passing.get(1);
-			Log.d("urlPerformerSongs", urlPerformerSongs);
-			Log.d("title", title);
 			String url = "http://www.chords.pl";
 	    	List<String[]> chosenTitles = new ArrayList<String[]>();
-	    	Document doc = null;
-			try {
-				doc = Jsoup.connect(url + urlPerformerSongs).get();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	    	Document doc = connectUrl(url + urlPerformerSongs);
 	    	String codeSongs = doc.select("table.piosenki").toString();
 	    	Document songs = Jsoup.parse(codeSongs);
 	    	Elements chosenLineSong = songs.select("a[href]");
@@ -121,104 +132,20 @@ public class SearchTitleActivity extends Activity {
 	    			chosenTitles.add(array[i]);
 	    		}
 	    	}
-	    	publishProgress(chosenTitles);
-			return null;
+			return chosenTitles;
 		}
-		
-		@Override
-	    protected void onProgressUpdate(List<String[]>... ct) {
-			songs = ct[0];
-			
-			for(String[] sng : songs) {
-				Log.d("ART1", sng[1]);
-				songTitle.add(sng[1]);
-				Log.d("ART0", sng[0]);
-				songUrl.add(sng[0]);
-			}
-			
-			listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.artists, songTitle);
-			searchListView.setAdapter(listAdapter);
-			Log.d("AAAAA", "AAAAA");
-			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-	            @SuppressWarnings("unchecked")
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	            	//Toast.makeText(getApplicationContext(), songUrl.get(position), Toast.LENGTH_SHORT).show();
-	            	
-	            		String posUrl = songUrl.get(position);
-	            		String posTitle = songTitle.get(position);
-	            		ArrayList<String> passing = new ArrayList<String>();
-	            		passing.add(posUrl);
-	            		passing.add(posTitle);
-	            		if(!(checkInternetConnection()))
-	            			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
-	            		else
-	            			new getTablature().execute(passing);      		
-	            }
-			} );
-		}
-		
 	}
-	
-	private void hideKeyboard() {
-		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(editTitle.getWindowToken(), 0);
-	}
-	
-	/*private String capitalize(final String string) {
-	       if (string == null)
-	          throw new NullPointerException("string");
-	       if (string.equals(""))
-	          throw new NullPointerException("string");
-
-	       return Character.toUpperCase(string.charAt(0)) + string.substring(1);
-	    }*/
     
-	public class getTablature extends AsyncTask<ArrayList<String>, ArrayList<String>, Void>{
+	public class getTablature extends AsyncTask<ArrayList<String>, Void, ArrayList<String>>{
 		
 		@Override
    	 	protected void onPreExecute() {
-			setProgressBarIndeterminateVisibility(true);
-			progressDialogTab = ProgressDialog.show(SearchTitleActivity.this, getString(R.string.srchTab), getString(R.string.wait));
+			startProgressBar(getString(R.string.srchTab));
    	 	}
    	
 		@Override
-		protected void onPostExecute(Void result) {
-			setProgressBarIndeterminateVisibility(false);
-   			progressDialogTab.dismiss();
-   	 	}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		protected Void doInBackground(ArrayList<String>... params) {
-			ArrayList<String> passing = params[0];
-			String url = passing.get(0);
-			String title = passing.get(1);
-			
-			// TODO Auto-generated method stub
-			Document doc = null;
-			try {
-				doc = Jsoup.connect(url).get();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    	Element elements = doc.select("pre").first();
-	    	String tab = elements.text();
-	    	String[] table = tab.split("\n");
-	    	tab = "";
-	    	for (int i = 3; i < table.length; i++)
-	    		tab += table[i] + "\n";
-	    	ArrayList<String> passing2 = new ArrayList<String>();
-	    	passing2.add(tab);
-	    	passing2.add(title);
-	    	passing2.add(url);
-	    	publishProgress(passing2);
-			return null;
-		}
-		
-		@Override
-	    protected void onProgressUpdate(ArrayList<String>... params) {
-			ArrayList<String> passing = params[0];
+		protected void onPostExecute(ArrayList<String> passing) {
+			closeProgressBar();
 			String tablature = passing.get(0);
 			String songTitle = passing.get(1);
 			String songUrl = passing.get(2);
@@ -233,30 +160,64 @@ public class SearchTitleActivity extends Activity {
 			bun.putString("tab", tablature);
 			intent.putExtras(bun);
 			startActivity(intent);
+   	 	}
+
+		@Override
+		protected ArrayList<String> doInBackground(ArrayList<String>... params) {
+			ArrayList<String> passing = params[0];
+			String url = passing.get(0);
+			String title = passing.get(1);
+			Document doc = connectUrl(url);
+	    	Element elements = doc.select("pre").first();
+	    	String tab = elements.text();
+	    	String[] table = tab.split("\n");
+	    	tab = "";
+	    	for (int i = 3; i < table.length; i++)
+	    		tab += table[i] + "\n";
+	    	ArrayList<String> passing2 = new ArrayList<String>();
+	    	passing2.add(tab);
+	    	passing2.add(title);
+	    	passing2.add(url);
+			return passing2;
 		}
-		
+	}
+	
+	private Document connectUrl(String url) {
+		Document doc = null;
+		try {
+			doc = Jsoup.connect(url).get();
+		}  catch (MalformedURLException ep) {
+			// TODO Auto-generated catch block
+			//Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			//Toast.makeText(getApplicationContext(), "Problem z połączeniem z Internetem", Toast.LENGTH_LONG).show();
+		}
+		return doc;
+	}
+	
+	private void startProgressBar(String title) {
+		setProgressBarIndeterminateVisibility(true);
+		progressDialog = ProgressDialog.show(SearchTitleActivity.this, title, getString(R.string.wait));
+	}
+	
+	private void closeProgressBar() {
+		setProgressBarIndeterminateVisibility(false);
+		progressDialog.dismiss();
+	}
+	
+	private void hideKeyboard() {
+		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(editTitle.getWindowToken(), 0);
 	}
 	
 	public boolean checkInternetConnection() {
         ConnectivityManager cm = (ConnectivityManager) SearchTitleActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
-
         if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable() && cm.getActiveNetworkInfo().isConnected()) {
             return true;
-
         } else {
             return false;
         }
     }
-	
-    /*private String getTablature(String url) throws IOException {
-    	Document doc = Jsoup.connect(url).get();
-    	Element elements = doc.select("pre").first();
-    	String tab = elements.text();
-    	String[] table = tab.split("\n");
-    	tab = "";
-    	for (int i = 3; i < table.length; i++)
-    		tab += table[i] + "\n";
-    	return tab;
-    }*/
-	
 }
