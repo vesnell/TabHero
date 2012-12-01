@@ -13,6 +13,7 @@
         	android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
         	android:digits="aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż1234567890 "
+        	android:singleLine="true"
         	android:hint="@string/hint_author" />
 
         <Button

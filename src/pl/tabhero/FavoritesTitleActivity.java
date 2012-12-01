@@ -10,10 +10,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -60,8 +62,6 @@ public class FavoritesTitleActivity extends Activity {
         listOfChosenTabFromBase = listTab;
         listOfChosenUrlFromBase = listUrl;
         
-        Log.d("SIZE2", Integer.toString(listOfLists.get(0).size()));
-        
         listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenTitleFromBase);
         searchFavTitleListView.setAdapter(listAdapter);
         hideKeyboard();
@@ -78,7 +78,16 @@ public class FavoritesTitleActivity extends Activity {
            }
         } );
         
-        
+        editFavTitle.setOnKeyListener(new OnKeyListener() {
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_ENTER) {
+					searchTitleView(v);
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
 	}
 	
 	@Override
@@ -100,11 +109,8 @@ public class FavoritesTitleActivity extends Activity {
 	}
     
     private void startEditActivity() {
-    	//Log.d("1111", "1111");
     	ArrayList<String> listToEditTitles = new ArrayList<String>();
     	ArrayList<String> listToEditUrl = new ArrayList<String>();
-    	//if(listOfChosenPerfsFromBase.size() > 0) {
-    		//Log.d("2222", "2222");
     	if(listOfChosenTitleFromBase2.size() == 0) {
     		listToEditTitles = listOfChosenTitleFromBase;
     		listToEditUrl = listOfChosenUrlFromBase;
@@ -112,29 +118,16 @@ public class FavoritesTitleActivity extends Activity {
     		listToEditTitles = listOfChosenTitleFromBase2;
     		listToEditUrl = listOfChosenUrlFromBase2;
     	}
-    	//} else {
-    		//Log.d("3333", "3333;");
-    		//listToEdit = listOfFavPerfs;
-    	//}
     	Intent i = new Intent(FavoritesTitleActivity.this, EditFavTitles.class);
 		Bundle bun = new Bundle();
-		//Log.d("4444", "4444");
 		bun.putStringArrayList("listOfTitles", listToEditTitles);
 		bun.putStringArrayList("listOfUrl", listToEditUrl);
 		i.putExtras(bun);
-		//Log.d("5555", "5555");
 		startActivity(i);	
     }
 	
 	public void searchTitleView(View v) {
 		hideKeyboard();
-		//listOfFavTitle.clear();
-		//listOfChosenTitleFromBase.clear();
-		//ArrayList<ArrayList<String>> listOfLists = addTitleFromBase(performerName);
-        //ArrayList<String> listTitle = listOfLists.get(0);
-        //final ArrayList<String> listTab = listOfLists.get(1);
-        //final ArrayList<String> listUrl = listOfLists.get(2);
-        //listOfChosenTitleFromBase = listTitle;
 		
 		ArrayList<ArrayList<String>> listOfLists = addTitleFromBase(performerName);
         ArrayList<String> listTitle = listOfLists.get(0);
@@ -145,40 +138,23 @@ public class FavoritesTitleActivity extends Activity {
         listOfChosenUrlFromBase = listUrl;
         
 		String title = new String();
-		listOfChosenTitleFromBase2 = new ArrayList<String>(); //listOfChosenTitleFromBase;
-		final ArrayList<String> listOfChosenTabFromBase2 = new ArrayList<String>(); //listOfChosenTabFromBase;
-		listOfChosenUrlFromBase2 = new ArrayList<String>(); //listOfChosenUrlFromBase;
-		//listOfChosenTitleFromBase2.clear();
-		//listOfChosenTabFromBase2.clear();
-		//listOfChosenUrlFromBase2.clear();
-		//listOfChosenUrlFromBase.clear();
+		listOfChosenTitleFromBase2 = new ArrayList<String>();
+		final ArrayList<String> listOfChosenTabFromBase2 = new ArrayList<String>();
+		listOfChosenUrlFromBase2 = new ArrayList<String>(); 
     	title = editFavTitle.getText().toString().toLowerCase();
-    	Log.d("TITLE1", title);
     	if(title.length() > 0) {
     		if(title.charAt(0) == ' ')
     			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
     		else {
     			boolean checkContains;
-    			//listOfChosenTitleFromBase.clear();
-    			Log.d("111", "111");
-    			Log.d("SIZE", Integer.toString(listOfChosenTitleFromBase.size()));
-    			//for(String p : listOfFavTitle) {
     			for(int i = 0; i < listOfChosenTitleFromBase.size(); i++) {
-    				//checkContains = p.toLowerCase().contains(title);
-    				Log.d("222", "222");
-    				Log.d("TITLE", title);
-    				Log.d("DO LISTY", listOfChosenTitleFromBase.get(i));
     				checkContains = listOfChosenTitleFromBase.get(i).toLowerCase().contains(title);
     				if(checkContains == true) {
-    					//listOfChosenTitleFromBase.add(p);
-    					Log.d("333", "333");
     					listOfChosenTitleFromBase2.add(listOfChosenTitleFromBase.get(i));
     					listOfChosenTabFromBase2.add(listOfChosenTabFromBase.get(i));
     					listOfChosenUrlFromBase2.add(listOfChosenUrlFromBase.get(i));
     				}
     			}
-    			Log.d("444", "444");
-    			//listOfFavTitle.clear();
     			listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenTitleFromBase2);
     			searchFavTitleListView.setAdapter(listAdapter);
     			searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -196,7 +172,6 @@ public class FavoritesTitleActivity extends Activity {
     		}
     		
     	} else {
-    		//listOfChosenUrlFromBase = listUrl;
     		listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenTitleFromBase);
 			searchFavTitleListView.setAdapter(listAdapter);
 			searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -222,18 +197,12 @@ public class FavoritesTitleActivity extends Activity {
     	ArrayList<ArrayList<String>> listOfList = new ArrayList<ArrayList<String>>();
     	db.open();
         Cursor c = db.getRecordPerf(perfName);
-    	//Cursor c = db.getAllRecords();
         if (c.moveToFirst())
         {
             do {
-            	//if(performerName.equals(c.getString(1))) {
-            		listTitles.add(c.getString(2));
-            		listTabs.add(c.getString(3));
-            		listUrl.add(c.getString(4));
-            		//Log.d("TITLE", c.getString(2));
-            		//Log.d("TITLE", c.getString(0));
-            		//Log.d("AAA","AAA");
-            	//}
+            	listTitles.add(c.getString(2));
+            	listTabs.add(c.getString(3));
+            	listUrl.add(c.getString(4));
             } while (c.moveToNext());
         }
         db.close();
@@ -248,11 +217,6 @@ public class FavoritesTitleActivity extends Activity {
 		imm.hideSoftInputFromWindow(editFavTitle.getWindowToken(), 0);
 	}
 	
-	//protected void onPause() {
-	    // TODO Auto-generated method stub
-	//    super.onPause();
-	//    finish();
-	//}
 	
 	protected void onResume() {
 		super.onResume();
@@ -263,7 +227,6 @@ public class FavoritesTitleActivity extends Activity {
 	@Override
     public void onBackPressed() {
     	Intent intent = new Intent(this, FavoritesActivity.class);
-    	//finish();
     	startActivity(intent);
     }
 

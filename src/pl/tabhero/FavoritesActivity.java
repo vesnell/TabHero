@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -54,6 +56,17 @@ public class FavoritesActivity extends Activity {
            }
         } );
         
+        editFavPerformer.setOnKeyListener(new OnKeyListener() {
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_ENTER) {
+					searchView(v);
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
+        
     }
     
     @Override
@@ -75,21 +88,12 @@ public class FavoritesActivity extends Activity {
 	}
     
     private void startEditActivity() {
-    	Log.d("1111", "1111");
     	ArrayList<String> listToEdit = new ArrayList<String>();
-    	//if(listOfChosenPerfsFromBase.size() > 0) {
-    		Log.d("2222", "2222");
-    		listToEdit = listOfChosenPerfsFromBase;
-    	//} else {
-    		//Log.d("3333", "3333;");
-    		//listToEdit = listOfFavPerfs;
-    	//}
+    	listToEdit = listOfChosenPerfsFromBase;
     	Intent i = new Intent(FavoritesActivity.this, EditFavPerfs.class);
 		Bundle bun = new Bundle();
-		Log.d("4444", "4444");
 		bun.putStringArrayList("listOfPerformers", listToEdit);
 		i.putExtras(bun);
-		Log.d("5555", "5555");
 		startActivity(i);	
     }
     
@@ -97,16 +101,9 @@ public class FavoritesActivity extends Activity {
     	Log.d("START_BTN", "START_BTN");
     	hideKeyboard();
     	listOfChosenPerfsFromBase.clear();
-    	//Log.d("1111","1111");
     	listOfChosenPerfsFromBase = addPerfFromBase();
-    	//Log.d("2222", "2222");
-    	//listOfFavPerfs.clear();
-    	//Log.d("3333", "3333");
     	listOfFavPerfs = addPerfFromBase();
-    	//Log.d("4444", "4444");
     	String performer = new String();
-    	//final List<String> listOfChosenPerfsFromBase = new ArrayList<String>();
-    	Log.d("1111","1111");
     	performer = editFavPerformer.getText().toString().toLowerCase();
     	
     	if(performer.length() > 0) {
@@ -177,7 +174,6 @@ public class FavoritesActivity extends Activity {
     @Override
     public void onBackPressed() {
     	Intent intent = new Intent(this, MainActivity.class);
-    	//finish();
     	startActivity(intent);
     }
 }

@@ -11,14 +11,12 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
+import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,27 +29,38 @@ public class SearchActivity extends Activity {
 	private ListView searchListView;
 	private EditText editPerformer;
 	private ArrayAdapter<String> listAdapter;
-	ProgressDialog progressDialog;
-	List<String[]> artists = new ArrayList<String[]>();
-	ArrayList<String> artistNames = new ArrayList<String>();
-	ArrayList<String> artistUrl = new ArrayList<String>();
+	private ProgressDialog progressDialog;
+	private List<String[]> artists = new ArrayList<String[]>();
+	private ArrayList<String> artistNames = new ArrayList<String>();
+	private ArrayList<String> artistUrl = new ArrayList<String>();
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.search);
+        
+		editPerformer = (EditText) findViewById(R.id.editPerformer);
+		
+		searchListView = (ListView) findViewById(R.id.searchListView);
+		
+		editPerformer.setOnKeyListener(new OnKeyListener() {
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_ENTER) {
+					searchView(v);
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
     }
-    
     public void searchView(View v) {
     	
     	artists.clear();
     	artistNames.clear();
     	artistUrl.clear();
-    	
-		String performer = new String();
-		editPerformer = (EditText) findViewById(R.id.editPerformer);
-		performer = editPerformer.getText().toString().toLowerCase();
-		searchListView = (ListView) findViewById(R.id.searchListView);
+    	String performer = new String();
+    	performer = editPerformer.getText().toString().toLowerCase();
 		hideKeyboard();
 		
 		//Log.d("CONNECTION", String.valueOf(checkInternetConnection()));

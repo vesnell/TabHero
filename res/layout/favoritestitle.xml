@@ -27,6 +27,7 @@
             android:layout_alignParentLeft="true"
             android:ems="10"
             android:digits="aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż1234567890 "
+            android:singleLine="true"
             android:hint="@string/hint_title"
             android:layout_below="@+id/chosenFavPerformer" />
 

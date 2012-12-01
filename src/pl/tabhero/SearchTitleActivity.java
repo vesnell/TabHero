@@ -17,7 +17,9 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,11 +33,11 @@ public class SearchTitleActivity extends Activity {
 	private ListView searchListView;
 	private EditText editTitle;
 	private ArrayAdapter<String> listAdapter;
-	List<String[]> songs = new ArrayList<String[]>();
-	ArrayList<String> songTitle = new ArrayList<String>();
-	ArrayList<String> songUrl = new ArrayList<String>();
-	ProgressDialog progressDialog;
-	ProgressDialog progressDialogTab;
+	private List<String[]> songs = new ArrayList<String[]>();
+	private ArrayList<String> songTitle = new ArrayList<String>();
+	private ArrayList<String> songUrl = new ArrayList<String>();
+	private ProgressDialog progressDialog;
+	//private ProgressDialog progressDialogTab;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,21 @@ public class SearchTitleActivity extends Activity {
 		final String performerName = extras.getString("performerName");
         TextView chosenPerformer = (TextView) findViewById(R.id.chosenPerformer);
         chosenPerformer.setText(performerName);
+        
+        editTitle = (EditText) findViewById(R.id.editTitle);
+		
+		searchListView = (ListView) findViewById(R.id.searchTitleListView);
+        
+        editTitle.setOnKeyListener(new OnKeyListener() {
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_ENTER) {
+					searchTitleView(v);
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
     }
 	
 	@SuppressWarnings("unchecked")
@@ -56,9 +73,7 @@ public class SearchTitleActivity extends Activity {
 		songUrl.clear();
 		
 		String title = new String();
-		editTitle = (EditText) findViewById(R.id.editTitle);
 		title = editTitle.getText().toString().toLowerCase();
-		searchListView = (ListView) findViewById(R.id.searchTitleListView);
 		hideKeyboard();
 		Intent i = getIntent();
 		Bundle extras = i.getExtras();
