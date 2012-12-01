@@ -65,9 +65,9 @@ DBAdapter db = new DBAdapter(this);
 			if(title.isChecked() == true) {	
 				//db.deletePerf(title.getName());
 				for(int i = 0; i < listToEditTitle.size(); i++) {
-					Log.d("TITLE EDIT", listToEditTitle.get(i));
-					Log.d("URL EDIT", listToEditUrl.get(i));
 					if(title.getName().equals(listToEditTitle.get(i))) {
+						Log.d("TITLE EDIT", listToEditTitle.get(i));
+						Log.d("URL EDIT", listToEditUrl.get(i));
 						db.deleteTab(listToEditUrl.get(i));
 					}
 				}
