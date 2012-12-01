@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
@@ -33,6 +34,7 @@ public class SearchActivity extends Activity {
 	private List<String[]> artists = new ArrayList<String[]>();
 	private ArrayList<String> artistNames = new ArrayList<String>();
 	private ArrayList<String> artistUrl = new ArrayList<String>();
+	//private boolean enter; 
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,19 +42,20 @@ public class SearchActivity extends Activity {
         setContentView(R.layout.search);
         
 		editPerformer = (EditText) findViewById(R.id.editPerformer);
-		
 		searchListView = (ListView) findViewById(R.id.searchListView);
+		//enter = false;
 		
-		editPerformer.setOnKeyListener(new OnKeyListener() {
+		/*editPerformer.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (keyCode == KeyEvent.KEYCODE_ENTER) {
+					//enter = true;
 					searchView(v);
 					return true;
 				} else {
 					return false;
 				}
 			}
-		});
+		});*/
     }
     public void searchView(View v) {
     	
@@ -62,6 +65,10 @@ public class SearchActivity extends Activity {
     	String performer = new String();
     	performer = editPerformer.getText().toString().toLowerCase();
 		hideKeyboard();
+		//if(enter == true)
+			//Log.d("ENTER_TURE", Integer.toString(performer.length()));
+		//else if(enter == false)
+			//Log.d("ENTER_False", Integer.toString(performer.length()));
 		
 		//Log.d("CONNECTION", String.valueOf(checkInternetConnection()));
 		if(!(performer.length() > 0)) 
@@ -88,7 +95,7 @@ public class SearchActivity extends Activity {
 				artistNames.add(art[1]);
 				artistUrl.add(art[0]);
 			}
-			
+			//Log.d("2222", "2222");
 			listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artists, artistNames);
 			searchListView.setAdapter(listAdapter);
 			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -101,6 +108,7 @@ public class SearchActivity extends Activity {
 	    			startActivity(i);	
 	            }
 	        } );
+			//Log.d("3333", "3333");
     		closeProgressBar();
     	 }
     	
@@ -117,6 +125,7 @@ public class SearchActivity extends Activity {
 	    	Elements performers = docFind.select("a[href]");
 	    	String[][] array = new String[performers.size()][2];
 	    	boolean checkContains;
+	    	//Log.d("1111", "1111");
 	    	for(int i = 0; i < performers.size(); i++) {
 	    		array[i][0] = performers.get(i).attr("href");
 	    		array[i][1] = performers.get(i).toString();

@@ -53,7 +53,7 @@ public class SearchTitleActivity extends Activity {
 		
 		searchListView = (ListView) findViewById(R.id.searchTitleListView);
         
-        editTitle.setOnKeyListener(new OnKeyListener() {
+        /*editTitle.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (keyCode == KeyEvent.KEYCODE_ENTER) {
 					searchTitleView(v);
@@ -62,7 +62,7 @@ public class SearchTitleActivity extends Activity {
 					return false;
 				}
 			}
-		});
+		});*/
     }
 	
 	@SuppressWarnings("unchecked")
