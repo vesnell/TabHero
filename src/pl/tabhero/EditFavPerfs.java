@@ -72,7 +72,8 @@ public class EditFavPerfs extends Activity{
 		Toast.makeText(getApplicationContext(), R.string.delPerfFromBase, Toast.LENGTH_LONG).show();
 		db.close();
 		Intent i = new Intent(EditFavPerfs.this, FavoritesActivity.class);
-		startActivity(i);
+		startActivityForResult(i, 500);
+		overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
 	}
 	
 	 /** Holds planet data. */
@@ -209,6 +210,13 @@ public class EditFavPerfs extends Activity{
 	//public Object onRetainNonConfigurationInstance() {
 	//	return itemss;
 	//}
+	
+	@Override
+	public void onBackPressed() {
+		Intent intent = new Intent(this, FavoritesActivity.class);
+		startActivityForResult(intent, 500);
+		overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	}
 	
 	@Override
 	protected void onPause() {

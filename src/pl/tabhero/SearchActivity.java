@@ -105,7 +105,8 @@ public class SearchActivity extends Activity {
 	            	bun.putString("performerName", artistNames.get(position));
 	    			bun.putString("performerUrl", artistUrl.get(position));
 	    			i.putExtras(bun);
-	    			startActivity(i);	
+	    			startActivityForResult(i, 500);
+	    			overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 	            }
 	        } );
 			//Log.d("3333", "3333");
@@ -212,5 +213,10 @@ public class SearchActivity extends Activity {
         } else {
             return false;
         }
+    }
+    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

@@ -52,7 +52,8 @@ public class FavoritesActivity extends Activity {
             	Bundle bun = new Bundle();
             	bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
     			i.putExtras(bun);
-    			startActivity(i);	
+    			startActivityForResult(i, 500);
+    			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
            }
         } );
         
@@ -94,7 +95,8 @@ public class FavoritesActivity extends Activity {
 		Bundle bun = new Bundle();
 		bun.putStringArrayList("listOfPerformers", listToEdit);
 		i.putExtras(bun);
-		startActivity(i);	
+		startActivityForResult(i, 500);
+		overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
     }
     
     public void searchView(View v) {
@@ -126,7 +128,8 @@ public class FavoritesActivity extends Activity {
     					Bundle bun = new Bundle();
     					bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
     					i.putExtras(bun);
-    					startActivity(i);	
+    					startActivityForResult(i, 500);
+    	    			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);	
     				}
     			} );
     		}
@@ -139,7 +142,8 @@ public class FavoritesActivity extends Activity {
 					Bundle bun = new Bundle();
 					bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
 					i.putExtras(bun);
-					startActivity(i);	
+					startActivityForResult(i, 500);
+	    			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 				}
 			} );
     	}
@@ -174,6 +178,7 @@ public class FavoritesActivity extends Activity {
     @Override
     public void onBackPressed() {
     	Intent intent = new Intent(this, MainActivity.class);
-    	startActivity(intent);
+    	startActivityForResult(intent, 500);
+    	overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 }

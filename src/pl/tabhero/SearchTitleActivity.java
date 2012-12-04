@@ -174,7 +174,8 @@ public class SearchTitleActivity extends Activity {
 			bun.putString("songUrl", songUrl);
 			bun.putString("tab", tablature);
 			intent.putExtras(bun);
-			startActivity(intent);
+			startActivityForResult(intent, 500);
+			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
    	 	}
 
 		@Override
@@ -231,5 +232,10 @@ public class SearchTitleActivity extends Activity {
         } else {
             return false;
         }
+    }
+	
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
     }
 }

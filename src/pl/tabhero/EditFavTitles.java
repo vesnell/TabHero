@@ -77,6 +77,15 @@ DBAdapter db = new DBAdapter(this);
 		db.close();
 		Intent i = new Intent(EditFavTitles.this, FavoritesTitleActivity.class);
 		startActivity(i);
+		startActivityForResult(i, 500);
+		overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		Intent intent = new Intent(this, FavoritesTitleActivity.class);
+		startActivityForResult(intent, 500);
+		overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
 	}
 
 }

@@ -2,7 +2,6 @@ package pl.tabhero;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -74,7 +73,8 @@ public class FavoritesTitleActivity extends Activity {
             	bun.putString("songTab", listOfChosenTabFromBase.get(position));
             	bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
     			i.putExtras(bun);
-    			startActivity(i);	
+    			startActivityForResult(i, 500);	
+    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
            }
         } );
         
@@ -123,7 +123,8 @@ public class FavoritesTitleActivity extends Activity {
 		bun.putStringArrayList("listOfTitles", listToEditTitles);
 		bun.putStringArrayList("listOfUrl", listToEditUrl);
 		i.putExtras(bun);
-		startActivity(i);	
+		startActivityForResult(i, 500);	
+		overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
     }
 	
 	public void searchTitleView(View v) {
@@ -166,7 +167,8 @@ public class FavoritesTitleActivity extends Activity {
     					bun.putString("songTab", listOfChosenTabFromBase2.get(position));
     					bun.putString("songUrl", listOfChosenUrlFromBase2.get(position));
     					i.putExtras(bun);
-    					startActivity(i);	
+    					startActivityForResult(i, 500);	
+    	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
     				}
     			} );
     		}
@@ -183,7 +185,8 @@ public class FavoritesTitleActivity extends Activity {
 					bun.putString("songTab", listOfChosenTabFromBase.get(position));
 					bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
 					i.putExtras(bun);
-					startActivity(i);	
+					startActivityForResult(i, 500);	
+	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
 				}
 			} );
     	}
@@ -227,7 +230,8 @@ public class FavoritesTitleActivity extends Activity {
 	@Override
     public void onBackPressed() {
     	Intent intent = new Intent(this, FavoritesActivity.class);
-    	startActivity(intent);
+    	startActivityForResult(intent, 500);
+    	overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
 }

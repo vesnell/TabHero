@@ -16,8 +16,10 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,7 @@ public class FavTabViewActivity extends Activity{
         
         head = (TextView) findViewById(R.id.favPerformerAndTitle);
         tab = (TextView) findViewById(R.id.favTabInTabView);
+        //ScrollView sv = (ScrollView) findViewById(R.id.favScrollInTabView);
         buttons = (LinearLayout) findViewById(R.id.favButtons);
         buttons.setVisibility(View.GONE);
         
@@ -61,6 +64,9 @@ public class FavTabViewActivity extends Activity{
         
         head.setText(performer + " - " + title);
         tab.setText(tablature);
+        
+        //sv.scrollTo(0, 12);
+        //hsv.smoothScrollTo(0, tab.getHeight());
 	}
 	
 	@Override
@@ -135,6 +141,10 @@ public class FavTabViewActivity extends Activity{
 	    		Toast.makeText(getApplicationContext(), R.string.delFromBaseSuccess, Toast.LENGTH_LONG).show();
 	    		db.close();
 	            dialog.dismiss();
+	            Intent i = new Intent(FavTabViewActivity.this, FavoritesTitleActivity.class);
+	    		startActivity(i);
+	    		startActivityForResult(i, 500);
+	    		overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
 	        }
 	    });
 	    builder.setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -146,6 +156,21 @@ public class FavTabViewActivity extends Activity{
 	    AlertDialog alert = builder.create();
 	    alert.show();
 	}
+	
+	/*private void getScrollable() {
+		new Runnable() {
+            public void run() {
+				ScrollView sv = (ScrollView) findViewById(R.id.favScrollInTabView);
+				sv.scrollTo(0, sv.getBottom());
+			}
+		};
+	}*/
+	@Override
+    public void onBackPressed() {
+    	Intent intent = new Intent(this, FavoritesTitleActivity.class);
+    	startActivityForResult(intent, 500);
+    	overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+    }
 	
 	public void onPause() {
 		 super.onPause();
