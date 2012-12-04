@@ -103,7 +103,7 @@ public class SearchTitleActivity extends Activity {
 				Log.d("ART0", sng[0]);
 				songUrl.add(sng[0]);
 			}
-			listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.artists, songTitle);
+			listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.titlesnet, songTitle);
 			searchListView.setAdapter(listAdapter);
 			closeProgressBar();
 			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical" >
 
     <!-- <ImageView
@@ -12,42 +13,69 @@
         android:src="@drawable/start" /> -->
 		<!-- android:layout_below="@+id/startImg" -->
 
-    <Button
-        android:id="@+id/online"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="52sp"
-        android:text="@string/online" />
+     <Button
+         android:id="@+id/online"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:layout_alignParentRight="true"
+         android:layout_alignParentTop="true"
+         android:layout_marginTop="32dp"
+         android:text="@string/online"
+         android:drawableRight="@drawable/rightarrow"
+         android:textColor="#ffffff"
+         android:background="#000000" />
 
-    <Button
-        android:id="@+id/favorites"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/online"
-        android:layout_marginTop="30sp"
-        android:text="@string/favorites" />
+     <Button
+         android:id="@+id/favorites"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:layout_alignParentRight="true"
+         android:layout_below="@+id/online"
+         android:layout_marginTop="15sp"
+         android:text="@string/favorites"
+         android:drawableLeft="@drawable/leftarrow"
+         android:textColor="#ffffff"
+         android:background="#000000" />
+
+     <!--<Button
+        android:id="@+id/btnInfo"
+    	android:layout_height="wrap_content"
+    	android:layout_width="fill_parent"
+    	android:layout_alignTop="@+id/foreground"
+    	android:layout_alignBottom="@id/foreground"
+    	android:layout_alignRight="@id/foreground"
+    	android:layout_alignLeft="@id/foreground" />
+
+   		 <RelativeLayout
+   		    android:id="@id/foreground"
+   		    android:layout_width="match_parent"
+   		    android:layout_height="wrap_content"
+   		    android:layout_alignParentLeft="true"
+   		    android:layout_below="@+id/favorites"
+   		    android:layout_marginTop="15sp"
+   		    android:gravity="center_vertical" >
+
+   		    <TextView
+   		        android:id="@+id/button_text"
+   		        android:layout_width="wrap_content"
+   		        android:layout_height="wrap_content"
+   		        android:layout_alignParentRight="true"
+   		        android:layout_centerVertical="true"
+   		        android:layout_marginRight="100sp"
+   		        android:text="@string/info"
+   		        android:textSize="20sp" />
+
+   		    <ImageView
+   		        android:layout_width="wrap_content"
+   		        android:layout_height="wrap_content"
+   		        android:layout_alignParentTop="true"
+   		        android:layout_toLeftOf="@+id/button_text"
+   		        android:paddingBottom="10dip"
+   		        android:paddingTop="10dip"
+   		        android:src="@drawable/info" />
+
+   		</RelativeLayout> -->
 
 </RelativeLayout>
-<!-- <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/tabhost"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <TabWidget
-            android:id="@android:id/tabs"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-        <FrameLayout
-            android:id="@android:id/tabcontent"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"/>
-    </LinearLayout>
-</TabHost> -->

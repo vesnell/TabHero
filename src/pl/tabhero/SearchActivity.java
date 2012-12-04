@@ -96,7 +96,7 @@ public class SearchActivity extends Activity {
 				artistUrl.add(art[0]);
 			}
 			//Log.d("2222", "2222");
-			listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artists, artistNames);
+			listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artistsnet, artistNames);
 			searchListView.setAdapter(listAdapter);
 			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

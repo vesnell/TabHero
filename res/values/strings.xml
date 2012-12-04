@@ -34,4 +34,7 @@
     <string name="delTitleFromBase">Songs have been removed</string>
     <string name="errorInInternetConnection">Connecting to the internet problem</string>
     <string name="openWebBrowser">Find lyrics</string>
+    <string name="info">Informations</string>
+    <string name="ok">OK</string>
+    <string name="message_info">Appliaction is based on tablatures from chords.pl service.</string>
 </resources>

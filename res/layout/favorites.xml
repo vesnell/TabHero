@@ -25,7 +25,9 @@
             android:layout_alignParentLeft="true"
             android:onClick="searchView"
             android:text="@string/search"
-            android:layout_below="@+id/editFavPerformer" />
+            android:layout_below="@+id/editFavPerformer"
+            android:textColor="#ffffff"
+    		android:background="#000000" />
         
         <ListView
             android:id="@+id/searchFavListView"

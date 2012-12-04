@@ -7,14 +7,17 @@
 	android:layout_width="fill_parent"   
 	android:layout_height="wrap_content"  
 	android:padding="10dp"  
-	android:textSize="16sp" />  
+	android:textSize="16sp"
+	android:textColor="#ffffff"
+    android:background="#000000" />  
 	
-<CheckBox android:id="@+id/checkbox"
+<CheckBox 
+    android:id="@+id/checkbox"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="10sp"
     android:layout_alignParentRight="true"
-    android:layout_marginRight = "5sp" >
+    android:layout_marginRight = "5sp">
     
 </CheckBox>
 </RelativeLayout>

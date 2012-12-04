@@ -38,7 +38,9 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/editFavTitle"
             android:onClick="searchTitleView"
-            android:text="@string/search" />
+            android:text="@string/search"
+            android:textColor="#ffffff"
+    		android:background="#000000" />
 
         <ListView
             android:id="@+id/searchFavTitleListView"

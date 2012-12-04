@@ -43,7 +43,7 @@ public class FavoritesActivity extends Activity {
         //listOfFavPerfs = addPerfFromBase();
         listOfChosenPerfsFromBase = addPerfFromBase();
 
-        listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenPerfsFromBase);
+        listAdapter = new ArrayAdapter<String>(this, R.layout.artistsfav, listOfChosenPerfsFromBase);
         searchListView.setAdapter(listAdapter);
         hideKeyboard();
         searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -120,7 +120,7 @@ public class FavoritesActivity extends Activity {
     					listOfChosenPerfsFromBase.add(p);
     			}
     			listOfFavPerfs.clear();
-    			listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenPerfsFromBase);
+    			listAdapter = new ArrayAdapter<String>(this, R.layout.artistsfav, listOfChosenPerfsFromBase);
     			searchListView.setAdapter(listAdapter);
     			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
     				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -134,7 +134,7 @@ public class FavoritesActivity extends Activity {
     			} );
     		}
     	} else {
-			listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenPerfsFromBase);
+			listAdapter = new ArrayAdapter<String>(this, R.layout.artistsfav, listOfChosenPerfsFromBase);
 			searchListView.setAdapter(listAdapter);
 			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

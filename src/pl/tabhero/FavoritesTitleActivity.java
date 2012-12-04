@@ -61,7 +61,7 @@ public class FavoritesTitleActivity extends Activity {
         listOfChosenTabFromBase = listTab;
         listOfChosenUrlFromBase = listUrl;
         
-        listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenTitleFromBase);
+        listAdapter = new ArrayAdapter<String>(this, R.layout.titlesfav, listOfChosenTitleFromBase);
         searchFavTitleListView.setAdapter(listAdapter);
         hideKeyboard();
         searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -156,7 +156,7 @@ public class FavoritesTitleActivity extends Activity {
     					listOfChosenUrlFromBase2.add(listOfChosenUrlFromBase.get(i));
     				}
     			}
-    			listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenTitleFromBase2);
+    			listAdapter = new ArrayAdapter<String>(this, R.layout.titlesfav, listOfChosenTitleFromBase2);
     			searchFavTitleListView.setAdapter(listAdapter);
     			searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
     				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -174,7 +174,7 @@ public class FavoritesTitleActivity extends Activity {
     		}
     		
     	} else {
-    		listAdapter = new ArrayAdapter<String>(this, R.layout.artists, listOfChosenTitleFromBase);
+    		listAdapter = new ArrayAdapter<String>(this, R.layout.titlesfav, listOfChosenTitleFromBase);
 			searchFavTitleListView.setAdapter(listAdapter);
 			searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
