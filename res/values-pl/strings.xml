@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TabHero</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">TabHero</string>
+    <string name="search">Szukaj</string>
+    <string name="favorites">Ulubione</string>
+    <string name="search_layout">Wyszukiwarka</string>
+    <string name="favorites_layout">Ulubione utwory</string>
+    <string name="hint_title">Wpisz tytuł piosenki</string>
+    <string name="hint_author">Wpisz wykonawcę</string>
+    <string name="start">Start</string>
+    <string name="online">Internet</string>
+    <string name="chosen_performer">Wybrany wykonawca</string>
+    <string name="srchPerf">Szukam wykonawcy...</string>
+    <string name="srchSong">Szukam utworu...</string>
+    <string name="srchTab">Pobieram tabulaturę...</string>
+    <string name="wait">Czekaj!</string>
+    <string name="hintEmpty">Musisz wpisać wykonawcę!</string>
+    <string name="hintSpace">Pierwszy znak nie może być spacją.</string>
+    <string name="connectionError">Problem z połączeniem z Internetem</string>
+    <string name="addToFav">Dodaj do ulubionych</string>
+    <string name="delFromFav">Usuń z ulubionych</string>
+    <string name="addToBaseSuccess">Dodano do ulubionych</string>
+    <string name="recordExist">Tabulatura znajduje się już w ulubionych</string>
+    <string name="areYouSure">Jesteś pewien, że chcesz usunąć?</string>
+    <string name="delFromBaseSuccess">Tabulatura została usunięta</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="notDelFromBase">Nie usunięto tabulatury</string>
+    <string name="delPerfFromBase">Artyści zostali usunięci</string>
+    <string name="edit">Edytuj listę</string>
+    <string name="deleteFavPerfs">Usuń z Ulubionych</string>
+    <string name="delTitleFromBase">Utwory zostały usunięte</string>
+    <string name="errorInInternetConnection">Problem z połączeniem z Internetem</string>
+</resources>
