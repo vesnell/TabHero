@@ -33,4 +33,5 @@
     <string name="deleteFavPerfs">Remove from favorites</string>
     <string name="delTitleFromBase">Songs have been removed</string>
     <string name="errorInInternetConnection">Connecting to the internet problem</string>
+    <string name="openWebBrowser">Find lyrics</string>
 </resources>

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -125,6 +126,9 @@ public class FavTabViewActivity extends Activity{
 	    case R.id.delFromFav:
 	        delFromFav();
 	        return true;
+	    case R.id.openWebBrowser:
+	    	openWebBrowser();
+	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
@@ -155,6 +159,15 @@ public class FavTabViewActivity extends Activity{
 	    });
 	    AlertDialog alert = builder.create();
 	    alert.show();
+	}
+	
+	private void openWebBrowser() {
+		String perf = performer.replaceAll(" ", "%20");
+		String tit = title.replaceAll(" ", "%20");
+		String question = "http://www.google.com/search?q=" + perf + "%20" + tit + "%20lyrics";
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(question));
+		startActivityForResult(browserIntent, 600);
+		overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
 	}
 	
 	/*private void getScrollable() {

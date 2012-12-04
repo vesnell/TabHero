@@ -3,4 +3,8 @@
           android:icon="@drawable/favorites_grey"
           android:title="@string/delFromFav"
           android:showAsAction="ifRoom|withText" />
+    <item android:id="@+id/openWebBrowser" 
+          android:icon="@drawable/web_icon"	
+          android:title="@string/openWebBrowser"
+          android:showAsAction="ifRoom|withText" />
 </menu>

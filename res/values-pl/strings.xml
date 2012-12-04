@@ -34,4 +34,5 @@
     <string name="deleteFavPerfs">Usuń z Ulubionych</string>
     <string name="delTitleFromBase">Utwory zostały usunięte</string>
     <string name="errorInInternetConnection">Problem z połączeniem z Internetem</string>
+    <string name="openWebBrowser">Znajdź tekst</string>
 </resources>
