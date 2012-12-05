@@ -51,7 +51,10 @@ public class SearchActivity extends Activity {
 		
 		editPerformer.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+		        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+		                actionId == EditorInfo.IME_ACTION_DONE ||
+		                event.getAction() == KeyEvent.ACTION_DOWN &&
+		                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 		            btnSearch.performClick();
 		            return true;
 		        }
