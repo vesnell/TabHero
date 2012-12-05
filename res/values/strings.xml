@@ -37,4 +37,5 @@
     <string name="info">Informations</string>
     <string name="ok">OK</string>
     <string name="message_info">Appliaction is based on tablatures from chords.pl service.</string>
+    <string name="help">Help</string>
 </resources>

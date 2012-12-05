@@ -130,6 +130,14 @@ public class MainActivity extends Activity /*TabActivity*/ {
 	            dialog.dismiss();
 	        }
 	    });
+	    builder.setPositiveButton(R.string.help, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+				dialog.dismiss();
+			}
+		});
 	    AlertDialog alert = builder.create();
 	    alert.show();
 	}
