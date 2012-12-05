@@ -18,17 +18,21 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
  
 public class SearchActivity extends Activity {
 	
 	private ListView searchListView;
 	private EditText editPerformer;
+	private Button btnSearch;
 	private ArrayAdapter<String> listAdapter;
 	private ProgressDialog progressDialog;
 	private List<String[]> artists = new ArrayList<String[]>();
@@ -41,21 +45,20 @@ public class SearchActivity extends Activity {
         //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.search);
         
+        btnSearch = (Button) findViewById(R.id.searchBtn);
 		editPerformer = (EditText) findViewById(R.id.editPerformer);
 		searchListView = (ListView) findViewById(R.id.searchListView);
-		//enter = false;
 		
-		/*editPerformer.setOnKeyListener(new OnKeyListener() {
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if (keyCode == KeyEvent.KEYCODE_ENTER) {
-					//enter = true;
-					searchView(v);
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});*/
+		editPerformer.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+		            btnSearch.performClick();
+		            return true;
+		        }
+		        return false;
+		    }
+		});
+		
     }
     public void searchView(View v) {
     	

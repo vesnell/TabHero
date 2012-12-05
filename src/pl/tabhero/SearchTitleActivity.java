@@ -20,9 +20,11 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,6 +34,7 @@ public class SearchTitleActivity extends Activity {
 	
 	private ListView searchListView;
 	private EditText editTitle;
+	private Button btnTitleSearch;
 	private ArrayAdapter<String> listAdapter;
 	private List<String[]> songs = new ArrayList<String[]>();
 	private ArrayList<String> songTitle = new ArrayList<String>();
@@ -50,19 +53,18 @@ public class SearchTitleActivity extends Activity {
         chosenPerformer.setText(performerName);
         
         editTitle = (EditText) findViewById(R.id.editTitle);
-		
+		btnTitleSearch = (Button) findViewById(R.id.searchTitleBtn);
 		searchListView = (ListView) findViewById(R.id.searchTitleListView);
         
-        /*editTitle.setOnKeyListener(new OnKeyListener() {
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if (keyCode == KeyEvent.KEYCODE_ENTER) {
-					searchTitleView(v);
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});*/
+        editTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+		            btnTitleSearch.performClick();
+		            return true;
+		        }
+		        return false;
+		    }
+		});
     }
 	
 	@SuppressWarnings("unchecked")
