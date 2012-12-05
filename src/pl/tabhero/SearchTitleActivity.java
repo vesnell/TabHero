@@ -58,7 +58,10 @@ public class SearchTitleActivity extends Activity {
         
         editTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+		        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+		                actionId == EditorInfo.IME_ACTION_DONE ||
+		                event.getAction() == KeyEvent.ACTION_DOWN &&
+		                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 		            btnTitleSearch.performClick();
 		            return true;
 		        }
