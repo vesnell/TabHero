@@ -10,9 +10,10 @@
         android:id="@+id/performerAndTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-
-        android:padding="15dip"
-        android:textSize="18dip" />
+        android:padding="15sp"
+        android:textSize="18sp"
+        android:textColor="#ffffff"
+        android:background="#000000" />
     
     <LinearLayout
         android:id="@+id/buttons"

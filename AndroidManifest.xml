@@ -36,12 +36,14 @@
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
             	 <!--  android:screenOrientation = "portrait" />  -->
         <activity android:name=".TabViewActivity" 
-            	  android:screenOrientation="landscape" />
+            	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
+            	  <!--  android:screenOrientation="landscape" /> -->
         <activity android:name=".FavoritesTitleActivity" 
             	  android:launchMode="singleTask"
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
         <activity android:name=".FavTabViewActivity" 
-            	  android:screenOrientation="landscape" />
+            	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
+            	  <!--  android:screenOrientation="landscape" /> -->
         <activity android:name=".EditFavPerfs" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
         <activity android:name=".EditFavTitles" 

@@ -20,7 +20,7 @@
     <string name="hintSpace">The first character can not be a space.</string>
     <string name="connectionError">Connecting to the internet problem</string>
     <string name="addToFav">Add to favorites</string>
-    <string name="delFromFav">Remove from favorites</string>
+    <string name="delFromFav">Remove</string>
     <string name="addToBaseSuccess">Successfully added to favorites</string>
     <string name="recordExist">This tabulature is already exist in your favorites</string>
     <string name="areYouSure">Are you sure, you want to delete?</string>
@@ -38,4 +38,6 @@
     <string name="ok">OK</string>
     <string name="message_info">Appliaction is based on tablatures from chords.pl service.</string>
     <string name="help">Help</string>
+    <string name="helptextview">Display help, where should be a description how to use app and what is the funcionality of this app.\n
+        And more other stuff.</string>
 </resources>

@@ -1,13 +1,5 @@
 package pl.tabhero;
 
-import java.util.List;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.TextView;
 
 /** Holds planet data. */
 public class mItems {

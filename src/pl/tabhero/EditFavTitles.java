@@ -5,6 +5,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -80,6 +83,36 @@ DBAdapter db = new DBAdapter(this);
 		startActivityForResult(i, 500);
 		overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.checkreverse, menu);
+	    return true;
+	}
+    
+    @Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    case R.id.checkReverse:
+	        checkReverse();
+	        return true;
+	    default:
+	        return super.onOptionsItemSelected(item);
+	    }
+	}
+    
+    private void checkReverse() {
+    	for(mItems title : planetList) {
+    		if(title.isChecked() == true) {
+    			title.setChecked(false);
+    		} else {
+    			title.setChecked(true);
+    		}
+    	}
+    	listAdapter = new SelectArralAdapter(this, planetList);
+		delFavListView.setAdapter(listAdapter);
+    }
 	
 	@Override
 	public void onBackPressed() {

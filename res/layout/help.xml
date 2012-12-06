@@ -3,4 +3,32 @@
   android:orientation="vertical"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
+  <TextView
+        android:id="@+id/helpTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="15sp"
+        android:textSize="18sp"
+        android:text="@string/help"
+        android:textColor="#ffffff"
+        android:background="#000000" />
+  <LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+	    <ScrollView
+            android:id="@+id/scrollInHelp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            <TextView
+                android:id="@+id/textViewHelp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:padding="15sp"
+                android:textSize="12sp"
+                android:text="@string/helptextview"
+        		android:textColor="#ffffff"
+        		android:background="#000000" />
+       </ScrollView>
+	</LinearLayout>
 </LinearLayout>
