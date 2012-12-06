@@ -10,8 +10,8 @@
         android:id="@+id/performerAndTitle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="15sp"
-        android:textSize="18sp"
+        android:padding="8sp"
+        android:textSize="14sp"
         android:textColor="#ffffff"
         android:background="#000000" />
     

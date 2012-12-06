@@ -38,6 +38,7 @@
     <string name="ok">OK</string>
     <string name="message_info">Appliaction is based on tablatures from chords.pl service.</string>
     <string name="help">Help</string>
+    <string name="reverse_selection">Reverse selection</string>
     <string name="helptextview">Display help, where should be a description how to use app and what is the funcionality of this app.\n
         And more other stuff.</string>
 </resources>
