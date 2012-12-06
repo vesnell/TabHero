@@ -11,7 +11,8 @@
             android:onClick="deleteAndBackToFavorites"
             android:text="@string/deleteFavPerfs"
             android:textColor="#ffffff"
-    		android:background="#000000" />
+    		android:background="#000000"
+    		android:drawableRight="@drawable/bin" />
   
         <ListView
             android:id="@+id/delFavListView"

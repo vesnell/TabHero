@@ -23,6 +23,7 @@
          android:layout_marginTop="32dp"
          android:text="@string/online"
          android:drawableRight="@drawable/rightarrow"
+         android:drawableLeft="@drawable/arrowblack"
          android:textColor="#ffffff"
          android:background="#000000" />
 
@@ -36,6 +37,7 @@
          android:layout_marginTop="15sp"
          android:text="@string/favorites"
          android:drawableLeft="@drawable/leftarrow"
+         android:drawableRight="@drawable/arrowblack"
          android:textColor="#ffffff"
          android:background="#000000" />
 

@@ -26,7 +26,9 @@
             android:text="@string/search"
             android:layout_below="@+id/editPerformer"
          	android:textColor="#ffffff"
-         	android:background="#000000" />
+         	android:background="#000000"
+         	android:drawableRight="@drawable/ic_action_search"
+         	android:drawableBottom="@drawable/white_line" />
         <!-- <ProgressBar
  			android:id="@+id/progressbar_Horizontal"
     		android:layout_width="fill_parent"
