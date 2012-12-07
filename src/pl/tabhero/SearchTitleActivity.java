@@ -47,6 +47,7 @@ public class SearchTitleActivity extends Activity {
 	private ArrayList<String> songTitle = new ArrayList<String>();
 	private ArrayList<String> songUrl = new ArrayList<String>();
 	private ProgressDialog progressDialog;
+	private boolean max;
 	//private ProgressDialog progressDialogTab;
 	
 	@SuppressLint("NewApi")
@@ -60,6 +61,13 @@ public class SearchTitleActivity extends Activity {
         
         Intent i = getIntent();
 		Bundle extras = i.getExtras();
+		
+		max = extras.getBoolean("max");
+		if(max) {
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		}
+		
 		final String performerName = extras.getString("performerName");
         TextView chosenPerformer = (TextView) findViewById(R.id.chosenPerformer);
         chosenPerformer.setText(performerName);
@@ -190,6 +198,7 @@ public class SearchTitleActivity extends Activity {
 			bun.putString("songTitle", songTitle);
 			bun.putString("songUrl", songUrl);
 			bun.putString("tab", tablature);
+			bun.putBoolean("max", max);
 			intent.putExtras(bun);
 			startActivityForResult(intent, 500);
 			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
@@ -287,10 +296,12 @@ public class SearchTitleActivity extends Activity {
        if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+    	   max = false;
         }
         else {
         	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        	max = true;
         }
 	}
 	

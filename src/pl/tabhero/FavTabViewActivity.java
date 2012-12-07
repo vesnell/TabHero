@@ -37,7 +37,7 @@ public class FavTabViewActivity extends Activity{
 	private ImageButton btnPlus;
 	private ImageButton btnMinus;
 	private LinearLayout buttons;
-	
+	private boolean max;
 	
 	private int scaleText = 12;
 	
@@ -68,6 +68,13 @@ public class FavTabViewActivity extends Activity{
         
         Intent i = getIntent();
         Bundle extras = i.getExtras();
+        
+        max = extras.getBoolean("max");
+		if(max) {
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		}
+        
         performer = extras.getString("performerName");
         title = extras.getString("songTitle");
         tablature = extras.getString("songTab");
@@ -158,10 +165,12 @@ public class FavTabViewActivity extends Activity{
        if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+    	   max = false;
         }
         else {
         	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        	max = true;
         }
     }
 	

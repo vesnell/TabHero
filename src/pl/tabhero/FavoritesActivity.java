@@ -34,6 +34,7 @@ public class FavoritesActivity extends Activity {
 	private ArrayList<String> listOfFavPerfs;
 	private ArrayList<String> listOfChosenPerfsFromBase;
 	private ArrayAdapter<String> listAdapter;
+	private boolean max;
 	
     @SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class FavoritesActivity extends Activity {
             	Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
             	Bundle bun = new Bundle();
             	bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
+            	bun.putBoolean("max", max);
     			i.putExtras(bun);
     			startActivityForResult(i, 500);
     			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -110,10 +112,12 @@ public class FavoritesActivity extends Activity {
        if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+    	   max = false;
         }
         else {
         	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        	max = true;
         }
 	}
     
@@ -156,6 +160,7 @@ public class FavoritesActivity extends Activity {
     					Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
     					Bundle bun = new Bundle();
     					bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
+    					bun.putBoolean("max", max);
     					i.putExtras(bun);
     					startActivityForResult(i, 500);
     	    			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);	
@@ -170,6 +175,7 @@ public class FavoritesActivity extends Activity {
 					Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
 					Bundle bun = new Bundle();
 					bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
+					bun.putBoolean("max", max);
 					i.putExtras(bun);
 					startActivityForResult(i, 500);
 	    			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);

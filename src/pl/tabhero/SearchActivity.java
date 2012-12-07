@@ -45,6 +45,7 @@ public class SearchActivity extends Activity {
 	private List<String[]> artists = new ArrayList<String[]>();
 	private ArrayList<String> artistNames = new ArrayList<String>();
 	private ArrayList<String> artistUrl = new ArrayList<String>();
+	private boolean max;
 	//private boolean enter; 
 	
     @SuppressLint("NewApi")
@@ -122,6 +123,7 @@ public class SearchActivity extends Activity {
 	            	Bundle bun = new Bundle();
 	            	bun.putString("performerName", artistNames.get(position));
 	    			bun.putString("performerUrl", artistUrl.get(position));
+	    			bun.putBoolean("max", max);
 	    			i.putExtras(bun);
 	    			startActivityForResult(i, 500);
 	    			overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -256,10 +258,12 @@ public class SearchActivity extends Activity {
        if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+    	   max = false;
         }
         else {
         	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        	max = true;
         }
     }
     

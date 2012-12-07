@@ -40,6 +40,7 @@ public class FavoritesTitleActivity extends Activity {
 	private ArrayList<String> listOfChosenUrlFromBase;
 	private ArrayList<String> listOfChosenTitleFromBase2;
 	private ArrayList<String> listOfChosenUrlFromBase2;
+	private boolean max;
 	String performerName;
 	
 	@SuppressLint("NewApi")
@@ -57,6 +58,13 @@ public class FavoritesTitleActivity extends Activity {
         
         Intent i = getIntent();
         Bundle extras = i.getExtras();
+        
+        max = extras.getBoolean("max");
+		if(max) {
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		}
+        
         performerName = extras.getString("performerName");
         chosenFavPerf.setText(performerName);
         
@@ -79,6 +87,7 @@ public class FavoritesTitleActivity extends Activity {
             	bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
             	bun.putString("songTab", listOfChosenTabFromBase.get(position));
             	bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
+            	bun.putBoolean("max", max);
     			i.putExtras(bun);
     			startActivityForResult(i, 500);	
     			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
@@ -129,10 +138,12 @@ public class FavoritesTitleActivity extends Activity {
        if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+    	   max = false;
         }
         else {
         	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        	max = true;
         }
 	}
     
@@ -194,6 +205,7 @@ public class FavoritesTitleActivity extends Activity {
     					bun.putString("songTitle", listOfChosenTitleFromBase2.get(position));
     					bun.putString("songTab", listOfChosenTabFromBase2.get(position));
     					bun.putString("songUrl", listOfChosenUrlFromBase2.get(position));
+    					bun.putBoolean("max", max);
     					i.putExtras(bun);
     					startActivityForResult(i, 500);	
     	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
@@ -212,6 +224,7 @@ public class FavoritesTitleActivity extends Activity {
 					bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
 					bun.putString("songTab", listOfChosenTabFromBase.get(position));
 					bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
+					bun.putBoolean("max", max);
 					i.putExtras(bun);
 					startActivityForResult(i, 500);	
 	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
