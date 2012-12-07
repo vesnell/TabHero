@@ -16,6 +16,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -45,6 +47,8 @@ public class FavTabViewActivity extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favtabview);
+        
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         
         PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "lockScreenApp");
@@ -126,6 +130,9 @@ public class FavTabViewActivity extends Activity{
 	    case R.id.delFromFav:
 	        delFromFav();
 	        return true;
+	    case R.id.minmax:
+	    	minMax();
+	    	return true;
 	    case R.id.openWebBrowser:
 	    	openWebBrowser();
 	    	return true;
@@ -133,6 +140,20 @@ public class FavTabViewActivity extends Activity{
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
+	
+	private void minMax() {
+    	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
+    	//boolean forceNotFullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN) != 0;
+    	//boolean actionbarVisible = getActionBar().isShowing();
+       if(fullScreen) {
+    	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        }
+        else {
+        	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+    }
 	
 	public void delFromFav() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);

@@ -42,6 +42,7 @@
     <string name="reverse_selection">Odwróć zaznaczenie</string>
     <string name="notDelFromPerfsBase">Nie usunięto zespołów</string>
     <string name="notDelFromTitlesBase">Nie usunięto tabulatur</string>
+    <string name="minmax">Maksymalizuj/Zmniejsz widok</string>
     <string name="helptextview">Wyświetlana będzie pomoc, w której będzie opis jak używać aplikację i jakie ma funkcjonalości.\n
         Oraz parę innych rzeczy.</string>
     

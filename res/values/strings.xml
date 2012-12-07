@@ -41,6 +41,7 @@
     <string name="reverse_selection">Reverse selection</string>
     <string name="notDelFromPerfsBase">Artists weren\'t delete</string>
     <string name="notDelFromTitlesBase">Tablatures weren\'t delete</string>
+    <string name="minmax">Maximalize/Reduce view</string>
     <string name="helptextview">Display help, where should be a description how to use app and what is the funcionality of this app.\n
         And more other stuff.</string>
 </resources>

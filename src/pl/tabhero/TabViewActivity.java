@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -130,16 +131,30 @@ public class TabViewActivity extends Activity {
 	    case R.id.addToFav:
 	        addToFav();
 	        return true;
+	    case R.id.minmax:
+	    	minMax();
+	    	return true;
 	    case R.id.openWebBrowser:
 	    	openWebBrowser();
 	    	return true;
-	    //case R.id.help:
-	    //    showHelp();
-	    //    return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
+	
+	private void minMax() {
+    	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
+    	//boolean forceNotFullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN) != 0;
+    	//boolean actionbarVisible = getActionBar().isShowing();
+       if(fullScreen) {
+    	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        }
+        else {
+        	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+    }
 	
 	public void addToFav() {
 		db.open();

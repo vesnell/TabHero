@@ -3,6 +3,10 @@
           android:icon="@drawable/favorites_original"
           android:title="@string/addToFav" 
           android:showAsAction="ifRoom|withText"/>
+    <item android:id="@+id/minmax"
+          android:title="@string/minmax"
+          android:icon="@drawable/minmax"
+          android:showAsAction="ifRoom" />
     <item android:id="@+id/openWebBrowser" 
           android:icon="@drawable/web_icon"	
           android:title="@string/openWebBrowser"

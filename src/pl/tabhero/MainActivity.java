@@ -1,6 +1,7 @@
 package pl.tabhero;
 
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.TabActivity;
@@ -18,12 +19,10 @@ import android.widget.TabHost;
 import android.widget.Toast;
 import android.widget.TabHost.TabSpec;
 
-//@SuppressWarnings("deprecation")
-public class MainActivity extends Activity /*TabActivity*/ {
+public class MainActivity extends Activity {
 
 	private Button btnOnline;
 	private Button btnOnBase;
-	//private Button btnInfo;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,75 +31,19 @@ public class MainActivity extends Activity /*TabActivity*/ {
         
         btnOnline = (Button) findViewById(R.id.online);
         btnOnBase = (Button) findViewById(R.id.favorites);
-        //btnInfo = (Button) findViewById(R.id.btnInfo);
         
         btnOnline.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				onClickStartActivity(SearchActivity.class);
-				//Intent i = new Intent(MainActivity.this, SearchActivity.class);
-				//startActivityForResult(i, 500);
-				//overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 			}
 		});
         
         btnOnBase.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				onClickStartActivity(FavoritesActivity.class);
-				//Intent i = new Intent(MainActivity.this, FavoritesActivity.class);
-				//startActivityForResult(i, 500);
-				//overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 			}
 		});
         
-        /*btnInfo.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-			    builder.setTitle(R.string.info);
-			    builder.setMessage(R.string.message_info);
-			    builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-			        public void onClick(DialogInterface dialog, int which) {
-			            dialog.dismiss();
-			        }
-			    });
-			    AlertDialog alert = builder.create();
-			    alert.show();
-			}
-		});*/
-        
-        /*requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.main);
-        
-        Button startBtn = (Button) findViewById(R.id.startBtn);
-        
-        startBtn.setOnClickListener(new View.OnClickListener() {
-			
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent(MainActivity.this, SearchActivity.class);
-				startActivity(i);
-			}
-		});*/
-        
-        /*TabHost tabhost = getTabHost();
-        String search = getString(R.string.search);
-        String favorites = getString(R.string.favorites);
-        
-        TabSpec searchspec = tabhost.newTabSpec(search);
-        searchspec.setIndicator(search, getResources().getDrawable(R.drawable.icon_search_tab));
-        Intent searchsIntent = new Intent(this, SearchActivity.class);
-        searchspec.setContent(searchsIntent);
-        
-        TabSpec favspec = tabhost.newTabSpec(favorites);
-        favspec.setIndicator(favorites, getResources().getDrawable(R.drawable.icon_favorites_tab));
-        Intent favIntent = new Intent(this, FavoritesActivity.class);
-        favspec.setContent(favIntent);
-        
-        tabhost.addTab(searchspec);
-        tabhost.addTab(favspec);*/
     }
     
     @Override
@@ -150,12 +93,6 @@ public class MainActivity extends Activity /*TabActivity*/ {
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	//if(requestCode == 500) {
-    		//Log.d("OK", "OK");
-    	//Log.d("1111", Integer.toString(requestCode));
-    	//Log.d("2222", Integer.toString(resultCode));
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    	//} else 
-    		//Log.d("EROR", "EROR");
     }
 }
