@@ -2,13 +2,13 @@
     <item android:id="@+id/delFromFav"
           android:icon="@drawable/favorites_grey"
           android:title="@string/delFromFav"
-          android:showAsAction="ifRoom|withText" />
-    <item android:id="@+id/minmax"
-          android:title="@string/minmax"
-          android:icon="@drawable/minmax"
-          android:showAsAction="ifRoom" />
+          android:showAsAction="always" />
     <item android:id="@+id/openWebBrowser" 
           android:icon="@drawable/web_icon"	
           android:title="@string/openWebBrowser"
-          android:showAsAction="ifRoom|withText" />
+          android:showAsAction="always" />
+    <item android:id="@+id/minmax"
+          android:title="@string/minmax"
+          android:icon="@drawable/minmax"
+          android:showAsAction="always" />
 </menu>

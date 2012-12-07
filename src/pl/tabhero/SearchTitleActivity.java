@@ -15,13 +15,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnKeyListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -248,6 +252,13 @@ public class SearchTitleActivity extends Activity {
     }
 	
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.searchart, menu);
+	    return true;
+	}
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
@@ -256,9 +267,31 @@ public class SearchTitleActivity extends Activity {
 	    	startActivity(intent);
 	    	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
 	    	return true;
+	    case R.id.wifi:
+	    	WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
+	    	if(checkInternetConnection())
+	    		wifi.setWifiEnabled(false);
+	    	else
+	    		wifi.setWifiEnabled(true);
+	    	return true;
+	    case R.id.minmax:
+	    	minMax();
+	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
+	}
+	
+	private void minMax() {
+    	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
+       if(fullScreen) {
+    	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        }
+        else {
+        	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
 	}
 	
 	@Override

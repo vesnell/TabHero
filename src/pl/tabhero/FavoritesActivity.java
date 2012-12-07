@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -96,9 +97,24 @@ public class FavoritesActivity extends Activity {
 	    case R.id.delFromFavWithCheckBox:
 	        startEditActivity();
 	        return true;
+	    case R.id.minmax:
+	    	minMax();
+	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
+	}
+    
+    private void minMax() {
+    	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
+       if(fullScreen) {
+    	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        }
+        else {
+        	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
 	}
     
     private void startEditActivity() {

@@ -142,11 +142,11 @@ public class FavTabViewActivity extends Activity{
 	    case R.id.delFromFav:
 	        delFromFav();
 	        return true;
-	    case R.id.minmax:
-	    	minMax();
-	    	return true;
 	    case R.id.openWebBrowser:
 	    	openWebBrowser();
+	    	return true;
+	    case R.id.minmax:
+	    	minMax();
 	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
@@ -155,8 +155,6 @@ public class FavTabViewActivity extends Activity{
 	
 	private void minMax() {
     	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
-    	//boolean forceNotFullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN) != 0;
-    	//boolean actionbarVisible = getActionBar().isShowing();
        if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);

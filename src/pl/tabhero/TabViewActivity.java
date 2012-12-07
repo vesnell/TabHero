@@ -144,11 +144,11 @@ public class TabViewActivity extends Activity {
 	    case R.id.addToFav:
 	        addToFav();
 	        return true;
-	    case R.id.minmax:
-	    	minMax();
-	    	return true;
 	    case R.id.openWebBrowser:
 	    	openWebBrowser();
+	    	return true;
+	    case R.id.minmax:
+	    	minMax();
 	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
