@@ -2,6 +2,8 @@ package pl.tabhero;
 
 import java.util.ArrayList;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -63,25 +65,37 @@ DBAdapter db = new DBAdapter(this);
 	}
 	
 	public void deleteAndBackToFavorites(View v) {
-		db.open();
-		for(mItems title : planetList) {
-			if(title.isChecked() == true) {	
-				//db.deletePerf(title.getName());
-				for(int i = 0; i < listToEditTitle.size(); i++) {
-					if(title.getName().equals(listToEditTitle.get(i))) {
-						Log.d("TITLE EDIT", listToEditTitle.get(i));
-						Log.d("URL EDIT", listToEditUrl.get(i));
-						db.deleteTab(listToEditUrl.get(i));
-					}
-				}
-			}
-		}
-		Toast.makeText(getApplicationContext(), R.string.delTitleFromBase, Toast.LENGTH_LONG).show();
-		db.close();
-		Intent i = new Intent(EditFavTitles.this, FavoritesTitleActivity.class);
-		startActivity(i);
-		startActivityForResult(i, 500);
-		overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setMessage(R.string.areYouSure);
+	    builder.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	        	db.open();
+	        	for(mItems title : planetList) {
+	        		if(title.isChecked() == true) {	
+	        			//db.deletePerf(title.getName());
+	        			for(int i = 0; i < listToEditTitle.size(); i++) {
+	        				if(title.getName().equals(listToEditTitle.get(i))) {
+	        					db.deleteTab(listToEditUrl.get(i));
+	        				}
+	        			}
+	        		}
+	        	}
+	        	Toast.makeText(getApplicationContext(), R.string.delTitleFromBase, Toast.LENGTH_LONG).show();
+	        	db.close();
+	        	Intent i = new Intent(EditFavTitles.this, FavoritesTitleActivity.class);
+	        	startActivity(i);
+	        	startActivityForResult(i, 500);
+	        	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	        }
+	    });
+	    builder.setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	        	Toast.makeText(getApplicationContext(), R.string.notDelFromTitlesBase, Toast.LENGTH_LONG).show();
+	            dialog.dismiss();
+	        }
+	    });
+	    AlertDialog alert = builder.create();
+	    alert.show();
 	}
 	
 	@Override

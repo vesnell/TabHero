@@ -3,7 +3,9 @@ package pl.tabhero;
 import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -61,17 +63,31 @@ public class EditFavPerfs extends Activity{
 	}
 	
 	public void deleteAndBackToFavorites(View v) {
-		db.open();
-		for(mItems perf : planetList) {
-			if(perf.isChecked() == true) {	
-				db.deletePerf(perf.getName());
-			}
-		}
-		Toast.makeText(getApplicationContext(), R.string.delPerfFromBase, Toast.LENGTH_LONG).show();
-		db.close();
-		Intent i = new Intent(EditFavPerfs.this, FavoritesActivity.class);
-		startActivityForResult(i, 500);
-		overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	    builder.setMessage(R.string.areYouSure);
+	    builder.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	        	db.open();
+	        	for(mItems perf : planetList) {
+	        		if(perf.isChecked() == true) {	
+	        			db.deletePerf(perf.getName());
+	        		}
+	        	}
+	        	Toast.makeText(getApplicationContext(), R.string.delPerfFromBase, Toast.LENGTH_LONG).show();
+	        	db.close();
+	        	Intent i = new Intent(EditFavPerfs.this, FavoritesActivity.class);
+	        	startActivityForResult(i, 500);
+	        	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	        }
+	    });
+	    builder.setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	        	Toast.makeText(getApplicationContext(), R.string.notDelFromPerfsBase, Toast.LENGTH_LONG).show();
+	            dialog.dismiss();
+	        }
+	    });
+	    AlertDialog alert = builder.create();
+	    alert.show();
 	}
 	
 	@Override

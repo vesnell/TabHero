@@ -27,7 +27,7 @@
     <string name="delFromBaseSuccess">Tabulature was deleted</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="notDelFromBase">Tablature wasn\'t deleted</string>
+    <string name="notDelFromBase">Tablature wasn\'t delete</string>
     <string name="delPerfFromBase">Artists were removed</string>
     <string name="edit">Edit list</string>
     <string name="deleteFavPerfs">Remove from favorites</string>
@@ -39,6 +39,8 @@
     <string name="message_info">Appliaction is based on tablatures from chords.pl service.</string>
     <string name="help">Help</string>
     <string name="reverse_selection">Reverse selection</string>
+    <string name="notDelFromPerfsBase">Artists weren\'t delete</string>
+    <string name="notDelFromTitlesBase">Tablatures weren\'t delete</string>
     <string name="helptextview">Display help, where should be a description how to use app and what is the funcionality of this app.\n
         And more other stuff.</string>
 </resources>
