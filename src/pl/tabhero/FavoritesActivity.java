@@ -2,10 +2,12 @@ package pl.tabhero;
  
 import java.util.ArrayList;
 import java.util.List;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -32,9 +34,14 @@ public class FavoritesActivity extends Activity {
 	private ArrayList<String> listOfChosenPerfsFromBase;
 	private ArrayAdapter<String> listAdapter;
 	
-    public void onCreate(Bundle savedInstanceState) {
+    @SuppressLint("NewApi")
+	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favorites);
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            getActionBar().setHomeButtonEnabled(true);
+        }
         
         editFavPerformer = (EditText) findViewById(R.id.editFavPerformer);
         searchListView = (ListView) findViewById(R.id.searchFavListView);
@@ -80,6 +87,12 @@ public class FavoritesActivity extends Activity {
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
+	    case android.R.id.home:
+	    	Intent intent = new Intent(this, MainActivity.class);
+	    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	    	startActivity(intent);
+	    	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	    	return true;
 	    case R.id.delFromFavWithCheckBox:
 	        startEditActivity();
 	        return true;

@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -40,9 +41,14 @@ public class FavoritesTitleActivity extends Activity {
 	private ArrayList<String> listOfChosenUrlFromBase2;
 	String performerName;
 	
+	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favoritestitle);
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            getActionBar().setHomeButtonEnabled(true);
+        }
         
         chosenFavPerf = (TextView) findViewById(R.id.chosenFavPerformer);
         editFavTitle = (EditText) findViewById(R.id.editFavTitle);
@@ -100,6 +106,12 @@ public class FavoritesTitleActivity extends Activity {
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
+	    case android.R.id.home:
+	    	Intent intent = new Intent(this, MainActivity.class);
+	    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	    	startActivity(intent);
+	    	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	    	return true;
 	    case R.id.delFromFavWithCheckBox:
 	        startEditActivity();
 	        return true;

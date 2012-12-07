@@ -2,11 +2,13 @@ package pl.tabhero;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,9 +32,14 @@ public class EditFavPerfs extends Activity{
 	private ArrayAdapter<mItems> listAdapter;
 	private ArrayList<mItems> planetList;
 	
+	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.editfavperfs);
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            getActionBar().setHomeButtonEnabled(true);
+        }
 		
 		btnDeleteFavPerfs = (Button) findViewById(R.id.deleteFavPerfs);
 		delFavListView = (ListView) findViewById(R.id.delFavListView);
@@ -100,6 +107,12 @@ public class EditFavPerfs extends Activity{
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
+	    case android.R.id.home:
+	    	Intent intent = new Intent(this, MainActivity.class);
+	    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	    	startActivity(intent);
+	    	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	    	return true;
 	    case R.id.checkReverse:
 	        checkReverse();
 	        return true;

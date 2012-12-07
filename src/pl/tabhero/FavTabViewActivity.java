@@ -1,11 +1,14 @@
 package pl.tabhero;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -44,11 +47,14 @@ public class FavTabViewActivity extends Activity{
 	private String tablature;
 	private String songUrl;
 	
+	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favtabview);
         
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            getActionBar().setHomeButtonEnabled(true);
+        }
         
         PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "lockScreenApp");
@@ -127,6 +133,12 @@ public class FavTabViewActivity extends Activity{
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
+	    case android.R.id.home:
+	    	Intent intent = new Intent(this, MainActivity.class);
+	    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	    	startActivity(intent);
+	    	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	    	return true;
 	    case R.id.delFromFav:
 	        delFromFav();
 	        return true;
