@@ -44,6 +44,7 @@
     <string name="notDelFromTitlesBase">Nie usunięto tabulatur</string>
     <string name="minmax">Maksymalizuj/Zmniejsz widok</string>
     <string name="wifi">Włącz/wyłącz wifi</string>
+    <string name="errorWifi">Wystąpił problem z wifi</string>
     <string name="helptextview">Wyświetlana będzie pomoc, w której będzie opis jak używać aplikację i jakie ma funkcjonalości.\n
         Oraz parę innych rzeczy.</string>
     

@@ -17,6 +17,7 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -46,7 +47,7 @@ public class SearchActivity extends Activity {
 	private ArrayList<String> artistNames = new ArrayList<String>();
 	private ArrayList<String> artistUrl = new ArrayList<String>();
 	private boolean max;
-	//private boolean enter; 
+	private static final int MENUWIFI = Menu.FIRST;
 	
     @SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -222,12 +223,26 @@ public class SearchActivity extends Activity {
 		progressDialog.dismiss();
     }
     
-    @Override
+    /*@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.searchart, menu);
 	    return true;
-	}
+	}*/
+    
+    @SuppressLint("NewApi")
+	@Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	menu.clear();
+    		if(checkInternetConnection()) {
+    			menu.add(0, MENUWIFI, 0, "").setIcon(R.drawable.wifi_on).setShowAsAction(MENUWIFI);
+    		} else {
+    			menu.add(0, MENUWIFI, 0, "").setIcon(R.drawable.wifi_ic).setShowAsAction(MENUWIFI);
+    		}
+    	MenuInflater inflater = getMenuInflater();
+    	inflater.inflate(R.menu.searchart, menu);
+    	return super.onPrepareOptionsMenu(menu);
+    }
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -238,12 +253,17 @@ public class SearchActivity extends Activity {
 	    	startActivity(intent);
 	    	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
 	    	return true;
-	    case R.id.wifi:
+	    case MENUWIFI:
 	    	WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
-	    	if(checkInternetConnection())
+	    	if(checkInternetConnection()) {
 	    		wifi.setWifiEnabled(false);
-	    	else
+	    		timer(false);
+	    		closeOptionsMenu();
+	    	} else {
 	    		wifi.setWifiEnabled(true);
+	    		timer(true);
+	    		closeOptionsMenu();
+	    	}
 	    	return true;
 	    case R.id.minmax:
 	    	minMax();
@@ -252,6 +272,23 @@ public class SearchActivity extends Activity {
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
+    
+    private void timer(final boolean bool) {
+    	int milSeconds = 1000;
+    	final long start = System.currentTimeMillis();
+    	new Handler().postDelayed(new Runnable() {
+            public void run() {
+            	long end = 0;
+				do {
+					end = System.currentTimeMillis();
+				} while((checkInternetConnection() != bool) || (end  - start < 10000));
+				if(checkInternetConnection() != bool)
+					Toast.makeText(getApplicationContext(), R.string.errorWifi, Toast.LENGTH_LONG).show();
+				else
+            		openOptionsMenu();
+            }
+        }, milSeconds); 
+    }
     
     private void minMax() {
     	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;

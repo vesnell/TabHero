@@ -1,8 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/wifi"
-        android:title="@string/wifi"
-        android:icon="@drawable/wifi_ic"
-        android:showAsAction="ifRoom|withText" />
+    
     <item android:id="@+id/minmax"
           android:title="@string/minmax"
           android:icon="@drawable/minmax"
