@@ -1,5 +1,15 @@
 package pl.tabhero;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -7,12 +17,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -80,12 +93,70 @@ public class FavTabViewActivity extends Activity{
         tablature = extras.getString("songTab");
         songUrl = extras.getString("songUrl");
         
-        head.setText(performer + " - " + title);
-        tab.setText(tablature);
+        Log.d("TABULATURA Z BAZY", tablature);
+        Log.d("URL", songUrl);
         
+        head.setText(performer + " - " + title);
+        
+        String[] fileTab1 = songUrl.split("/");
+		String filePerf = fileTab1[4];
+		String[] fileTab2 = fileTab1[5].split(",");
+		String fileId = fileTab2[0];
+		String fileTitle = fileTab2[1];
+		File root = Environment.getExternalStorageDirectory();
+	    String dir = root.getAbsolutePath() + File.separator + "Android" + File.separator + getPackageName();
+        String fileName = dir + File.separator + filePerf + "-" + fileTitle + "." + fileId + ".txt";
+        File file = new File(fileName);
+        //Log.d("1111", fileName);
+        if(file.isFile()) {
+        	try {
+        		//Log.d("2222", "2222");
+				String tabFromFile = readFile(fileName);
+				long tabId = addId(songUrl);
+				Log.d("3333", tabFromFile);
+				db.open();
+				db.updateTablature(tabFromFile, tabId);
+				Log.d("4444", "4444");
+				db.close();
+				tablature = tabFromFile;
+				Log.d("5555", "5555");
+				file.delete();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        
+        tab.setText(tablature);
         //sv.scrollTo(0, 12);
         //hsv.smoothScrollTo(0, tab.getHeight());
 	}
+	
+	private long addId(String url) {
+		long rowId = 0;
+		db.open();
+        Cursor c = db.getRecordUrl(url);
+        if (c.moveToFirst())
+        {
+            do {
+            	rowId = c.getLong(0);
+            } while (c.moveToNext());
+        }
+        db.close();
+		return rowId;
+	}
+	
+	private static String readFile(String path) throws IOException {
+		  FileInputStream stream = new FileInputStream(new File(path));
+		  try {
+		    FileChannel fc = stream.getChannel();
+		    MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+		    return Charset.defaultCharset().decode(bb).toString();
+		  }
+		  finally {
+		    stream.close();
+		  }
+		}
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -155,8 +226,43 @@ public class FavTabViewActivity extends Activity{
 	    case R.id.minmax:
 	    	minMax();
 	    	return true;
+	    case R.id.editTab:
+	    	editTab();
+	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
+	    }
+	}
+	
+	private void editTab() {
+		Writer writer;
+		String[] fileTab1 = songUrl.split("/");
+		String filePerf = fileTab1[4];
+		String[] fileTab2 = fileTab1[5].split(",");
+		String fileId = fileTab2[0];
+		String fileTitle = fileTab2[1];
+		String fileName = filePerf + "-" + fileTitle + "." + fileId + ".txt";
+		Log.d("fileName", fileName);
+		
+		File root = Environment.getExternalStorageDirectory();
+	    File outDir = new File(root.getAbsolutePath() + File.separator + "Android" + File.separator + getPackageName());
+	    Log.d("PATH", root.getAbsolutePath() + File.separator + "Android" + File.separator + getPackageName());
+	    if (!outDir.isDirectory()) {
+	      outDir.mkdir();
+	    }
+	    try {
+	      if (!outDir.isDirectory()) {
+	        throw new IOException(R.string.createDirectoryError + getPackageName() + "." + R.string.sdcardMountError);
+	      }
+	      File outputFile = new File(outDir, fileName);
+	      writer = new BufferedWriter(new FileWriter(outputFile));
+	      writer.write(tablature);
+	      Toast.makeText(getApplicationContext(),
+	          "Report successfully saved to: " + outputFile.getAbsolutePath(),
+	          Toast.LENGTH_LONG).show();
+	      writer.close();
+	    } catch (IOException e) {
+	      Toast.makeText(getApplicationContext(), e.getMessage() + R.string.sdcardWriteError, Toast.LENGTH_LONG).show();
 	    }
 	}
 	

@@ -139,6 +139,21 @@ public class DBAdapter {
         
         return mCursor;
     }
+    
+    public Cursor getRecordUrl(String rowUrl) throws SQLException 
+    {
+        Cursor mCursor =
+                db.query(DATABASE_TABLE, new String[] {KEY_ROWID,
+                KEY_PERFORMER, KEY_TITLE, KEY_TAB, KEY_URL}, 
+                KEY_URL + "=?", new String[] { rowUrl }, null, null, null, null);
+        if ((mCursor != null) && (mCursor.getCount() > 0)) {
+            mCursor.moveToFirst();
+        } 
+        else if (mCursor != null) {
+            mCursor.close();
+        }
+        return mCursor;
+    }
 
     //---updates a record---
     public boolean updateRecord(long rowId, String performer, String title, String tab, String url) 
@@ -149,6 +164,13 @@ public class DBAdapter {
         //args.put(KEY_RATE, rate);
         args.put(KEY_TAB, tab);
         args.put(KEY_URL, url);
+        return db.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+    }
+    
+    public boolean updateTablature(String tab, long rowId) 
+    {
+        ContentValues args = new ContentValues();
+        args.put(KEY_TAB, tab);
         return db.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
     }
 }

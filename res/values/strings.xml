@@ -42,8 +42,15 @@
     <string name="notDelFromPerfsBase">Artists weren\'t delete</string>
     <string name="notDelFromTitlesBase">Tablatures weren\'t delete</string>
     <string name="minmax">Maximalize/Reduce view</string>
-    <string name="wifi">Wifi on/off</string>
+    <string name="wifiOn">Wifi is on</string>
+    <string name="wifiOff">Wifi is off</string>
+    <string name="wifiTrueError">Wifi setting enable error</string>
+    <string name="wifiFalseError">Wifi setting disable error</string>
     <string name="errorWifi">Wifi error</string>
+    <string name="editTab">Edit tablature</string>
+    <string name="createDirectoryError">Unable to create directory </string>
+    <string name="sdcardMountError">Maybe the SD card is not mounted?</string>
+    <string name="sdcardWriteError"> Unable to write to external storage.</string>
     <string name="helptextview">Display help, where should be a description how to use app and what is the funcionality of this app.\n
         And more other stuff.</string>
 </resources>

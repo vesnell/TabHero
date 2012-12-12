@@ -272,11 +272,20 @@ public class SearchTitleActivity extends Activity {
 	@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
     	menu.clear();
-    		if(checkInternetConnection()) {
+    	WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
+    	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+    		if(wifi.isWifiEnabled()) {
     			menu.add(0, MENUWIFI, 0, "").setIcon(R.drawable.wifi_on).setShowAsAction(MENUWIFI);
     		} else {
     			menu.add(0, MENUWIFI, 0, "").setIcon(R.drawable.wifi_ic).setShowAsAction(MENUWIFI);
     		}
+    	} else {
+    		if(wifi.isWifiEnabled()) {
+    			menu.add(0, MENUWIFI, 0, R.string.wifiOn).setIcon(R.drawable.wifi_on);
+    		} else {
+    			menu.add(0, MENUWIFI, 0, R.string.wifiOff).setIcon(R.drawable.wifi_ic);
+    		}
+    	}
     	MenuInflater inflater = getMenuInflater();
     	inflater.inflate(R.menu.searchart, menu);
     	return super.onPrepareOptionsMenu(menu);
@@ -293,16 +302,29 @@ public class SearchTitleActivity extends Activity {
 	    	return true;
 	    case MENUWIFI:
 	    	WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
-	    	if(checkInternetConnection()) {
-	    		wifi.setWifiEnabled(false);
-	    		timer(false);
-	    		closeOptionsMenu();
+	    	if(wifi.isWifiEnabled()) {
+	    		try {
+	    			wifi.setWifiEnabled(false);
+	    			timer(false);
+	    			closeOptionsMenu();
+	    			return true;
+	    		} catch(Exception e) {
+	    			Log.d("WIFI", e.getMessage());
+	    			Toast.makeText(getApplicationContext(), R.string.wifiFalseError, Toast.LENGTH_LONG).show();
+	    			return true;
+	    		}
 	    	} else {
-	    		wifi.setWifiEnabled(true);
-	    		timer(true);
-	    		closeOptionsMenu();
+	    		try {
+	    			wifi.setWifiEnabled(true);
+	    			timer(true);
+	    			closeOptionsMenu();
+	    			return true;
+	    		} catch(Exception e) {
+	    			Log.d("WIFI", e.getMessage());
+	    			Toast.makeText(getApplicationContext(), R.string.wifiTrueError, Toast.LENGTH_LONG).show();
+	    			return true;
+	    		}
 	    	}
-	    	return true;
 	    case R.id.minmax:
 	    	minMax();
 	    	return true;

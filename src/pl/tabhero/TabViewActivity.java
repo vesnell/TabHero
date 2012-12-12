@@ -80,6 +80,7 @@ public class TabViewActivity extends Activity {
     	title = extras.getString("songTitle");
     	listOfSections = extras.getString("tab");
     	songUrl = extras.getString("songUrl");
+    	Log.d("URL", songUrl);
 
     	head.setText(performer + " - " + title);
     	//tab.setText("Jakaś sobie tabulaturka typu\n----------------------------------------------------------------------------------------\n--------4--------3-------");

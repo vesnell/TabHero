@@ -43,8 +43,15 @@
     <string name="notDelFromPerfsBase">Nie usunięto zespołów</string>
     <string name="notDelFromTitlesBase">Nie usunięto tabulatur</string>
     <string name="minmax">Maksymalizuj/Zmniejsz widok</string>
-    <string name="wifi">Włącz/wyłącz wifi</string>
+    <string name="wifiOn">Wifi is on</string>
+    <string name="wifiOff">Wifi is off</string>
+    <string name="wifiTrueError">Wifi setting enable error</string>
+    <string name="wifiFalseError">Wifi setting disable error</string>
     <string name="errorWifi">Wystąpił problem z wifi</string>
+    <string name="editTab">Edytuj tabulaturę</string>
+    <string name="createDirectoryError">Nie można utworzyć folderu </string>
+    <string name="sdcardMountError">Czy karta SD została zamontowana?</string>
+    <string name="sdcardWriteError"> Nie udało się uzyskać możliwości zapisu.</string>
     <string name="helptextview">Wyświetlana będzie pomoc, w której będzie opis jak używać aplikację i jakie ma funkcjonalości.\n
         Oraz parę innych rzeczy.</string>
     
