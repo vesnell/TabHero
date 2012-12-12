@@ -107,22 +107,16 @@ public class FavTabViewActivity extends Activity{
 	    String dir = root.getAbsolutePath() + File.separator + "Android" + File.separator + getPackageName();
         String fileName = dir + File.separator + filePerf + "-" + fileTitle + "." + fileId + ".txt";
         File file = new File(fileName);
-        //Log.d("1111", fileName);
         if(file.isFile()) {
         	try {
-        		//Log.d("2222", "2222");
 				String tabFromFile = readFile(fileName);
 				long tabId = addId(songUrl);
-				Log.d("3333", tabFromFile);
 				db.open();
 				db.updateTablature(tabFromFile, tabId);
-				Log.d("4444", "4444");
 				db.close();
 				tablature = tabFromFile;
-				Log.d("5555", "5555");
 				file.delete();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         }
@@ -252,15 +246,15 @@ public class FavTabViewActivity extends Activity{
 	    }
 	    try {
 	      if (!outDir.isDirectory()) {
-	        throw new IOException(R.string.createDirectoryError + getPackageName() + "." + R.string.sdcardMountError);
+	        throw new IOException(getString(R.string.createDirectoryError) + getPackageName() + "." + getString(R.string.sdcardMountError));
 	      }
 	      File outputFile = new File(outDir, fileName);
 	      writer = new BufferedWriter(new FileWriter(outputFile));
 	      writer.write(tablature);
-	      Toast.makeText(getApplicationContext(), R.string.sdcardWriteOK + outputFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+	      Toast.makeText(getApplicationContext(), getString(R.string.sdcardWriteOK) + outputFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
 	      writer.close();
 	    } catch (IOException e) {
-	      Toast.makeText(getApplicationContext(), e.getMessage() + R.string.sdcardWriteError, Toast.LENGTH_LONG).show();
+	      Toast.makeText(getApplicationContext(), e.getMessage() + getString(R.string.sdcardWriteError), Toast.LENGTH_LONG).show();
 	    }
 	}
 	
