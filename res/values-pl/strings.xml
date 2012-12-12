@@ -52,6 +52,7 @@
     <string name="createDirectoryError">Nie można utworzyć folderu </string>
     <string name="sdcardMountError">Czy karta SD została zamontowana?</string>
     <string name="sdcardWriteError"> Nie udało się uzyskać możliwości zapisu.</string>
+    <string name="sdcardWriteOK">Tabulatura została zapisana do: </string>
     <string name="helptextview">Wyświetlana będzie pomoc, w której będzie opis jak używać aplikację i jakie ma funkcjonalości.\n
         Oraz parę innych rzeczy.</string>
     

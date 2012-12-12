@@ -257,9 +257,7 @@ public class FavTabViewActivity extends Activity{
 	      File outputFile = new File(outDir, fileName);
 	      writer = new BufferedWriter(new FileWriter(outputFile));
 	      writer.write(tablature);
-	      Toast.makeText(getApplicationContext(),
-	          "Report successfully saved to: " + outputFile.getAbsolutePath(),
-	          Toast.LENGTH_LONG).show();
+	      Toast.makeText(getApplicationContext(), R.string.sdcardWriteOK + outputFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
 	      writer.close();
 	    } catch (IOException e) {
 	      Toast.makeText(getApplicationContext(), e.getMessage() + R.string.sdcardWriteError, Toast.LENGTH_LONG).show();
