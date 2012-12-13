@@ -340,6 +340,11 @@ public class SearchTitleActivity extends Activity {
             public void run() {
             	long end = 0;
 				do {
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 					end = System.currentTimeMillis();
 				} while((checkInternetConnection() != bool) || (end  - start < 10000));
 				if(checkInternetConnection() != bool)
