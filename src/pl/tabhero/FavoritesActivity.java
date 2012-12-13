@@ -1,6 +1,7 @@
 package pl.tabhero;
  
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -196,6 +197,7 @@ public class FavoritesActivity extends Activity {
             } while (c.moveToNext());
         }
         db.close();
+        Collections.sort(list);
         return list;      
     } 
     

@@ -1,6 +1,7 @@
 package pl.tabhero;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -235,7 +236,6 @@ public class FavoritesTitleActivity extends Activity {
 	}
 	
 	public ArrayList<ArrayList<String>> addTitleFromBase(String perfName) {
-		//ArrayList<Long> listId = new ArrayList<Long>();
     	ArrayList<String> listTitles = new ArrayList<String>();
     	ArrayList<String> listTabs = new ArrayList<String>();
     	ArrayList<String> listUrl = new ArrayList<String>();
@@ -245,13 +245,15 @@ public class FavoritesTitleActivity extends Activity {
         if (c.moveToFirst())
         {
             do {
-            	//listId.add(c.getLong(0));
             	listTitles.add(c.getString(2));
             	listTabs.add(c.getString(3));
             	listUrl.add(c.getString(4));
             } while (c.moveToNext());
         }
         db.close();
+        Collections.reverse(listTitles);
+        Collections.reverse(listTabs);
+        Collections.reverse(listUrl);
         listOfList.add(listTitles);
         listOfList.add(listTabs);
         listOfList.add(listUrl);
