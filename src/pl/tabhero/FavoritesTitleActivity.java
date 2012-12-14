@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
@@ -95,6 +97,14 @@ public class FavoritesTitleActivity extends Activity {
            }
         } );
         
+        searchFavTitleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+				buildAlertDailogToChangeSong(listOfChosenTitleFromBase.get(position), listOfChosenUrlFromBase.get(position));
+				return false;
+			}
+        	
+        });
+        
         editFavTitle.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -106,6 +116,47 @@ public class FavoritesTitleActivity extends Activity {
 			}
 		});
 	}
+	
+	private void buildAlertDailogToChangeSong(final String oldSongTitle, final String url) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final EditText input = new EditText(this);
+		builder.setMessage(R.string.changeTitle);	
+		input.setText(oldSongTitle);
+		builder.setView(input);
+
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String newSongTitle = input.getText().toString();
+				changeSongTitle(newSongTitle, url);
+				onResume();
+				dialog.dismiss();
+			}
+		});
+
+		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				dialog.dismiss();
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+    }
+    
+    private void changeSongTitle(String newSongTitle, String url) {
+    	ArrayList<Long> listId = new ArrayList<Long>();
+    	db.open();
+        Cursor c = db.getRecordUrl(url);
+        if (c.moveToFirst())
+        {
+            do {
+            	listId.add(c.getLong(0));
+            } while (c.moveToNext());
+        }
+        for(long id : listId) {
+        	db.updateSongTitle(newSongTitle, id);
+        }
+		db.close();
+    }
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -212,6 +263,14 @@ public class FavoritesTitleActivity extends Activity {
     	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
     				}
     			} );
+    			
+    			searchFavTitleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+    				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+    					buildAlertDailogToChangeSong(listOfChosenTitleFromBase2.get(position), listOfChosenUrlFromBase2.get(position));
+    					return false;
+    				}
+    	        	
+    	        });
     		}
     		
     	} else {
@@ -231,6 +290,14 @@ public class FavoritesTitleActivity extends Activity {
 	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
 				}
 			} );
+			
+			searchFavTitleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+					buildAlertDailogToChangeSong(listOfChosenTitleFromBase.get(position), listOfChosenUrlFromBase.get(position));
+					return false;
+				}
+	        	
+	        });
     	}
 		
 	}

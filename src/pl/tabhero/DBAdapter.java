@@ -180,4 +180,11 @@ public class DBAdapter {
         args.put(KEY_PERFORMER, newPerfName);
         return db.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
     }
+    
+    public boolean updateSongTitle(String newSongTitle, long rowId) 
+    {
+        ContentValues args = new ContentValues();
+        args.put(KEY_TITLE, newSongTitle);
+        return db.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+    }
 }

@@ -55,6 +55,7 @@
     <string name="sdcardWriteOK">Tabulatura została zapisana do: </string>
     <string name="changePerf">Zmień nazwę zespołu</string>
     <string name="cancel">Anuluj</string>
+    <string name="changeTitle">Zmień tytuł utworu</string>
     <string name="helptextview">Wyświetlana będzie pomoc, w której będzie opis jak używać aplikację i jakie ma funkcjonalości.\n
         Oraz parę innych rzeczy.</string>
     
