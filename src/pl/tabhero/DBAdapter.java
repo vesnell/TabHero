@@ -173,4 +173,11 @@ public class DBAdapter {
         args.put(KEY_TAB, tab);
         return db.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
     }
+    
+    public boolean updatePerfName(String newPerfName, long rowId) 
+    {
+        ContentValues args = new ContentValues();
+        args.put(KEY_PERFORMER, newPerfName);
+        return db.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+    }
 }

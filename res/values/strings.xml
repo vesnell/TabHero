@@ -52,6 +52,8 @@
     <string name="sdcardMountError">Maybe the SD card is not mounted?</string>
     <string name="sdcardWriteError"> Unable to write to external storage.</string>
     <string name="sdcardWriteOK">Tablature successfully saved to: </string>
+    <string name="changePerf">Change name of the band</string>
+    <string name="cancel">Anuluj</string>
     <string name="helptextview">Display help, where should be a description how to use app and what is the funcionality of this app.\n
         And more other stuff.</string>
 </resources>

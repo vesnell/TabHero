@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
@@ -49,8 +51,6 @@ public class FavoritesActivity extends Activity {
         editFavPerformer = (EditText) findViewById(R.id.editFavPerformer);
         searchListView = (ListView) findViewById(R.id.searchFavListView);
         
-        
-        //listOfFavPerfs = addPerfFromBase();
         listOfChosenPerfsFromBase = addPerfFromBase();
 
         listAdapter = new ArrayAdapter<String>(this, R.layout.artistsfav, listOfChosenPerfsFromBase);
@@ -68,6 +68,14 @@ public class FavoritesActivity extends Activity {
            }
         } );
         
+        searchListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+				buildAlertDailogToChangePerf(listOfChosenPerfsFromBase.get(position));
+				return false;
+			}
+        	
+        });
+        
         editFavPerformer.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -79,6 +87,47 @@ public class FavoritesActivity extends Activity {
 			}
 		});
         
+    }
+    
+    private void buildAlertDailogToChangePerf(final String oldPerfName) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final EditText input = new EditText(this);
+		builder.setMessage(R.string.changePerf);	
+		input.setText(oldPerfName);
+		builder.setView(input);
+
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String newPerfName = input.getText().toString();
+				changePerfName(newPerfName, oldPerfName);
+				onResume();
+				dialog.dismiss();
+			}
+		});
+
+		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				dialog.dismiss();
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+    }
+    
+    private void changePerfName(String newPerfName, String oldPerfName) {
+    	ArrayList<Long> listId = new ArrayList<Long>();
+    	db.open();
+        Cursor c = db.getRecordPerf(oldPerfName);
+        if (c.moveToFirst())
+        {
+            do {
+            	listId.add(c.getLong(0));
+            } while (c.moveToNext());
+        }
+        for(long id : listId) {
+        	db.updatePerfName(newPerfName, id);
+        }
+		db.close();
     }
     
     @Override
@@ -167,6 +216,14 @@ public class FavoritesActivity extends Activity {
     	    			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);	
     				}
     			} );
+    			
+    			searchListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+    				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+    					buildAlertDailogToChangePerf(listOfChosenPerfsFromBase.get(position));
+    					return false;
+    				}
+    	        	
+    	        });
     		}
     	} else {
 			listAdapter = new ArrayAdapter<String>(this, R.layout.artistsfav, listOfChosenPerfsFromBase);
@@ -182,6 +239,14 @@ public class FavoritesActivity extends Activity {
 	    			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 				}
 			} );
+			
+			searchListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+					buildAlertDailogToChangePerf(listOfChosenPerfsFromBase.get(position));
+					return false;
+				}
+	        	
+	        });
     	}
     }
     
