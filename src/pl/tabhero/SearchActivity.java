@@ -93,7 +93,7 @@ public class SearchActivity extends Activity {
 		//Log.d("CONNECTION", String.valueOf(checkInternetConnection()));
 		if(!(performer.length() > 0)) 
 			Toast.makeText(getApplicationContext(), R.string.hintEmpty, Toast.LENGTH_LONG).show();
-		else if (performer.charAt(0) == ' ')
+		else if ((performer.charAt(0) == ' ') || (performer.charAt(0) == '.'))
 			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
 		else if(!(checkInternetConnection()))
 			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();

@@ -12,7 +12,7 @@
         	android:id="@+id/editPerformer"
         	android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
-        	android:digits="aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż1234567890 "
+        	android:digits="AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻaąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż1234567890 ."
         	android:singleLine="true"
         	android:imeOptions="actionSearch"
         	android:hint="@string/hint_author" />

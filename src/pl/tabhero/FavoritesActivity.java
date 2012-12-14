@@ -12,6 +12,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.text.method.DigitsKeyListener;
+import android.text.method.TextKeyListener;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -106,10 +110,23 @@ public class FavoritesActivity extends Activity {
         
     }
     
+    InputFilter filter = new InputFilter() { 
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) { 
+        	for (int i = start; i < end; i++) { 
+        		if (Character.isLetterOrDigit(source.charAt(i)) || source.charAt(i) == ' ' || source.charAt(i) == '.') { 
+                    return null; 
+        		}
+            } 
+            return ""; 
+        }
+    }; 
+    
     private void buildAlertDialogToAddOwnTab() {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText inputPerf = new EditText(this);
-		builder.setMessage(R.string.hint_author);	
+        //inputPerf.setKeyListener(DigitsKeyListener.getInstance("AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻaąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż1234567890 ."));
+        inputPerf.setFilters(new InputFilter[]{filter}); 
+        builder.setMessage(R.string.hint_author);	
 		builder.setView(inputPerf);
 		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
@@ -131,7 +148,9 @@ public class FavoritesActivity extends Activity {
     private void buildAlertDialogNewTitle(final String newPerfName) {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText inputTitle = new EditText(this);
-		builder.setMessage(R.string.hint_title);	
+        //inputTitle.setKeyListener(DigitsKeyListener.getInstance("AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻaąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż1234567890 ."));
+        inputTitle.setFilters(new InputFilter[]{filter});
+        builder.setMessage(R.string.hint_title);	
 		builder.setView(inputTitle);
 		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {

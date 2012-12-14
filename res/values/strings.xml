@@ -17,7 +17,7 @@
     <string name="srchTab">Tabulature downloading...</string>
     <string name="wait">Wait!</string>
     <string name="hintEmpty">You have to enter the artist!</string>
-    <string name="hintSpace">The first character can not be a space.</string>
+    <string name="hintSpace">The first character can not be a space or dot.</string>
     <string name="connectionError">Connecting to the internet problem</string>
     <string name="addToFav">Add to favorites</string>
     <string name="delFromFav">Remove</string>
