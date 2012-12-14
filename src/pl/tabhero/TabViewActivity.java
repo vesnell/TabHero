@@ -195,13 +195,7 @@ public class TabViewActivity extends Activity {
         if (c.moveToFirst())
         {
             do {
-            	/*Log.d("Performer", performer);
-            	Log.d("PerformerDB", c.getString(1));
-            	Log.d("Title", title);
-            	Log.d("TitleDB", c.getString(2));
-            	Log.d("Song", songUrl);
-            	Log.d("SongDB", c.getString(4));*/
-            	if(/*performer.equals(c.getString(1)) && title.equals(c.getString(2)) && */songUrl.equals(c.getString(4))) {
+            	if(songUrl.equals(c.getString(4))) {
             		return true;
             	}
             } while (c.moveToNext());

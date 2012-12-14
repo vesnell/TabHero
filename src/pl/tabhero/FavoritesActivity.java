@@ -13,11 +13,14 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
@@ -70,11 +73,25 @@ public class FavoritesActivity extends Activity {
         
         searchListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-				buildAlertDailogToChangePerf(listOfChosenPerfsFromBase.get(position));
+				buildAlertDialogToChangePerf(listOfChosenPerfsFromBase.get(position));
 				return false;
 			}
         	
         });
+        
+        /*@SuppressWarnings("deprecation")
+		final GestureDetector gestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
+            public boolean onDoubleTap(MotionEvent e) {
+            	buildAlertDialogToAddOwnTab();
+                return true;
+            }
+        });
+        
+        searchListView.setOnTouchListener(new OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				return gestureDetector.onTouchEvent(event);
+			}
+        });*/
         
         editFavPerformer.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -89,7 +106,76 @@ public class FavoritesActivity extends Activity {
         
     }
     
-    private void buildAlertDailogToChangePerf(final String oldPerfName) {
+    private void buildAlertDialogToAddOwnTab() {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final EditText inputPerf = new EditText(this);
+		builder.setMessage(R.string.hint_author);	
+		builder.setView(inputPerf);
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String newPerfName = inputPerf.getText().toString();
+				buildAlertDialogNewTitle(newPerfName);
+				dialog.dismiss();
+			}
+		});
+
+		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				dialog.dismiss();
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+    }
+    
+    private void buildAlertDialogNewTitle(final String newPerfName) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final EditText inputTitle = new EditText(this);
+		builder.setMessage(R.string.hint_title);	
+		builder.setView(inputTitle);
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String newSongTitle = inputTitle.getText().toString();
+				addToBaseNewRecord(newPerfName, newSongTitle);
+				onResume();
+				dialog.dismiss();
+			}
+		});
+
+		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				dialog.dismiss();
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+    }
+    
+    private void addToBaseNewRecord(String newPerfName, String newSongTitle) {
+    	String songUrl = "http://www.chords.pl/chwyty/" + newPerfName + "/" + "USER," + newSongTitle;
+    	db.open();
+		if(isExistRecord(songUrl) == false) {
+			db.insertRecord(newPerfName, newSongTitle, "", songUrl);
+			Toast.makeText(getApplicationContext(), R.string.addToBaseSuccess, Toast.LENGTH_LONG).show();
+		} else
+			Toast.makeText(getApplicationContext(), R.string.recordExist, Toast.LENGTH_LONG).show();
+		db.close();
+    }
+    
+    public boolean isExistRecord(String songUrl) {
+        Cursor c = db.getAllRecords();
+        if (c.moveToFirst())
+        {
+            do {
+            	if(songUrl.equals(c.getString(4))) {
+            		return true;
+            	}
+            } while (c.moveToNext());
+        }
+		return false;
+	}
+    
+    private void buildAlertDialogToChangePerf(final String oldPerfName) {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
 		builder.setMessage(R.string.changePerf);	
@@ -149,6 +235,9 @@ public class FavoritesActivity extends Activity {
 	    case R.id.delFromFavWithCheckBox:
 	        startEditActivity();
 	        return true;
+	    case R.id.addOwnRecord:
+	    	buildAlertDialogToAddOwnTab();
+	    	return true;
 	    case R.id.minmax:
 	    	minMax();
 	    	return true;
@@ -183,7 +272,6 @@ public class FavoritesActivity extends Activity {
     }
     
     public void searchView(View v) {
-    	Log.d("START_BTN", "START_BTN");
     	hideKeyboard();
     	listOfChosenPerfsFromBase.clear();
     	listOfChosenPerfsFromBase = addPerfFromBase();
@@ -219,7 +307,7 @@ public class FavoritesActivity extends Activity {
     			
     			searchListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
     				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-    					buildAlertDailogToChangePerf(listOfChosenPerfsFromBase.get(position));
+    					buildAlertDialogToChangePerf(listOfChosenPerfsFromBase.get(position));
     					return false;
     				}
     	        	
@@ -242,7 +330,7 @@ public class FavoritesActivity extends Activity {
 			
 			searchListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-					buildAlertDailogToChangePerf(listOfChosenPerfsFromBase.get(position));
+					buildAlertDialogToChangePerf(listOfChosenPerfsFromBase.get(position));
 					return false;
 				}
 	        	

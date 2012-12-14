@@ -99,7 +99,7 @@ public class FavoritesTitleActivity extends Activity {
         
         searchFavTitleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-				buildAlertDailogToChangeSong(listOfChosenTitleFromBase.get(position), listOfChosenUrlFromBase.get(position));
+				buildAlertDialogToChangeSong(listOfChosenTitleFromBase.get(position), listOfChosenUrlFromBase.get(position));
 				return false;
 			}
         	
@@ -117,7 +117,7 @@ public class FavoritesTitleActivity extends Activity {
 		});
 	}
 	
-	private void buildAlertDailogToChangeSong(final String oldSongTitle, final String url) {
+	private void buildAlertDialogToChangeSong(final String oldSongTitle, final String url) {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
 		builder.setMessage(R.string.changeTitle);	
@@ -266,7 +266,7 @@ public class FavoritesTitleActivity extends Activity {
     			
     			searchFavTitleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
     				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-    					buildAlertDailogToChangeSong(listOfChosenTitleFromBase2.get(position), listOfChosenUrlFromBase2.get(position));
+    					buildAlertDialogToChangeSong(listOfChosenTitleFromBase2.get(position), listOfChosenUrlFromBase2.get(position));
     					return false;
     				}
     	        	
@@ -293,7 +293,7 @@ public class FavoritesTitleActivity extends Activity {
 			
 			searchFavTitleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-					buildAlertDailogToChangeSong(listOfChosenTitleFromBase.get(position), listOfChosenUrlFromBase.get(position));
+					buildAlertDialogToChangeSong(listOfChosenTitleFromBase.get(position), listOfChosenUrlFromBase.get(position));
 					return false;
 				}
 	        	
