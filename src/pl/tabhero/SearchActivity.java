@@ -218,6 +218,11 @@ public class SearchActivity extends Activity {
         progressDialog = ProgressDialog.show(SearchActivity.this, getString(R.string.srchPerf), getString(R.string.wait));
     }
     
+    private void startProgressBarWifi() {
+    	setProgressBarIndeterminateVisibility(true);
+        progressDialog = ProgressDialog.show(SearchActivity.this, "", getString(R.string.wait));
+    }
+    
     private void closeProgressBar() {
     	setProgressBarIndeterminateVisibility(false);
 		progressDialog.dismiss();
@@ -253,8 +258,9 @@ public class SearchActivity extends Activity {
     	return super.onPrepareOptionsMenu(menu);
     }
     
-    @Override
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		closeOptionsMenu();
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
 	    	Intent intent = new Intent(this, MainActivity.class);
@@ -263,30 +269,8 @@ public class SearchActivity extends Activity {
 	    	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
 	    	return true;
 	    case MENUWIFI:
-	    	WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
-	    	if(wifi.isWifiEnabled()) {
-	    		try {
-	    			wifi.setWifiEnabled(false);
-	    			timer(false);
-	    			closeOptionsMenu();
-	    			return true;
-	    		} catch(Exception e) {
-	    			Log.d("WIFI", e.getMessage());
-	    			Toast.makeText(getApplicationContext(), R.string.wifiFalseError, Toast.LENGTH_LONG).show();
-	    			return true;
-	    		}
-	    	} else {
-	    		try {
-	    			wifi.setWifiEnabled(true);
-	    			timer(true);
-	    			closeOptionsMenu();
-	    			return true;
-	    		} catch(Exception e) {
-	    			Log.d("WIFI", e.getMessage());
-	    			Toast.makeText(getApplicationContext(), R.string.wifiTrueError, Toast.LENGTH_LONG).show();
-	    			return true;
-	    		}
-	    	}
+	    	new connectWifi().execute();
+	    	return true;
 	    case R.id.minmax:
 	    	minMax();
 	    	return true;
@@ -295,26 +279,58 @@ public class SearchActivity extends Activity {
 	    }
 	}
     
+    private void wifiMechanise() {
+    	WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
+    	if(wifi.isWifiEnabled()) {
+    		try {
+    			wifi.setWifiEnabled(false);
+    			timer(false);
+    		} catch(Exception e) {
+    			Log.d("WIFI", e.getMessage());
+    			Toast.makeText(getApplicationContext(), R.string.wifiFalseError, Toast.LENGTH_LONG).show();
+    		}
+    	} else {
+    		try {
+    			wifi.setWifiEnabled(true);
+    			timer(true);
+    		} catch(Exception e) {
+    			Log.d("WIFI", e.getMessage());
+    			Toast.makeText(getApplicationContext(), R.string.wifiTrueError, Toast.LENGTH_LONG).show();
+    		}
+    	}
+    }
+    
+ public class connectWifi extends AsyncTask<Void, Void, Void>{
+    	
+    	@Override
+    	 protected void onPreExecute() {
+    		startProgressBarWifi();
+    	 }
+    	
+    	@Override
+   	 	protected void onPostExecute(Void result) {
+    		closeProgressBar();
+    		openOptionsMenu();
+    	}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			wifiMechanise();
+			return null;
+		}
+ }
+    
     private void timer(final boolean bool) {
-    	int milSeconds = 1000;
-    	final long start = System.currentTimeMillis();
-    	new Handler().postDelayed(new Runnable() {
-            public void run() {
-            	long end = 0;
-				do {
-					try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					end = System.currentTimeMillis();
-				} while((checkInternetConnection() != bool) || (end  - start < 10000));
-				if(checkInternetConnection() != bool)
-					Toast.makeText(getApplicationContext(), R.string.errorWifi, Toast.LENGTH_LONG).show();
-				else
-            		openOptionsMenu();
-            }
-        }, milSeconds); 
+    	long start = System.currentTimeMillis();
+		long end = 0;
+		do {
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			end = System.currentTimeMillis();
+		} while((checkInternetConnection() != bool) || (end  - start < 10000));
     }
     
     private void minMax() {
