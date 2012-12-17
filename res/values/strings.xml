@@ -58,6 +58,8 @@
     <string name="addOwnRecord">Add your own tablature</string>
     <string name="tabExist">This tablature was added to favorites, but its data was edited. Do you still want to add to favorites?</string>
     <string name="notAddTab">Tablature isn\'t add to favorite</string>
+    <string name="lockOn">Orientation of the screen is locked</string>
+    <string name="lockOff">Orientation of the screen is unlocked</string>
     <string name="helptextview">Display help, where should be a description how to use app and what is the funcionality of this app.\n
         And more other stuff.</string>
 </resources>

@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -27,6 +28,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -42,6 +44,7 @@ public class TabViewActivity extends Activity {
 	private TextView tab;
 	private LinearLayout buttons;
 	private boolean max;
+	private boolean lock = false;
 	
 	private int scaleText = 12;
 	
@@ -87,10 +90,27 @@ public class TabViewActivity extends Activity {
     	Log.d("URL", songUrl);
 
     	head.setText(performer + " - " + title);
-    	//tab.setText("Jakaś sobie tabulaturka typu\n----------------------------------------------------------------------------------------\n--------4--------3-------");
     	tab.setText(listOfSections);
     	
-    	
+    	tab.setOnLongClickListener(new AdapterView.OnLongClickListener() {
+    		public boolean onLongClick(View v) {
+    			if(!lock) {
+    				int result = TabViewActivity.this.getResources().getConfiguration().orientation;
+    				if(result == 1) {
+    					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    				} else {
+    					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    				}
+    				lock = true;
+    				Toast.makeText(getApplicationContext(), R.string.lockOn, Toast.LENGTH_LONG).show();
+    			} else {
+    				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+    				lock = false;
+    				Toast.makeText(getApplicationContext(), R.string.lockOff, Toast.LENGTH_LONG).show();
+    			}
+				return false;
+			}
+        });
     	
     }
 	
