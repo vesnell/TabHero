@@ -187,4 +187,11 @@ public class DBAdapter {
         args.put(KEY_TITLE, newSongTitle);
         return db.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
     }
+    
+    public boolean updateSongUrl(String newSongUrl, long rowId) 
+    {
+        ContentValues args = new ContentValues();
+        args.put(KEY_URL, newSongUrl);
+        return db.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+    }
 }

@@ -43,10 +43,10 @@
     <string name="notDelFromPerfsBase">Nie usunięto zespołów</string>
     <string name="notDelFromTitlesBase">Nie usunięto tabulatur</string>
     <string name="minmax">Maksymalizuj/Zmniejsz widok</string>
-    <string name="wifiOn">Wifi is on</string>
-    <string name="wifiOff">Wifi is off</string>
-    <string name="wifiTrueError">Wifi setting enable error</string>
-    <string name="wifiFalseError">Wifi setting disable error</string>
+    <string name="wifiOn">Wifi włączone</string>
+    <string name="wifiOff">Wifi wyłączone</string>
+    <string name="wifiTrueError">Błąd włączania wifi</string>
+    <string name="wifiFalseError">Błąd wyłączania wifi</string>
     <string name="errorWifi">Wystąpił problem z wifi</string>
     <string name="editTab">Edytuj tabulaturę</string>
     <string name="createDirectoryError">Nie można utworzyć folderu </string>
@@ -57,6 +57,8 @@
     <string name="cancel">Anuluj</string>
     <string name="changeTitle">Zmień tytuł utworu</string>
     <string name="addOwnRecord">Dodaj własną tabulaturę</string>
+    <string name="tabExist">Ta tabulatura była już dodawana do ulubionych, lecz jej dane były edytowane. Czy mimo to chcesz ją dodać do ulubionych?</string>
+    <string name="notAddTab">Nie dodano tabulatury do ulubionych</string>
     <string name="helptextview">Wyświetlana będzie pomoc, w której będzie opis jak używać aplikację i jakie ma funkcjonalości.\n
         Oraz parę innych rzeczy.</string>
     

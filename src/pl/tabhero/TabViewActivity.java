@@ -5,7 +5,9 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -14,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.text.InputFilter;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -25,6 +28,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -181,16 +185,80 @@ public class TabViewActivity extends Activity {
     }
 	
 	public void addToFav() {
-		db.open();
+		
 		if(isExistRecord() == false) {
-			db.insertRecord(performer, title, listOfSections, songUrl);
-			Toast.makeText(getApplicationContext(), R.string.addToBaseSuccess, Toast.LENGTH_LONG).show();
-		} else
+			if(isIdExist()) {
+				buildAlertDialogToAddTabWhithSameId();
+			} else { 
+				db.open();
+				db.insertRecord(performer, title, listOfSections, songUrl);
+				db.close();
+				Toast.makeText(getApplicationContext(), R.string.addToBaseSuccess, Toast.LENGTH_LONG).show();
+			}
+		} else {
 			Toast.makeText(getApplicationContext(), R.string.recordExist, Toast.LENGTH_LONG).show();
-		db.close();
+		}
+		
+	}
+	
+	private void buildAlertDialogToAddTabWhithSameId() {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.tabExist);
+		builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				db.open();
+				db.insertRecord(performer, title, listOfSections, songUrl);
+				db.close();
+				Toast.makeText(getApplicationContext(), R.string.addToBaseSuccess, Toast.LENGTH_LONG).show();
+				dialog.dismiss();
+			}
+		});
+
+		builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				Toast.makeText(getApplicationContext(), R.string.notAddTab, Toast.LENGTH_LONG).show();
+				dialog.dismiss();
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+    }
+	
+	private boolean isIdExist() {
+		String url;
+		String idFromBase;
+		String idFromNet;
+		idFromNet = getIdFromUrl(songUrl);
+		//Log.d("ID1",idFromNet);
+		db.open();
+		Cursor c = db.getAllRecords();
+        if (c.moveToFirst())
+        {
+            do {
+            	url = c.getString(4);
+            	idFromBase = getIdFromUrl(url);
+            	//Log.d("ID1",idFromBase);
+            	if(idFromNet.equals(idFromBase)) {
+            		//Log.d("TRUE", "TRUE");
+            		return true;
+            	}
+            } while (c.moveToNext());
+        }
+        db.close();
+		return false;
+	}
+	
+	private String getIdFromUrl(String url) {
+		String [] tab1;
+		String[] tab2;
+		tab1 = url.split("/");
+    	tab2 = tab1[5].split(",");
+    	String id = tab2[0];
+		return id;
 	}
 	
 	public boolean isExistRecord() {
+		db.open();
         Cursor c = db.getAllRecords();
         if (c.moveToFirst())
         {
@@ -200,6 +268,7 @@ public class TabViewActivity extends Activity {
             	}
             } while (c.moveToNext());
         }
+        db.close();
 		return false;
 	}
 	

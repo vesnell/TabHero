@@ -197,7 +197,8 @@ public class FavoritesActivity extends Activity {
     private void buildAlertDialogToChangePerf(final String oldPerfName) {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
-		builder.setMessage(R.string.changePerf);	
+        input.setFilters(new InputFilter[]{filter}); 
+		builder.setMessage(R.string.changePerf);
 		input.setText(oldPerfName);
 		builder.setView(input);
 
@@ -221,16 +222,30 @@ public class FavoritesActivity extends Activity {
     
     private void changePerfName(String newPerfName, String oldPerfName) {
     	ArrayList<Long> listId = new ArrayList<Long>();
+    	ArrayList<String> listUrl = new ArrayList<String>();
+    	String[] splitTab;
+    	String newSongUrl = "";
+    	int i = 0;
     	db.open();
         Cursor c = db.getRecordPerf(oldPerfName);
         if (c.moveToFirst())
         {
             do {
             	listId.add(c.getLong(0));
+            	listUrl.add(c.getString(4));
             } while (c.moveToNext());
         }
         for(long id : listId) {
         	db.updatePerfName(newPerfName, id);
+        	splitTab = listUrl.get(i).split("/");
+        	splitTab[4] = newPerfName;
+        	for(int j = 0; j < 5; j++)
+        		newSongUrl += splitTab[j] + "/";
+        	newSongUrl += splitTab[5];
+        	db.updateSongUrl(newSongUrl, id);
+        	i++;
+        	Log.d("NOWY URL", newSongUrl);
+        	newSongUrl = "";
         }
 		db.close();
     }

@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -117,9 +119,21 @@ public class FavoritesTitleActivity extends Activity {
 		});
 	}
 	
+	InputFilter filter = new InputFilter() { 
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) { 
+        	for (int i = start; i < end; i++) { 
+        		if (Character.isLetterOrDigit(source.charAt(i)) || source.charAt(i) == ' ' || source.charAt(i) == '.') { 
+                    return null; 
+        		}
+            } 
+            return ""; 
+        }
+    }; 
+	
 	private void buildAlertDialogToChangeSong(final String oldSongTitle, final String url) {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText input = new EditText(this);
+        input.setFilters(new InputFilter[]{filter}); 
 		builder.setMessage(R.string.changeTitle);	
 		input.setText(oldSongTitle);
 		builder.setView(input);
@@ -144,16 +158,33 @@ public class FavoritesTitleActivity extends Activity {
     
     private void changeSongTitle(String newSongTitle, String url) {
     	ArrayList<Long> listId = new ArrayList<Long>();
+    	ArrayList<String> listUrl = new ArrayList<String>();
+    	String[] splitTab;
+    	String[] splitTab2;
+    	String newSongUrl = "";
+    	int i = 0;
     	db.open();
         Cursor c = db.getRecordUrl(url);
         if (c.moveToFirst())
         {
             do {
             	listId.add(c.getLong(0));
+            	listUrl.add(c.getString(4));
             } while (c.moveToNext());
         }
         for(long id : listId) {
         	db.updateSongTitle(newSongTitle, id);
+        	splitTab = listUrl.get(i).split("/");
+        	splitTab2 = splitTab[5].split(",");
+        	splitTab2[1] = newSongTitle;
+        	splitTab[5] = splitTab2[0] + "," + splitTab2[1];
+        	for(int j = 0; j < 5; j++)
+        		newSongUrl += splitTab[j] + "/";
+        	newSongUrl += splitTab[5];
+        	db.updateSongUrl(newSongUrl, id);
+        	i++;
+        	Log.d("NOWY URL", newSongUrl);
+        	newSongUrl = "";
         }
 		db.close();
     }
