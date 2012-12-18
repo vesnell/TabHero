@@ -7,6 +7,8 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+
+import pl.tabhero.FavoritesActivity.MyGestureDetector;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -17,20 +19,21 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.View.OnKeyListener;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.View.OnTouchListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -50,7 +53,14 @@ public class SearchActivity extends Activity {
 	private boolean max;
 	private static final int MENUWIFI = Menu.FIRST;
 	
-    @SuppressLint("NewApi")
+	private static final int SWIPE_MIN_DISTANCE = 120;
+	private static final int SWIPE_MAX_OFF_PATH = 250;
+	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	private GestureDetector gestureDetector;
+	View.OnTouchListener gestureListener;
+	
+    @SuppressWarnings("deprecation")
+	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -77,7 +87,49 @@ public class SearchActivity extends Activity {
 		    }
 		});
 		
+		gestureDetector = new GestureDetector(new MyGestureDetector());
+		gestureListener = new View.OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				if (gestureDetector.onTouchEvent(event)) {
+					return true;
+				}
+				return false;
+			}
+		};
+        
+        searchListView.setOnTouchListener(new OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				return gestureDetector.onTouchEvent(event);
+			}
+        });
     }
+    
+    class MyGestureDetector extends SimpleOnGestureListener {
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			try {
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					return false;
+				// right to left swipe
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					Toast.makeText(getApplicationContext(), R.string.choosePerf, Toast.LENGTH_LONG).show();
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					onBackPressed();
+					//onClickStartActivity(MainActivity.class);
+				}
+			} catch (Exception e) {
+				// nothing
+			}
+			return false;
+		}
+	}
+    
+    /*private void onClickStartActivity(Class<?> activity) {
+    	Intent i = new Intent(SearchActivity.this, activity);
+		startActivityForResult(i, 500);
+		overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }*/
+    
     public void searchView(View v) {
     	
     	artists.clear();
@@ -86,12 +138,7 @@ public class SearchActivity extends Activity {
     	String performer = new String();
     	performer = editPerformer.getText().toString().toLowerCase();
 		hideKeyboard();
-		//if(enter == true)
-			//Log.d("ENTER_TURE", Integer.toString(performer.length()));
-		//else if(enter == false)
-			//Log.d("ENTER_False", Integer.toString(performer.length()));
 		
-		//Log.d("CONNECTION", String.valueOf(checkInternetConnection()));
 		if(!(performer.length() > 0)) 
 			Toast.makeText(getApplicationContext(), R.string.hintEmpty, Toast.LENGTH_LONG).show();
 		else if ((performer.charAt(0) == ' ') || (performer.charAt(0) == '.'))
@@ -116,7 +163,7 @@ public class SearchActivity extends Activity {
 				artistNames.add(art[1]);
 				artistUrl.add(art[0]);
 			}
-			//Log.d("2222", "2222");
+			
 			listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artistsnet, artistNames);
 			searchListView.setAdapter(listAdapter);
 			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -131,7 +178,7 @@ public class SearchActivity extends Activity {
 	    			overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 	            }
 	        } );
-			//Log.d("3333", "3333");
+			
     		closeProgressBar();
     	 }
     	
@@ -148,7 +195,7 @@ public class SearchActivity extends Activity {
 	    	Elements performers = docFind.select("a[href]");
 	    	String[][] array = new String[performers.size()][2];
 	    	boolean checkContains;
-	    	//Log.d("1111", "1111");
+	    	
 	    	for(int i = 0; i < performers.size(); i++) {
 	    		array[i][0] = performers.get(i).attr("href");
 	    		array[i][1] = performers.get(i).toString();
@@ -178,17 +225,17 @@ public class SearchActivity extends Activity {
     			temp = performer.replaceAll("^ć", "c");
     		else if(performer.charAt(0) == 'ę')
     			temp = performer.replaceAll("^ę", "e");
-    		if(performer.charAt(0) == 'ł')
+    		else if(performer.charAt(0) == 'ł')
     			temp = performer.replaceAll("^ł", "l");
-    		if(performer.charAt(0) == 'ń')
+    		else if(performer.charAt(0) == 'ń')
     			temp = performer.replaceAll("^ń", "n");
-    		if(performer.charAt(0) == 'ó')
+    		else if(performer.charAt(0) == 'ó')
     			temp = performer.replaceAll("^ó", "o");
-    		if(performer.charAt(0) == 'ś')
+    		else if(performer.charAt(0) == 'ś')
     			temp = performer.replaceAll("^ś", "s");
-    		if(performer.charAt(0) == 'ź')
+    		else if(performer.charAt(0) == 'ź')
     			temp = performer.replaceAll("^ź", "z");
-    		if(performer.charAt(0) == 'ż')
+    		else if(performer.charAt(0) == 'ż')
     			temp = performer.replaceAll("^ż", "z");
     		url = url + temp;
     		doc = connect(url);
@@ -233,13 +280,6 @@ public class SearchActivity extends Activity {
     	setProgressBarIndeterminateVisibility(false);
 		progressDialog.dismiss();
     }
-    
-    /*@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.searchart, menu);
-	    return true;
-	}*/
     
     @SuppressLint("NewApi")
 	@Override

@@ -3,6 +3,8 @@ package pl.tabhero;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import pl.tabhero.FavoritesActivity.MyGestureDetector;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,13 +17,17 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnKeyListener;
+import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -47,8 +53,15 @@ public class FavoritesTitleActivity extends Activity {
 	private ArrayList<String> listOfChosenTitleFromBase2;
 	private ArrayList<String> listOfChosenUrlFromBase2;
 	private boolean max;
-	String performerName;
+	private String performerName;
 	
+	private static final int SWIPE_MIN_DISTANCE = 120;
+	private static final int SWIPE_MAX_OFF_PATH = 250;
+	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	private GestureDetector gestureDetector;
+	View.OnTouchListener gestureListener;
+	
+	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +74,22 @@ public class FavoritesTitleActivity extends Activity {
         chosenFavPerf = (TextView) findViewById(R.id.chosenFavPerformer);
         editFavTitle = (EditText) findViewById(R.id.editFavTitle);
         searchFavTitleListView = (ListView) findViewById(R.id.searchFavTitleListView);
+        
+        gestureDetector = new GestureDetector(new MyGestureDetector());
+		gestureListener = new View.OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				if (gestureDetector.onTouchEvent(event)) {
+					return true;
+				}
+				return false;
+			}
+		};
+        
+        searchFavTitleListView.setOnTouchListener(new OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				return gestureDetector.onTouchEvent(event);
+			}
+        });
         
         Intent i = getIntent();
         Bundle extras = i.getExtras();
@@ -119,6 +148,32 @@ public class FavoritesTitleActivity extends Activity {
 			}
 		});
 	}
+	
+	class MyGestureDetector extends SimpleOnGestureListener {
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			try {
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					return false;
+				// right to left swipe
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					onBackPressed();
+					//onClickStartActivity(FavoritesActivity.class);
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					Toast.makeText(getApplicationContext(), R.string.chooseTitle, Toast.LENGTH_LONG).show();
+				}
+			} catch (Exception e) {
+				// nothing
+			}
+			return false;
+		}
+	}
+	
+	/*private void onClickStartActivity(Class<?> activity) {
+    	Intent i = new Intent(FavoritesTitleActivity.this, activity);
+		startActivityForResult(i, 500);
+		overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }*/
 	
 	InputFilter filter = new InputFilter() { 
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) { 

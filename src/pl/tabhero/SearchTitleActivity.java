@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import pl.tabhero.SearchActivity.MyGestureDetector;
 import pl.tabhero.SearchActivity.connectWifi;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -23,13 +24,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnKeyListener;
+import android.view.View.OnTouchListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -54,6 +59,13 @@ public class SearchTitleActivity extends Activity {
 	private boolean max;
 	private static final int MENUWIFI = Menu.FIRST;
 	
+	private static final int SWIPE_MIN_DISTANCE = 120;
+	private static final int SWIPE_MAX_OFF_PATH = 250;
+	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	private GestureDetector gestureDetector;
+	View.OnTouchListener gestureListener;
+	
+	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +104,49 @@ public class SearchTitleActivity extends Activity {
 		        return false;
 		    }
 		});
+        
+        gestureDetector = new GestureDetector(new MyGestureDetector());
+		gestureListener = new View.OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				if (gestureDetector.onTouchEvent(event)) {
+					return true;
+				}
+				return false;
+			}
+		};
+        
+        searchListView.setOnTouchListener(new OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				return gestureDetector.onTouchEvent(event);
+			}
+        });
     }
+	
+	class MyGestureDetector extends SimpleOnGestureListener {
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			try {
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					return false;
+				// right to left swipe
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					Toast.makeText(getApplicationContext(), R.string.chooseTitle, Toast.LENGTH_LONG).show();
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					onBackPressed();
+					//onClickStartActivity(SearchActivity.class);
+				}
+			} catch (Exception e) {
+				// nothing
+			}
+			return false;
+		}
+	}
+	
+	/*private void onClickStartActivity(Class<?> activity) {
+    	Intent i = new Intent(SearchTitleActivity.this, activity);
+		startActivityForResult(i, 500);
+		overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }*/
 	
 	@SuppressWarnings("unchecked")
 	public void searchTitleView(View v) {

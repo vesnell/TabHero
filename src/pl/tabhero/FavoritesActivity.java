@@ -3,6 +3,7 @@ package pl.tabhero;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import pl.tabhero.MainActivity.MyGestureDetector;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -24,6 +25,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.View.OnKeyListener;
@@ -47,7 +49,14 @@ public class FavoritesActivity extends Activity {
 	private ArrayAdapter<String> listAdapter;
 	private boolean max;
 	
-    @SuppressLint("NewApi")
+	private static final int SWIPE_MIN_DISTANCE = 120;
+	private static final int SWIPE_MAX_OFF_PATH = 250;
+	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+	private GestureDetector gestureDetector;
+	View.OnTouchListener gestureListener;
+	
+	@SuppressWarnings("deprecation")
+	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favorites);
@@ -58,6 +67,22 @@ public class FavoritesActivity extends Activity {
         
         editFavPerformer = (EditText) findViewById(R.id.editFavPerformer);
         searchListView = (ListView) findViewById(R.id.searchFavListView);
+        
+        gestureDetector = new GestureDetector(new MyGestureDetector());
+		gestureListener = new View.OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				if (gestureDetector.onTouchEvent(event)) {
+					return true;
+				}
+				return false;
+			}
+		};
+        
+        searchListView.setOnTouchListener(new OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				return gestureDetector.onTouchEvent(event);
+			}
+        });
         
         listOfChosenPerfsFromBase = addPerfFromBase();
 
@@ -90,12 +115,6 @@ public class FavoritesActivity extends Activity {
             	buildAlertDialogToAddOwnTab();
                 return true;
             }
-        });
-        
-        searchListView.setOnTouchListener(new OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				return gestureDetector.onTouchEvent(event);
-			}
         });*/
         
         editFavPerformer.setOnKeyListener(new OnKeyListener() {
@@ -107,9 +126,34 @@ public class FavoritesActivity extends Activity {
 					return false;
 				}
 			}
-		});
-        
+		}); 
     }
+    
+    class MyGestureDetector extends SimpleOnGestureListener {
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			try {
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					return false;
+				// right to left swipe
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					onBackPressed();
+					//onClickStartActivity(MainActivity.class);
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					Toast.makeText(getApplicationContext(), R.string.choosePerf, Toast.LENGTH_LONG).show();
+				}
+			} catch (Exception e) {
+				// nothing
+			}
+			return false;
+		}
+	}
+    
+    /*private void onClickStartActivity(Class<?> activity) {
+    	Intent i = new Intent(FavoritesActivity.this, activity);
+		startActivityForResult(i, 500);
+		overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }*/
     
     InputFilter filter = new InputFilter() { 
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) { 
@@ -306,7 +350,7 @@ public class FavoritesActivity extends Activity {
 		overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
     }
     
-    public void searchView(View v) {
+	public void searchView(View v) {
     	hideKeyboard();
     	listOfChosenPerfsFromBase.clear();
     	listOfChosenPerfsFromBase = addPerfFromBase();
@@ -347,6 +391,7 @@ public class FavoritesActivity extends Activity {
     				}
     	        	
     	        });
+
     		}
     	} else {
 			listAdapter = new ArrayAdapter<String>(this, R.layout.artistsfav, listOfChosenPerfsFromBase);
@@ -370,6 +415,7 @@ public class FavoritesActivity extends Activity {
 				}
 	        	
 	        });
+
     	}
     }
     
