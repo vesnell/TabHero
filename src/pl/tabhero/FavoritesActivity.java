@@ -32,6 +32,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
  
@@ -395,7 +396,7 @@ public class FavoritesActivity extends Activity {
     
     protected void onResume() {
 		super.onResume();
-		Button btn = (Button) findViewById(R.id.searchFavBtn);
+		ImageButton btn = (ImageButton) findViewById(R.id.searchFavBtn);
 		btn.performClick();
 	}
     

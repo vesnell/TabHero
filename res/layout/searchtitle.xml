@@ -21,31 +21,35 @@
             android:gravity = "center"
             android:textColor="#ffffff"
          	android:background="#000000" />
+        
+        <LinearLayout
+                  android:id="@+id/editAndButton"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@null"
+                  android:layout_below="@+id/chosenPerformer" >
 
         <EditText
             android:id="@+id/editTitle"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:ems="10"
+            android:layout_weight="0.76"
             android:digits="AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻaąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż1234567890 ."
             android:singleLine="true"
             android:imeOptions="actionSearch"
-            android:hint="@string/hint_title"
-            android:layout_below="@+id/chosenPerformer" />
+            android:hint="@string/hint_title" />
 
-        <Button
+        <ImageButton
             android:id="@+id/searchTitleBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/editTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
             android:onClick="searchTitleView"
             android:text="@string/search"
          	android:textColor="#ffffff"
-         	android:background="#000000"
-         	android:drawableRight="@drawable/ic_action_search"
+		    android:src="@drawable/loop_border"
          	android:drawableBottom="@drawable/white_line" />
+        </LinearLayout>
 
         <ListView
             android:id="@+id/searchTitleListView"
@@ -53,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/searchTitleBtn" >
+            android:layout_below="@+id/editAndButton" >
 
         </ListView>
  

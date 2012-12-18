@@ -32,6 +32,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +41,7 @@ public class SearchActivity extends Activity {
 	
 	private ListView searchListView;
 	private EditText editPerformer;
-	private Button btnSearch;
+	private ImageButton btnSearch;
 	private ArrayAdapter<String> listAdapter;
 	private ProgressDialog progressDialog;
 	private List<String[]> artists = new ArrayList<String[]>();
@@ -59,7 +60,7 @@ public class SearchActivity extends Activity {
             getActionBar().setHomeButtonEnabled(true);
         }
         
-        btnSearch = (Button) findViewById(R.id.searchBtn);
+        btnSearch = (ImageButton) findViewById(R.id.searchBtn);
 		editPerformer = (EditText) findViewById(R.id.editPerformer);
 		searchListView = (ListView) findViewById(R.id.searchListView);
 		
@@ -218,9 +219,14 @@ public class SearchActivity extends Activity {
         progressDialog = ProgressDialog.show(SearchActivity.this, getString(R.string.srchPerf), getString(R.string.wait));
     }
     
-    private void startProgressBarWifi() {
+    private void startProgressBarWifiOn() {
     	setProgressBarIndeterminateVisibility(true);
-        progressDialog = ProgressDialog.show(SearchActivity.this, "", getString(R.string.wait));
+        progressDialog = ProgressDialog.show(SearchActivity.this, getString(R.string.wifiTryOn), getString(R.string.wait));
+    }
+    
+    private void startProgressBarWifiOff() {
+    	setProgressBarIndeterminateVisibility(true);
+        progressDialog = ProgressDialog.show(SearchActivity.this, getString(R.string.wifiTryOff), getString(R.string.wait));
     }
     
     private void closeProgressBar() {
@@ -304,7 +310,12 @@ public class SearchActivity extends Activity {
     	
     	@Override
     	 protected void onPreExecute() {
-    		startProgressBarWifi();
+    		WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
+    		if(wifi.isWifiEnabled()) {
+    			startProgressBarWifiOff();
+    		} else {
+    			startProgressBarWifiOn();
+    		}
     	 }
     	
     	@Override
@@ -330,7 +341,7 @@ public class SearchActivity extends Activity {
 				e.printStackTrace();
 			}
 			end = System.currentTimeMillis();
-		} while((checkInternetConnection() != bool) || (end  - start < 10000));
+		} while((checkInternetConnection() != bool) && (end  - start < 15000));
     }
     
     private void minMax() {

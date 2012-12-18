@@ -36,6 +36,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +45,7 @@ public class SearchTitleActivity extends Activity {
 	
 	private ListView searchListView;
 	private EditText editTitle;
-	private Button btnTitleSearch;
+	private ImageButton btnTitleSearch;
 	private ArrayAdapter<String> listAdapter;
 	private List<String[]> songs = new ArrayList<String[]>();
 	private ArrayList<String> songTitle = new ArrayList<String>();
@@ -76,7 +77,7 @@ public class SearchTitleActivity extends Activity {
         chosenPerformer.setText(performerName);
         
         editTitle = (EditText) findViewById(R.id.editTitle);
-		btnTitleSearch = (Button) findViewById(R.id.searchTitleBtn);
+		btnTitleSearch = (ImageButton) findViewById(R.id.searchTitleBtn);
 		searchListView = (ListView) findViewById(R.id.searchTitleListView);
         
         editTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -370,7 +371,7 @@ public class SearchTitleActivity extends Activity {
 				e.printStackTrace();
 			}
 			end = System.currentTimeMillis();
-		} while((checkInternetConnection() != bool) || (end  - start < 10000));
+		} while((checkInternetConnection() != bool) && (end  - start < 15000));
     }
 	
 	private void minMax() {

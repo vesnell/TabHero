@@ -57,10 +57,12 @@
     <string name="cancel">Anuluj</string>
     <string name="changeTitle">Zmień tytuł utworu</string>
     <string name="addOwnRecord">Dodaj własną tabulaturę</string>
-    <string name="tabExist">Ta tabulatura była już dodawana do ulubionych, lecz jej dane były edytowane. Czy mimo to chcesz ją dodać do ulubionych?</string>
+    <string name="tabExist">Ta tabulatura była już dodawana do ulubionych, lecz jej tytuł lub wykonawca były już edytowane. Czy mimo to chcesz ją dodać do ulubionych?</string>
     <string name="notAddTab">Nie dodano tabulatury do ulubionych</string>
     <string name="lockOn">Orientacja ekranu została zablokowana</string>
     <string name="lockOff">Orientacja ekranu została odblokowana</string>
+    <string name="wifiTryOn">Trwa włączanie wifi</string>
+    <string name="wifiTryOff">Trwa wyłączanie wifi</string>
     <string name="helptextview">Wyświetlana będzie pomoc, w której będzie opis jak używać aplikację i jakie ma funkcjonalości.\n
         Oraz parę innych rzeczy.</string>
     

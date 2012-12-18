@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -366,7 +367,7 @@ public class FavoritesTitleActivity extends Activity {
 	
 	protected void onResume() {
 		super.onResume();
-		Button btn = (Button) findViewById(R.id.searchFavTitleBtn);
+		ImageButton btn = (ImageButton) findViewById(R.id.searchFavTitleBtn);
 		btn.performClick();
 	}
 	
