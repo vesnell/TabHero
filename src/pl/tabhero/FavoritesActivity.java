@@ -170,8 +170,8 @@ public class FavoritesActivity extends Activity {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText inputPerf = new EditText(this);
         //inputPerf.setKeyListener(DigitsKeyListener.getInstance("AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻaąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż1234567890 ."));
-        inputPerf.setFilters(new InputFilter[]{filter}); 
-        builder.setMessage(R.string.hint_author);	
+        inputPerf.setFilters(new InputFilter[]{filter});
+        builder.setMessage(R.string.addOwnPerf);	
 		builder.setView(inputPerf);
 		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
@@ -195,7 +195,7 @@ public class FavoritesActivity extends Activity {
         final EditText inputTitle = new EditText(this);
         //inputTitle.setKeyListener(DigitsKeyListener.getInstance("AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻaąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż1234567890 ."));
         inputTitle.setFilters(new InputFilter[]{filter});
-        builder.setMessage(R.string.hint_title);	
+        builder.setMessage(getString(R.string.addOwnTitle) + " " + newPerfName);	
 		builder.setView(inputTitle);
 		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {

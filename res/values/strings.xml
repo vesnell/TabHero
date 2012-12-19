@@ -62,6 +62,8 @@
     <string name="lockOff">Orientation of the screen is unlocked</string>
     <string name="wifiTryOn">Wifi is starting</string>
     <string name="wifiTryOff">Wifi is shutting down</string>
+    <string name="addOwnPerf">Add your own performer</string>
+    <string name="addOwnTitle">Add a song title of performer</string>
     <string name="choosePerf">You have to choose performer from the list to continue</string>
     <string name="chooseTitle">You have to choose title from the list to continue</string>
     <string name="helptextview">Display help, where should be a description how to use app and what is the funcionality of this app.\n
