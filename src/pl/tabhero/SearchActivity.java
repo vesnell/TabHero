@@ -1,13 +1,14 @@
 package pl.tabhero;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-
 import pl.tabhero.FavoritesActivity.MyGestureDetector;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -15,6 +16,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -52,6 +54,8 @@ public class SearchActivity extends Activity {
 	private ArrayList<String> artistUrl = new ArrayList<String>();
 	private boolean max;
 	private static final int MENUWIFI = Menu.FIRST;
+	private boolean isWebsiteAvailable;
+	private String chordsUrl = "http://www.chords.pl/wykonawcy/";
 	
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -146,8 +150,58 @@ public class SearchActivity extends Activity {
 		else if(!(checkInternetConnection()))
 			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
 		else {
-				new connect().execute(performer);
+				new checkConnect().execute(performer);		
 		}
+    }
+    
+    public class checkConnect extends AsyncTask<String, Void, String>{
+    	
+    	@Override
+   	 	protected void onPreExecute() {
+   	 	}
+   	
+    	@Override
+   	 	protected void onPostExecute(String performer) {
+    		if(isWebsiteAvailable) {
+    			new connect().execute(performer);
+    		} else {
+    			Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
+    		}
+    	}
+
+		@Override
+		protected String doInBackground(String... params) {
+			String performer = params[0];
+			if(isConnected()) {
+				isWebsiteAvailable = true;
+			} else {
+				isWebsiteAvailable = false;
+			}
+			return performer;
+		}
+    }
+    
+    public boolean isConnected() {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cm.getActiveNetworkInfo();
+            if (netInfo != null && netInfo.isConnected()) {
+                URL url = new URL(chordsUrl);
+                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(2000);
+                urlc.connect();
+                if (urlc.getResponseCode() == 200) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     
     public class connect extends AsyncTask<String, Void, List<String[]>>{
@@ -185,7 +239,7 @@ public class SearchActivity extends Activity {
 		@Override
 		protected List<String[]> doInBackground(String... params) {
 			String performer = params[0];
-			String url = "http://www.chords.pl/wykonawcy/";
+			String url = chordsUrl;
 	    	List<String[]> chosenPerformers = new ArrayList<String[]>();
 	    	Document doc = preperAndConnect(performer, url);
 	    	String codeFind0 = doc.select("tr.v0").toString();

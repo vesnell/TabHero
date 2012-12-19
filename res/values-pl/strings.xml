@@ -65,6 +65,7 @@
     <string name="wifiTryOff">Trwa wyłączanie wifi</string>
     <string name="addOwnPerf">Dodaj własnego wykonawcę</string>
     <string name="addOwnTitle">Dodaj tytuł utworu wykonowacy</string>
+    <string name="websiteConnectionError">Problem z połączeniem z serwisem</string>
     <string name="choosePerf">Musisz wybrać z listy wykonawcę aby przejść dalej</string>
     <string name="chooseTitle">Musisz wybrać z listy tytuł aby przejść dalej</string>
     <string name="helptextview">Wyświetlana będzie pomoc, w której będzie opis jak używać aplikację i jakie ma funkcjonalości.\n
