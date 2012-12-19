@@ -155,11 +155,7 @@ public class SearchActivity extends Activity {
     }
     
     public class checkConnect extends AsyncTask<String, Void, String>{
-    	
-    	@Override
-   	 	protected void onPreExecute() {
-   	 	}
-   	
+
     	@Override
    	 	protected void onPostExecute(String performer) {
     		if(isWebsiteAvailable) {

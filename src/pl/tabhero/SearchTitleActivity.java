@@ -1,7 +1,9 @@
 package pl.tabhero;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import org.jsoup.Jsoup;
@@ -10,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import pl.tabhero.SearchActivity.MyGestureDetector;
+import pl.tabhero.SearchActivity.connect;
 import pl.tabhero.SearchActivity.connectWifi;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -58,6 +62,8 @@ public class SearchTitleActivity extends Activity {
 	private ProgressDialog progressDialog;
 	private boolean max;
 	private static final int MENUWIFI = Menu.FIRST;
+	private boolean isWebsiteAvailable;
+	private String chordsUrl = "http://www.chords.pl";
 	
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -168,8 +174,79 @@ public class SearchTitleActivity extends Activity {
 		if(!(checkInternetConnection()))
 			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
 		else 
-			new connect().execute(passing);
+			new checkConnectTitle().execute(passing);
 	}
+	
+	public class checkConnectTitle extends AsyncTask<ArrayList<String>, Void, ArrayList<String>>{
+   	
+    	@SuppressWarnings("unchecked")
+		@Override
+   	 	protected void onPostExecute(ArrayList<String> passing) {
+    		if(isWebsiteAvailable) {
+    			new connect().execute(passing);
+    		} else {
+    			Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
+    		}
+    	}
+
+		@Override
+		protected ArrayList<String> doInBackground(ArrayList<String>... params) {
+			ArrayList<String> passing = params[0];
+			if(isConnected()) {
+				isWebsiteAvailable = true;
+			} else {
+				isWebsiteAvailable = false;
+			}
+			return passing;
+		}
+    }
+	
+	public class checkConnectTab extends AsyncTask<ArrayList<String>, Void, ArrayList<String>>{
+	   	
+    	@SuppressWarnings("unchecked")
+		@Override
+   	 	protected void onPostExecute(ArrayList<String> passing) {
+    		if(isWebsiteAvailable) {
+    			new getTablature().execute(passing);
+    		} else {
+    			Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
+    		}
+    	}
+
+		@Override
+		protected ArrayList<String> doInBackground(ArrayList<String>... params) {
+			ArrayList<String> passing = params[0];
+			if(isConnected()) {
+				isWebsiteAvailable = true;
+			} else {
+				isWebsiteAvailable = false;
+			}
+			return passing;
+		}
+    }
+    
+    public boolean isConnected() {
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cm.getActiveNetworkInfo();
+            if (netInfo != null && netInfo.isConnected()) {
+                URL url = new URL(chordsUrl);
+                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(2000);
+                urlc.connect();
+                if (urlc.getResponseCode() == 200) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 	
 	public class connect extends AsyncTask<ArrayList<String>, Void, List<String[]>> {
 		
@@ -200,7 +277,7 @@ public class SearchTitleActivity extends Activity {
 	            	if(!(checkInternetConnection()))
 	            		Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
 	            	else
-	            		new getTablature().execute(passing);      		
+	            		new checkConnectTab().execute(passing);      		
 	            }
 			} );
    	 	}
@@ -210,7 +287,7 @@ public class SearchTitleActivity extends Activity {
 			ArrayList<String> passing = params[0];
 			String urlPerformerSongs = passing.get(0);
 			String title = passing.get(1);
-			String url = "http://www.chords.pl";
+			String url = chordsUrl;
 	    	List<String[]> chosenTitles = new ArrayList<String[]>();
 	    	Document doc = connectUrl(url + urlPerformerSongs);
 	    	String codeSongs = doc.select("table.piosenki").toString();
