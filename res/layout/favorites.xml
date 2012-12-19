@@ -33,7 +33,7 @@
             android:onClick="searchView"
             android:text="@string/search"
             android:textColor="#ffffff"
-    		android:background="#ffffff"
+    		android:background="#eaeaea"
     		android:src="@drawable/loop_border"
     		android:drawableBottom="@drawable/white_line" />
         </LinearLayout>
