@@ -3,7 +3,7 @@ package pl.tabhero;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import pl.tabhero.MainActivity.MyGestureDetector;
+import pl.tabhero.TabHero.MyGestureDetector;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -306,7 +306,7 @@ public class FavoritesActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
-	    	Intent intent = new Intent(this, MainActivity.class);
+	    	Intent intent = new Intent(this, TabHero.class);
 	    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	    	startActivity(intent);
 	    	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
@@ -448,7 +448,7 @@ public class FavoritesActivity extends Activity {
     
     @Override
     public void onBackPressed() {
-    	Intent intent = new Intent(this, MainActivity.class);
+    	Intent intent = new Intent(this, TabHero.class);
     	startActivityForResult(intent, 500);
     	overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }

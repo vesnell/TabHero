@@ -14,7 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends Activity {
+public class TabHero extends Activity {
 
 	private Button btnOnline;
 	private Button btnOnBase;
@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
 	}
 	
 	private void showInfo() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+		AlertDialog.Builder builder = new AlertDialog.Builder(TabHero.this);
 	    builder.setTitle(R.string.info);
 	    builder.setMessage(R.string.message_info);
 	    builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -115,7 +115,7 @@ public class MainActivity extends Activity {
 	    });
 	    builder.setPositiveButton(R.string.help, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+				Intent intent = new Intent(TabHero.this, HelpActivity.class);
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
 				dialog.dismiss();
@@ -126,7 +126,7 @@ public class MainActivity extends Activity {
 	}
     
     private void onClickStartActivity(Class<?> activity) {
-    	Intent i = new Intent(MainActivity.this, activity);
+    	Intent i = new Intent(TabHero.this, activity);
 		startActivityForResult(i, 500);
 		overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }

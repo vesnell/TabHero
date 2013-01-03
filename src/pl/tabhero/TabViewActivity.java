@@ -169,7 +169,7 @@ public class TabViewActivity extends Activity {
 	    // Handle item selection
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
-	    	Intent intent = new Intent(this, MainActivity.class);
+	    	Intent intent = new Intent(this, TabHero.class);
 	    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	    	startActivity(intent);
 	    	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
