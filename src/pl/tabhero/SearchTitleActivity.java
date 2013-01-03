@@ -27,6 +27,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -97,7 +99,8 @@ public class SearchTitleActivity extends Activity {
         editTitle = (EditText) findViewById(R.id.editTitle);
 		btnTitleSearch = (ImageButton) findViewById(R.id.searchTitleBtn);
 		searchListView = (ListView) findViewById(R.id.searchTitleListView);
-        
+		
+		editTitle.setFilters(new InputFilter[]{filter});
         editTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
@@ -127,6 +130,17 @@ public class SearchTitleActivity extends Activity {
 			}
         });
     }
+	
+	InputFilter filter = new InputFilter() { 
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) { 
+        	for (int i = start; i < end; i++) { 
+        		if (!(Character.isLetterOrDigit(source.charAt(i)) || source.charAt(i) == ' ' || source.charAt(i) == '.')) { 
+                    return ""; 
+        		}
+            } 
+            return null; 
+        }
+    }; 
 	
 	class MyGestureDetector extends SimpleOnGestureListener {
 		@Override

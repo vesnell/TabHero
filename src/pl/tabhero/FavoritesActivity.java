@@ -117,6 +117,7 @@ public class FavoritesActivity extends Activity {
             }
         });*/
         
+        editFavPerformer.setFilters(new InputFilter[]{filter});
         editFavPerformer.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -158,11 +159,11 @@ public class FavoritesActivity extends Activity {
     InputFilter filter = new InputFilter() { 
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) { 
         	for (int i = start; i < end; i++) { 
-        		if (Character.isLetterOrDigit(source.charAt(i)) || source.charAt(i) == ' ' || source.charAt(i) == '.') { 
-                    return null; 
+        		if (!(Character.isLetterOrDigit(source.charAt(i)) || source.charAt(i) == ' ' || source.charAt(i) == '.')) { 
+                    return ""; 
         		}
             } 
-            return ""; 
+            return null; 
         }
     }; 
     

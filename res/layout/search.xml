@@ -21,7 +21,6 @@
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_weight="0.76"
-                      android:digits="AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻaąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż1234567890 ."
                       android:hint="@string/hint_author"
                       android:imeOptions="actionSearch"
                       android:singleLine="true" />
