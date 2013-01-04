@@ -252,9 +252,7 @@ public class SearchActivity extends Activity {
 			String url = chordsUrl;
 	    	List<String[]> chosenPerformers = new ArrayList<String[]>();
 	    	Document doc = preperAndConnect(performer, url);
-	    	String codeFind0 = doc.select("tr.v0").toString();
-	    	String codeFind1 = doc.select("tr.v1").toString();
-	    	String codeFind = codeFind0 + codeFind1;
+	    	String codeFind = doc.select("tr.v0,tr.v1").toString();
 	    	Document docFind = Jsoup.parse(codeFind);
 	    	Elements performers = docFind.select("a[href]");
 	    	String[][] array = new String[performers.size()][2];
