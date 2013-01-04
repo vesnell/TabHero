@@ -28,28 +28,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchActivity"
+        <activity android:name=".net.SearchActivity"
             	    android:configChanges="orientation|screenSize|keyboardHidden|keyboard" />
           	      <!-- android:screenOrientation = "portrait" />  -->
-        <activity android:name=".SearchTitleActivity"  
+        <activity android:name=".net.SearchTitleActivity"  
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
         		 <!--  android:screenOrientation = "portrait" />  -->
-        <activity android:name=".FavoritesActivity"
+        <activity android:name=".local.FavoritesActivity"
             	  android:launchMode="singleTask" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
             	 <!--  android:screenOrientation = "portrait" />  -->
-        <activity android:name=".TabViewActivity" 
+        <activity android:name=".net.TabViewActivity" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
             	  <!--  android:screenOrientation="landscape" /> -->
-        <activity android:name=".FavoritesTitleActivity" 
+        <activity android:name=".local.FavoritesTitleActivity" 
             	  android:launchMode="singleTask"
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
-        <activity android:name=".FavTabViewActivity" 
+        <activity android:name=".local.FavTabViewActivity" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
             	  <!--  android:screenOrientation="landscape" /> -->
-        <activity android:name=".EditFavPerfs" 
+        <activity android:name=".local.EditFavPerfs" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
-        <activity android:name=".EditFavTitles" 
+        <activity android:name=".local.EditFavTitles" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
         <activity android:name=".HelpActivity" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>

@@ -1,35 +1,48 @@
-package pl.tabhero;
+package pl.tabhero.local;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import pl.tabhero.R;
+import pl.tabhero.TabHero;
+import pl.tabhero.R.anim;
+import pl.tabhero.R.id;
+import pl.tabhero.R.layout;
+import pl.tabhero.R.menu;
+import pl.tabhero.R.string;
+import pl.tabhero.db.DBAdapter;
+import pl.tabhero.utils.selector.SelectArralAdapter;
+import pl.tabhero.utils.selector.SelectViewHolder;
+import pl.tabhero.utils.selector.mItems;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class EditFavTitles extends Activity{
-	
-DBAdapter db = new DBAdapter(this);
+public class EditFavPerfs extends Activity{
+	DBAdapter db = new DBAdapter(this);
 	
 	private Button btnDeleteFavPerfs;
 	private ListView delFavListView;
 	private ArrayAdapter<mItems> listAdapter;
 	private ArrayList<mItems> planetList;
-	private ArrayList<String> listToEditTitle;
-	private ArrayList<String> listToEditUrl;
-	
 	
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -39,8 +52,8 @@ DBAdapter db = new DBAdapter(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             getActionBar().setHomeButtonEnabled(true);
         }
-        
-        btnDeleteFavPerfs = (Button) findViewById(R.id.deleteFavPerfs);
+		
+		btnDeleteFavPerfs = (Button) findViewById(R.id.deleteFavPerfs);
 		delFavListView = (ListView) findViewById(R.id.delFavListView);
 		
 		Intent i = getIntent();
@@ -49,7 +62,6 @@ DBAdapter db = new DBAdapter(this);
 		delFavListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View item, int position, long id) {
-				// TODO Auto-generated method stub
 				mItems planet = listAdapter.getItem(position);
 				planet.toggleChecked();
 				SelectViewHolder viewHolder = (SelectViewHolder) item.getTag();
@@ -58,17 +70,15 @@ DBAdapter db = new DBAdapter(this);
 			
 		});
 		
-		listToEditTitle = extras.getStringArrayList("listOfTitles");
-		listToEditUrl = extras.getStringArrayList("listOfUrl");
-		Log.d("SIZE EDIT URL", Integer.toString(listToEditUrl.size()));
-		
+		ArrayList<String> listToEdit = extras.getStringArrayList("listOfPerformers");
 		planetList = new ArrayList<mItems>();
-		for(String perf : listToEditTitle) {
+		for(String perf : listToEdit) {
 			planetList.add(new mItems(perf));
 		}
 		
 		listAdapter = new SelectArralAdapter(this, planetList);
 		delFavListView.setAdapter(listAdapter);
+		
 	}
 	
 	public void deleteAndBackToFavorites(View v) {
@@ -77,27 +87,21 @@ DBAdapter db = new DBAdapter(this);
 	    builder.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int which) {
 	        	db.open();
-	        	for(mItems title : planetList) {
-	        		if(title.isChecked() == true) {	
-	        			//db.deletePerf(title.getName());
-	        			for(int i = 0; i < listToEditTitle.size(); i++) {
-	        				if(title.getName().equals(listToEditTitle.get(i))) {
-	        					db.deleteTab(listToEditUrl.get(i));
-	        				}
-	        			}
+	        	for(mItems perf : planetList) {
+	        		if(perf.isChecked() == true) {	
+	        			db.deletePerf(perf.getName());
 	        		}
 	        	}
-	        	Toast.makeText(getApplicationContext(), R.string.delTitleFromBase, Toast.LENGTH_LONG).show();
+	        	Toast.makeText(getApplicationContext(), R.string.delPerfFromBase, Toast.LENGTH_LONG).show();
 	        	db.close();
-	        	Intent i = new Intent(EditFavTitles.this, FavoritesTitleActivity.class);
-	        	startActivity(i);
+	        	Intent i = new Intent(EditFavPerfs.this, FavoritesActivity.class);
 	        	startActivityForResult(i, 500);
 	        	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
 	        }
 	    });
 	    builder.setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int which) {
-	        	Toast.makeText(getApplicationContext(), R.string.notDelFromTitlesBase, Toast.LENGTH_LONG).show();
+	        	Toast.makeText(getApplicationContext(), R.string.notDelFromPerfsBase, Toast.LENGTH_LONG).show();
 	            dialog.dismiss();
 	        }
 	    });
@@ -130,11 +134,11 @@ DBAdapter db = new DBAdapter(this);
 	}
     
     private void checkReverse() {
-    	for(mItems title : planetList) {
-    		if(title.isChecked() == true) {
-    			title.setChecked(false);
+    	for(mItems perf : planetList) {
+    		if(perf.isChecked() == true) {
+    			perf.setChecked(false);
     		} else {
-    			title.setChecked(true);
+    			perf.setChecked(true);
     		}
     	}
     	listAdapter = new SelectArralAdapter(this, planetList);
@@ -143,9 +147,15 @@ DBAdapter db = new DBAdapter(this);
 	
 	@Override
 	public void onBackPressed() {
-		Intent intent = new Intent(this, FavoritesTitleActivity.class);
+		Intent intent = new Intent(this, FavoritesActivity.class);
 		startActivityForResult(intent, 500);
 		overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	}
+	
+	@Override
+	protected void onPause() {
+	    super.onPause();
+	    finish();
 	}
 
 }

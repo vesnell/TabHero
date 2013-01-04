@@ -1,5 +1,7 @@
 package pl.tabhero;
 
+import pl.tabhero.local.FavoritesActivity;
+import pl.tabhero.net.SearchActivity;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;

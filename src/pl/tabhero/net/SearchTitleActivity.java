@@ -1,4 +1,4 @@
-package pl.tabhero;
+package pl.tabhero.net;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -8,19 +8,30 @@ import java.util.ArrayList;
 import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import pl.tabhero.FavoritesActivity.MyGestureDetector;
+
+import pl.tabhero.R;
+import pl.tabhero.TabHero;
+import pl.tabhero.R.anim;
+import pl.tabhero.R.drawable;
+import pl.tabhero.R.id;
+import pl.tabhero.R.layout;
+import pl.tabhero.R.menu;
+import pl.tabhero.R.string;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -33,31 +44,33 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
- 
-public class SearchActivity extends Activity {
+
+public class SearchTitleActivity extends Activity {
 	
 	private ListView searchListView;
-	private EditText editPerformer;
-	private ImageButton btnSearch;
+	private EditText editTitle;
+	private ImageButton btnTitleSearch;
 	private ArrayAdapter<String> listAdapter;
+	private List<String[]> songs = new ArrayList<String[]>();
+	private ArrayList<String> songTitle = new ArrayList<String>();
+	private ArrayList<String> songUrl = new ArrayList<String>();
 	private ProgressDialog progressDialog;
-	private List<String[]> artists = new ArrayList<String[]>();
-	private ArrayList<String> artistNames = new ArrayList<String>();
-	private ArrayList<String> artistUrl = new ArrayList<String>();
 	private boolean max;
 	private static final int MENUWIFI = Menu.FIRST;
 	private boolean isWebsiteAvailable;
-	private String chordsUrl = "http://www.chords.pl/wykonawcy/";
+	private String chordsUrl = "http://www.chords.pl";
 	
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -65,36 +78,48 @@ public class SearchActivity extends Activity {
 	private GestureDetector gestureDetector;
 	View.OnTouchListener gestureListener;
 	
-    @SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.search);
+        setContentView(R.layout.searchtitle);
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             getActionBar().setHomeButtonEnabled(true);
         }
         
-        btnSearch = (ImageButton) findViewById(R.id.searchBtn);
-		editPerformer = (EditText) findViewById(R.id.editPerformer);
-		searchListView = (ListView) findViewById(R.id.searchListView);
+        Intent i = getIntent();
+		Bundle extras = i.getExtras();
 		
-		editPerformer.setFilters(new InputFilter[]{filter}); 
-		editPerformer.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		max = extras.getBoolean("max");
+		if(max) {
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		}
+		
+		final String performerName = extras.getString("performerName");
+        TextView chosenPerformer = (TextView) findViewById(R.id.chosenPerformer);
+        chosenPerformer.setText(performerName);
+        
+        editTitle = (EditText) findViewById(R.id.editTitle);
+		btnTitleSearch = (ImageButton) findViewById(R.id.searchTitleBtn);
+		searchListView = (ListView) findViewById(R.id.searchTitleListView);
+		
+		editTitle.setFilters(new InputFilter[]{filter});
+        editTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
 		                actionId == EditorInfo.IME_ACTION_DONE ||
 		                event.getAction() == KeyEvent.ACTION_DOWN &&
 		                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-		            btnSearch.performClick();
+		            btnTitleSearch.performClick();
 		            return true;
 		        }
 		        return false;
 		    }
 		});
-		
-		gestureDetector = new GestureDetector(new MyGestureDetector());
+        
+        gestureDetector = new GestureDetector(new MyGestureDetector());
 		gestureListener = new View.OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (gestureDetector.onTouchEvent(event)) {
@@ -110,8 +135,8 @@ public class SearchActivity extends Activity {
 			}
         });
     }
-    
-    InputFilter filter = new InputFilter() { 
+	
+	InputFilter filter = new InputFilter() { 
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) { 
         	for (int i = start; i < end; i++) { 
         		if (!(Character.isLetterOrDigit(source.charAt(i)) || source.charAt(i) == ' ' || source.charAt(i) == '.')) { 
@@ -121,8 +146,8 @@ public class SearchActivity extends Activity {
             return null; 
         }
     }; 
-    
-    class MyGestureDetector extends SimpleOnGestureListener {
+	
+	class MyGestureDetector extends SimpleOnGestureListener {
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 			try {
@@ -130,10 +155,10 @@ public class SearchActivity extends Activity {
 					return false;
 				// right to left swipe
 				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					Toast.makeText(getApplicationContext(), R.string.choosePerf, Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), R.string.chooseTitle, Toast.LENGTH_LONG).show();
 				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 					onBackPressed();
-					//onClickStartActivity(MainActivity.class);
+					//onClickStartActivity(SearchActivity.class);
 				}
 			} catch (Exception e) {
 				// nothing
@@ -141,53 +166,81 @@ public class SearchActivity extends Activity {
 			return false;
 		}
 	}
-    
-    /*private void onClickStartActivity(Class<?> activity) {
-    	Intent i = new Intent(SearchActivity.this, activity);
+	
+	/*private void onClickStartActivity(Class<?> activity) {
+    	Intent i = new Intent(SearchTitleActivity.this, activity);
 		startActivityForResult(i, 500);
 		overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }*/
-    
-    public void searchView(View v) {
-    	
-    	artists.clear();
-    	artistNames.clear();
-    	artistUrl.clear();
-    	String performer = new String();
-    	performer = editPerformer.getText().toString().toLowerCase();
-		hideKeyboard();
+	
+	@SuppressWarnings("unchecked")
+	public void searchTitleView(View v) {
 		
-		if(!(performer.length() > 0)) 
-			Toast.makeText(getApplicationContext(), R.string.hintEmpty, Toast.LENGTH_LONG).show();
-		else if ((performer.charAt(0) == ' ') || (performer.charAt(0) == '.'))
-			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
-		else if(!(checkInternetConnection()))
-			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
-		else {
-				new checkConnect().execute(performer);		
-		}
-    }
-    
-    public class checkConnect extends AsyncTask<String, Void, String>{
+		songs.clear();
+		songTitle.clear();
+		songUrl.clear();
+		
+		String title = new String();
+		title = editTitle.getText().toString().toLowerCase();
+		hideKeyboard();
+		Intent i = getIntent();
+		Bundle extras = i.getExtras();
+		String performerUrl = extras.getString("performerUrl");
 
-    	@Override
-   	 	protected void onPostExecute(String performer) {
+		ArrayList<String> passing = new ArrayList<String>();
+		passing.add(performerUrl);
+		passing.add(title);
+		if(!(checkInternetConnection()))
+			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
+		else 
+			new checkConnectTitle().execute(passing);
+	}
+	
+	public class checkConnectTitle extends AsyncTask<ArrayList<String>, Void, ArrayList<String>>{
+   	
+    	@SuppressWarnings("unchecked")
+		@Override
+   	 	protected void onPostExecute(ArrayList<String> passing) {
     		if(isWebsiteAvailable) {
-    			new connect().execute(performer);
+    			new connect().execute(passing);
     		} else {
     			Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
     		}
     	}
 
 		@Override
-		protected String doInBackground(String... params) {
-			String performer = params[0];
+		protected ArrayList<String> doInBackground(ArrayList<String>... params) {
+			ArrayList<String> passing = params[0];
 			if(isConnected()) {
 				isWebsiteAvailable = true;
 			} else {
 				isWebsiteAvailable = false;
 			}
-			return performer;
+			return passing;
+		}
+    }
+	
+	public class checkConnectTab extends AsyncTask<ArrayList<String>, Void, ArrayList<String>>{
+	   	
+    	@SuppressWarnings("unchecked")
+		@Override
+   	 	protected void onPostExecute(ArrayList<String> passing) {
+    		if(isWebsiteAvailable) {
+    			new getTablature().execute(passing);
+    		} else {
+    			Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
+    		}
+    	}
+
+		@Override
+		protected ArrayList<String> doInBackground(ArrayList<String>... params) {
+			ArrayList<String> passing = params[0];
+			if(isConnected()) {
+				isWebsiteAvailable = true;
+			} else {
+				isWebsiteAvailable = false;
+			}
+			return passing;
 		}
     }
     
@@ -213,137 +266,167 @@ public class SearchActivity extends Activity {
         }
         return false;
     }
-    
-    public class connect extends AsyncTask<String, Void, List<String[]>>{
-    	
-    	@Override
-    	 protected void onPreExecute() {
-    		startProgressBar();
-    	 }
-    	
-    	@Override
-    	 protected void onPostExecute(List<String[]> chosenPerformers) {
-			for(String[] art : chosenPerformers) {
-				artistNames.add(art[1]);
-				artistUrl.add(art[0]);
-			}
-			
-			listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artistsnet, artistNames);
-			searchListView.setAdapter(listAdapter);
-			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	            	Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
-	            	Bundle bun = new Bundle();
-	            	bun.putString("performerName", artistNames.get(position));
-	    			bun.putString("performerUrl", artistUrl.get(position));
-	    			bun.putBoolean("max", max);
-	    			i.putExtras(bun);
-	    			startActivityForResult(i, 500);
-	    			overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-	            }
-	        } );
-			
-    		closeProgressBar();
-    	 }
-    	
+	
+	public class connect extends AsyncTask<ArrayList<String>, Void, List<String[]>> {
+		
 		@Override
-		protected List<String[]> doInBackground(String... params) {
-			String performer = params[0];
+   	 	protected void onPreExecute() {
+			startProgressBar(getString(R.string.srchSong));
+		}
+   	
+		@Override
+		protected void onPostExecute(List<String[]> chosenTitles) {
+			for(String[] sng : chosenTitles) {
+				Log.d("ART1", sng[1]);
+				songTitle.add(sng[1]);
+				Log.d("ART0", sng[0]);
+				songUrl.add(sng[0]);
+			}
+			listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.titlesnet, songTitle);
+			searchListView.setAdapter(listAdapter);
+			closeProgressBar();
+			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+	            @SuppressWarnings("unchecked")
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	            	String posUrl = songUrl.get(position);
+	            	String posTitle = songTitle.get(position);
+	            	ArrayList<String> passing = new ArrayList<String>();
+	            	passing.add(posUrl);
+	            	passing.add(posTitle);
+	            	if(!(checkInternetConnection()))
+	            		Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
+	            	else
+	            		new checkConnectTab().execute(passing);      		
+	            }
+			} );
+   	 	}
+
+		@Override
+		protected List<String[]> doInBackground(ArrayList<String>... params) {
+			ArrayList<String> passing = params[0];
+			String urlPerformerSongs = passing.get(0);
+			String title = passing.get(1);
 			String url = chordsUrl;
-	    	List<String[]> chosenPerformers = new ArrayList<String[]>();
-	    	Document doc = preperAndConnect(performer, url);
-	    	String codeFind = doc.select("tr.v0,tr.v1").toString();
-	    	Document docFind = Jsoup.parse(codeFind);
-	    	Elements performers = docFind.select("a[href]");
-	    	String[][] array = new String[performers.size()][2];
+	    	List<String[]> chosenTitles = new ArrayList<String[]>();
+	    	Document doc = connectUrl(url + urlPerformerSongs);
+	    	String codeSongs = doc.select("table.piosenki").toString();
+	    	Document songs = Jsoup.parse(codeSongs);
+	    	Elements chosenLineSong = songs.select("a[href]");
+	    	String[][] array = new String[chosenLineSong.size()][2];
 	    	boolean checkContains;
-	    	
-	    	for(int i = 0; i < performers.size(); i++) {
-	    		array[i][0] = performers.get(i).attr("href");
-	    		array[i][1] = performers.get(i).toString();
+	    	for(int i = 0; i < chosenLineSong.size(); i++) {
+	    		array[i][0] = chosenLineSong.get(i).attr("href");
+	    		array[i][0] = url + array[i][0];
+	    		array[i][1] = chosenLineSong.get(i).toString();
 	    		array[i][1] = Jsoup.parse(array[i][1]).select("a").first().ownText();
 	    		array[i][1] = array[i][1].replace("\\", "");
 	    		String p = array[i][1].toLowerCase();
-	    		checkContains = p.contains(performer);
+	    		checkContains = p.contains(title);
 	    		if(checkContains == true) {
-	    			chosenPerformers.add(array[i]);
+	    			chosenTitles.add(array[i]);
 	    		}
 	    	}
-			return chosenPerformers;
-		} 
-    }
-    
-    private Document preperAndConnect(String performer, String url) {
-		Document doc = null;
-		if(Character.isDigit(performer.charAt(0))) {
-    		url = url + "1";
-    		doc = connect(url);
-    	}
-    	else {
-    		String temp = performer;
-    		if(performer.charAt(0) == 'ą')
-    			temp = performer.replaceAll("^ą", "a");
-    		else if(performer.charAt(0) == 'ć')
-    			temp = performer.replaceAll("^ć", "c");
-    		else if(performer.charAt(0) == 'ę')
-    			temp = performer.replaceAll("^ę", "e");
-    		else if(performer.charAt(0) == 'ł')
-    			temp = performer.replaceAll("^ł", "l");
-    		else if(performer.charAt(0) == 'ń')
-    			temp = performer.replaceAll("^ń", "n");
-    		else if(performer.charAt(0) == 'ó')
-    			temp = performer.replaceAll("^ó", "o");
-    		else if(performer.charAt(0) == 'ś')
-    			temp = performer.replaceAll("^ś", "s");
-    		else if(performer.charAt(0) == 'ź')
-    			temp = performer.replaceAll("^ź", "z");
-    		else if(performer.charAt(0) == 'ż')
-    			temp = performer.replaceAll("^ż", "z");
-    		url = url + temp;
-    		doc = connect(url);
-    	}
-		return doc;
+			return chosenTitles;
+		}
 	}
     
-    private Document connect(String url) {
-    	Document doc = null;
-    	try {
+	public class getTablature extends AsyncTask<ArrayList<String>, Void, ArrayList<String>>{
+		
+		@Override
+   	 	protected void onPreExecute() {
+			startProgressBar(getString(R.string.srchTab));
+   	 	}
+   	
+		@Override
+		protected void onPostExecute(ArrayList<String> passing) {
+			closeProgressBar();
+			String tablature = passing.get(0);
+			String songTitle = passing.get(1);
+			String songUrl = passing.get(2);
+			Intent i = getIntent();
+			Bundle extras = i.getExtras();
+			final String performerName = extras.getString("performerName");
+			Intent intent = new Intent(SearchTitleActivity.this, TabViewActivity.class);
+			Bundle bun = new Bundle();
+			bun.putString("performerName", performerName);
+			bun.putString("songTitle", songTitle);
+			bun.putString("songUrl", songUrl);
+			bun.putString("tab", tablature);
+			bun.putBoolean("max", max);
+			intent.putExtras(bun);
+			startActivityForResult(intent, 500);
+			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+   	 	}
+
+		@Override
+		protected ArrayList<String> doInBackground(ArrayList<String>... params) {
+			ArrayList<String> passing = params[0];
+			String url = passing.get(0);
+			String title = passing.get(1);
+			Document doc = connectUrl(url);
+	    	Element elements = doc.select("pre").first();
+	    	String tab = elements.text();
+	    	String[] table = tab.split("\n");
+	    	tab = "";
+	    	for (int i = 3; i < table.length; i++)
+	    		tab += table[i] + "\n";
+	    	ArrayList<String> passing2 = new ArrayList<String>();
+	    	passing2.add(tab);
+	    	passing2.add(title);
+	    	passing2.add(url);
+			return passing2;
+		}
+	}
+	
+	private Document connectUrl(String url) {
+		Document doc = null;
+		try {
 			doc = Jsoup.connect(url).get();
-		} catch (MalformedURLException ep) {
+		}  catch (MalformedURLException ep) {
 			Toast.makeText(getApplicationContext(), R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
-			
 		} catch (IOException e) {
 			Toast.makeText(getApplicationContext(), R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
 		}
-    	return doc;
-    }
-    
-    private void hideKeyboard() {
-		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(editPerformer.getWindowToken(), 0);
+		return doc;
 	}
-    
-    private void startProgressBar() {
+	
+	private void startProgressBar(String title) {
+		setProgressBarIndeterminateVisibility(true);
+		progressDialog = ProgressDialog.show(SearchTitleActivity.this, title, getString(R.string.wait));
+	}
+	
+	private void startProgressBarWifi() {
     	setProgressBarIndeterminateVisibility(true);
-        progressDialog = ProgressDialog.show(SearchActivity.this, getString(R.string.srchPerf), getString(R.string.wait));
+        progressDialog = ProgressDialog.show(SearchTitleActivity.this, "", getString(R.string.wait));
     }
-    
-    private void startProgressBarWifiOn() {
-    	setProgressBarIndeterminateVisibility(true);
-        progressDialog = ProgressDialog.show(SearchActivity.this, getString(R.string.wifiTryOn), getString(R.string.wait));
-    }
-    
-    private void startProgressBarWifiOff() {
-    	setProgressBarIndeterminateVisibility(true);
-        progressDialog = ProgressDialog.show(SearchActivity.this, getString(R.string.wifiTryOff), getString(R.string.wait));
-    }
-    
-    private void closeProgressBar() {
-    	setProgressBarIndeterminateVisibility(false);
+	
+	private void closeProgressBar() {
+		setProgressBarIndeterminateVisibility(false);
 		progressDialog.dismiss();
+	}
+	
+	private void hideKeyboard() {
+		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(editTitle.getWindowToken(), 0);
+	}
+	
+	public boolean checkInternetConnection() {
+        ConnectivityManager cm = (ConnectivityManager) SearchTitleActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable() && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
     }
-    
-    @SuppressLint("NewApi")
+	
+	/*@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.searchart, menu);
+	    return true;
+	}*/
+	
+	@SuppressLint("NewApi")
 	@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
     	menu.clear();
@@ -365,7 +448,7 @@ public class SearchActivity extends Activity {
     	inflater.inflate(R.menu.searchart, menu);
     	return super.onPrepareOptionsMenu(menu);
     }
-    
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		closeOptionsMenu();
@@ -386,8 +469,8 @@ public class SearchActivity extends Activity {
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
-    
-    private void wifiMechanise() {
+	
+	private void wifiMechanise() {
     	WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
     	if(wifi.isWifiEnabled()) {
     		try {
@@ -412,12 +495,7 @@ public class SearchActivity extends Activity {
     	
     	@Override
     	 protected void onPreExecute() {
-    		WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
-    		if(wifi.isWifiEnabled()) {
-    			startProgressBarWifiOff();
-    		} else {
-    			startProgressBarWifiOn();
-    		}
+    		startProgressBarWifi();
     	 }
     	
     	@Override
@@ -445,8 +523,8 @@ public class SearchActivity extends Activity {
 			end = System.currentTimeMillis();
 		} while((checkInternetConnection() != bool) && (end  - start < 15000));
     }
-    
-    private void minMax() {
+	
+	private void minMax() {
     	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
        if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -458,19 +536,10 @@ public class SearchActivity extends Activity {
         	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         	max = true;
         }
-    }
-    
-    public boolean checkInternetConnection() {
-        ConnectivityManager cm = (ConnectivityManager) SearchActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable() && cm.getActiveNetworkInfo().isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-    @Override
+	}
+	
+	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
     }
 }

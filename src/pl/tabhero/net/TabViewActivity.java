@@ -1,7 +1,16 @@
-package pl.tabhero;
+package pl.tabhero.net;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import pl.tabhero.R;
+import pl.tabhero.TabHero;
+import pl.tabhero.R.anim;
+import pl.tabhero.R.id;
+import pl.tabhero.R.layout;
+import pl.tabhero.R.menu;
+import pl.tabhero.R.string;
+import pl.tabhero.db.DBAdapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

@@ -1,4 +1,4 @@
-package pl.tabhero;
+package pl.tabhero.db;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package pl.tabhero;
+package pl.tabhero.utils.selector;
 
 import android.widget.CheckBox;
 import android.widget.TextView;

@@ -1,6 +1,10 @@
-package pl.tabhero;
+package pl.tabhero.utils.selector;
 
 import java.util.List;
+
+import pl.tabhero.R;
+import pl.tabhero.R.id;
+import pl.tabhero.R.layout;
 
 import android.content.Context;
 import android.view.LayoutInflater;

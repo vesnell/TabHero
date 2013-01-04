@@ -1,4 +1,4 @@
-package pl.tabhero;
+package pl.tabhero.utils.selector;
 
 
 /** Holds planet data. */

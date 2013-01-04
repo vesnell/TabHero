@@ -1,4 +1,4 @@
-package pl.tabhero;
+package pl.tabhero.local;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,6 +9,15 @@ import java.io.Writer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+
+import pl.tabhero.R;
+import pl.tabhero.TabHero;
+import pl.tabhero.R.anim;
+import pl.tabhero.R.id;
+import pl.tabhero.R.layout;
+import pl.tabhero.R.menu;
+import pl.tabhero.R.string;
+import pl.tabhero.db.DBAdapter;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
