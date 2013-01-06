@@ -4,10 +4,21 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import pl.tabhero.R;
@@ -19,6 +30,7 @@ import pl.tabhero.R.layout;
 import pl.tabhero.R.menu;
 import pl.tabhero.R.string;
 import pl.tabhero.local.FavoritesActivity.MyGestureDetector;
+import pl.tabhero.utils.PolishComparator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -63,7 +75,7 @@ public class SearchActivity extends Activity {
 	private List<String[]> artists = new ArrayList<String[]>();
 	private ArrayList<String> artistNames = new ArrayList<String>();
 	private ArrayList<String> artistUrl = new ArrayList<String>();
-	private boolean max;
+	private static boolean MAX;
 	private static final int MENUWIFI = Menu.FIRST;
 	private boolean isWebsiteAvailable;
 	private String chordsUrl = "http://www.chords.pl/wykonawcy/";
@@ -223,7 +235,7 @@ public class SearchActivity extends Activity {
         return false;
     }
     
-    public class connect extends AsyncTask<String, Void, List<String[]>>{
+    public class connect extends AsyncTask<String, Void, Map<String, String>>{
     	
     	@Override
     	 protected void onPreExecute() {
@@ -231,12 +243,10 @@ public class SearchActivity extends Activity {
     	 }
     	
     	@Override
-    	 protected void onPostExecute(List<String[]> chosenPerformers) {
-			for(String[] art : chosenPerformers) {
-				artistNames.add(art[1]);
-				artistUrl.add(art[0]);
-			}
+    	 protected void onPostExecute(Map<String, String> chosenPerformers) {
 			
+    		final List<String> artistNames = new ArrayList<String>(chosenPerformers.keySet());
+    		final List<String> artistUrls = new ArrayList<String>(chosenPerformers.values());
 			listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artistsnet, artistNames);
 			searchListView.setAdapter(listAdapter);
 			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -244,8 +254,8 @@ public class SearchActivity extends Activity {
 	            	Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
 	            	Bundle bun = new Bundle();
 	            	bun.putString("performerName", artistNames.get(position));
-	    			bun.putString("performerUrl", artistUrl.get(position));
-	    			bun.putBoolean("max", max);
+	    			bun.putString("performerUrl", artistUrls.get(position));
+	    			bun.putBoolean("max", MAX);
 	    			i.putExtras(bun);
 	    			startActivityForResult(i, 500);
 	    			overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -256,33 +266,29 @@ public class SearchActivity extends Activity {
     	 }
     	
 		@Override
-		protected List<String[]> doInBackground(String... params) {
+		protected Map<String, String> doInBackground(String... params) {
 			String performer = params[0];
 			String url = chordsUrl;
-	    	List<String[]> chosenPerformers = new ArrayList<String[]>();
-	    	Document doc = preperAndConnect(performer, url);
+			Comparator<String> comparator = new PolishComparator();
+	    	Map<String, String> chosenPerformers = new TreeMap<String, String>(comparator);
+	    	Document doc = prepareAndConnect(performer, url);
 	    	String codeFind = doc.select("tr.v0,tr.v1").toString();
 	    	Document docFind = Jsoup.parse(codeFind);
 	    	Elements performers = docFind.select("a[href]");
-	    	String[][] array = new String[performers.size()][2];
-	    	boolean checkContains;
 	    	
-	    	for(int i = 0; i < performers.size(); i++) {
-	    		array[i][0] = performers.get(i).attr("href");
-	    		array[i][1] = performers.get(i).toString();
-	    		array[i][1] = Jsoup.parse(array[i][1]).select("a").first().ownText();
-	    		array[i][1] = array[i][1].replace("\\", "");
-	    		String p = array[i][1].toLowerCase();
-	    		checkContains = p.contains(performer);
-	    		if(checkContains == true) {
-	    			chosenPerformers.add(array[i]);
+	    	for(Element el : performers) {
+	    		String localUrl = el.attr("href");
+	    		String localPerformer = Jsoup.parse(el.toString()).select("a").first().ownText().replace("\\", "");
+	    		if(localPerformer.toLowerCase().contains(performer) == true) {
+	    			chosenPerformers.put(localPerformer, localUrl);
 	    		}
 	    	}
+	    	Log.d("LICZBA EL", Integer.toString(chosenPerformers.size()));
 			return chosenPerformers;
 		} 
     }
     
-    private Document preperAndConnect(String performer, String url) {
+    private Document prepareAndConnect(String performer, String url) {
 		Document doc = null;
 		if(Character.isDigit(performer.charAt(0))) {
     		url = url + "1";
@@ -460,12 +466,12 @@ public class SearchActivity extends Activity {
        if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-    	   max = false;
+    	   MAX = false;
         }
         else {
         	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        	max = true;
+        	MAX = true;
         }
     }
     
