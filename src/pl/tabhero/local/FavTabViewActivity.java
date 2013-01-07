@@ -9,6 +9,7 @@ import java.io.Writer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import pl.tabhero.R;
 import pl.tabhero.TabHero;
@@ -53,7 +54,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FavTabViewActivity extends Activity{
+public class FavTabViewActivity extends Activity {
+	
+	DBAdapter db = new DBAdapter(this); 
 	
 	private WakeLock mWakeLock = null;
 	private TextView tab;
@@ -65,8 +68,6 @@ public class FavTabViewActivity extends Activity{
 	private boolean lock = false;
 	
 	private int scaleText = 12;
-	
-	DBAdapter db = new DBAdapter(this); 
 	private String performer;
 	private String title;
 	private String tablature;
@@ -102,11 +103,13 @@ public class FavTabViewActivity extends Activity{
         
         performer = extras.getString("performerName");
         title = extras.getString("songTitle");
-        tablature = extras.getString("songTab");
+        //tablature = extras.getString("songTab");
         songUrl = extras.getString("songUrl");
         
-        Log.d("TABULATURA Z BAZY", tablature);
-        Log.d("URL", songUrl);
+        tablature = getTablature(songUrl);
+        
+        //Log.d("TABULATURA Z BAZY", tablature);
+        //Log.d("URL", songUrl);
         
         head.setText(performer + " - " + title);
         
@@ -156,6 +159,19 @@ public class FavTabViewActivity extends Activity{
 				return false;
 			}
         });
+	}
+	
+	private String getTablature(String url) {
+		String tabl = "";
+		db.open();
+		Cursor c = db.getRecordUrl(url);
+		if(c.moveToFirst()) {
+			do {
+				tabl = c.getString(3);
+			} while(c.moveToNext());
+		}
+		db.close();
+		return tabl;
 	}
 	
 	private long addId(String url) {

@@ -1,8 +1,13 @@
 package pl.tabhero.local;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import pl.tabhero.R;
 import pl.tabhero.TabHero;
@@ -12,6 +17,7 @@ import pl.tabhero.R.layout;
 import pl.tabhero.R.menu;
 import pl.tabhero.R.string;
 import pl.tabhero.db.DBAdapter;
+import pl.tabhero.utils.PolishComparator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -55,7 +61,7 @@ public class FavoritesTitleActivity extends Activity {
 	private ArrayAdapter<String> listAdapter;
 	private ArrayList<String> listOfFavTitle;
 	private ArrayList<String> listOfChosenTitleFromBase;
-	private ArrayList<String> listOfChosenTabFromBase;
+	//private ArrayList<String> listOfChosenTabFromBase;
 	private ArrayList<String> listOfChosenUrlFromBase;
 	private ArrayList<String> listOfChosenTitleFromBase2;
 	private ArrayList<String> listOfChosenUrlFromBase2;
@@ -112,10 +118,10 @@ public class FavoritesTitleActivity extends Activity {
         
         ArrayList<ArrayList<String>> listOfLists = addTitleFromBase(performerName);
         ArrayList<String> listTitle = listOfLists.get(0);
-        ArrayList<String> listTab = listOfLists.get(1);
-        ArrayList<String> listUrl = listOfLists.get(2);
+        //ArrayList<String> listTab = listOfLists.get(1);
+        ArrayList<String> listUrl = listOfLists.get(1);
         listOfChosenTitleFromBase = listTitle;
-        listOfChosenTabFromBase = listTab;
+        //listOfChosenTabFromBase = listTab;
         listOfChosenUrlFromBase = listUrl;
         
         listAdapter = new ArrayAdapter<String>(this, R.layout.titlesfav, listOfChosenTitleFromBase);
@@ -127,7 +133,7 @@ public class FavoritesTitleActivity extends Activity {
             	Bundle bun = new Bundle();
             	bun.putString("performerName", performerName);
             	bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
-            	bun.putString("songTab", listOfChosenTabFromBase.get(position));
+            	//bun.putString("songTab", listOfChosenTabFromBase.get(position));
             	bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
             	bun.putBoolean("max", max);
     			i.putExtras(bun);
@@ -318,15 +324,15 @@ public class FavoritesTitleActivity extends Activity {
 		
 		ArrayList<ArrayList<String>> listOfLists = addTitleFromBase(performerName);
         ArrayList<String> listTitle = listOfLists.get(0);
-        ArrayList<String> listTab = listOfLists.get(1);
-        ArrayList<String> listUrl = listOfLists.get(2);
+        //ArrayList<String> listTab = listOfLists.get(1);
+        ArrayList<String> listUrl = listOfLists.get(1);
         listOfChosenTitleFromBase = listTitle;
-        listOfChosenTabFromBase = listTab;
+        //listOfChosenTabFromBase = listTab;
         listOfChosenUrlFromBase = listUrl;
         
 		String title = new String();
 		listOfChosenTitleFromBase2 = new ArrayList<String>();
-		final ArrayList<String> listOfChosenTabFromBase2 = new ArrayList<String>();
+		//final ArrayList<String> listOfChosenTabFromBase2 = new ArrayList<String>();
 		listOfChosenUrlFromBase2 = new ArrayList<String>(); 
     	title = editFavTitle.getText().toString().toLowerCase();
     	if(title.length() > 0) {
@@ -338,7 +344,7 @@ public class FavoritesTitleActivity extends Activity {
     				checkContains = listOfChosenTitleFromBase.get(i).toLowerCase().contains(title);
     				if(checkContains == true) {
     					listOfChosenTitleFromBase2.add(listOfChosenTitleFromBase.get(i));
-    					listOfChosenTabFromBase2.add(listOfChosenTabFromBase.get(i));
+    					//listOfChosenTabFromBase2.add(listOfChosenTabFromBase.get(i));
     					listOfChosenUrlFromBase2.add(listOfChosenUrlFromBase.get(i));
     				}
     			}
@@ -350,7 +356,7 @@ public class FavoritesTitleActivity extends Activity {
     					Bundle bun = new Bundle();
     					bun.putString("performerName", performerName);
     					bun.putString("songTitle", listOfChosenTitleFromBase2.get(position));
-    					bun.putString("songTab", listOfChosenTabFromBase2.get(position));
+    					//bun.putString("songTab", listOfChosenTabFromBase2.get(position));
     					bun.putString("songUrl", listOfChosenUrlFromBase2.get(position));
     					bun.putBoolean("max", max);
     					i.putExtras(bun);
@@ -377,7 +383,7 @@ public class FavoritesTitleActivity extends Activity {
 					Bundle bun = new Bundle();
 					bun.putString("performerName", performerName);
 					bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
-					bun.putString("songTab", listOfChosenTabFromBase.get(position));
+					//bun.putString("songTab", listOfChosenTabFromBase.get(position));
 					bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
 					bun.putBoolean("max", max);
 					i.putExtras(bun);
@@ -398,26 +404,30 @@ public class FavoritesTitleActivity extends Activity {
 	}
 	
 	public ArrayList<ArrayList<String>> addTitleFromBase(String perfName) {
-    	ArrayList<String> listTitles = new ArrayList<String>();
-    	ArrayList<String> listTabs = new ArrayList<String>();
-    	ArrayList<String> listUrl = new ArrayList<String>();
-    	ArrayList<ArrayList<String>> listOfList = new ArrayList<ArrayList<String>>();
+		Comparator<String> comparator = new PolishComparator();
+    	Map<String, String> mapTitlesUrls = new TreeMap<String, String>(comparator);
+    	//Map<String, String> mapTabsUrls = new HashMap<String, String>();
+    	//ArrayList<String> listTitles = new ArrayList<String>();
+    	//ArrayList<String> listTabs = new ArrayList<String>();
+    	//ArrayList<String> listUrl = new ArrayList<String>();
+    	//ArrayList<ArrayList<String>> listOfList = new ArrayList<ArrayList<String>>();
     	db.open();
         Cursor c = db.getRecordPerf(perfName);
         if (c.moveToFirst())
         {
             do {
-            	listTitles.add(c.getString(2));
-            	listTabs.add(c.getString(3));
-            	listUrl.add(c.getString(4));
+            	mapTitlesUrls.put(c.getString(2), c.getString(4));
+            	//listTitles.add(c.getString(2));
+            	//listTabs.add(c.getString(3));
+            	//listUrl.add(c.getString(4));
             } while (c.moveToNext());
         }
         db.close();
-        Collections.reverse(listTitles);
-        Collections.reverse(listTabs);
-        Collections.reverse(listUrl);
+        ArrayList<String> listTitles = new ArrayList<String>(mapTitlesUrls.keySet());
+		ArrayList<String> listUrl = new ArrayList<String>(mapTitlesUrls.values());
+    	ArrayList<ArrayList<String>> listOfList = new ArrayList<ArrayList<String>>();
         listOfList.add(listTitles);
-        listOfList.add(listTabs);
+        //listOfList.add(listTabs);
         listOfList.add(listUrl);
         return listOfList;      
     }

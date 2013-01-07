@@ -4,10 +4,17 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.jsoup.Jsoup;
@@ -24,6 +31,7 @@ import pl.tabhero.R.layout;
 import pl.tabhero.R.menu;
 import pl.tabhero.R.string;
 import pl.tabhero.utils.PolishComparator;
+import pl.tabhero.utils.Tablature;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -176,6 +184,7 @@ public class SearchTitleActivity extends Activity {
 		ArrayList<String> passing = new ArrayList<String>();
 		passing.add(performerUrl);
 		passing.add(title);
+		//Tablature tablature = new Tablature(title, performerUrl);
 		if(!(checkInternetConnection()))
 			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
 		else 
@@ -262,8 +271,8 @@ public class SearchTitleActivity extends Activity {
    	
 		@Override
 		protected void onPostExecute(Map<String, String> chosenTitles) {
-			final List<String> songTitle = new ArrayList<String>(chosenTitles.keySet());
-    		final List<String> songUrl = new ArrayList<String>(chosenTitles.values());
+			final List<String> songTitle = new ArrayList<String>(chosenTitles.values());
+    		final List<String> songUrl = new ArrayList<String>(chosenTitles.keySet());
 			listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.titlesnet, songTitle);
 			searchListView.setAdapter(listAdapter);
 			closeProgressBar();
@@ -289,8 +298,8 @@ public class SearchTitleActivity extends Activity {
 			String urlPerformerSongs = passing.get(0);
 			String title = passing.get(1);
 			String url = chordsUrl;
-			Comparator<String> comparator = new PolishComparator();
-	    	Map<String, String> chosenTitles = new TreeMap<String, String>(comparator);
+			//Comparator<String> comparator = new PolishComparator();
+	    	Map<String, String> unsortedChosenTitles = new TreeMap<String, String>();
 	    	Document doc = connectUrl(url + urlPerformerSongs);
 	    	String codeSongs = doc.select("table.piosenki").toString();
 	    	Document songs = Jsoup.parse(codeSongs);
@@ -301,14 +310,33 @@ public class SearchTitleActivity extends Activity {
 	    		localUrl = url + localUrl;
 	    		String localTitle = Jsoup.parse(el.toString()).select("a").first().ownText().replace("\\", "");
 	    		if(localTitle.toLowerCase().contains(title) == true) {
-	    			chosenTitles.put(localTitle, localUrl);
+	    			unsortedChosenTitles.put(localUrl, localTitle);
 	    		}
 	    	}
-	    	return chosenTitles;
+	    	return sortMapByValue(unsortedChosenTitles);
 		}
 	}
     
-	public class getTablature extends AsyncTask<ArrayList<String>, Void, ArrayList<String>>{
+	private Map<String, String> sortMapByValue(Map<String, String> unsortedMap) {
+		List<Entry<String, String>> list = new ArrayList<Entry<String, String>>(unsortedMap.entrySet());
+		//Comparator<String> comparator = new PolishComparator();
+		Collections.sort(list, new Comparator<Entry<String, String>>() {
+
+			@Override
+			public int compare(Entry<String, String> lhs, Entry<String, String> rhs) {
+				Collator c = Collator.getInstance(new Locale("pl", "PL"));
+				return  c.compare(((Entry<String, String>) (lhs)).getValue(), ((Entry<String, String>) (rhs)).getValue());
+			}
+		
+		}); 
+		Map<String, String> sortedMap = new LinkedHashMap<String, String>();
+		for (Entry<String, String> entry : list) {
+			sortedMap.put(entry.getKey(), entry.getValue());
+		}
+		return sortedMap;
+	}
+	
+	public class getTablature extends AsyncTask<ArrayList<String>, Void, Tablature>{
 		
 		@Override
    	 	protected void onPreExecute() {
@@ -316,20 +344,17 @@ public class SearchTitleActivity extends Activity {
    	 	}
    	
 		@Override
-		protected void onPostExecute(ArrayList<String> passing) {
+		protected void onPostExecute(Tablature tablature) {
 			closeProgressBar();
-			String tablature = passing.get(0);
-			String songTitle = passing.get(1);
-			String songUrl = passing.get(2);
 			Intent i = getIntent();
 			Bundle extras = i.getExtras();
 			final String performerName = extras.getString("performerName");
 			Intent intent = new Intent(SearchTitleActivity.this, TabViewActivity.class);
 			Bundle bun = new Bundle();
 			bun.putString("performerName", performerName);
-			bun.putString("songTitle", songTitle);
-			bun.putString("songUrl", songUrl);
-			bun.putString("tab", tablature);
+			bun.putString("songTitle", tablature.songTitle);
+			bun.putString("songUrl", tablature.songUrl);
+			bun.putString("tab", tablature.songTablature);
 			bun.putBoolean("max", MAX);
 			intent.putExtras(bun);
 			startActivityForResult(intent, 500);
@@ -337,22 +362,13 @@ public class SearchTitleActivity extends Activity {
    	 	}
 
 		@Override
-		protected ArrayList<String> doInBackground(ArrayList<String>... params) {
+		protected Tablature doInBackground(ArrayList<String>... params) {
 			ArrayList<String> passing = params[0];
 			String url = passing.get(0);
 			String title = passing.get(1);
-			Document doc = connectUrl(url);
-	    	Element elements = doc.select("pre").first();
-	    	String tab = elements.text();
-	    	String[] table = tab.split("\n");
-	    	tab = "";
-	    	for (int i = 3; i < table.length; i++)
-	    		tab += table[i] + "\n";
-	    	ArrayList<String> passing2 = new ArrayList<String>();
-	    	passing2.add(tab);
-	    	passing2.add(title);
-	    	passing2.add(url);
-			return passing2;
+			Tablature tablature = new Tablature(title, url);
+			tablature.setSongTablature(connectUrl(url));
+			return tablature;
 		}
 	}
 	

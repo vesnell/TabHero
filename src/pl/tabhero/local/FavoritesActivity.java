@@ -2,7 +2,10 @@ package pl.tabhero.local;
  
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import pl.tabhero.R;
 import pl.tabhero.TabHero;
@@ -12,6 +15,7 @@ import pl.tabhero.R.layout;
 import pl.tabhero.R.menu;
 import pl.tabhero.R.string;
 import pl.tabhero.db.DBAdapter;
+import pl.tabhero.utils.PolishComparator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -429,6 +433,7 @@ public class FavoritesActivity extends Activity {
     }
     
     public ArrayList<String> addPerfFromBase() {
+    	Comparator<String> comparator = new PolishComparator();
     	ArrayList<String> list = new ArrayList<String>();
     	db.open();
         Cursor c = db.getAllRecords();
@@ -440,7 +445,7 @@ public class FavoritesActivity extends Activity {
             } while (c.moveToNext());
         }
         db.close();
-        Collections.sort(list);
+        Collections.sort(list, comparator);
         return list;      
     } 
     
