@@ -72,9 +72,6 @@ public class SearchActivity extends Activity {
 	private ImageButton btnSearch;
 	private ArrayAdapter<String> listAdapter;
 	private ProgressDialog progressDialog;
-	private List<String[]> artists = new ArrayList<String[]>();
-	private ArrayList<String> artistNames = new ArrayList<String>();
-	private ArrayList<String> artistUrl = new ArrayList<String>();
 	private static boolean MAX;
 	private static final int MENUWIFI = Menu.FIRST;
 	private boolean isWebsiteAvailable;
@@ -146,34 +143,19 @@ public class SearchActivity extends Activity {
     class MyGestureDetector extends SimpleOnGestureListener {
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			try {
-				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-					return false;
-				// right to left swipe
-				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					Toast.makeText(getApplicationContext(), R.string.choosePerf, Toast.LENGTH_LONG).show();
-				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					onBackPressed();
-					//onClickStartActivity(MainActivity.class);
-				}
-			} catch (Exception e) {
-				// nothing
+			if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+				return false;
+			// right to left swipe
+			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {					Toast.makeText(getApplicationContext(), R.string.choosePerf, Toast.LENGTH_LONG).show();
+			} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+				onBackPressed();
+				//onClickStartActivity(MainActivity.class);
 			}
 			return false;
 		}
 	}
     
-    /*private void onClickStartActivity(Class<?> activity) {
-    	Intent i = new Intent(SearchActivity.this, activity);
-		startActivityForResult(i, 500);
-		overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }*/
-    
     public void searchView(View v) {
-    	
-    	artists.clear();
-    	artistNames.clear();
-    	artistUrl.clear();
     	String performer = new String();
     	performer = editPerformer.getText().toString().toLowerCase();
 		hideKeyboard();
@@ -283,7 +265,6 @@ public class SearchActivity extends Activity {
 	    			chosenPerformers.put(localPerformer, localUrl);
 	    		}
 	    	}
-	    	Log.d("LICZBA EL", Integer.toString(chosenPerformers.size()));
 			return chosenPerformers;
 		} 
     }

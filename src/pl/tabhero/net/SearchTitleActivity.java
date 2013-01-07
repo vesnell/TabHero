@@ -5,7 +5,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,6 +23,7 @@ import pl.tabhero.R.id;
 import pl.tabhero.R.layout;
 import pl.tabhero.R.menu;
 import pl.tabhero.R.string;
+import pl.tabhero.utils.PolishComparator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -63,11 +68,8 @@ public class SearchTitleActivity extends Activity {
 	private EditText editTitle;
 	private ImageButton btnTitleSearch;
 	private ArrayAdapter<String> listAdapter;
-	private List<String[]> songs = new ArrayList<String[]>();
-	private ArrayList<String> songTitle = new ArrayList<String>();
-	private ArrayList<String> songUrl = new ArrayList<String>();
 	private ProgressDialog progressDialog;
-	private boolean max;
+	private static boolean MAX;
 	private static final int MENUWIFI = Menu.FIRST;
 	private boolean isWebsiteAvailable;
 	private String chordsUrl = "http://www.chords.pl";
@@ -91,8 +93,8 @@ public class SearchTitleActivity extends Activity {
         Intent i = getIntent();
 		Bundle extras = i.getExtras();
 		
-		max = extras.getBoolean("max");
-		if(max) {
+		MAX = extras.getBoolean("max");
+		if(MAX) {
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		}
@@ -150,36 +152,20 @@ public class SearchTitleActivity extends Activity {
 	class MyGestureDetector extends SimpleOnGestureListener {
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			try {
-				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-					return false;
-				// right to left swipe
-				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					Toast.makeText(getApplicationContext(), R.string.chooseTitle, Toast.LENGTH_LONG).show();
-				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					onBackPressed();
-					//onClickStartActivity(SearchActivity.class);
-				}
-			} catch (Exception e) {
-				// nothing
+			if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+				return false;
+				//right to left swipe
+			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {					Toast.makeText(getApplicationContext(), R.string.chooseTitle, Toast.LENGTH_LONG).show();
+			} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+				onBackPressed();
+				//onClickStartActivity(SearchActivity.class);
 			}
 			return false;
 		}
 	}
 	
-	/*private void onClickStartActivity(Class<?> activity) {
-    	Intent i = new Intent(SearchTitleActivity.this, activity);
-		startActivityForResult(i, 500);
-		overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }*/
-	
 	@SuppressWarnings("unchecked")
 	public void searchTitleView(View v) {
-		
-		songs.clear();
-		songTitle.clear();
-		songUrl.clear();
-		
 		String title = new String();
 		title = editTitle.getText().toString().toLowerCase();
 		hideKeyboard();
@@ -267,7 +253,7 @@ public class SearchTitleActivity extends Activity {
         return false;
     }
 	
-	public class connect extends AsyncTask<ArrayList<String>, Void, List<String[]>> {
+	public class connect extends AsyncTask<ArrayList<String>, Void, Map<String, String>> {
 		
 		@Override
    	 	protected void onPreExecute() {
@@ -275,13 +261,9 @@ public class SearchTitleActivity extends Activity {
 		}
    	
 		@Override
-		protected void onPostExecute(List<String[]> chosenTitles) {
-			for(String[] sng : chosenTitles) {
-				Log.d("ART1", sng[1]);
-				songTitle.add(sng[1]);
-				Log.d("ART0", sng[0]);
-				songUrl.add(sng[0]);
-			}
+		protected void onPostExecute(Map<String, String> chosenTitles) {
+			final List<String> songTitle = new ArrayList<String>(chosenTitles.keySet());
+    		final List<String> songUrl = new ArrayList<String>(chosenTitles.values());
 			listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.titlesnet, songTitle);
 			searchListView.setAdapter(listAdapter);
 			closeProgressBar();
@@ -302,31 +284,27 @@ public class SearchTitleActivity extends Activity {
    	 	}
 
 		@Override
-		protected List<String[]> doInBackground(ArrayList<String>... params) {
+		protected Map<String, String> doInBackground(ArrayList<String>... params) {
 			ArrayList<String> passing = params[0];
 			String urlPerformerSongs = passing.get(0);
 			String title = passing.get(1);
 			String url = chordsUrl;
-	    	List<String[]> chosenTitles = new ArrayList<String[]>();
+			Comparator<String> comparator = new PolishComparator();
+	    	Map<String, String> chosenTitles = new TreeMap<String, String>(comparator);
 	    	Document doc = connectUrl(url + urlPerformerSongs);
 	    	String codeSongs = doc.select("table.piosenki").toString();
 	    	Document songs = Jsoup.parse(codeSongs);
 	    	Elements chosenLineSong = songs.select("a[href]");
-	    	String[][] array = new String[chosenLineSong.size()][2];
-	    	boolean checkContains;
-	    	for(int i = 0; i < chosenLineSong.size(); i++) {
-	    		array[i][0] = chosenLineSong.get(i).attr("href");
-	    		array[i][0] = url + array[i][0];
-	    		array[i][1] = chosenLineSong.get(i).toString();
-	    		array[i][1] = Jsoup.parse(array[i][1]).select("a").first().ownText();
-	    		array[i][1] = array[i][1].replace("\\", "");
-	    		String p = array[i][1].toLowerCase();
-	    		checkContains = p.contains(title);
-	    		if(checkContains == true) {
-	    			chosenTitles.add(array[i]);
+	    	
+	    	for(Element el : chosenLineSong) {
+	    		String localUrl = el.attr("href");
+	    		localUrl = url + localUrl;
+	    		String localTitle = Jsoup.parse(el.toString()).select("a").first().ownText().replace("\\", "");
+	    		if(localTitle.toLowerCase().contains(title) == true) {
+	    			chosenTitles.put(localTitle, localUrl);
 	    		}
 	    	}
-			return chosenTitles;
+	    	return chosenTitles;
 		}
 	}
     
@@ -352,7 +330,7 @@ public class SearchTitleActivity extends Activity {
 			bun.putString("songTitle", songTitle);
 			bun.putString("songUrl", songUrl);
 			bun.putString("tab", tablature);
-			bun.putBoolean("max", max);
+			bun.putBoolean("max", MAX);
 			intent.putExtras(bun);
 			startActivityForResult(intent, 500);
 			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
@@ -529,12 +507,12 @@ public class SearchTitleActivity extends Activity {
        if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-    	   max = false;
+    	   MAX = false;
         }
         else {
         	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        	max = true;
+        	MAX = true;
         }
 	}
 	
