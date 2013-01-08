@@ -31,6 +31,7 @@ import pl.tabhero.R.layout;
 import pl.tabhero.R.menu;
 import pl.tabhero.R.string;
 import pl.tabhero.utils.PolishComparator;
+import pl.tabhero.core.Song;
 import pl.tabhero.core.Tablature;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -163,7 +164,7 @@ public class SearchTitleActivity extends Activity {
 			if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
 				return false;
 				//right to left swipe
-			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {					Toast.makeText(getApplicationContext(), R.string.chooseTitle, Toast.LENGTH_LONG).show();
+			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {Toast.makeText(getApplicationContext(), R.string.chooseTitle, Toast.LENGTH_LONG).show();
 			} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 				onBackPressed();
 				//onClickStartActivity(SearchActivity.class);
@@ -172,70 +173,64 @@ public class SearchTitleActivity extends Activity {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void searchTitleView(View v) {
-		String title = new String();
-		title = editTitle.getText().toString().toLowerCase();
+		String typedTitle = editTitle.getText().toString().toLowerCase();
 		hideKeyboard();
+		
 		Intent i = getIntent();
 		Bundle extras = i.getExtras();
 		String performerUrl = extras.getString("performerUrl");
 
-		ArrayList<String> passing = new ArrayList<String>();
-		passing.add(performerUrl);
-		passing.add(title);
-		//Tablature tablature = new Tablature(title, performerUrl);
+		Song song = new Song(typedTitle, performerUrl);
 		if(!(checkInternetConnection()))
 			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
 		else 
-			new checkConnectTitle().execute(passing);
+			new checkConnectTitle().execute(song);
 	}
 	
-	public class checkConnectTitle extends AsyncTask<ArrayList<String>, Void, ArrayList<String>>{
+	public class checkConnectTitle extends AsyncTask<Song, Void, Song>{
    	
-    	@SuppressWarnings("unchecked")
 		@Override
-   	 	protected void onPostExecute(ArrayList<String> passing) {
+   	 	protected void onPostExecute(Song song) {
     		if(isWebsiteAvailable) {
-    			new connect().execute(passing);
+    			new connect().execute(song);
     		} else {
     			Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
     		}
     	}
 
 		@Override
-		protected ArrayList<String> doInBackground(ArrayList<String>... params) {
-			ArrayList<String> passing = params[0];
+		protected Song doInBackground(Song... params) {
+			Song song = params[0];
 			if(isConnected()) {
 				isWebsiteAvailable = true;
 			} else {
 				isWebsiteAvailable = false;
 			}
-			return passing;
+			return song;
 		}
     }
 	
-	public class checkConnectTab extends AsyncTask<ArrayList<String>, Void, ArrayList<String>>{
+	public class checkConnectTab extends AsyncTask<Tablature, Void, Tablature>{
 	   	
-    	@SuppressWarnings("unchecked")
 		@Override
-   	 	protected void onPostExecute(ArrayList<String> passing) {
+   	 	protected void onPostExecute(Tablature tablature) {
     		if(isWebsiteAvailable) {
-    			new getTablature().execute(passing);
+    			new getTablature().execute(tablature);
     		} else {
     			Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
     		}
     	}
 
 		@Override
-		protected ArrayList<String> doInBackground(ArrayList<String>... params) {
-			ArrayList<String> passing = params[0];
+		protected Tablature doInBackground(Tablature... params) {
+			Tablature tablature = params[0];
 			if(isConnected()) {
 				isWebsiteAvailable = true;
 			} else {
 				isWebsiteAvailable = false;
 			}
-			return passing;
+			return tablature;
 		}
     }
     
@@ -262,7 +257,7 @@ public class SearchTitleActivity extends Activity {
         return false;
     }
 	
-	public class connect extends AsyncTask<ArrayList<String>, Void, Map<String, String>> {
+	public class connect extends AsyncTask<Song, Void, Song> {
 		
 		@Override
    	 	protected void onPreExecute() {
@@ -270,73 +265,35 @@ public class SearchTitleActivity extends Activity {
 		}
    	
 		@Override
-		protected void onPostExecute(Map<String, String> chosenTitles) {
-			final List<String> songTitle = new ArrayList<String>(chosenTitles.values());
-    		final List<String> songUrl = new ArrayList<String>(chosenTitles.keySet());
-			listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.titlesnet, songTitle);
+		protected void onPostExecute(final Song song) {
+			song.setListOfTitles();
+			song.setListOfUrls();
+			listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.titlesnet, song.listOfTitles);
 			searchListView.setAdapter(listAdapter);
 			closeProgressBar();
 			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-	            @SuppressWarnings("unchecked")
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	            	String posUrl = songUrl.get(position);
-	            	String posTitle = songTitle.get(position);
-	            	ArrayList<String> passing = new ArrayList<String>();
-	            	passing.add(posUrl);
-	            	passing.add(posTitle);
+	            	String posUrl = song.listOfSongUrls.get(position);
+	            	String posTitle = song.listOfTitles.get(position);
+	            	Tablature tablature = new Tablature(posTitle, posUrl);
 	            	if(!(checkInternetConnection()))
 	            		Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
 	            	else
-	            		new checkConnectTab().execute(passing);      		
+	            		new checkConnectTab().execute(tablature);      		
 	            }
 			} );
    	 	}
 
 		@Override
-		protected Map<String, String> doInBackground(ArrayList<String>... params) {
-			ArrayList<String> passing = params[0];
-			String urlPerformerSongs = passing.get(0);
-			String title = passing.get(1);
-			String url = chordsUrl;
-			//Comparator<String> comparator = new PolishComparator();
-	    	Map<String, String> unsortedChosenTitles = new TreeMap<String, String>();
-	    	Document doc = connectUrl(url + urlPerformerSongs);
-	    	String codeSongs = doc.select("table.piosenki").toString();
-	    	Document songs = Jsoup.parse(codeSongs);
-	    	Elements chosenLineSong = songs.select("a[href]");
-	    	
-	    	for(Element el : chosenLineSong) {
-	    		String localUrl = el.attr("href");
-	    		localUrl = url + localUrl;
-	    		String localTitle = Jsoup.parse(el.toString()).select("a").first().ownText().replace("\\", "");
-	    		if(localTitle.toLowerCase().contains(title) == true) {
-	    			unsortedChosenTitles.put(localUrl, localTitle);
-	    		}
-	    	}
-	    	return sortMapByValue(unsortedChosenTitles);
+		protected Song doInBackground(Song... params) {
+			Song song = params[0];
+	    	Document doc = connectUrl(chordsUrl + song.performerUrl);
+	    	song.setMapOfChosenTitles(doc);
+	    	return song;
 		}
-	}
-    
-	private Map<String, String> sortMapByValue(Map<String, String> unsortedMap) {
-		List<Entry<String, String>> list = new ArrayList<Entry<String, String>>(unsortedMap.entrySet());
-		//Comparator<String> comparator = new PolishComparator();
-		Collections.sort(list, new Comparator<Entry<String, String>>() {
-
-			@Override
-			public int compare(Entry<String, String> lhs, Entry<String, String> rhs) {
-				Collator c = Collator.getInstance(new Locale("pl", "PL"));
-				return  c.compare(((Entry<String, String>) (lhs)).getValue(), ((Entry<String, String>) (rhs)).getValue());
-			}
-		
-		}); 
-		Map<String, String> sortedMap = new LinkedHashMap<String, String>();
-		for (Entry<String, String> entry : list) {
-			sortedMap.put(entry.getKey(), entry.getValue());
-		}
-		return sortedMap;
 	}
 	
-	public class getTablature extends AsyncTask<ArrayList<String>, Void, Tablature>{
+	public class getTablature extends AsyncTask<Tablature, Void, Tablature>{
 		
 		@Override
    	 	protected void onPreExecute() {
@@ -362,12 +319,9 @@ public class SearchTitleActivity extends Activity {
    	 	}
 
 		@Override
-		protected Tablature doInBackground(ArrayList<String>... params) {
-			ArrayList<String> passing = params[0];
-			String url = passing.get(0);
-			String title = passing.get(1);
-			Tablature tablature = new Tablature(title, url);
-			tablature.setSongTablature(connectUrl(url));
+		protected Tablature doInBackground(Tablature... params) {
+			Tablature tablature = params[0];
+			tablature.setSongTablature(connectUrl(tablature.songUrl));
 			return tablature;
 		}
 	}
