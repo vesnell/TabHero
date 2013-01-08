@@ -1,4 +1,4 @@
-package pl.tabhero.utils;
+package pl.tabhero.core;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

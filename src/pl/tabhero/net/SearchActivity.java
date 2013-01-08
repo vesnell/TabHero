@@ -29,6 +29,7 @@ import pl.tabhero.R.id;
 import pl.tabhero.R.layout;
 import pl.tabhero.R.menu;
 import pl.tabhero.R.string;
+import pl.tabhero.core.Performer;
 import pl.tabhero.local.FavoritesActivity.MyGestureDetector;
 import pl.tabhero.utils.PolishComparator;
 import android.annotation.SuppressLint;
@@ -156,13 +157,13 @@ public class SearchActivity extends Activity {
 	}
     
     public void searchView(View v) {
-    	String performer = new String();
-    	performer = editPerformer.getText().toString().toLowerCase();
+    	String typedPerformer = editPerformer.getText().toString().toLowerCase();
+    	Performer performer = new Performer(typedPerformer);
 		hideKeyboard();
 		
-		if(!(performer.length() > 0)) 
+		if(!(performer.typedName.length() > 0)) 
 			Toast.makeText(getApplicationContext(), R.string.hintEmpty, Toast.LENGTH_LONG).show();
-		else if ((performer.charAt(0) == ' ') || (performer.charAt(0) == '.'))
+		else if ((performer.typedName.charAt(0) == ' ') || (performer.typedName.charAt(0) == '.'))
 			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
 		else if(!(checkInternetConnection()))
 			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
@@ -171,10 +172,10 @@ public class SearchActivity extends Activity {
 		}
     }
     
-    public class checkConnect extends AsyncTask<String, Void, String>{
+    public class checkConnect extends AsyncTask<Performer, Void, Performer>{
 
     	@Override
-   	 	protected void onPostExecute(String performer) {
+   	 	protected void onPostExecute(Performer performer) {
     		if(isWebsiteAvailable) {
     			new connect().execute(performer);
     		} else {
@@ -183,8 +184,8 @@ public class SearchActivity extends Activity {
     	}
 
 		@Override
-		protected String doInBackground(String... params) {
-			String performer = params[0];
+		protected Performer doInBackground(Performer... params) {
+			Performer performer = params[0];
 			if(isConnected()) {
 				isWebsiteAvailable = true;
 			} else {
@@ -217,7 +218,7 @@ public class SearchActivity extends Activity {
         return false;
     }
     
-    public class connect extends AsyncTask<String, Void, Map<String, String>>{
+    public class connect extends AsyncTask<Performer, Void, Performer>{
     	
     	@Override
     	 protected void onPreExecute() {
@@ -225,21 +226,21 @@ public class SearchActivity extends Activity {
     	 }
     	
     	@Override
-    	 protected void onPostExecute(Map<String, String> chosenPerformers) {
-			
-    		final List<String> artistNames = new ArrayList<String>(chosenPerformers.keySet());
-    		final List<String> artistUrls = new ArrayList<String>(chosenPerformers.values());
-			listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artistsnet, artistNames);
+    	 protected void onPostExecute(final Performer performer) {
+			performer.setListOfNames();
+			performer.setListOfUrls();
+    		
+			listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artistsnet, performer.listOfNames);
 			searchListView.setAdapter(listAdapter);
 			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 	            	Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
 	            	Bundle bun = new Bundle();
-	            	bun.putString("performerName", artistNames.get(position));
-	    			bun.putString("performerUrl", artistUrls.get(position));
+	            	bun.putString("performerName", performer.listOfNames.get(position));
+	    			bun.putString("performerUrl", performer.listOfUrls.get(position));
 	    			bun.putBoolean("max", MAX);
 	    			i.putExtras(bun);
-	    			startActivityForResult(i, 500);
+	    			startActivity(i);
 	    			overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 	            }
 	        } );
@@ -248,24 +249,12 @@ public class SearchActivity extends Activity {
     	 }
     	
 		@Override
-		protected Map<String, String> doInBackground(String... params) {
-			String performer = params[0];
+		protected Performer doInBackground(Performer... params) {
+			Performer performer = params[0];
 			String url = chordsUrl;
-			Comparator<String> comparator = new PolishComparator();
-	    	Map<String, String> chosenPerformers = new TreeMap<String, String>(comparator);
-	    	Document doc = prepareAndConnect(performer, url);
-	    	String codeFind = doc.select("tr.v0,tr.v1").toString();
-	    	Document docFind = Jsoup.parse(codeFind);
-	    	Elements performers = docFind.select("a[href]");
-	    	
-	    	for(Element el : performers) {
-	    		String localUrl = el.attr("href");
-	    		String localPerformer = Jsoup.parse(el.toString()).select("a").first().ownText().replace("\\", "");
-	    		if(localPerformer.toLowerCase().contains(performer) == true) {
-	    			chosenPerformers.put(localPerformer, localUrl);
-	    		}
-	    	}
-			return chosenPerformers;
+			Document doc = prepareAndConnect(performer.typedName, url);
+	    	performer.setMapOfChosenPerformers(doc);
+			return performer;
 		} 
     }
     
@@ -277,24 +266,35 @@ public class SearchActivity extends Activity {
     	}
     	else {
     		String temp = performer;
-    		if(performer.charAt(0) == 'ą')
-    			temp = performer.replaceAll("^ą", "a");
-    		else if(performer.charAt(0) == 'ć')
-    			temp = performer.replaceAll("^ć", "c");
-    		else if(performer.charAt(0) == 'ę')
-    			temp = performer.replaceAll("^ę", "e");
-    		else if(performer.charAt(0) == 'ł')
-    			temp = performer.replaceAll("^ł", "l");
-    		else if(performer.charAt(0) == 'ń')
-    			temp = performer.replaceAll("^ń", "n");
-    		else if(performer.charAt(0) == 'ó')
-    			temp = performer.replaceAll("^ó", "o");
-    		else if(performer.charAt(0) == 'ś')
-    			temp = performer.replaceAll("^ś", "s");
-    		else if(performer.charAt(0) == 'ź')
-    			temp = performer.replaceAll("^ź", "z");
-    		else if(performer.charAt(0) == 'ż')
-    			temp = performer.replaceAll("^ż", "z");
+    		switch(performer.charAt(0)) {
+    			case 'ą':
+    				temp = performer.replaceAll("^ą", "a");
+    				break;
+    			case 'ć':
+    				temp = performer.replaceAll("^ć", "c");
+    				break;
+    			case 'ę':
+    				temp = performer.replaceAll("^ę", "e");
+    				break;
+    			case 'ł':
+    				temp = performer.replaceAll("^ł", "l");
+    				break;
+    			case 'ń':
+    				temp = performer.replaceAll("^ń", "n");
+    				break;
+    			case 'ó':
+    				temp = performer.replaceAll("^ó", "o");
+    				break;
+    			case 'ś':
+    				temp = performer.replaceAll("^ś", "s");
+    				break;
+    			case 'ź':
+    				temp = performer.replaceAll("^ź", "z");
+    				break;
+    			case 'ż':
+    				temp = performer.replaceAll("^ż", "z");
+    				break;
+    		}
     		url = url + temp;
     		doc = connect(url);
     	}

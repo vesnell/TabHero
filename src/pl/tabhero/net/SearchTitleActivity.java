@@ -31,7 +31,7 @@ import pl.tabhero.R.layout;
 import pl.tabhero.R.menu;
 import pl.tabhero.R.string;
 import pl.tabhero.utils.PolishComparator;
-import pl.tabhero.utils.Tablature;
+import pl.tabhero.core.Tablature;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
