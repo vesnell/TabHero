@@ -13,14 +13,14 @@ import org.jsoup.select.Elements;
 
 import pl.tabhero.utils.PolishComparator;
 
-public class Performer {
+public class Performers {
 	public String typedName;
 	public String url;
 	public Map<String, String> chosenPerformersAndUrls;
 	public List<String> listOfNames;
 	public List<String> listOfUrls;
 	
-	public Performer(String typedPerformerName) {
+	public Performers(String typedPerformerName) {
 		this.typedName = typedPerformerName;
 	}
 	

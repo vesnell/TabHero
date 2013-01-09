@@ -16,7 +16,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class Song {
+public class Songs {
 	public String typedTitle;
 	public String title;
 	public String performerUrl;
@@ -26,7 +26,7 @@ public class Song {
 	
 	private String chordsUrl = "http://www.chords.pl";
 
-	public Song(String typedTitle, String performerUrl) {
+	public Songs(String typedTitle, String performerUrl) {
 		this.typedTitle = typedTitle;
 		this.performerUrl = performerUrl;
 	}

@@ -3,18 +3,10 @@ package pl.tabhero.local;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 import pl.tabhero.R;
 import pl.tabhero.TabHero;
-import pl.tabhero.R.anim;
-import pl.tabhero.R.id;
-import pl.tabhero.R.layout;
-import pl.tabhero.R.menu;
-import pl.tabhero.R.string;
 import pl.tabhero.db.DBAdapter;
+import pl.tabhero.utils.MyGestureDetector;
 import pl.tabhero.utils.PolishComparator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -27,8 +19,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.text.method.DigitsKeyListener;
-import android.text.method.TextKeyListener;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
@@ -37,14 +27,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -60,12 +48,8 @@ public class FavoritesActivity extends Activity {
 	private ArrayList<String> listOfChosenPerfsFromBase;
 	private ArrayAdapter<String> listAdapter;
 	private boolean max;
-	
-	private static final int SWIPE_MIN_DISTANCE = 120;
-	private static final int SWIPE_MAX_OFF_PATH = 250;
-	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private GestureDetector gestureDetector;
-	View.OnTouchListener gestureListener;
+	private View.OnTouchListener gestureListener;
 	
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
@@ -80,7 +64,7 @@ public class FavoritesActivity extends Activity {
         editFavPerformer = (EditText) findViewById(R.id.editFavPerformer);
         searchListView = (ListView) findViewById(R.id.searchFavListView);
         
-        gestureDetector = new GestureDetector(new MyGestureDetector());
+        gestureDetector = new GestureDetector(new MyGestureDetector(this));
 		gestureListener = new View.OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (gestureDetector.onTouchEvent(event)) {
@@ -121,14 +105,6 @@ public class FavoritesActivity extends Activity {
         	
         });
         
-        /*@SuppressWarnings("deprecation")
-		final GestureDetector gestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
-            public boolean onDoubleTap(MotionEvent e) {
-            	buildAlertDialogToAddOwnTab();
-                return true;
-            }
-        });*/
-        
         editFavPerformer.setFilters(new InputFilter[]{filter});
         editFavPerformer.setOnKeyListener(new OnKeyListener() {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -141,32 +117,6 @@ public class FavoritesActivity extends Activity {
 			}
 		}); 
     }
-    
-    public class MyGestureDetector extends SimpleOnGestureListener {
-		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			try {
-				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-					return false;
-				// right to left swipe
-				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					onBackPressed();
-					//onClickStartActivity(MainActivity.class);
-				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					Toast.makeText(getApplicationContext(), R.string.choosePerf, Toast.LENGTH_LONG).show();
-				}
-			} catch (Exception e) {
-				// nothing
-			}
-			return false;
-		}
-	}
-    
-    /*private void onClickStartActivity(Class<?> activity) {
-    	Intent i = new Intent(FavoritesActivity.this, activity);
-		startActivityForResult(i, 500);
-		overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-    }*/
     
     InputFilter filter = new InputFilter() { 
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) { 
@@ -182,7 +132,6 @@ public class FavoritesActivity extends Activity {
     private void buildAlertDialogToAddOwnTab() {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText inputPerf = new EditText(this);
-        //inputPerf.setKeyListener(DigitsKeyListener.getInstance("AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻaąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż1234567890 ."));
         inputPerf.setFilters(new InputFilter[]{filter});
         builder.setMessage(R.string.addOwnPerf);	
 		builder.setView(inputPerf);
@@ -463,7 +412,7 @@ public class FavoritesActivity extends Activity {
     @Override
     public void onBackPressed() {
     	Intent intent = new Intent(this, TabHero.class);
-    	startActivityForResult(intent, 500);
+    	startActivity(intent);
     	overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 }

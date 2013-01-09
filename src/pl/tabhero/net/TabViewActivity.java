@@ -1,17 +1,8 @@
 package pl.tabhero.net;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import pl.tabhero.R;
 import pl.tabhero.TabHero;
-import pl.tabhero.R.anim;
-import pl.tabhero.R.id;
-import pl.tabhero.R.layout;
-import pl.tabhero.R.menu;
-import pl.tabhero.R.string;
 import pl.tabhero.db.DBAdapter;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,10 +17,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.text.InputFilter;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,8 +27,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -198,10 +185,8 @@ public class TabViewActivity extends Activity {
 	}
 	
 	private void minMax() {
-    	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
-    	//boolean forceNotFullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN) != 0;
-    	//boolean actionbarVisible = getActionBar().isShowing();
-       if(fullScreen) {
+		boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
+		if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
     	   max = false;
@@ -258,7 +243,6 @@ public class TabViewActivity extends Activity {
 		String idFromBase;
 		String idFromNet;
 		idFromNet = getIdFromUrl(songUrl);
-		//Log.d("ID1",idFromNet);
 		db.open();
 		Cursor c = db.getAllRecords();
         if (c.moveToFirst())
@@ -266,9 +250,7 @@ public class TabViewActivity extends Activity {
             do {
             	url = c.getString(4);
             	idFromBase = getIdFromUrl(url);
-            	//Log.d("ID1",idFromBase);
             	if(idFromNet.equals(idFromBase)) {
-            		//Log.d("TRUE", "TRUE");
             		return true;
             	}
             } while (c.moveToNext());
@@ -323,6 +305,11 @@ public class TabViewActivity extends Activity {
 	 public void onDestroy() {
 		 mWakeLock.release();
 		 super.onDestroy();
-		 
+	 }
+	 
+	 @Override
+	 public void onBackPressed() {
+		 super.onBackPressed();
+		 overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
 	 }
 }

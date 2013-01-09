@@ -8,8 +8,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import pl.tabhero.R;
 import pl.tabhero.TabHero;
-import pl.tabhero.core.Song;
+import pl.tabhero.core.Songs;
 import pl.tabhero.core.Tablature;
+import pl.tabhero.local.FavoritesActivity;
+import pl.tabhero.utils.MyGestureDetector;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -55,12 +57,8 @@ public class SearchTitleActivity extends Activity {
 	private static final int MENUWIFI = Menu.FIRST;
 	private boolean isWebsiteAvailable;
 	private String chordsUrl = "http://www.chords.pl";
-	
-	private static final int SWIPE_MIN_DISTANCE = 120;
-	private static final int SWIPE_MAX_OFF_PATH = 250;
-	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private GestureDetector gestureDetector;
-	View.OnTouchListener gestureListener;
+	private View.OnTouchListener gestureListener;
 	
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
@@ -103,7 +101,7 @@ public class SearchTitleActivity extends Activity {
 		    }
 		});
         
-        gestureDetector = new GestureDetector(new MyGestureDetector());
+        gestureDetector = new GestureDetector(new MyGestureDetector(this));
 		gestureListener = new View.OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (gestureDetector.onTouchEvent(event)) {
@@ -131,21 +129,6 @@ public class SearchTitleActivity extends Activity {
         }
     }; 
 	
-	class MyGestureDetector extends SimpleOnGestureListener {
-		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-				return false;
-				//right to left swipe
-			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {Toast.makeText(getApplicationContext(), R.string.chooseTitle, Toast.LENGTH_LONG).show();
-			} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-				onBackPressed();
-				//onClickStartActivity(SearchActivity.class);
-			}
-			return false;
-		}
-	}
-	
 	public void searchTitleView(View v) {
 		String typedTitle = editTitle.getText().toString().toLowerCase();
 		hideKeyboard();
@@ -154,17 +137,17 @@ public class SearchTitleActivity extends Activity {
 		Bundle extras = i.getExtras();
 		String performerUrl = extras.getString("performerUrl");
 
-		Song song = new Song(typedTitle, performerUrl);
+		Songs song = new Songs(typedTitle, performerUrl);
 		if(!(checkInternetConnection()))
 			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
 		else 
 			new checkConnectTitle().execute(song);
 	}
 	
-	public class checkConnectTitle extends AsyncTask<Song, Void, Song>{
+	public class checkConnectTitle extends AsyncTask<Songs, Void, Songs>{
    	
 		@Override
-   	 	protected void onPostExecute(Song song) {
+   	 	protected void onPostExecute(Songs song) {
     		if(isWebsiteAvailable) {
     			new connect().execute(song);
     		} else {
@@ -173,8 +156,8 @@ public class SearchTitleActivity extends Activity {
     	}
 
 		@Override
-		protected Song doInBackground(Song... params) {
-			Song song = params[0];
+		protected Songs doInBackground(Songs... params) {
+			Songs song = params[0];
 			if(isConnected()) {
 				isWebsiteAvailable = true;
 			} else {
@@ -230,7 +213,7 @@ public class SearchTitleActivity extends Activity {
         return false;
     }
 	
-	public class connect extends AsyncTask<Song, Void, Song> {
+	public class connect extends AsyncTask<Songs, Void, Songs> {
 		
 		@Override
    	 	protected void onPreExecute() {
@@ -238,7 +221,7 @@ public class SearchTitleActivity extends Activity {
 		}
    	
 		@Override
-		protected void onPostExecute(final Song song) {
+		protected void onPostExecute(final Songs song) {
 			song.setListOfTitles();
 			song.setListOfUrls();
 			listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.titlesnet, song.listOfTitles);
@@ -258,8 +241,8 @@ public class SearchTitleActivity extends Activity {
    	 	}
 
 		@Override
-		protected Song doInBackground(Song... params) {
-			Song song = params[0];
+		protected Songs doInBackground(Songs... params) {
+			Songs song = params[0];
 	    	Document doc = connectUrl(chordsUrl + song.performerUrl);
 	    	song.setMapOfChosenTitles(doc);
 	    	return song;
@@ -339,13 +322,6 @@ public class SearchTitleActivity extends Activity {
             return false;
         }
     }
-	
-	/*@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.searchart, menu);
-	    return true;
-	}*/
 	
 	@SuppressLint("NewApi")
 	@Override
@@ -462,5 +438,11 @@ public class SearchTitleActivity extends Activity {
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+    }
+	
+	@Override
+    public void onBackPressed() {
+    	super.onBackPressed();
+    	overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

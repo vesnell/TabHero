@@ -8,7 +8,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import pl.tabhero.R;
 import pl.tabhero.TabHero;
-import pl.tabhero.core.Performer;
+import pl.tabhero.core.Performers;
+import pl.tabhero.local.FavoritesActivity;
+import pl.tabhero.utils.MyGestureDetector;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -54,18 +56,13 @@ public class SearchActivity extends Activity {
 	private static final int MENUWIFI = Menu.FIRST;
 	private boolean isWebsiteAvailable;
 	private String chordsUrl = "http://www.chords.pl/wykonawcy/";
-	
-	private static final int SWIPE_MIN_DISTANCE = 120;
-	private static final int SWIPE_MAX_OFF_PATH = 250;
-	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private GestureDetector gestureDetector;
-	View.OnTouchListener gestureListener;
+	private View.OnTouchListener gestureListener;
 	
     @SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.search);
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -90,7 +87,7 @@ public class SearchActivity extends Activity {
 		    }
 		});
 		
-		gestureDetector = new GestureDetector(new MyGestureDetector());
+		gestureDetector = new GestureDetector(new MyGestureDetector(this));
 		gestureListener = new View.OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (gestureDetector.onTouchEvent(event)) {
@@ -118,24 +115,9 @@ public class SearchActivity extends Activity {
         }
     }; 
     
-    class MyGestureDetector extends SimpleOnGestureListener {
-		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-				return false;
-			// right to left swipe
-			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {					Toast.makeText(getApplicationContext(), R.string.choosePerf, Toast.LENGTH_LONG).show();
-			} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-				onBackPressed();
-				//onClickStartActivity(MainActivity.class);
-			}
-			return false;
-		}
-	}
-    
     public void searchView(View v) {
     	String typedPerformer = editPerformer.getText().toString().toLowerCase();
-    	Performer performer = new Performer(typedPerformer);
+    	Performers performer = new Performers(typedPerformer);
 		hideKeyboard();
 		
 		if(!(performer.typedName.length() > 0)) 
@@ -149,10 +131,10 @@ public class SearchActivity extends Activity {
 		}
     }
     
-    public class checkConnect extends AsyncTask<Performer, Void, Performer>{
+    public class checkConnect extends AsyncTask<Performers, Void, Performers>{
 
     	@Override
-   	 	protected void onPostExecute(Performer performer) {
+   	 	protected void onPostExecute(Performers performer) {
     		if(isWebsiteAvailable) {
     			new connect().execute(performer);
     		} else {
@@ -161,8 +143,8 @@ public class SearchActivity extends Activity {
     	}
 
 		@Override
-		protected Performer doInBackground(Performer... params) {
-			Performer performer = params[0];
+		protected Performers doInBackground(Performers... params) {
+			Performers performer = params[0];
 			if(isConnected()) {
 				isWebsiteAvailable = true;
 			} else {
@@ -195,7 +177,7 @@ public class SearchActivity extends Activity {
         return false;
     }
     
-    public class connect extends AsyncTask<Performer, Void, Performer>{
+    public class connect extends AsyncTask<Performers, Void, Performers>{
     	
     	@Override
     	 protected void onPreExecute() {
@@ -203,7 +185,7 @@ public class SearchActivity extends Activity {
     	 }
     	
     	@Override
-    	 protected void onPostExecute(final Performer performer) {
+    	 protected void onPostExecute(final Performers performer) {
 			performer.setListOfNames();
 			performer.setListOfUrls();
     		
@@ -226,8 +208,8 @@ public class SearchActivity extends Activity {
     	 }
     	
 		@Override
-		protected Performer doInBackground(Performer... params) {
-			Performer performer = params[0];
+		protected Performers doInBackground(Performers... params) {
+			Performers performer = params[0];
 			String url = chordsUrl;
 			Document doc = prepareAndConnect(performer.typedName, url);
 	    	performer.setMapOfChosenPerformers(doc);
@@ -445,5 +427,11 @@ public class SearchActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+    
+    @Override
+    public void onBackPressed() {
+    	super.onBackPressed();
+    	overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

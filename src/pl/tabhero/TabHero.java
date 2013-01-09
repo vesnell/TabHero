@@ -2,13 +2,13 @@ package pl.tabhero;
 
 import pl.tabhero.local.FavoritesActivity;
 import pl.tabhero.net.SearchActivity;
+import pl.tabhero.utils.MyGestureDetector;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,12 +20,8 @@ public class TabHero extends Activity {
 
 	private Button btnOnline;
 	private Button btnOnBase;
-	
-	private static final int SWIPE_MIN_DISTANCE = 120;
-	private static final int SWIPE_MAX_OFF_PATH = 250;
-	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private GestureDetector gestureDetector;
-	View.OnTouchListener gestureListener;
+	private View.OnTouchListener gestureListener;
 	
     @SuppressWarnings("deprecation")
 	@Override
@@ -49,7 +45,7 @@ public class TabHero extends Activity {
 			}
 		});
 
-		gestureDetector = new GestureDetector(new MyGestureDetector());
+		gestureDetector = new GestureDetector(new MyGestureDetector(this));
 		gestureListener = new View.OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (gestureDetector.onTouchEvent(event)) {
@@ -60,21 +56,6 @@ public class TabHero extends Activity {
 		};
         
     }
-    
-    class MyGestureDetector extends SimpleOnGestureListener {
-		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-				return false;
-			// right to left swipe
-			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-				onClickStartActivity(SearchActivity.class);
-			} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-				onClickStartActivity(FavoritesActivity.class);
-			}
-			return false;
-		}
-	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -125,7 +106,7 @@ public class TabHero extends Activity {
     
     private void onClickStartActivity(Class<?> activity) {
     	Intent i = new Intent(TabHero.this, activity);
-		startActivityForResult(i, 500);
+		startActivity(i);
 		overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
     
