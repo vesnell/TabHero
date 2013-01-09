@@ -19,6 +19,7 @@ import pl.tabhero.R.layout;
 import pl.tabhero.R.menu;
 import pl.tabhero.R.string;
 import pl.tabhero.db.DBAdapter;
+import pl.tabhero.utils.MyTelephonyManager;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -246,7 +247,12 @@ public class FavTabViewActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.favtabview, menu);
+	    MyTelephonyManager manager = new MyTelephonyManager(this);
+	    if(manager.isTablet()) {
+	    	inflater.inflate(R.menu.favtabviewiftablet, menu);
+	    } else {
+	    	inflater.inflate(R.menu.favtabview, menu);
+	    }
 	    return super.onCreateOptionsMenu(menu);
 	}
 	

@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/delFromFav"
+          android:icon="@drawable/favorites_grey"
+          android:title="@string/delFromFav"
+          android:showAsAction="always" />
+    <item android:id="@+id/openWebBrowser" 
+          android:icon="@drawable/web_icon"	
+          android:title="@string/openWebBrowser"
+          android:showAsAction="always" />
+    <item android:id="@+id/editTab"
+          android:title="@string/editTab"
+          android:icon="@drawable/edittab"
+          android:showAsAction="always" />
+</menu>

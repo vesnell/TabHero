@@ -3,6 +3,7 @@ package pl.tabhero.net;
 import pl.tabhero.R;
 import pl.tabhero.TabHero;
 import pl.tabhero.db.DBAdapter;
+import pl.tabhero.utils.MyTelephonyManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -156,7 +157,12 @@ public class TabViewActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.tabview, menu);
+	    MyTelephonyManager manager = new MyTelephonyManager(this);
+	    if(manager.isTablet()) {
+	    	inflater.inflate(R.menu.favtabviewiftablet, menu);
+	    } else {
+	    	inflater.inflate(R.menu.favtabview, menu);
+	    }
 	    return true;
 	}
 	

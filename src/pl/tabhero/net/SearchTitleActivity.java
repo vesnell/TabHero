@@ -12,6 +12,7 @@ import pl.tabhero.core.Songs;
 import pl.tabhero.core.Tablature;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
+import pl.tabhero.utils.MyTelephonyManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -331,7 +332,10 @@ public class SearchTitleActivity extends Activity {
     		}
     	}
     	MenuInflater inflater = getMenuInflater();
-    	inflater.inflate(R.menu.searchart, menu);
+    	MyTelephonyManager manager = new MyTelephonyManager(this);
+	    if(!(manager.isTablet())) {
+	    	inflater.inflate(R.menu.searchart, menu);
+	    }
     	return super.onPrepareOptionsMenu(menu);
     }
 	

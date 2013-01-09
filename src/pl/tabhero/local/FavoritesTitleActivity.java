@@ -9,6 +9,7 @@ import pl.tabhero.TabHero;
 import pl.tabhero.db.DBAdapter;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
+import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.PolishComparator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -208,7 +209,12 @@ public class FavoritesTitleActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.favtitle, menu);
+	    MyTelephonyManager manager = new MyTelephonyManager(this);
+	    if(manager.isTablet()) {
+	    	inflater.inflate(R.menu.favtitlemenuiftablet, menu);
+	    } else {
+	    	inflater.inflate(R.menu.favtitle, menu);
+	    }
 	    return true;
 	}
     
