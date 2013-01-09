@@ -32,18 +32,6 @@ public class TabHero extends Activity {
         
         btnOnline = (Button) findViewById(R.id.online);
         btnOnBase = (Button) findViewById(R.id.favorites);
-        
-        btnOnline.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				onClickStartActivity(SearchActivity.class);
-			}
-		});
-        
-        btnOnBase.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				onClickStartActivity(FavoritesActivity.class);
-			}
-		});
 
 		gestureDetector = new GestureDetector(new MyGestureDetector(this));
 		gestureListener = new View.OnTouchListener() {
@@ -54,7 +42,20 @@ public class TabHero extends Activity {
 				return false;
 			}
 		};
+		
+		final MyGestureDetector myGestureDetector = new MyGestureDetector(this);
+		
+		btnOnline.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				myGestureDetector.onClickStartRightActivity(SearchActivity.class);
+			}
+		});
         
+        btnOnBase.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				myGestureDetector.onClickStartLeftActivity(FavoritesActivity.class);
+			}
+		});
     }
 
 	@Override
@@ -103,12 +104,6 @@ public class TabHero extends Activity {
 	    AlertDialog alert = builder.create();
 	    alert.show();
 	}
-    
-    private void onClickStartActivity(Class<?> activity) {
-    	Intent i = new Intent(TabHero.this, activity);
-		startActivity(i);
-		overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-    }
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

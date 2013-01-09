@@ -61,13 +61,13 @@ public class MyGestureDetector extends SimpleOnGestureListener{
 		return false;
 	}
 	
-	private void onClickStartRightActivity(Class<?> activity) {
+	public void onClickStartRightActivity(Class<?> activity) {
     	Intent i = new Intent(this.activity, activity);
 		this.activity.startActivity(i);
 		this.activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 	
-	private void onClickStartLeftActivity(Class<?> activity) {
+	public void onClickStartLeftActivity(Class<?> activity) {
     	Intent i = new Intent(this.activity, activity);
 		this.activity.startActivity(i);
 		this.activity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
