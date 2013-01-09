@@ -19,7 +19,6 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;

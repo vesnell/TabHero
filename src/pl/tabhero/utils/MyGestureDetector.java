@@ -20,6 +20,11 @@ public class MyGestureDetector extends SimpleOnGestureListener{
 	private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 	private Context context;
 	private Activity activity;
+	private static final String TABHERO = "TabHero";
+	private static final String NET_SEARCH_PERF = "net.SearchActivity";
+	private static final String NET_SEARCH_TITLE = "net.SearchTitleActivity";
+	private static final String FAV_SEARCH_PERF = "local.FavoritesActivity";
+	private static final String FAV_SEARCH_TITLE = "local.FavoritesTitleActivity";
 	
 	public MyGestureDetector(Context context) {
 		this.context = context.getApplicationContext();
@@ -32,27 +37,27 @@ public class MyGestureDetector extends SimpleOnGestureListener{
 		if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
 			return false;
 		if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-			if(className.equals("TabHero")) {
+			if(className.equals(TABHERO)) {
 				onClickStartRightActivity(SearchActivity.class);
-			} else if(className.equals("net.SearchActivity")) {
+			} else if(className.equals(NET_SEARCH_PERF)) {
 				Toast.makeText(this.context, R.string.choosePerf, Toast.LENGTH_LONG).show();
-			} else if(className.equals("net.SearchTitleActivity")) {
+			} else if(className.equals(NET_SEARCH_TITLE)) {
 				Toast.makeText(this.context, R.string.chooseTitle, Toast.LENGTH_LONG).show();
-			} else if(className.equals("local.FavoritesActivity")) {
+			} else if(className.equals(FAV_SEARCH_PERF)) {
 				this.activity.onBackPressed();
-			} else if(className.equals("local.FavoritesTitleActivity")) {
+			} else if(className.equals(FAV_SEARCH_TITLE)) {
 				this.activity.onBackPressed();
 			}
 		} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-			if(className.equals("TabHero")) {
+			if(className.equals(TABHERO)) {
 				onClickStartLeftActivity(FavoritesActivity.class);
-			} else if(className.equals("net.SearchActivity")) {
+			} else if(className.equals(NET_SEARCH_PERF)) {
 				this.activity.onBackPressed();
-			} else if(className.equals("net.SearchTitleActivity")) {
+			} else if(className.equals(NET_SEARCH_TITLE)) {
 				this.activity.onBackPressed();
-			} else if(className.equals("local.FavoritesActivity")) {
+			} else if(className.equals(FAV_SEARCH_PERF)) {
 				Toast.makeText(this.context, R.string.choosePerf, Toast.LENGTH_LONG).show();
-			} else if(className.equals("local.FavoritesTitleActivity")) {
+			} else if(className.equals(FAV_SEARCH_TITLE)) {
 				Toast.makeText(this.context, R.string.chooseTitle, Toast.LENGTH_LONG).show();
 			}
 		}
