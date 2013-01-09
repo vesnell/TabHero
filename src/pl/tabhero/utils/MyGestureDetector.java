@@ -28,33 +28,31 @@ public class MyGestureDetector extends SimpleOnGestureListener{
 	
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-		String id = this.activity.getLocalClassName();
+		String className = this.activity.getLocalClassName();
 		if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
 			return false;
-		// right to left swipe
 		if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-			Log.d("Nazwa Klasy", id);
-			if(id.equals("TabHero")) {
+			if(className.equals("TabHero")) {
 				onClickStartRightActivity(SearchActivity.class);
-			} else if(id.equals("net.SearchActivity")) {
+			} else if(className.equals("net.SearchActivity")) {
 				Toast.makeText(this.context, R.string.choosePerf, Toast.LENGTH_LONG).show();
-			} else if(id.equals("net.SearchTitleActivity")) {
+			} else if(className.equals("net.SearchTitleActivity")) {
 				Toast.makeText(this.context, R.string.chooseTitle, Toast.LENGTH_LONG).show();
-			} else if(id.equals("local.FavoritesActivity")) {
+			} else if(className.equals("local.FavoritesActivity")) {
 				this.activity.onBackPressed();
-			} else if(id.equals("local.FavoritesTitleActivity")) {
+			} else if(className.equals("local.FavoritesTitleActivity")) {
 				this.activity.onBackPressed();
 			}
 		} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-			if(id.equals("TabHero")) {
+			if(className.equals("TabHero")) {
 				onClickStartLeftActivity(FavoritesActivity.class);
-			} else if(id.equals("net.SearchActivity")) {
+			} else if(className.equals("net.SearchActivity")) {
 				this.activity.onBackPressed();
-			} else if(id.equals("net.SearchTitleActivity")) {
+			} else if(className.equals("net.SearchTitleActivity")) {
 				this.activity.onBackPressed();
-			} else if(id.equals("local.FavoritesActivity")) {
+			} else if(className.equals("local.FavoritesActivity")) {
 				Toast.makeText(this.context, R.string.choosePerf, Toast.LENGTH_LONG).show();
-			} else if(id.equals("local.FavoritesTitleActivity")) {
+			} else if(className.equals("local.FavoritesTitleActivity")) {
 				Toast.makeText(this.context, R.string.chooseTitle, Toast.LENGTH_LONG).show();
 			}
 		}

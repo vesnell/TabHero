@@ -10,6 +10,7 @@ import pl.tabhero.R;
 import pl.tabhero.TabHero;
 import pl.tabhero.core.Performers;
 import pl.tabhero.local.FavoritesActivity;
+import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -73,6 +74,8 @@ public class SearchActivity extends Activity {
 		editPerformer = (EditText) findViewById(R.id.editPerformer);
 		searchListView = (ListView) findViewById(R.id.searchListView);
 		
+		InputFilter filter = new MyFilter();
+		
 		editPerformer.setFilters(new InputFilter[]{filter}); 
 		editPerformer.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -103,17 +106,6 @@ public class SearchActivity extends Activity {
 			}
         });
     }
-    
-    InputFilter filter = new InputFilter() { 
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) { 
-        	for (int i = start; i < end; i++) { 
-        		if (!(Character.isLetterOrDigit(source.charAt(i)) || source.charAt(i) == ' ' || source.charAt(i) == '.')) { 
-                    return ""; 
-        		}
-            } 
-            return null; 
-        }
-    }; 
     
     public void searchView(View v) {
     	String typedPerformer = editPerformer.getText().toString().toLowerCase();

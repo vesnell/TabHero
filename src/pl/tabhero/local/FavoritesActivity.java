@@ -6,6 +6,7 @@ import java.util.Comparator;
 import pl.tabhero.R;
 import pl.tabhero.TabHero;
 import pl.tabhero.db.DBAdapter;
+import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
 import pl.tabhero.utils.PolishComparator;
 import android.annotation.SuppressLint;
@@ -118,16 +119,7 @@ public class FavoritesActivity extends Activity {
 		}); 
     }
     
-    InputFilter filter = new InputFilter() { 
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) { 
-        	for (int i = start; i < end; i++) { 
-        		if (!(Character.isLetterOrDigit(source.charAt(i)) || source.charAt(i) == ' ' || source.charAt(i) == '.')) { 
-                    return ""; 
-        		}
-            } 
-            return null; 
-        }
-    }; 
+	private InputFilter filter = new MyFilter();
     
     private void buildAlertDialogToAddOwnTab() {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);

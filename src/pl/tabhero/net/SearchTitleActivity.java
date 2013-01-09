@@ -11,6 +11,7 @@ import pl.tabhero.TabHero;
 import pl.tabhero.core.Songs;
 import pl.tabhero.core.Tablature;
 import pl.tabhero.local.FavoritesActivity;
+import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -87,6 +88,8 @@ public class SearchTitleActivity extends Activity {
 		btnTitleSearch = (ImageButton) findViewById(R.id.searchTitleBtn);
 		searchListView = (ListView) findViewById(R.id.searchTitleListView);
 		
+		InputFilter filter = new MyFilter();
+		
 		editTitle.setFilters(new InputFilter[]{filter});
         editTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -117,17 +120,6 @@ public class SearchTitleActivity extends Activity {
 			}
         });
     }
-	
-	InputFilter filter = new InputFilter() { 
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) { 
-        	for (int i = start; i < end; i++) { 
-        		if (!(Character.isLetterOrDigit(source.charAt(i)) || source.charAt(i) == ' ' || source.charAt(i) == '.')) { 
-                    return ""; 
-        		}
-            } 
-            return null; 
-        }
-    }; 
 	
 	public void searchTitleView(View v) {
 		String typedTitle = editTitle.getText().toString().toLowerCase();
