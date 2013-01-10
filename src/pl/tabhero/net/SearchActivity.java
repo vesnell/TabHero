@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document;
 import pl.tabhero.R;
 import pl.tabhero.TabHero;
 import pl.tabhero.core.Performers;
+import pl.tabhero.utils.MyEditorKeyActions;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
 import pl.tabhero.utils.MyTelephonyManager;
@@ -56,7 +57,7 @@ public class SearchActivity extends Activity {
 	private boolean isWebsiteAvailable;
 	private String chordsUrl = "http://www.chords.pl/wykonawcy/";
 	private GestureDetector gestureDetector;
-	private View.OnTouchListener gestureListener;
+	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
     @SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
@@ -73,30 +74,12 @@ public class SearchActivity extends Activity {
 		searchListView = (ListView) findViewById(R.id.searchListView);
 		
 		InputFilter filter = new MyFilter();
-		
 		editPerformer.setFilters(new InputFilter[]{filter}); 
-		editPerformer.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-		                actionId == EditorInfo.IME_ACTION_DONE ||
-		                event.getAction() == KeyEvent.ACTION_DOWN &&
-		                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-		            btnSearch.performClick();
-		            return true;
-		        }
-		        return false;
-		    }
-		});
+		
+		TextView.OnEditorActionListener myEditorKeyActions = new MyEditorKeyActions(btnSearch);
+		editPerformer.setOnEditorActionListener(myEditorKeyActions);
 		
 		gestureDetector = new GestureDetector(new MyGestureDetector(this));
-		gestureListener = new View.OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				if (gestureDetector.onTouchEvent(event)) {
-					return true;
-				}
-				return false;
-			}
-		};
         
         searchListView.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
@@ -105,6 +88,7 @@ public class SearchActivity extends Activity {
         });
     }
     
+    @SuppressLint("DefaultLocale") 
     public void searchView(View v) {
     	String typedPerformer = editPerformer.getText().toString().toLowerCase();
     	Performers performer = new Performers(typedPerformer);
@@ -307,8 +291,7 @@ public class SearchActivity extends Activity {
     		}
     	}
     	MenuInflater inflater = getMenuInflater();
-    	MyTelephonyManager manager = new MyTelephonyManager(this);
-	    if(!(manager.isTablet())) {
+	    if(!(device.isTablet())) {
 	    	inflater.inflate(R.menu.searchart, menu);
 	    }
     	return super.onPrepareOptionsMenu(menu);
@@ -319,10 +302,7 @@ public class SearchActivity extends Activity {
 		closeOptionsMenu();
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
-	    	Intent intent = new Intent(this, TabHero.class);
-	    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	    	startActivity(intent);
-	    	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	    	device.goHomeScreen();
 	    	return true;
 	    case MENUWIFI:
 	    	new connectWifi().execute();

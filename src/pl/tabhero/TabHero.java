@@ -21,7 +21,6 @@ public class TabHero extends Activity {
 	private Button btnOnline;
 	private Button btnOnBase;
 	private GestureDetector gestureDetector;
-	private View.OnTouchListener gestureListener;
 	
     @SuppressWarnings("deprecation")
 	@Override
@@ -34,15 +33,6 @@ public class TabHero extends Activity {
         btnOnBase = (Button) findViewById(R.id.favorites);
 
 		gestureDetector = new GestureDetector(new MyGestureDetector(this));
-		gestureListener = new View.OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				if (gestureDetector.onTouchEvent(event)) {
-					return true;
-				}
-				return false;
-			}
-		};
-		
 		final MyGestureDetector myGestureDetector = new MyGestureDetector(this);
 		
 		btnOnline.setOnClickListener(new View.OnClickListener() {

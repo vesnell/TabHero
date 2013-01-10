@@ -11,6 +11,7 @@ import pl.tabhero.R.layout;
 import pl.tabhero.R.menu;
 import pl.tabhero.R.string;
 import pl.tabhero.db.DBAdapter;
+import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.selector.SelectArralAdapter;
 import pl.tabhero.utils.selector.SelectViewHolder;
 import pl.tabhero.utils.selector.mItems;
@@ -43,6 +44,7 @@ public class EditFavPerfs extends Activity{
 	private ListView delFavListView;
 	private ArrayAdapter<mItems> listAdapter;
 	private ArrayList<mItems> planetList;
+	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
 	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
@@ -120,10 +122,7 @@ public class EditFavPerfs extends Activity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
-	    	Intent intent = new Intent(this, TabHero.class);
-	    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	    	startActivity(intent);
-	    	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	    	device.goHomeScreen();
 	    	return true;
 	    case R.id.checkReverse:
 	        checkReverse();

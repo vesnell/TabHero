@@ -3,7 +3,8 @@
   android:id="@+id/linearFav"
   android:orientation="vertical"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:background="#eaeaea">
  
   <!--<TextView android:text="@string/favorites_layout"
             android:padding="15dip"

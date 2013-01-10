@@ -67,6 +67,7 @@ public class FavTabViewActivity extends Activity {
 	private LinearLayout buttons;
 	private boolean max;
 	private boolean lock = false;
+	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
 	private int scaleText = 12;
 	private String performer;
@@ -260,10 +261,7 @@ public class FavTabViewActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
-	    	Intent intent = new Intent(this, TabHero.class);
-	    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	    	startActivity(intent);
-	    	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	    	device.goHomeScreen();
 	    	return true;
 	    case R.id.delFromFav:
 	        delFromFav();

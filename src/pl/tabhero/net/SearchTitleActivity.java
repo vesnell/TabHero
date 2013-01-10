@@ -10,6 +10,7 @@ import pl.tabhero.R;
 import pl.tabhero.TabHero;
 import pl.tabhero.core.Songs;
 import pl.tabhero.core.Tablature;
+import pl.tabhero.utils.MyEditorKeyActions;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
 import pl.tabhero.utils.MyTelephonyManager;
@@ -57,7 +58,7 @@ public class SearchTitleActivity extends Activity {
 	private boolean isWebsiteAvailable;
 	private String chordsUrl = "http://www.chords.pl";
 	private GestureDetector gestureDetector;
-	private View.OnTouchListener gestureListener;
+	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
@@ -87,30 +88,12 @@ public class SearchTitleActivity extends Activity {
 		searchListView = (ListView) findViewById(R.id.searchTitleListView);
 		
 		InputFilter filter = new MyFilter();
-		
 		editTitle.setFilters(new InputFilter[]{filter});
-        editTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-		                actionId == EditorInfo.IME_ACTION_DONE ||
-		                event.getAction() == KeyEvent.ACTION_DOWN &&
-		                event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-		            btnTitleSearch.performClick();
-		            return true;
-		        }
-		        return false;
-		    }
-		});
+		
+		TextView.OnEditorActionListener myEditorKeyActions = new MyEditorKeyActions(btnTitleSearch);
+		editTitle.setOnEditorActionListener(myEditorKeyActions);
         
         gestureDetector = new GestureDetector(new MyGestureDetector(this));
-		gestureListener = new View.OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				if (gestureDetector.onTouchEvent(event)) {
-					return true;
-				}
-				return false;
-			}
-		};
         
         searchListView.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
@@ -332,8 +315,7 @@ public class SearchTitleActivity extends Activity {
     		}
     	}
     	MenuInflater inflater = getMenuInflater();
-    	MyTelephonyManager manager = new MyTelephonyManager(this);
-	    if(!(manager.isTablet())) {
+	    if(!(device.isTablet())) {
 	    	inflater.inflate(R.menu.searchart, menu);
 	    }
     	return super.onPrepareOptionsMenu(menu);
@@ -344,10 +326,7 @@ public class SearchTitleActivity extends Activity {
 		closeOptionsMenu();
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
-	    	Intent intent = new Intent(this, TabHero.class);
-	    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	    	startActivity(intent);
-	    	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	    	device.goHomeScreen();
 	    	return true;
 	    case MENUWIFI:
 	    	new connectWifi().execute();

@@ -8,6 +8,7 @@ import pl.tabhero.TabHero;
 import pl.tabhero.db.DBAdapter;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
+import pl.tabhero.utils.MyOnKeyListener;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.PolishComparator;
 import android.annotation.SuppressLint;
@@ -45,12 +46,13 @@ public class FavoritesActivity extends Activity {
 	
 	private ListView searchListView;
 	private EditText editFavPerformer;
+	private ImageButton imgBtn;
 	private ArrayList<String> listOfFavPerfs;
 	private ArrayList<String> listOfChosenPerfsFromBase;
 	private ArrayAdapter<String> listAdapter;
 	private boolean max;
 	private GestureDetector gestureDetector;
-	private View.OnTouchListener gestureListener;
+	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
@@ -64,16 +66,9 @@ public class FavoritesActivity extends Activity {
         
         editFavPerformer = (EditText) findViewById(R.id.editFavPerformer);
         searchListView = (ListView) findViewById(R.id.searchFavListView);
+        imgBtn = (ImageButton) findViewById(R.id.searchFavBtn);
         
         gestureDetector = new GestureDetector(new MyGestureDetector(this));
-		gestureListener = new View.OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				if (gestureDetector.onTouchEvent(event)) {
-					return true;
-				}
-				return false;
-			}
-		};
         
         searchListView.setOnTouchListener(new OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
@@ -107,16 +102,9 @@ public class FavoritesActivity extends Activity {
         });
         
         editFavPerformer.setFilters(new InputFilter[]{filter});
-        editFavPerformer.setOnKeyListener(new OnKeyListener() {
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if (keyCode == KeyEvent.KEYCODE_ENTER) {
-					searchView(v);
-					return true;
-				} else {
-					return false;
-				}
-			}
-		}); 
+        
+        OnKeyListener myOnKeyListener = new MyOnKeyListener(imgBtn);
+        editFavPerformer.setOnKeyListener(myOnKeyListener); 
     }
     
 	private InputFilter filter = new MyFilter();
@@ -147,7 +135,6 @@ public class FavoritesActivity extends Activity {
     private void buildAlertDialogNewTitle(final String newPerfName) {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final EditText inputTitle = new EditText(this);
-        //inputTitle.setKeyListener(DigitsKeyListener.getInstance("AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻaąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż1234567890 ."));
         inputTitle.setFilters(new InputFilter[]{filter});
         builder.setMessage(getString(R.string.addOwnTitle) + " " + newPerfName);	
 		builder.setView(inputTitle);
@@ -252,8 +239,7 @@ public class FavoritesActivity extends Activity {
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
-	    MyTelephonyManager manager = new MyTelephonyManager(this);
-	    if(manager.isTablet()) {
+	    if(device.isTablet()) {
 	    	inflater.inflate(R.menu.favsearchmenuiftablet, menu);
 	    } else {
 	    	inflater.inflate(R.menu.faveeditcheckbox, menu);
@@ -265,10 +251,7 @@ public class FavoritesActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
-	    	Intent intent = new Intent(this, TabHero.class);
-	    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	    	startActivity(intent);
-	    	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	    	device.goHomeScreen();
 	    	return true;
 	    case R.id.delFromFavWithCheckBox:
 	        startEditActivity();
