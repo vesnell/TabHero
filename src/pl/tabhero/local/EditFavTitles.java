@@ -34,7 +34,7 @@ import android.widget.Toast;
 
 public class EditFavTitles extends Activity{
 	
-DBAdapter db = new DBAdapter(this);
+	DBAdapter db = new DBAdapter(this);
 	
 	private Button btnDeleteFavPerfs;
 	private ListView delFavListView;
@@ -44,15 +44,11 @@ DBAdapter db = new DBAdapter(this);
 	private ArrayList<String> listToEditUrl;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
-	
-	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.editfavperfs);
         
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            getActionBar().setHomeButtonEnabled(true);
-        }
+        device.setHomeButtonEnabledForICS();
         
         btnDeleteFavPerfs = (Button) findViewById(R.id.deleteFavPerfs);
 		delFavListView = (ListView) findViewById(R.id.delFavListView);

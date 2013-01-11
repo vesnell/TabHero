@@ -1,25 +1,22 @@
 package pl.tabhero.net;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.concurrent.ExecutionException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import pl.tabhero.R;
-import pl.tabhero.TabHero;
 import pl.tabhero.core.Performers;
 import pl.tabhero.utils.MyEditorKeyActions;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
+import pl.tabhero.utils.MyOnTouchListener;
 import pl.tabhero.utils.MyTelephonyManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -27,16 +24,12 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnTouchListener;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -51,23 +44,19 @@ public class SearchActivity extends Activity {
 	private EditText editPerformer;
 	private ImageButton btnSearch;
 	private ArrayAdapter<String> listAdapter;
-	private ProgressDialog progressDialog;
+	private MyProgressDialogs progressDialog = new MyProgressDialogs(this);
 	private static boolean MAX;
 	private static final int MENUWIFI = Menu.FIRST;
-	private boolean isWebsiteAvailable;
 	private String chordsUrl = "http://www.chords.pl/wykonawcy/";
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
     @SuppressWarnings("deprecation")
-	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
         
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            getActionBar().setHomeButtonEnabled(true);
-        }
+        device.setHomeButtonEnabledForICS();
         
         btnSearch = (ImageButton) findViewById(R.id.searchBtn);
 		editPerformer = (EditText) findViewById(R.id.editPerformer);
@@ -81,18 +70,14 @@ public class SearchActivity extends Activity {
 		
 		gestureDetector = new GestureDetector(new MyGestureDetector(this));
         
-        searchListView.setOnTouchListener(new OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				return gestureDetector.onTouchEvent(event);
-			}
-        });
+		OnTouchListener myOnTouchListener = new MyOnTouchListener(gestureDetector);
+        searchListView.setOnTouchListener(myOnTouchListener);
     }
     
-    @SuppressLint("DefaultLocale") 
     public void searchView(View v) {
     	String typedPerformer = editPerformer.getText().toString().toLowerCase();
     	Performers performer = new Performers(typedPerformer);
-		hideKeyboard();
+		device.hideKeyboard(editPerformer);
 		
 		if(!(performer.typedName.length() > 0)) 
 			Toast.makeText(getApplicationContext(), R.string.hintEmpty, Toast.LENGTH_LONG).show();
@@ -101,61 +86,28 @@ public class SearchActivity extends Activity {
 		else if(!(checkInternetConnection()))
 			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
 		else {
-				new checkConnect().execute(performer);		
-		}
-    }
-    
-    public class checkConnect extends AsyncTask<Performers, Void, Performers>{
-
-    	@Override
-   	 	protected void onPostExecute(Performers performer) {
-    		if(isWebsiteAvailable) {
-    			new connect().execute(performer);
-    		} else {
-    			Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
-    		}
-    	}
-
-		@Override
-		protected Performers doInBackground(Performers... params) {
-			Performers performer = params[0];
-			if(isConnected()) {
-				isWebsiteAvailable = true;
-			} else {
-				isWebsiteAvailable = false;
+			AsyncTask<Void, Void, Boolean> checkConnection = new CheckConnection(this).execute();
+			try {
+				if(checkConnection.get()) {
+					//Log.d("WYNIK", checkConnection.get().toString());
+					new Connect().execute(performer);
+				} else {
+					//Log.d("WYNIK", checkConnection.get().toString());
+					Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
 			}
-			return performer;
 		}
     }
     
-    public boolean isConnected() {
-        try {
-            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo netInfo = cm.getActiveNetworkInfo();
-            if (netInfo != null && netInfo.isConnected()) {
-                URL url = new URL(chordsUrl);
-                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(2000);
-                urlc.connect();
-                if (urlc.getResponseCode() == 200) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-    
-    public class connect extends AsyncTask<Performers, Void, Performers>{
+    public class Connect extends AsyncTask<Performers, Void, Performers>{
     	
     	@Override
     	 protected void onPreExecute() {
-    		startProgressBar();
+    		progressDialog.start(getString(R.string.srchPerf));
     	 }
     	
     	@Override
@@ -178,7 +130,7 @@ public class SearchActivity extends Activity {
 	            }
 	        } );
 			
-    		closeProgressBar();
+    		progressDialog.close();
     	 }
     	
 		@Override
@@ -247,35 +199,8 @@ public class SearchActivity extends Activity {
     	return doc;
     }
     
-    private void hideKeyboard() {
-		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(editPerformer.getWindowToken(), 0);
-	}
-    
-    private void startProgressBar() {
-    	setProgressBarIndeterminateVisibility(true);
-        progressDialog = ProgressDialog.show(SearchActivity.this, getString(R.string.srchPerf), getString(R.string.wait));
-    }
-    
-    private void startProgressBarWifiOn() {
-    	setProgressBarIndeterminateVisibility(true);
-        progressDialog = ProgressDialog.show(SearchActivity.this, getString(R.string.wifiTryOn), getString(R.string.wait));
-    }
-    
-    private void startProgressBarWifiOff() {
-    	setProgressBarIndeterminateVisibility(true);
-        progressDialog = ProgressDialog.show(SearchActivity.this, getString(R.string.wifiTryOff), getString(R.string.wait));
-    }
-    
-    private void closeProgressBar() {
-    	setProgressBarIndeterminateVisibility(false);
-		progressDialog.dismiss();
-    }
-    
     @SuppressLint("NewApi")
-	@Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.clear();
+    private void setWifiMenuIcon(Menu menu) {
     	WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
     	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
     		if(wifi.isWifiEnabled()) {
@@ -290,6 +215,12 @@ public class SearchActivity extends Activity {
     			menu.add(0, MENUWIFI, 0, R.string.wifiOff).setIcon(R.drawable.wifi_ic);
     		}
     	}
+    }
+    
+	@Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	menu.clear();
+    	setWifiMenuIcon(menu);
     	MenuInflater inflater = getMenuInflater();
 	    if(!(device.isTablet())) {
 	    	inflater.inflate(R.menu.searchart, menu);
@@ -342,15 +273,15 @@ public class SearchActivity extends Activity {
     	 protected void onPreExecute() {
     		WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
     		if(wifi.isWifiEnabled()) {
-    			startProgressBarWifiOff();
+    			progressDialog.start(getString(R.string.wifiTryOff));
     		} else {
-    			startProgressBarWifiOn();
+    			progressDialog.start(getString(R.string.wifiTryOn));
     		}
     	 }
     	
     	@Override
    	 	protected void onPostExecute(Void result) {
-    		closeProgressBar();
+    		progressDialog.close();
     		openOptionsMenu();
     	}
 

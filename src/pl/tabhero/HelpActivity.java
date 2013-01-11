@@ -12,15 +12,12 @@ public class HelpActivity extends Activity {
 	
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
-	@SuppressLint("NewApi")
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.help);
         
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            getActionBar().setHomeButtonEnabled(true);
-        }
+        device.setHomeButtonEnabledForICS();
 	}
 	
 	@Override

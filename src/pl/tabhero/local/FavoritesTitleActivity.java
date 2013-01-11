@@ -10,6 +10,7 @@ import pl.tabhero.db.DBAdapter;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
 import pl.tabhero.utils.MyOnKeyListener;
+import pl.tabhero.utils.MyOnTouchListener;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.PolishComparator;
 import android.annotation.SuppressLint;
@@ -62,14 +63,11 @@ public class FavoritesTitleActivity extends Activity {
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
 	@SuppressWarnings("deprecation")
-	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favoritestitle);
         
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            getActionBar().setHomeButtonEnabled(true);
-        }
+        device.setHomeButtonEnabledForICS();
         
         chosenFavPerf = (TextView) findViewById(R.id.chosenFavPerformer);
         editFavTitle = (EditText) findViewById(R.id.editFavTitle);
@@ -78,11 +76,8 @@ public class FavoritesTitleActivity extends Activity {
         
         gestureDetector = new GestureDetector(new MyGestureDetector(this));
         
-        searchFavTitleListView.setOnTouchListener(new OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				return gestureDetector.onTouchEvent(event);
-			}
-        });
+        OnTouchListener myOnTouchListener = new MyOnTouchListener(gestureDetector);
+        searchFavTitleListView.setOnTouchListener(myOnTouchListener);
         
         Intent i = getIntent();
         Bundle extras = i.getExtras();
@@ -104,7 +99,7 @@ public class FavoritesTitleActivity extends Activity {
         
         listAdapter = new ArrayAdapter<String>(this, R.layout.titlesfav, listOfChosenTitleFromBase);
         searchFavTitleListView.setAdapter(listAdapter);
-        hideKeyboard();
+        device.hideKeyboard(editFavTitle);
         searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             	Intent i = new Intent(FavoritesTitleActivity.this, FavTabViewActivity.class);
@@ -256,7 +251,7 @@ public class FavoritesTitleActivity extends Activity {
     }
 	
 	public void searchView(View v) {
-		hideKeyboard();
+		device.hideKeyboard(editFavTitle);
 		
 		ArrayList<ArrayList<String>> listOfLists = addTitleFromBase(performerName);
         ArrayList<String> listTitle = listOfLists.get(0);
@@ -352,11 +347,6 @@ public class FavoritesTitleActivity extends Activity {
         listOfList.add(listUrl);
         return listOfList;      
     }
-	
-	private void hideKeyboard() {
-		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(editFavTitle.getWindowToken(), 0);
-	}
 	
 	
 	protected void onResume() {

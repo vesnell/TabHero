@@ -68,6 +68,7 @@
     <string name="websiteConnectionError">Problem z połączeniem z serwisem</string>
     <string name="choosePerf">Musisz wybrać z listy wykonawcę aby przejść dalej</string>
     <string name="chooseTitle">Musisz wybrać z listy tytuł aby przejść dalej</string>
+    <string name="checkConnectionService">Sprawdzenie dostępności serwisu</string>
     <string name="helptextview">Wyświetlana będzie pomoc, w której będzie opis jak używać aplikację i jakie ma funkcjonalości.\n
         Oraz parę innych rzeczy.</string>
     

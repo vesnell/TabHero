@@ -67,6 +67,7 @@
     <string name="websiteConnectionError">Website service connection error</string>
     <string name="choosePerf">You have to choose performer from the list to continue</string>
     <string name="chooseTitle">You have to choose title from the list to continue</string>
+    <string name="checkConnectionService">Checking connection with service</string>
     <string name="helptextview">Display help, where should be a description how to use app and what is the funcionality of this app.\n
         And more other stuff.</string>
 </resources>

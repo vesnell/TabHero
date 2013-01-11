@@ -13,6 +13,7 @@ import pl.tabhero.core.Tablature;
 import pl.tabhero.utils.MyEditorKeyActions;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
+import pl.tabhero.utils.MyOnTouchListener;
 import pl.tabhero.utils.MyTelephonyManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -52,7 +53,8 @@ public class SearchTitleActivity extends Activity {
 	private EditText editTitle;
 	private ImageButton btnTitleSearch;
 	private ArrayAdapter<String> listAdapter;
-	private ProgressDialog progressDialog;
+	//private ProgressDialog progressDialog;
+	private MyProgressDialogs progressDialog = new MyProgressDialogs(this);
 	private static boolean MAX;
 	private static final int MENUWIFI = Menu.FIRST;
 	private boolean isWebsiteAvailable;
@@ -61,14 +63,11 @@ public class SearchTitleActivity extends Activity {
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
 	@SuppressWarnings("deprecation")
-	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.searchtitle);
         
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            getActionBar().setHomeButtonEnabled(true);
-        }
+        device.setHomeButtonEnabledForICS();
         
         Intent i = getIntent();
 		Bundle extras = i.getExtras();
@@ -95,16 +94,13 @@ public class SearchTitleActivity extends Activity {
         
         gestureDetector = new GestureDetector(new MyGestureDetector(this));
         
-        searchListView.setOnTouchListener(new OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				return gestureDetector.onTouchEvent(event);
-			}
-        });
+        OnTouchListener myOnTouchListener = new MyOnTouchListener(gestureDetector);
+        searchListView.setOnTouchListener(myOnTouchListener);
     }
 	
 	public void searchTitleView(View v) {
 		String typedTitle = editTitle.getText().toString().toLowerCase();
-		hideKeyboard();
+		device.hideKeyboard(editTitle);
 		
 		Intent i = getIntent();
 		Bundle extras = i.getExtras();
@@ -190,7 +186,7 @@ public class SearchTitleActivity extends Activity {
 		
 		@Override
    	 	protected void onPreExecute() {
-			startProgressBar(getString(R.string.srchSong));
+			progressDialog.start(getString(R.string.srchSong));
 		}
    	
 		@Override
@@ -199,7 +195,7 @@ public class SearchTitleActivity extends Activity {
 			song.setListOfUrls();
 			listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.titlesnet, song.listOfTitles);
 			searchListView.setAdapter(listAdapter);
-			closeProgressBar();
+			progressDialog.close();
 			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 	            	String posUrl = song.listOfSongUrls.get(position);
@@ -226,12 +222,12 @@ public class SearchTitleActivity extends Activity {
 		
 		@Override
    	 	protected void onPreExecute() {
-			startProgressBar(getString(R.string.srchTab));
+			progressDialog.start(getString(R.string.srchTab));
    	 	}
    	
 		@Override
 		protected void onPostExecute(Tablature tablature) {
-			closeProgressBar();
+			progressDialog.close();
 			Intent i = getIntent();
 			Bundle extras = i.getExtras();
 			final String performerName = extras.getString("performerName");
@@ -267,25 +263,15 @@ public class SearchTitleActivity extends Activity {
 		return doc;
 	}
 	
-	private void startProgressBar(String title) {
+	/*private void startProgressBar(String progressTitle) {
 		setProgressBarIndeterminateVisibility(true);
-		progressDialog = ProgressDialog.show(SearchTitleActivity.this, title, getString(R.string.wait));
+		progressDialog = ProgressDialog.show(SearchTitleActivity.this, progressTitle, getString(R.string.wait));
 	}
-	
-	private void startProgressBarWifi() {
-    	setProgressBarIndeterminateVisibility(true);
-        progressDialog = ProgressDialog.show(SearchTitleActivity.this, "", getString(R.string.wait));
-    }
 	
 	private void closeProgressBar() {
 		setProgressBarIndeterminateVisibility(false);
 		progressDialog.dismiss();
-	}
-	
-	private void hideKeyboard() {
-		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(editTitle.getWindowToken(), 0);
-	}
+	}*/
 	
 	public boolean checkInternetConnection() {
         ConnectivityManager cm = (ConnectivityManager) SearchTitleActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -297,9 +283,7 @@ public class SearchTitleActivity extends Activity {
     }
 	
 	@SuppressLint("NewApi")
-	@Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.clear();
+    private void setWifiMenuIcon(Menu menu) {
     	WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
     	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
     		if(wifi.isWifiEnabled()) {
@@ -314,6 +298,12 @@ public class SearchTitleActivity extends Activity {
     			menu.add(0, MENUWIFI, 0, R.string.wifiOff).setIcon(R.drawable.wifi_ic);
     		}
     	}
+    }
+	
+	@Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	menu.clear();
+    	setWifiMenuIcon(menu);
     	MenuInflater inflater = getMenuInflater();
 	    if(!(device.isTablet())) {
 	    	inflater.inflate(R.menu.searchart, menu);
@@ -364,12 +354,17 @@ public class SearchTitleActivity extends Activity {
     	
     	@Override
     	 protected void onPreExecute() {
-    		startProgressBarWifi();
+    		WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
+    		if(wifi.isWifiEnabled()) {
+    			progressDialog.start(getString(R.string.wifiTryOff));
+    		} else {
+    			progressDialog.start(getString(R.string.wifiTryOn));
+    		}
     	 }
     	
     	@Override
    	 	protected void onPostExecute(Void result) {
-    		closeProgressBar();
+    		progressDialog.close();
     		openOptionsMenu();
     	}
 

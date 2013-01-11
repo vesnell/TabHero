@@ -9,6 +9,7 @@ import pl.tabhero.db.DBAdapter;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
 import pl.tabhero.utils.MyOnKeyListener;
+import pl.tabhero.utils.MyOnTouchListener;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.PolishComparator;
 import android.annotation.SuppressLint;
@@ -55,14 +56,11 @@ public class FavoritesActivity extends Activity {
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
 	@SuppressWarnings("deprecation")
-	@SuppressLint("NewApi")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favorites);
         
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            getActionBar().setHomeButtonEnabled(true);
-        }
+        device.setHomeButtonEnabledForICS();
         
         editFavPerformer = (EditText) findViewById(R.id.editFavPerformer);
         searchListView = (ListView) findViewById(R.id.searchFavListView);
@@ -70,17 +68,14 @@ public class FavoritesActivity extends Activity {
         
         gestureDetector = new GestureDetector(new MyGestureDetector(this));
         
-        searchListView.setOnTouchListener(new OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				return gestureDetector.onTouchEvent(event);
-			}
-        });
+        OnTouchListener myOnTouchListener = new MyOnTouchListener(gestureDetector);
+        searchListView.setOnTouchListener(myOnTouchListener);
         
         listOfChosenPerfsFromBase = addPerfFromBase();
 
         listAdapter = new ArrayAdapter<String>(this, R.layout.artistsfav, listOfChosenPerfsFromBase);
         searchListView.setAdapter(listAdapter);
-        hideKeyboard();
+        device.hideKeyboard(editFavPerformer);
         searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             	Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
@@ -293,7 +288,7 @@ public class FavoritesActivity extends Activity {
     }
     
 	public void searchView(View v) {
-    	hideKeyboard();
+    	device.hideKeyboard(editFavPerformer);
     	listOfChosenPerfsFromBase.clear();
     	listOfChosenPerfsFromBase = addPerfFromBase();
     	listOfFavPerfs = addPerfFromBase();
@@ -377,11 +372,6 @@ public class FavoritesActivity extends Activity {
         Collections.sort(list, comparator);
         return list;      
     } 
-    
-    private void hideKeyboard() {
-		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(editFavPerformer.getWindowToken(), 0);
-	}
     
     protected void onResume() {
 		super.onResume();
