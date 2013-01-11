@@ -1,13 +1,11 @@
 package pl.tabhero.net;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.concurrent.ExecutionException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import pl.tabhero.R;
-import pl.tabhero.TabHero;
 import pl.tabhero.core.Songs;
 import pl.tabhero.core.Tablature;
 import pl.tabhero.utils.MyEditorKeyActions;
@@ -17,28 +15,21 @@ import pl.tabhero.utils.MyOnTouchListener;
 import pl.tabhero.utils.MyTelephonyManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnTouchListener;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -53,11 +44,9 @@ public class SearchTitleActivity extends Activity {
 	private EditText editTitle;
 	private ImageButton btnTitleSearch;
 	private ArrayAdapter<String> listAdapter;
-	//private ProgressDialog progressDialog;
 	private MyProgressDialogs progressDialog = new MyProgressDialogs(this);
 	private static boolean MAX;
 	private static final int MENUWIFI = Menu.FIRST;
-	private boolean isWebsiteAvailable;
 	private String chordsUrl = "http://www.chords.pl";
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
@@ -107,82 +96,25 @@ public class SearchTitleActivity extends Activity {
 		String performerUrl = extras.getString("performerUrl");
 
 		Songs song = new Songs(typedTitle, performerUrl);
-		if(!(checkInternetConnection()))
+		if(!(checkInternetConnection())) {
 			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
-		else 
-			new checkConnectTitle().execute(song);
+		} else {
+			AsyncTask<Void, Void, Boolean> checkConnection = new CheckConnection(this).execute();
+			try {
+				if(checkConnection.get()) {
+					new ConnectToTitles().execute(song);
+				} else {
+					Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
-	public class checkConnectTitle extends AsyncTask<Songs, Void, Songs>{
-   	
-		@Override
-   	 	protected void onPostExecute(Songs song) {
-    		if(isWebsiteAvailable) {
-    			new connect().execute(song);
-    		} else {
-    			Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
-    		}
-    	}
-
-		@Override
-		protected Songs doInBackground(Songs... params) {
-			Songs song = params[0];
-			if(isConnected()) {
-				isWebsiteAvailable = true;
-			} else {
-				isWebsiteAvailable = false;
-			}
-			return song;
-		}
-    }
-	
-	public class checkConnectTab extends AsyncTask<Tablature, Void, Tablature>{
-	   	
-		@Override
-   	 	protected void onPostExecute(Tablature tablature) {
-    		if(isWebsiteAvailable) {
-    			new getTablature().execute(tablature);
-    		} else {
-    			Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
-    		}
-    	}
-
-		@Override
-		protected Tablature doInBackground(Tablature... params) {
-			Tablature tablature = params[0];
-			if(isConnected()) {
-				isWebsiteAvailable = true;
-			} else {
-				isWebsiteAvailable = false;
-			}
-			return tablature;
-		}
-    }
-    
-    public boolean isConnected() {
-        try {
-            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo netInfo = cm.getActiveNetworkInfo();
-            if (netInfo != null && netInfo.isConnected()) {
-                URL url = new URL(chordsUrl);
-                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(2000);
-                urlc.connect();
-                if (urlc.getResponseCode() == 200) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-	
-	public class connect extends AsyncTask<Songs, Void, Songs> {
+	public class ConnectToTitles extends AsyncTask<Songs, Void, Songs> {
 		
 		@Override
    	 	protected void onPreExecute() {
@@ -201,10 +133,22 @@ public class SearchTitleActivity extends Activity {
 	            	String posUrl = song.listOfSongUrls.get(position);
 	            	String posTitle = song.listOfTitles.get(position);
 	            	Tablature tablature = new Tablature(posTitle, posUrl);
-	            	if(!(checkInternetConnection()))
+	            	if(!(checkInternetConnection())) {
 	            		Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
-	            	else
-	            		new checkConnectTab().execute(tablature);      		
+	            	} else {
+	            		AsyncTask<Void, Void, Boolean> checkConnection2 = new CheckConnection(SearchTitleActivity.this).execute();
+	            		try {
+	        				if(checkConnection2.get()) {
+	        					new getTablature().execute(tablature);
+	        				} else {
+	        					Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
+	        				}
+	        			} catch (InterruptedException e) {
+	        				e.printStackTrace();
+	        			} catch (ExecutionException e) {
+	        				e.printStackTrace();
+	        			}
+	            	}
 	            }
 			} );
    	 	}
@@ -262,16 +206,6 @@ public class SearchTitleActivity extends Activity {
 		}
 		return doc;
 	}
-	
-	/*private void startProgressBar(String progressTitle) {
-		setProgressBarIndeterminateVisibility(true);
-		progressDialog = ProgressDialog.show(SearchTitleActivity.this, progressTitle, getString(R.string.wait));
-	}
-	
-	private void closeProgressBar() {
-		setProgressBarIndeterminateVisibility(false);
-		progressDialog.dismiss();
-	}*/
 	
 	public boolean checkInternetConnection() {
         ConnectivityManager cm = (ConnectivityManager) SearchTitleActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -336,7 +270,6 @@ public class SearchTitleActivity extends Activity {
     			wifi.setWifiEnabled(false);
     			timer(false);
     		} catch(Exception e) {
-    			Log.d("WIFI", e.getMessage());
     			Toast.makeText(getApplicationContext(), R.string.wifiFalseError, Toast.LENGTH_LONG).show();
     		}
     	} else {
@@ -344,7 +277,6 @@ public class SearchTitleActivity extends Activity {
     			wifi.setWifiEnabled(true);
     			timer(true);
     		} catch(Exception e) {
-    			Log.d("WIFI", e.getMessage());
     			Toast.makeText(getApplicationContext(), R.string.wifiTrueError, Toast.LENGTH_LONG).show();
     		}
     	}

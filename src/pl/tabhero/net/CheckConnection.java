@@ -6,6 +6,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class CheckConnection extends AsyncTask<Void, Void, Boolean> {
 
@@ -53,5 +54,4 @@ public class CheckConnection extends AsyncTask<Void, Void, Boolean> {
         }
         return false;
     }
-	
 }

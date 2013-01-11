@@ -22,7 +22,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -89,10 +88,8 @@ public class SearchActivity extends Activity {
 			AsyncTask<Void, Void, Boolean> checkConnection = new CheckConnection(this).execute();
 			try {
 				if(checkConnection.get()) {
-					//Log.d("WYNIK", checkConnection.get().toString());
-					new Connect().execute(performer);
+					new ConnectToPerformers().execute(performer);
 				} else {
-					//Log.d("WYNIK", checkConnection.get().toString());
 					Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
 				}
 			} catch (InterruptedException e) {
@@ -103,7 +100,7 @@ public class SearchActivity extends Activity {
 		}
     }
     
-    public class Connect extends AsyncTask<Performers, Void, Performers>{
+    public class ConnectToPerformers extends AsyncTask<Performers, Void, Performers>{
     	
     	@Override
     	 protected void onPreExecute() {
@@ -253,7 +250,6 @@ public class SearchActivity extends Activity {
     			wifi.setWifiEnabled(false);
     			timer(false);
     		} catch(Exception e) {
-    			Log.d("WIFI", e.getMessage());
     			Toast.makeText(getApplicationContext(), R.string.wifiFalseError, Toast.LENGTH_LONG).show();
     		}
     	} else {
@@ -261,7 +257,6 @@ public class SearchActivity extends Activity {
     			wifi.setWifiEnabled(true);
     			timer(true);
     		} catch(Exception e) {
-    			Log.d("WIFI", e.getMessage());
     			Toast.makeText(getApplicationContext(), R.string.wifiTrueError, Toast.LENGTH_LONG).show();
     		}
     	}
