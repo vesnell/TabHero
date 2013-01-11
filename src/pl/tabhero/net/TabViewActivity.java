@@ -157,9 +157,9 @@ public class TabViewActivity extends Activity {
 	    MenuInflater inflater = getMenuInflater();
 	    MyTelephonyManager manager = new MyTelephonyManager(this);
 	    if(manager.isTablet()) {
-	    	inflater.inflate(R.menu.favtabviewiftablet, menu);
+	    	inflater.inflate(R.menu.tabviewiftablet, menu);
 	    } else {
-	    	inflater.inflate(R.menu.favtabview, menu);
+	    	inflater.inflate(R.menu.tabview, menu);
 	    }
 	    return true;
 	}
