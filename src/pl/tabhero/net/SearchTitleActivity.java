@@ -50,6 +50,7 @@ public class SearchTitleActivity extends Activity {
 	private String chordsUrl = "http://www.chords.pl";
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
+	private boolean errorConnection;
 	
 	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,7 +105,7 @@ public class SearchTitleActivity extends Activity {
 				if(checkConnection.get()) {
 					new ConnectToTitles().execute(song);
 				} else {
-					Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -123,46 +124,53 @@ public class SearchTitleActivity extends Activity {
    	
 		@Override
 		protected void onPostExecute(final Songs song) {
-			song.setListOfTitles();
-			song.setListOfUrls();
-			listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.titlesnet, song.listOfTitles);
-			searchListView.setAdapter(listAdapter);
 			progressDialog.close();
-			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	            	String posUrl = song.listOfSongUrls.get(position);
-	            	String posTitle = song.listOfTitles.get(position);
-	            	Tablature tablature = new Tablature(posTitle, posUrl);
-	            	if(!(checkInternetConnection())) {
-	            		Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
-	            	} else {
-	            		AsyncTask<Void, Void, Boolean> checkConnection2 = new CheckConnection(SearchTitleActivity.this).execute();
-	            		try {
-	        				if(checkConnection2.get()) {
-	        					new getTablature().execute(tablature);
-	        				} else {
-	        					Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
-	        				}
-	        			} catch (InterruptedException e) {
-	        				e.printStackTrace();
-	        			} catch (ExecutionException e) {
-	        				e.printStackTrace();
-	        			}
-	            	}
-	            }
-			} );
+			if(!errorConnection) {
+				song.setListOfTitles();
+				song.setListOfUrls();
+				listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.titlesnet, song.listOfTitles);
+				searchListView.setAdapter(listAdapter);
+				searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+					public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+						String posUrl = song.listOfSongUrls.get(position);
+						String posTitle = song.listOfTitles.get(position);
+						Tablature tablature = new Tablature(posTitle, posUrl);
+						if(!(checkInternetConnection())) {
+							Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
+						} else {
+							AsyncTask<Void, Void, Boolean> checkConnection2 = new CheckConnection(SearchTitleActivity.this).execute();
+							try {
+								if(checkConnection2.get()) {
+									new getTablature().execute(tablature);
+								} else {
+									Toast.makeText(getApplicationContext(), R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
+								}
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							} catch (ExecutionException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				});
+			} else {
+				Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
+			}
    	 	}
 
 		@Override
 		protected Songs doInBackground(Songs... params) {
 			Songs song = params[0];
 	    	Document doc = connectUrl(chordsUrl + song.performerUrl);
-	    	song.setMapOfChosenTitles(doc);
+	    	if(!errorConnection) {
+	    		song.setMapOfChosenTitles(doc);
+			}
 	    	return song;
 		}
 	}
 	
 	public class getTablature extends AsyncTask<Tablature, Void, Tablature>{
+		
 		
 		@Override
    	 	protected void onPreExecute() {
@@ -172,25 +180,32 @@ public class SearchTitleActivity extends Activity {
 		@Override
 		protected void onPostExecute(Tablature tablature) {
 			progressDialog.close();
-			Intent i = getIntent();
-			Bundle extras = i.getExtras();
-			final String performerName = extras.getString("performerName");
-			Intent intent = new Intent(SearchTitleActivity.this, TabViewActivity.class);
-			Bundle bun = new Bundle();
-			bun.putString("performerName", performerName);
-			bun.putString("songTitle", tablature.songTitle);
-			bun.putString("songUrl", tablature.songUrl);
-			bun.putString("tab", tablature.songTablature);
-			bun.putBoolean("max", MAX);
-			intent.putExtras(bun);
-			startActivity(intent);
-			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+			if(!errorConnection) {
+				Intent i = getIntent();
+				Bundle extras = i.getExtras();
+				final String performerName = extras.getString("performerName");
+				Intent intent = new Intent(SearchTitleActivity.this, TabViewActivity.class);
+				Bundle bun = new Bundle();
+				bun.putString("performerName", performerName);
+				bun.putString("songTitle", tablature.songTitle);
+				bun.putString("songUrl", tablature.songUrl);
+				bun.putString("tab", tablature.songTablature);
+				bun.putBoolean("max", MAX);
+				intent.putExtras(bun);
+				startActivity(intent);
+				overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+			} else {
+				Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
+			}
    	 	}
 
 		@Override
 		protected Tablature doInBackground(Tablature... params) {
 			Tablature tablature = params[0];
-			tablature.setSongTablature(connectUrl(tablature.songUrl));
+			Document tablatureDocument = connectUrl(tablature.songUrl);
+			if(!errorConnection) {
+				tablature.setSongTablature(tablatureDocument);
+			}
 			return tablature;
 		}
 	}
@@ -199,11 +214,12 @@ public class SearchTitleActivity extends Activity {
 		Document doc = null;
 		try {
 			doc = Jsoup.connect(url).get();
+			errorConnection = false;
 		}  catch (MalformedURLException ep) {
-			Toast.makeText(getApplicationContext(), R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
+			errorConnection = true;
 		} catch (IOException e) {
-			Toast.makeText(getApplicationContext(), R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
-		}
+			errorConnection = true;
+		} 
 		return doc;
 	}
 	

@@ -49,6 +49,7 @@ public class SearchActivity extends Activity {
 	private String chordsUrl = "http://www.chords.pl/wykonawcy/";
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
+	private boolean errorConnection;
 	
     @SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,7 @@ public class SearchActivity extends Activity {
 				if(checkConnection.get()) {
 					new ConnectToPerformers().execute(performer);
 				} else {
-					Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -109,24 +110,27 @@ public class SearchActivity extends Activity {
     	
     	@Override
     	 protected void onPostExecute(final Performers performer) {
-			performer.setListOfNames();
-			performer.setListOfUrls();
+    		if(!errorConnection) {
+    			performer.setListOfNames();
+    			performer.setListOfUrls();
     		
-			listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artistsnet, performer.listOfNames);
-			searchListView.setAdapter(listAdapter);
-			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-	            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-	            	Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
-	            	Bundle bun = new Bundle();
-	            	bun.putString("performerName", performer.listOfNames.get(position));
-	    			bun.putString("performerUrl", performer.listOfUrls.get(position));
-	    			bun.putBoolean("max", MAX);
-	    			i.putExtras(bun);
-	    			startActivity(i);
-	    			overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-	            }
-	        } );
-			
+    			listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artistsnet, performer.listOfNames);
+    			searchListView.setAdapter(listAdapter);
+    			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    					Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
+    					Bundle bun = new Bundle();
+    					bun.putString("performerName", performer.listOfNames.get(position));
+    					bun.putString("performerUrl", performer.listOfUrls.get(position));
+    					bun.putBoolean("max", MAX);
+    					i.putExtras(bun);
+    					startActivity(i);
+    					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    				}
+    			});
+    		} else {
+				Toast.makeText(getApplicationContext(), R.string.websiteConnectionError, Toast.LENGTH_LONG).show();
+			}
     		progressDialog.close();
     	 }
     	
@@ -135,7 +139,9 @@ public class SearchActivity extends Activity {
 			Performers performer = params[0];
 			String url = chordsUrl;
 			Document doc = prepareAndConnect(performer.typedName, url);
-	    	performer.setMapOfChosenPerformers(doc);
+			if(!errorConnection) {
+				performer.setMapOfChosenPerformers(doc);
+			}
 			return performer;
 		} 
     }
@@ -187,11 +193,12 @@ public class SearchActivity extends Activity {
     	Document doc = null;
     	try {
 			doc = Jsoup.connect(url).get();
+			errorConnection = false;
 		} catch (MalformedURLException ep) {
-			Toast.makeText(getApplicationContext(), R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
+			errorConnection = true;
 			
 		} catch (IOException e) {
-			Toast.makeText(getApplicationContext(), R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
+			errorConnection = true;
 		}
     	return doc;
     }
