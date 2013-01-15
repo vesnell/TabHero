@@ -20,7 +20,7 @@ public class MyTelephonyManager {
 		this.context = context;
 		this.activity = (Activity) context;
 	}
-	
+
 	public boolean isTablet() {
 		boolean isTablet;
 		TelephonyManager manager = (TelephonyManager)this.context.getSystemService(Context.TELEPHONY_SERVICE);

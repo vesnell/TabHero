@@ -289,7 +289,7 @@ public class FavoritesTitleActivity extends Activity {
     					startActivityForResult(i, 500);	
     	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
     				}
-    			} );
+    			});
     			
     			searchFavTitleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
     				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {

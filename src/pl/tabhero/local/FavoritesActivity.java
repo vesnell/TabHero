@@ -268,8 +268,7 @@ public class FavoritesActivity extends Activity {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
     	   max = false;
-        }
-        else {
+        } else {
         	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         	max = true;

@@ -4,6 +4,7 @@ import pl.tabhero.R;
 import pl.tabhero.TabHero;
 import pl.tabhero.db.DBAdapter;
 import pl.tabhero.utils.MyTelephonyManager;
+import pl.tabhero.utils.PinchZoom;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,12 +13,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.util.FloatMath;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -25,6 +28,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -38,13 +42,14 @@ public class TabViewActivity extends Activity {
 	private WakeLock mWakeLock = null;
 	private ImageButton btnPlus;
 	private ImageButton btnMinus;
+	private ImageButton btnLock;
+	private ImageButton btnUnLock;
 	private TextView tab;
 	private LinearLayout buttons;
+	private LinearLayout lockButtons;
 	private boolean max;
 	private boolean lock = false;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
-	
-	private int scaleText = 12;
 	
 	DBAdapter db = new DBAdapter(this); 
 	String performer;
@@ -68,6 +73,12 @@ public class TabViewActivity extends Activity {
     	tab = (TextView) findViewById(R.id.tabInTabView);
     	buttons = (LinearLayout) findViewById(R.id.buttons);
     	buttons.setVisibility(View.GONE);
+    	/*btnLock = (ImageButton) findViewById(R.id.btnLock);
+    	btnLock.setVisibility(View.GONE);
+    	btnUnLock = (ImageButton) findViewById(R.id.btnUnLock);
+    	btnUnLock.setVisibility(View.GONE);*/
+    	lockButtons = (LinearLayout) findViewById(R.id.lockButtons);
+    	lockButtons.setVisibility(View.GONE);
     	
         Intent i = getIntent();
         Bundle extras = i.getExtras();
@@ -85,27 +96,53 @@ public class TabViewActivity extends Activity {
     	Log.d("URL", songUrl);
 
     	head.setText(performer + " - " + title);
-    	tab.setText(listOfSections);
     	
     	tab.setOnLongClickListener(new AdapterView.OnLongClickListener() {
     		public boolean onLongClick(View v) {
+    			lockButtons.setVisibility(View.VISIBLE);
+    			btnLock = (ImageButton) findViewById(R.id.btnLock);
+    			btnUnLock = (ImageButton) findViewById(R.id.btnUnLock);
     			if(!lock) {
-    				int result = TabViewActivity.this.getResources().getConfiguration().orientation;
-    				if(result == 1) {
-    					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-    				} else {
-    					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    				}
-    				lock = true;
-    				Toast.makeText(getApplicationContext(), R.string.lockOn, Toast.LENGTH_LONG).show();
+    				btnUnLock.setVisibility(View.GONE);
+    				btnLock.setOnClickListener(new OnClickListener() {
+    					public void onClick(View v) {
+    						int result = TabViewActivity.this.getResources().getConfiguration().orientation;
+    	    				if(result == 1) {
+    	    					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    	    				} else {
+    	    					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    	    				}
+    	    				lock = true;
+    	    				Toast.makeText(getApplicationContext(), R.string.lockOn, Toast.LENGTH_LONG).show();
+    					}
+    				});
+    				
     			} else {
-    				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-    				lock = false;
-    				Toast.makeText(getApplicationContext(), R.string.lockOff, Toast.LENGTH_LONG).show();
+    				btnLock.setVisibility(View.GONE);
+    				btnUnLock.setOnClickListener(new OnClickListener() {
+    					public void onClick(View v) {
+    						setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+    	    				lock = false;
+    	    				Toast.makeText(getApplicationContext(), R.string.lockOff, Toast.LENGTH_LONG).show();
+    					}
+    				});
     			}
+    			new Handler().postDelayed(new Runnable() {
+    	            public void run() {
+    	            	lockButtons.setVisibility(View.GONE);
+    	            	btnLock.setVisibility(View.VISIBLE);
+    	            	btnUnLock.setVisibility(View.VISIBLE);
+    	            }
+    	        }, 3000);
 				return false;
 			}
         });
+    	
+    	PinchZoom pinchZoom = new PinchZoom(tab, listOfSections);
+        pinchZoom.drawMatrix();
+        
+        tab.setOnTouchListener(pinchZoom);
+        //touchState = IDLE;
     	
     }
 	
@@ -130,8 +167,10 @@ public class TabViewActivity extends Activity {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				float scaleText = tab.getTextSize();
 				scaleText++;
-				tab.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaleText);
+				tab.setTextSize(0, scaleText);
+				//tab.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaleText);
 			}
 			
 		});
@@ -145,8 +184,9 @@ public class TabViewActivity extends Activity {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				float scaleText = tab.getTextSize();
 				scaleText--;
-				tab.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaleText);
+				tab.setTextSize(0, scaleText);
 			}
 			
 		});
@@ -313,4 +353,5 @@ public class TabViewActivity extends Activity {
 		 super.onBackPressed();
 		 overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
 	 }
+
 }

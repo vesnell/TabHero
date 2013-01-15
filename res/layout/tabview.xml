@@ -4,6 +4,33 @@
     android:gravity="top"
     android:orientation="vertical"
     android:background="#eaeaea" >
+    
+    <LinearLayout
+        android:id="@+id/lockButtons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@null"
+        android:gravity="center"
+        android:orientation="horizontal" >
+    
+    <ImageButton 
+        android:id="@+id/btnLock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_weight="0.06"
+        android:src="@drawable/lock"
+        />
+    <ImageButton 
+        android:id="@+id/btnUnLock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_weight="0.06"
+        android:src="@drawable/unlock"
+        />
+    </LinearLayout>
 
     <!-- android:keepScreenOn="true" > -->
 
@@ -23,7 +50,8 @@
         android:layout_alignParentBottom="true"
         android:background="@null"
         android:gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:layout_above="@+id/lockButtons" >
 
         <ImageButton
             android:id="@+id/btnMinus"
@@ -45,7 +73,8 @@
         </ImageButton>
     </LinearLayout>
 
-	<LinearLayout
+	<LinearLayout 
+	    android:id="@+id/scrollWithTab"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_above="@+id/buttons"

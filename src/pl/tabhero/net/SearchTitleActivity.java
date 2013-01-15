@@ -56,42 +56,42 @@ public class SearchTitleActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.searchtitle);
-        
+
         device.setHomeButtonEnabledForICS();
-        
+
         Intent i = getIntent();
 		Bundle extras = i.getExtras();
-		
+
 		MAX = extras.getBoolean("max");
-		if(MAX) {
+		if (MAX) {
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		}
-		
+
 		final String performerName = extras.getString("performerName");
         TextView chosenPerformer = (TextView) findViewById(R.id.chosenPerformer);
         chosenPerformer.setText(performerName);
-        
+
         editTitle = (EditText) findViewById(R.id.editTitle);
 		btnTitleSearch = (ImageButton) findViewById(R.id.searchTitleBtn);
 		searchListView = (ListView) findViewById(R.id.searchTitleListView);
-		
+
 		InputFilter filter = new MyFilter();
 		editTitle.setFilters(new InputFilter[]{filter});
-		
+
 		TextView.OnEditorActionListener myEditorKeyActions = new MyEditorKeyActions(btnTitleSearch);
 		editTitle.setOnEditorActionListener(myEditorKeyActions);
-        
+
         gestureDetector = new GestureDetector(new MyGestureDetector(this));
-        
+
         OnTouchListener myOnTouchListener = new MyOnTouchListener(gestureDetector);
         searchListView.setOnTouchListener(myOnTouchListener);
     }
-	
+
 	public void searchTitleView(View v) {
 		String typedTitle = editTitle.getText().toString().toLowerCase();
 		device.hideKeyboard(editTitle);
-		
+
 		Intent i = getIntent();
 		Bundle extras = i.getExtras();
 		String performerUrl = extras.getString("performerUrl");
