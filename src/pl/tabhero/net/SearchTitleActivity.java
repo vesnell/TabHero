@@ -1,31 +1,25 @@
 package pl.tabhero.net;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.concurrent.ExecutionException;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import pl.tabhero.R;
 import pl.tabhero.core.Songs;
 import pl.tabhero.core.Tablature;
+import pl.tabhero.utils.InternetUtils;
+import pl.tabhero.utils.MenuUtils;
 import pl.tabhero.utils.MyEditorKeyActions;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
 import pl.tabhero.utils.MyOnTouchListener;
 import pl.tabhero.utils.MyTelephonyManager;
-import android.annotation.SuppressLint;
+import pl.tabhero.utils.WifiConnection;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.GestureDetector;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -50,7 +44,8 @@ public class SearchTitleActivity extends Activity {
 	private String chordsUrl = "http://www.chords.pl";
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
-	private boolean errorConnection;
+	private Connect connect = new Connect();
+	private InternetUtils myWifi = new InternetUtils(this);
 	
 	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
@@ -97,7 +92,7 @@ public class SearchTitleActivity extends Activity {
 		String performerUrl = extras.getString("performerUrl");
 
 		Songs song = new Songs(typedTitle, performerUrl);
-		if(!(checkInternetConnection())) {
+		if(!(myWifi.checkInternetConnection())) {
 			Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
 		} else {
 			AsyncTask<Void, Void, Boolean> checkConnection = new CheckConnection(this).execute();
@@ -125,7 +120,7 @@ public class SearchTitleActivity extends Activity {
 		@Override
 		protected void onPostExecute(final Songs song) {
 			progressDialog.close();
-			if(!errorConnection) {
+			if(!connect.errorConnection) {
 				song.setListOfTitles();
 				song.setListOfUrls();
 				listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.titlesnet, song.listOfTitles);
@@ -135,7 +130,7 @@ public class SearchTitleActivity extends Activity {
 						String posUrl = song.listOfSongUrls.get(position);
 						String posTitle = song.listOfTitles.get(position);
 						Tablature tablature = new Tablature(posTitle, posUrl);
-						if(!(checkInternetConnection())) {
+						if(!(myWifi.checkInternetConnection())) {
 							Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
 						} else {
 							AsyncTask<Void, Void, Boolean> checkConnection2 = new CheckConnection(SearchTitleActivity.this).execute();
@@ -161,8 +156,8 @@ public class SearchTitleActivity extends Activity {
 		@Override
 		protected Songs doInBackground(Songs... params) {
 			Songs song = params[0];
-	    	Document doc = connectUrl(chordsUrl + song.performerUrl);
-	    	if(!errorConnection) {
+	    	Document doc = connect.tryEnable(chordsUrl + song.performerUrl);
+	    	if(!connect.errorConnection) {
 	    		song.setMapOfChosenTitles(doc);
 			}
 	    	return song;
@@ -180,7 +175,7 @@ public class SearchTitleActivity extends Activity {
 		@Override
 		protected void onPostExecute(Tablature tablature) {
 			progressDialog.close();
-			if(!errorConnection) {
+			if(!connect.errorConnection) {
 				Intent i = getIntent();
 				Bundle extras = i.getExtras();
 				final String performerName = extras.getString("performerName");
@@ -202,62 +197,18 @@ public class SearchTitleActivity extends Activity {
 		@Override
 		protected Tablature doInBackground(Tablature... params) {
 			Tablature tablature = params[0];
-			Document tablatureDocument = connectUrl(tablature.songUrl);
-			if(!errorConnection) {
+			Document tablatureDocument = connect.tryEnable(tablature.songUrl);
+			if(!connect.errorConnection) {
 				tablature.setSongTablature(tablatureDocument);
 			}
 			return tablature;
 		}
 	}
 	
-	private Document connectUrl(String url) {
-		Document doc = null;
-		try {
-			doc = Jsoup.connect(url).get();
-			errorConnection = false;
-		}  catch (MalformedURLException ep) {
-			errorConnection = true;
-		} catch (IOException e) {
-			errorConnection = true;
-		} 
-		return doc;
-	}
-	
-	public boolean checkInternetConnection() {
-        ConnectivityManager cm = (ConnectivityManager) SearchTitleActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable() && cm.getActiveNetworkInfo().isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-	
-	@SuppressLint("NewApi")
-    private void setWifiMenuIcon(Menu menu) {
-    	WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
-    	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-    		if(wifi.isWifiEnabled()) {
-    			menu.add(0, MENUWIFI, 0, "").setIcon(R.drawable.wifi_on).setShowAsAction(MENUWIFI);
-    		} else {
-    			menu.add(0, MENUWIFI, 0, "").setIcon(R.drawable.wifi_ic).setShowAsAction(MENUWIFI);
-    		}
-    	} else {
-    		if(wifi.isWifiEnabled()) {
-    			menu.add(0, MENUWIFI, 0, R.string.wifiOn).setIcon(R.drawable.wifi_on);
-    		} else {
-    			menu.add(0, MENUWIFI, 0, R.string.wifiOff).setIcon(R.drawable.wifi_ic);
-    		}
-    	}
-    }
-	
 	@Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.clear();
-    	setWifiMenuIcon(menu);
-    	MenuInflater inflater = getMenuInflater();
-	    if(!(device.isTablet())) {
-	    	inflater.inflate(R.menu.searchart, menu);
-	    }
+		MenuUtils myMenuWifiUtils = new MenuUtils(this, menu);
+		myMenuWifiUtils.setMyWifiMenu();
     	return super.onPrepareOptionsMenu(menu);
     }
 	
@@ -269,7 +220,7 @@ public class SearchTitleActivity extends Activity {
 	    	device.goHomeScreen();
 	    	return true;
 	    case MENUWIFI:
-	    	new connectWifi().execute();
+	    	new WifiConnection(this).execute();
 	    	return true;
 	    case R.id.minmax:
 	    	minMax();
@@ -278,63 +229,6 @@ public class SearchTitleActivity extends Activity {
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
-	
-	private void wifiMechanise() {
-    	WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
-    	if(wifi.isWifiEnabled()) {
-    		try {
-    			wifi.setWifiEnabled(false);
-    			timer(false);
-    		} catch(Exception e) {
-    			Toast.makeText(getApplicationContext(), R.string.wifiFalseError, Toast.LENGTH_LONG).show();
-    		}
-    	} else {
-    		try {
-    			wifi.setWifiEnabled(true);
-    			timer(true);
-    		} catch(Exception e) {
-    			Toast.makeText(getApplicationContext(), R.string.wifiTrueError, Toast.LENGTH_LONG).show();
-    		}
-    	}
-    }
-    
- public class connectWifi extends AsyncTask<Void, Void, Void>{
-    	
-    	@Override
-    	 protected void onPreExecute() {
-    		WifiManager wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
-    		if(wifi.isWifiEnabled()) {
-    			progressDialog.start(getString(R.string.wifiTryOff));
-    		} else {
-    			progressDialog.start(getString(R.string.wifiTryOn));
-    		}
-    	 }
-    	
-    	@Override
-   	 	protected void onPostExecute(Void result) {
-    		progressDialog.close();
-    		openOptionsMenu();
-    	}
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			wifiMechanise();
-			return null;
-		}
- }
-    
-    private void timer(final boolean bool) {
-    	long start = System.currentTimeMillis();
-		long end = 0;
-		do {
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			end = System.currentTimeMillis();
-		} while((checkInternetConnection() != bool) && (end  - start < 15000));
-    }
 	
 	private void minMax() {
     	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;

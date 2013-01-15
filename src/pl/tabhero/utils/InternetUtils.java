@@ -1,11 +1,5 @@
 package pl.tabhero.utils;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
