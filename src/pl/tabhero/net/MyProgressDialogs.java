@@ -7,7 +7,7 @@ import android.content.Context;
 
 public class MyProgressDialogs {
 	public Context context;
-	private Activity activity;
+	public Activity activity;
 	private ProgressDialog progressDialog;
 	
 	public MyProgressDialogs(Context context) {

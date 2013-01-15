@@ -114,6 +114,7 @@ public class TabViewActivity extends Activity {
     	    				}
     	    				lock = true;
     	    				Toast.makeText(getApplicationContext(), R.string.lockOn, Toast.LENGTH_LONG).show();
+    	    				btnLock.setVisibility(View.GONE);
     					}
     				});
     				
@@ -124,6 +125,7 @@ public class TabViewActivity extends Activity {
     						setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     	    				lock = false;
     	    				Toast.makeText(getApplicationContext(), R.string.lockOff, Toast.LENGTH_LONG).show();
+    	    				btnUnLock.setVisibility(View.GONE);
     					}
     				});
     			}
