@@ -9,55 +9,40 @@ import java.io.Writer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
-import java.util.List;
-
 import pl.tabhero.R;
-import pl.tabhero.TabHero;
-import pl.tabhero.R.anim;
-import pl.tabhero.R.id;
-import pl.tabhero.R.layout;
-import pl.tabhero.R.menu;
-import pl.tabhero.R.string;
 import pl.tabhero.db.DBAdapter;
+import pl.tabhero.utils.ButtonsRunnable;
+import pl.tabhero.utils.MyLongClickAdapterToLock;
 import pl.tabhero.utils.MyTelephonyManager;
-
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
+import pl.tabhero.utils.PinchZoom;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class FavTabViewActivity extends Activity {
 	
-	DBAdapter db = new DBAdapter(this); 
+	private DBAdapter db = new DBAdapter(this); 
 	
 	private WakeLock mWakeLock = null;
 	private TextView tab;
@@ -65,11 +50,10 @@ public class FavTabViewActivity extends Activity {
 	private ImageButton btnPlus;
 	private ImageButton btnMinus;
 	private LinearLayout buttons;
+	private LinearLayout lockButtons;
 	private boolean max;
-	private boolean lock = false;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
-	private int scaleText = 12;
 	private String performer;
 	private String title;
 	private String tablature;
@@ -90,6 +74,8 @@ public class FavTabViewActivity extends Activity {
         //ScrollView sv = (ScrollView) findViewById(R.id.favScrollInTabView);
         buttons = (LinearLayout) findViewById(R.id.favButtons);
         buttons.setVisibility(View.GONE);
+        lockButtons = (LinearLayout) findViewById(R.id.favLockButtons);
+    	lockButtons.setVisibility(View.GONE);
         
         Intent i = getIntent();
         Bundle extras = i.getExtras();
@@ -102,13 +88,9 @@ public class FavTabViewActivity extends Activity {
         
         performer = extras.getString("performerName");
         title = extras.getString("songTitle");
-        //tablature = extras.getString("songTab");
         songUrl = extras.getString("songUrl");
         
         tablature = getTablature(songUrl);
-        
-        //Log.d("TABULATURA Z BAZY", tablature);
-        //Log.d("URL", songUrl);
         
         head.setText(performer + " - " + title);
         
@@ -136,28 +118,14 @@ public class FavTabViewActivity extends Activity {
         }
         
         tab.setText(tablature);
-        //sv.scrollTo(0, 12);
-        //hsv.smoothScrollTo(0, tab.getHeight());
         
-        tab.setOnLongClickListener(new AdapterView.OnLongClickListener() {
-    		public boolean onLongClick(View v) {
-    			if(!lock) {
-    				int result = FavTabViewActivity.this.getResources().getConfiguration().orientation;
-    				if(result == 1) {
-    					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-    				} else {
-    					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    				}
-    				lock = true;
-    				Toast.makeText(getApplicationContext(), R.string.lockOn, Toast.LENGTH_LONG).show();
-    			} else {
-    				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-    				lock = false;
-    				Toast.makeText(getApplicationContext(), R.string.lockOff, Toast.LENGTH_LONG).show();
-    			}
-				return false;
-			}
-        });
+        MyLongClickAdapterToLock myLongClickAdapterToLock = new MyLongClickAdapterToLock(this, lockButtons);
+        tab.setOnLongClickListener(myLongClickAdapterToLock);
+        
+        PinchZoom pinchZoom = new PinchZoom(tab, tablature);
+        pinchZoom.drawMatrix();
+        tab.setOnTouchListener(pinchZoom);
+        
 	}
 	
 	private String getTablature(String url) {
@@ -204,11 +172,8 @@ public class FavTabViewActivity extends Activity {
 		buttons.setVisibility(View.VISIBLE);
 		initBtnPlusOnClick();
     	initBtnMinusOnClick();
-    	new Handler().postDelayed(new Runnable() {
-            public void run() {
-            	buttons.setVisibility(View.GONE);
-            }
-        }, 3000);
+    	ButtonsRunnable btnsRunnable = new ButtonsRunnable(buttons); 
+    	new Handler().postDelayed(btnsRunnable, 3000);
 		return true;
 	}
 	
@@ -219,9 +184,9 @@ public class FavTabViewActivity extends Activity {
 		btnPlus.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				float scaleText = tab.getTextSize();
 				scaleText++;
-				tab.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaleText);
+				tab.setTextSize(0, scaleText);
 			}
 			
 		});
@@ -234,9 +199,9 @@ public class FavTabViewActivity extends Activity {
 		btnMinus.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				float scaleText = tab.getTextSize();
 				scaleText--;
-				tab.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaleText);
+				tab.setTextSize(0, scaleText);
 			}
 			
 		});
@@ -367,8 +332,7 @@ public class FavTabViewActivity extends Activity {
 	}*/
 	@Override
     public void onBackPressed() {
-    	Intent intent = new Intent(this, FavoritesTitleActivity.class);
-    	startActivityForResult(intent, 500);
+		super.onBackPressed();
     	overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
     }
 	

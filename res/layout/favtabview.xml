@@ -6,6 +6,33 @@
     android:background="#eaeaea" >
 
     <!-- android:keepScreenOn="true" > -->
+    
+    <LinearLayout
+        android:id="@+id/favLockButtons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@null"
+        android:gravity="center"
+        android:orientation="horizontal" >
+    
+    <ImageButton 
+        android:id="@+id/favBtnLock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_weight="0.06"
+        android:src="@drawable/lock"
+        />
+    <ImageButton 
+        android:id="@+id/favBtnUnLock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_weight="0.06"
+        android:src="@drawable/unlock"
+        />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/favPerformerAndTitle"
@@ -23,7 +50,8 @@
         android:layout_alignParentBottom="true"
         android:background="@null"
         android:gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:layout_above="@+id/favLockButtons" >
 
         <ImageButton
             android:id="@+id/favBtnMinus"

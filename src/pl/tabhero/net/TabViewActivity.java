@@ -1,37 +1,29 @@
 package pl.tabhero.net;
 
 import pl.tabhero.R;
-import pl.tabhero.TabHero;
 import pl.tabhero.db.DBAdapter;
+import pl.tabhero.utils.ButtonsRunnable;
+import pl.tabhero.utils.MyLongClickAdapterToLock;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.PinchZoom;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.util.FloatMath;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -42,20 +34,17 @@ public class TabViewActivity extends Activity {
 	private WakeLock mWakeLock = null;
 	private ImageButton btnPlus;
 	private ImageButton btnMinus;
-	private ImageButton btnLock;
-	private ImageButton btnUnLock;
 	private TextView tab;
 	private LinearLayout buttons;
 	private LinearLayout lockButtons;
 	private boolean max;
-	private boolean lock = false;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
-	DBAdapter db = new DBAdapter(this); 
-	String performer;
-	String title;
-	String listOfSections;
-	String songUrl;
+	private DBAdapter db = new DBAdapter(this); 
+	private String performer;
+	private String title;
+	private String listOfSections;
+	private String songUrl;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +62,7 @@ public class TabViewActivity extends Activity {
     	tab = (TextView) findViewById(R.id.tabInTabView);
     	buttons = (LinearLayout) findViewById(R.id.buttons);
     	buttons.setVisibility(View.GONE);
-    	/*btnLock = (ImageButton) findViewById(R.id.btnLock);
-    	btnLock.setVisibility(View.GONE);
-    	btnUnLock = (ImageButton) findViewById(R.id.btnUnLock);
-    	btnUnLock.setVisibility(View.GONE);*/
+
     	lockButtons = (LinearLayout) findViewById(R.id.lockButtons);
     	lockButtons.setVisibility(View.GONE);
     	
@@ -93,58 +79,15 @@ public class TabViewActivity extends Activity {
     	title = extras.getString("songTitle");
     	listOfSections = extras.getString("tab");
     	songUrl = extras.getString("songUrl");
-    	Log.d("URL", songUrl);
 
     	head.setText(performer + " - " + title);
     	
-    	tab.setOnLongClickListener(new AdapterView.OnLongClickListener() {
-    		public boolean onLongClick(View v) {
-    			lockButtons.setVisibility(View.VISIBLE);
-    			btnLock = (ImageButton) findViewById(R.id.btnLock);
-    			btnUnLock = (ImageButton) findViewById(R.id.btnUnLock);
-    			if(!lock) {
-    				btnUnLock.setVisibility(View.GONE);
-    				btnLock.setOnClickListener(new OnClickListener() {
-    					public void onClick(View v) {
-    						int result = TabViewActivity.this.getResources().getConfiguration().orientation;
-    	    				if(result == 1) {
-    	    					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-    	    				} else {
-    	    					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    	    				}
-    	    				lock = true;
-    	    				Toast.makeText(getApplicationContext(), R.string.lockOn, Toast.LENGTH_LONG).show();
-    	    				btnLock.setVisibility(View.GONE);
-    					}
-    				});
-    				
-    			} else {
-    				btnLock.setVisibility(View.GONE);
-    				btnUnLock.setOnClickListener(new OnClickListener() {
-    					public void onClick(View v) {
-    						setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-    	    				lock = false;
-    	    				Toast.makeText(getApplicationContext(), R.string.lockOff, Toast.LENGTH_LONG).show();
-    	    				btnUnLock.setVisibility(View.GONE);
-    					}
-    				});
-    			}
-    			new Handler().postDelayed(new Runnable() {
-    	            public void run() {
-    	            	lockButtons.setVisibility(View.GONE);
-    	            	btnLock.setVisibility(View.VISIBLE);
-    	            	btnUnLock.setVisibility(View.VISIBLE);
-    	            }
-    	        }, 3000);
-				return false;
-			}
-        });
+    	MyLongClickAdapterToLock myLongClickAdapterToLock = new MyLongClickAdapterToLock(this, lockButtons);
+        tab.setOnLongClickListener(myLongClickAdapterToLock);
     	
     	PinchZoom pinchZoom = new PinchZoom(tab, listOfSections);
         pinchZoom.drawMatrix();
-        
         tab.setOnTouchListener(pinchZoom);
-        //touchState = IDLE;
     	
     }
 	
@@ -153,13 +96,12 @@ public class TabViewActivity extends Activity {
 		buttons.setVisibility(View.VISIBLE);
 		initBtnPlusOnClick();
     	initBtnMinusOnClick();
-    	new Handler().postDelayed(new Runnable() {
-            public void run() {
-            	buttons.setVisibility(View.GONE);
-            }
-        }, 3000);
+    	ButtonsRunnable btnsRunnable = new ButtonsRunnable(buttons); 
+    	new Handler().postDelayed(btnsRunnable, 3000);
 		return true;
 	}
+	
+	
 	
 	private void initBtnPlusOnClick() {
 		
@@ -168,7 +110,6 @@ public class TabViewActivity extends Activity {
 		btnPlus.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				float scaleText = tab.getTextSize();
 				scaleText++;
 				tab.setTextSize(0, scaleText);
@@ -185,7 +126,6 @@ public class TabViewActivity extends Activity {
 		btnMinus.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				float scaleText = tab.getTextSize();
 				scaleText--;
 				tab.setTextSize(0, scaleText);
@@ -208,7 +148,6 @@ public class TabViewActivity extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle item selection
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
 	    	device.goHomeScreen();
