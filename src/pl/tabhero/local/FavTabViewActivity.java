@@ -11,7 +11,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import pl.tabhero.R;
 import pl.tabhero.db.DBAdapter;
-import pl.tabhero.utils.ButtonsRunnable;
+import pl.tabhero.utils.ButtonsScale;
 import pl.tabhero.utils.MyLongClickAdapterToLock;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.PinchZoom;
@@ -24,7 +24,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
@@ -34,8 +33,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,8 +44,6 @@ public class FavTabViewActivity extends Activity {
 	private WakeLock mWakeLock = null;
 	private TextView tab;
 	private TextView head;
-	private ImageButton btnPlus;
-	private ImageButton btnMinus;
 	private LinearLayout buttons;
 	private LinearLayout lockButtons;
 	private boolean max;
@@ -71,7 +66,7 @@ public class FavTabViewActivity extends Activity {
         
         head = (TextView) findViewById(R.id.favPerformerAndTitle);
         tab = (TextView) findViewById(R.id.favTabInTabView);
-        //ScrollView sv = (ScrollView) findViewById(R.id.favScrollInTabView);
+
         buttons = (LinearLayout) findViewById(R.id.favButtons);
         buttons.setVisibility(View.GONE);
         lockButtons = (LinearLayout) findViewById(R.id.favLockButtons);
@@ -125,7 +120,6 @@ public class FavTabViewActivity extends Activity {
         PinchZoom pinchZoom = new PinchZoom(tab, tablature);
         pinchZoom.drawMatrix();
         tab.setOnTouchListener(pinchZoom);
-        
 	}
 	
 	private String getTablature(String url) {
@@ -169,42 +163,9 @@ public class FavTabViewActivity extends Activity {
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		buttons.setVisibility(View.VISIBLE);
-		initBtnPlusOnClick();
-    	initBtnMinusOnClick();
-    	ButtonsRunnable btnsRunnable = new ButtonsRunnable(buttons); 
-    	new Handler().postDelayed(btnsRunnable, 3000);
+		ButtonsScale buttonsScale = new ButtonsScale(this);
+		buttonsScale.init(buttons, tab);
 		return true;
-	}
-	
-	private void initBtnPlusOnClick() {
-		
-		btnPlus = (ImageButton) findViewById(R.id.favBtnPlus);
-		
-		btnPlus.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				float scaleText = tab.getTextSize();
-				scaleText++;
-				tab.setTextSize(0, scaleText);
-			}
-			
-		});
-	}
-	
-	private void initBtnMinusOnClick() {
-		
-		btnMinus = (ImageButton) findViewById(R.id.favBtnMinus);
-		
-		btnMinus.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				float scaleText = tab.getTextSize();
-				scaleText--;
-				tab.setTextSize(0, scaleText);
-			}
-			
-		});
 	}
 	
 	@Override

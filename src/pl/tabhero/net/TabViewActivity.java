@@ -2,7 +2,7 @@ package pl.tabhero.net;
 
 import pl.tabhero.R;
 import pl.tabhero.db.DBAdapter;
-import pl.tabhero.utils.ButtonsRunnable;
+import pl.tabhero.utils.ButtonsScale;
 import pl.tabhero.utils.MyLongClickAdapterToLock;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.PinchZoom;
@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.view.Menu;
@@ -23,8 +22,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,8 +29,6 @@ import android.widget.Toast;
 public class TabViewActivity extends Activity {
 	
 	private WakeLock mWakeLock = null;
-	private ImageButton btnPlus;
-	private ImageButton btnMinus;
 	private TextView tab;
 	private LinearLayout buttons;
 	private LinearLayout lockButtons;
@@ -88,50 +83,13 @@ public class TabViewActivity extends Activity {
     	PinchZoom pinchZoom = new PinchZoom(tab, listOfSections);
         pinchZoom.drawMatrix();
         tab.setOnTouchListener(pinchZoom);
-    	
     }
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		buttons.setVisibility(View.VISIBLE);
-		initBtnPlusOnClick();
-    	initBtnMinusOnClick();
-    	ButtonsRunnable btnsRunnable = new ButtonsRunnable(buttons); 
-    	new Handler().postDelayed(btnsRunnable, 3000);
+		ButtonsScale buttonsScale = new ButtonsScale(this);
+		buttonsScale.init(buttons, tab);
 		return true;
-	}
-	
-	
-	
-	private void initBtnPlusOnClick() {
-		
-		btnPlus = (ImageButton) findViewById(R.id.btnPlus);
-		
-		btnPlus.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				float scaleText = tab.getTextSize();
-				scaleText++;
-				tab.setTextSize(0, scaleText);
-				//tab.setTextSize(TypedValue.COMPLEX_UNIT_SP, scaleText);
-			}
-			
-		});
-	}
-	
-	private void initBtnMinusOnClick() {
-		
-		btnMinus = (ImageButton) findViewById(R.id.btnMinus);
-		
-		btnMinus.setOnClickListener(new OnClickListener() {
-
-			public void onClick(View v) {
-				float scaleText = tab.getTextSize();
-				scaleText--;
-				tab.setTextSize(0, scaleText);
-			}
-			
-		});
 	}
 	
 	@Override
