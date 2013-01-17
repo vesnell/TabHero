@@ -1,32 +1,26 @@
 package pl.tabhero.local;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import pl.tabhero.R;
+import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.db.DBAdapter;
 import pl.tabhero.utils.ButtonsScale;
 import pl.tabhero.utils.MyLongClickAdapterToLock;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.PinchZoom;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,12 +29,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class FavTabViewActivity extends Activity {
 	
 	private DBAdapter db = new DBAdapter(this); 
-	
 	private WakeLock mWakeLock = null;
 	private TextView tab;
 	private TextView head;
@@ -182,54 +174,25 @@ public class FavTabViewActivity extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		MenuFunctions menuFunc = new MenuFunctions(this);
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
 	    	device.goHomeScreen();
 	    	return true;
 	    case R.id.delFromFav:
-	        delFromFav();
+	        menuFunc.delFromFav(songUrl);
 	        return true;
 	    case R.id.openWebBrowser:
-	    	openWebBrowser();
+	    	menuFunc.openWebBrowser(performer, title);
 	    	return true;
 	    case R.id.minmax:
 	    	minMax();
 	    	return true;
 	    case R.id.editTab:
-	    	editTab();
+	    	menuFunc.editTab(tablature, songUrl);
 	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
-	    }
-	}
-	
-	private void editTab() {
-		Writer writer;
-		String[] fileTab1 = songUrl.split("/");
-		String filePerf = fileTab1[4];
-		String[] fileTab2 = fileTab1[5].split(",");
-		String fileId = fileTab2[0];
-		String fileTitle = fileTab2[1];
-		String fileName = filePerf + "-" + fileTitle + "." + fileId + ".txt";
-		Log.d("fileName", fileName);
-		
-		File root = Environment.getExternalStorageDirectory();
-	    File outDir = new File(root.getAbsolutePath() + File.separator + "Android" + File.separator + getPackageName());
-	    Log.d("PATH", root.getAbsolutePath() + File.separator + "Android" + File.separator + getPackageName());
-	    if (!outDir.isDirectory()) {
-	      outDir.mkdir();
-	    }
-	    try {
-	      if (!outDir.isDirectory()) {
-	        throw new IOException(getString(R.string.createDirectoryError) + getPackageName() + "." + getString(R.string.sdcardMountError));
-	      }
-	      File outputFile = new File(outDir, fileName);
-	      writer = new BufferedWriter(new FileWriter(outputFile));
-	      writer.write(tablature);
-	      Toast.makeText(getApplicationContext(), getString(R.string.sdcardWriteOK) + outputFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
-	      writer.close();
-	    } catch (IOException e) {
-	      Toast.makeText(getApplicationContext(), e.getMessage() + getString(R.string.sdcardWriteError), Toast.LENGTH_LONG).show();
 	    }
 	}
 	
@@ -247,50 +210,6 @@ public class FavTabViewActivity extends Activity {
         }
     }
 	
-	public void delFromFav() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    //builder.setTitle("Confirm");
-	    builder.setMessage(R.string.areYouSure);
-	    builder.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) {
-	        	db.open();
-	    		db.deleteTab(songUrl);
-	    		Toast.makeText(getApplicationContext(), R.string.delFromBaseSuccess, Toast.LENGTH_LONG).show();
-	    		db.close();
-	            dialog.dismiss();
-	            Intent i = new Intent(FavTabViewActivity.this, FavoritesTitleActivity.class);
-	    		startActivity(i);
-	    		startActivityForResult(i, 500);
-	    		overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
-	        }
-	    });
-	    builder.setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) {
-	        	Toast.makeText(getApplicationContext(), R.string.notDelFromBase, Toast.LENGTH_LONG).show();
-	            dialog.dismiss();
-	        }
-	    });
-	    AlertDialog alert = builder.create();
-	    alert.show();
-	}
-	
-	private void openWebBrowser() {
-		String perf = performer.replaceAll(" ", "%20");
-		String tit = title.replaceAll(" ", "%20");
-		String question = "http://www.google.com/search?q=" + perf + "%20" + tit + "%20lyrics";
-		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(question));
-		startActivityForResult(browserIntent, 600);
-		overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
-	}
-	
-	/*private void getScrollable() {
-		new Runnable() {
-            public void run() {
-				ScrollView sv = (ScrollView) findViewById(R.id.favScrollInTabView);
-				sv.scrollTo(0, sv.getBottom());
-			}
-		};
-	}*/
 	@Override
     public void onBackPressed() {
 		super.onBackPressed();

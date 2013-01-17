@@ -1,18 +1,14 @@
 package pl.tabhero.net;
 
 import pl.tabhero.R;
-import pl.tabhero.db.DBAdapter;
+import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.utils.ButtonsScale;
 import pl.tabhero.utils.MyLongClickAdapterToLock;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.PinchZoom;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -24,7 +20,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
  
 public class TabViewActivity extends Activity {
 	
@@ -34,8 +29,6 @@ public class TabViewActivity extends Activity {
 	private LinearLayout lockButtons;
 	private boolean max;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
-	
-	private DBAdapter db = new DBAdapter(this); 
 	private String performer;
 	private String title;
 	private String listOfSections;
@@ -106,15 +99,16 @@ public class TabViewActivity extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		MenuFunctions menuFunc = new MenuFunctions(this);
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
 	    	device.goHomeScreen();
 	    	return true;
 	    case R.id.addToFav:
-	        addToFav();
+	        menuFunc.addToFav(performer, title, listOfSections, songUrl);
 	        return true;
 	    case R.id.openWebBrowser:
-	    	openWebBrowser();
+	    	menuFunc.openWebBrowser(performer, title);
 	    	return true;
 	    case R.id.minmax:
 	    	minMax();
@@ -137,100 +131,6 @@ public class TabViewActivity extends Activity {
         	max = true;
         }
     }
-	
-	public void addToFav() {
-		
-		if(isExistRecord() == false) {
-			if(isIdExist()) {
-				buildAlertDialogToAddTabWhithSameId();
-			} else { 
-				db.open();
-				db.insertRecord(performer, title, listOfSections, songUrl);
-				db.close();
-				Toast.makeText(getApplicationContext(), R.string.addToBaseSuccess, Toast.LENGTH_LONG).show();
-			}
-		} else {
-			Toast.makeText(getApplicationContext(), R.string.recordExist, Toast.LENGTH_LONG).show();
-		}
-		
-	}
-	
-	private void buildAlertDialogToAddTabWhithSameId() {
-    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.tabExist);
-		builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				db.open();
-				db.insertRecord(performer, title, listOfSections, songUrl);
-				db.close();
-				Toast.makeText(getApplicationContext(), R.string.addToBaseSuccess, Toast.LENGTH_LONG).show();
-				dialog.dismiss();
-			}
-		});
-
-		builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				Toast.makeText(getApplicationContext(), R.string.notAddTab, Toast.LENGTH_LONG).show();
-				dialog.dismiss();
-			}
-		});
-		AlertDialog alert = builder.create();
-		alert.show();
-    }
-	
-	private boolean isIdExist() {
-		String url;
-		String idFromBase;
-		String idFromNet;
-		idFromNet = getIdFromUrl(songUrl);
-		db.open();
-		Cursor c = db.getAllRecords();
-        if (c.moveToFirst())
-        {
-            do {
-            	url = c.getString(4);
-            	idFromBase = getIdFromUrl(url);
-            	if(idFromNet.equals(idFromBase)) {
-            		return true;
-            	}
-            } while (c.moveToNext());
-        }
-        db.close();
-		return false;
-	}
-	
-	private String getIdFromUrl(String url) {
-		String [] tab1;
-		String[] tab2;
-		tab1 = url.split("/");
-    	tab2 = tab1[5].split(",");
-    	String id = tab2[0];
-		return id;
-	}
-	
-	public boolean isExistRecord() {
-		db.open();
-        Cursor c = db.getAllRecords();
-        if (c.moveToFirst())
-        {
-            do {
-            	if(songUrl.equals(c.getString(4))) {
-            		return true;
-            	}
-            } while (c.moveToNext());
-        }
-        db.close();
-		return false;
-	}
-	
-	private void openWebBrowser() {
-		String perf = performer.replaceAll(" ", "%20");
-		String tit = title.replaceAll(" ", "%20");
-		String question = "http://www.google.com/search?q=" + perf + "%20" + tit + "%20lyrics";
-		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(question));
-		startActivityForResult(browserIntent, 600);
-		overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
-	}
     
 	 public void onPause() {
 		 super.onPause();
