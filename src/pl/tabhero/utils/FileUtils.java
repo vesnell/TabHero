@@ -110,11 +110,14 @@ public class FileUtils {
 	}
 	
 	public void checkIfMax() {
-		final String CONFIG = "config.txt";
-		File file = new File(this.dir + File.separator + CONFIG);
-    	if(file.isFile()) {
-    		String configText = readConfig(file);
-    		setIfMax(configText);
-    	}
+		MyTelephonyManager device = new MyTelephonyManager(this.context);
+		if(!device.isTablet()) {
+			final String CONFIG = "config.txt";
+			File file = new File(this.dir + File.separator + CONFIG);
+			if(file.isFile()) {
+				String configText = readConfig(file);
+				setIfMax(configText);
+			}
+		}
 	}
 }
