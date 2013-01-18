@@ -1,24 +1,18 @@
 package pl.tabhero.local;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
-import pl.tabhero.db.DBAdapter;
+import pl.tabhero.db.DBUtils;
 import pl.tabhero.utils.ButtonsScale;
+import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyLongClickAdapterToLock;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.PinchZoom;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.view.Menu;
@@ -32,7 +26,6 @@ import android.widget.TextView;
 
 public class FavTabViewActivity extends Activity {
 	
-	private DBAdapter db = new DBAdapter(this); 
 	private WakeLock mWakeLock = null;
 	private TextView tab;
 	private TextView head;
@@ -40,7 +33,7 @@ public class FavTabViewActivity extends Activity {
 	private LinearLayout lockButtons;
 	private boolean max;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
-	
+	private DBUtils dbUtils = new DBUtils(this);
 	private String performer;
 	private String title;
 	private String tablature;
@@ -77,31 +70,19 @@ public class FavTabViewActivity extends Activity {
         title = extras.getString("songTitle");
         songUrl = extras.getString("songUrl");
         
-        tablature = getTablature(songUrl);
+        tablature = dbUtils.getTablature(songUrl);
         
         head.setText(performer + " - " + title);
         
-        String[] fileTab1 = songUrl.split("/");
-		String filePerf = fileTab1[4];
-		String[] fileTab2 = fileTab1[5].split(",");
-		String fileId = fileTab2[0];
-		String fileTitle = fileTab2[1];
-		File root = Environment.getExternalStorageDirectory();
-	    String dir = root.getAbsolutePath() + File.separator + "Android" + File.separator + getPackageName();
-        String fileName = dir + File.separator + filePerf + "-" + fileTitle + "." + fileId + ".txt";
-        File file = new File(fileName);
-        if(file.isFile()) {
-        	try {
-				String tabFromFile = readFile(fileName);
-				long tabId = addId(songUrl);
-				db.open();
-				db.updateTablature(tabFromFile, tabId);
-				db.close();
-				tablature = tabFromFile;
-				file.delete();
+        FileUtils fileUtils = new FileUtils(this);
+        fileUtils.makeFiles(songUrl);
+        if(fileUtils.file.isFile()) {
+			try {
+				fileUtils.updateTablatureFU(tablature, songUrl, fileUtils.file, fileUtils.filePath);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			tablature = dbUtils.getTablature(songUrl);
         }
         
         tab.setText(tablature);
@@ -113,45 +94,6 @@ public class FavTabViewActivity extends Activity {
         pinchZoom.drawMatrix();
         tab.setOnTouchListener(pinchZoom);
 	}
-	
-	private String getTablature(String url) {
-		String tabl = "";
-		db.open();
-		Cursor c = db.getRecordUrl(url);
-		if(c.moveToFirst()) {
-			do {
-				tabl = c.getString(3);
-			} while(c.moveToNext());
-		}
-		db.close();
-		return tabl;
-	}
-	
-	private long addId(String url) {
-		long rowId = 0;
-		db.open();
-        Cursor c = db.getRecordUrl(url);
-        if (c.moveToFirst())
-        {
-            do {
-            	rowId = c.getLong(0);
-            } while (c.moveToNext());
-        }
-        db.close();
-		return rowId;
-	}
-	
-	private static String readFile(String path) throws IOException {
-		  FileInputStream stream = new FileInputStream(new File(path));
-		  try {
-		    FileChannel fc = stream.getChannel();
-		    MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-		    return Charset.defaultCharset().decode(bb).toString();
-		  }
-		  finally {
-		    stream.close();
-		  }
-		}
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {

@@ -65,6 +65,40 @@ public class DBUtils {
 		db.close();
 	}
 	
+	public long addId(String url) {
+		long rowId = 0;
+		this.db.open();
+        Cursor c = this.db.getRecordUrl(url);
+        if (c.moveToFirst())
+        {
+            do {
+            	rowId = c.getLong(0);
+            } while (c.moveToNext());
+        }
+        this.db.close();
+		return rowId;
+	}
+	
+	public String getTablature(String url) {
+		String tabl = "";
+		this.db.open();
+		Cursor c = this.db.getRecordUrl(url);
+		if(c.moveToFirst()) {
+			do {
+				tabl = c.getString(3);
+			} while(c.moveToNext());
+		}
+		this.db.close();
+		return tabl;
+	}
+	
+	public void updateTablatureDBU(String songUrl, String tabFromFile) {
+		long tabId = addId(songUrl);
+		this.db.open();
+		this.db.updateTablature(tabFromFile, tabId);
+		this.db.close();
+	}
+	
 	private String getIdFromUrl(String url) {
 		String [] tab1;
 		String[] tab2;

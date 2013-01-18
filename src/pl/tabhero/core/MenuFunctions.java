@@ -8,13 +8,13 @@ import java.io.Writer;
 import pl.tabhero.R;
 import pl.tabhero.db.DBUtils;
 import pl.tabhero.local.FavoritesTitleActivity;
+import pl.tabhero.utils.FileUtils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.widget.Toast;
 
 public class MenuFunctions {
@@ -67,25 +67,16 @@ public class MenuFunctions {
 	
 	public void editTab(String tablature, String songUrl) {
 		Writer writer;
-		String[] fileTab1 = songUrl.split("/");
-		String filePerf = fileTab1[4];
-		String[] fileTab2 = fileTab1[5].split(",");
-		String fileId = fileTab2[0];
-		String fileTitle = fileTab2[1];
-		String fileName = filePerf + "-" + fileTitle + "." + fileId + ".txt";
-		//Log.d("fileName", fileName);
-		
-		File root = Environment.getExternalStorageDirectory();
-	    File outDir = new File(root.getAbsolutePath() + File.separator + "Android" + File.separator + this.context.getPackageName());
-	    //Log.d("PATH", root.getAbsolutePath() + File.separator + "Android" + File.separator + getPackageName());
-	    if (!outDir.isDirectory()) {
-	      outDir.mkdir();
+		FileUtils fileUtils = new FileUtils(this.context);
+        fileUtils.makeFiles(songUrl);
+	    if (!fileUtils.outDir.isDirectory()) {
+	      fileUtils.outDir.mkdir();
 	    }
 	    try {
-	      if (!outDir.isDirectory()) {
+	      if (!fileUtils.outDir.isDirectory()) {
 	        throw new IOException(this.context.getString(R.string.createDirectoryError) + this.context.getPackageName() + "." + this.context.getString(R.string.sdcardMountError));
 	      }
-	      File outputFile = new File(outDir, fileName);
+	      File outputFile = new File(fileUtils.outDir, fileUtils.fileName);
 	      writer = new BufferedWriter(new FileWriter(outputFile));
 	      writer.write(tablature);
 	      Toast.makeText(this.context.getApplicationContext(), this.context.getString(R.string.sdcardWriteOK) + outputFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
