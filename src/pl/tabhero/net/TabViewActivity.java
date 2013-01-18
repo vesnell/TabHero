@@ -1,8 +1,6 @@
 package pl.tabhero.net;
 
-import java.io.File;
 import java.io.IOException;
-
 import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.utils.ButtonsScale;
@@ -30,8 +28,6 @@ public class TabViewActivity extends Activity {
 	private TextView tab;
 	private LinearLayout buttons;
 	private LinearLayout lockButtons;
-	//private boolean max;
-	private static final String CONFIG = "config.txt";
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	private String performer;
 	private String title;
@@ -44,11 +40,7 @@ public class TabViewActivity extends Activity {
         setContentView(R.layout.tabview);
         
         FileUtils fileUtils = new FileUtils(this);
-        File file = new File(fileUtils.dir + File.separator + CONFIG);
-    	if(file.isFile()) {
-    		String configText = fileUtils.readConfig(file);
-    		fileUtils.setIfMax(configText);
-    	}
+        fileUtils.checkIfMax();
         
         device.setHomeButtonEnabledForICS();
         
@@ -67,12 +59,6 @@ public class TabViewActivity extends Activity {
     	
         Intent i = getIntent();
         Bundle extras = i.getExtras();
-        
-        /*max = extras.getBoolean("max");
-		if(max) {
-			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		}*/
         
     	performer = extras.getString("performerName");
     	title = extras.getString("songTitle");
@@ -133,20 +119,6 @@ public class TabViewActivity extends Activity {
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
-	
-	/*private void minMax() {
-		boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
-		if(fullScreen) {
-    	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-    	   max = false;
-        }
-        else {
-        	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-        	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        	max = true;
-        }
-    }*/
     
 	 public void onPause() {
 		 super.onPause();

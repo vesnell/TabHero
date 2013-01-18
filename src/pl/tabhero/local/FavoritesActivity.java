@@ -1,6 +1,5 @@
 package pl.tabhero.local;
  
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,28 +15,21 @@ import pl.tabhero.utils.MyOnKeyListener;
 import pl.tabhero.utils.MyOnTouchListener;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.PolishComparator;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.WindowManager;
 import android.view.View.OnKeyListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -55,8 +47,6 @@ public class FavoritesActivity extends Activity {
 	private ArrayList<String> listOfFavPerfs;
 	private ArrayList<String> listOfChosenPerfsFromBase;
 	private ArrayAdapter<String> listAdapter;
-	//private boolean max;
-	public static final String CONFIG = "config.txt";
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
@@ -66,14 +56,7 @@ public class FavoritesActivity extends Activity {
         setContentView(R.layout.favorites);
         
         FileUtils fileUtils = new FileUtils(this);
-        File file = new File(fileUtils.dir + File.separator + CONFIG);
-    	if(file.isFile()) {
-    		//Log.d("Wejscie", fileUtils.dir + File.separator + CONFIG);
-    		String configText = fileUtils.readConfig(file);
-    		//Log.d("configtext", configText);
-    		fileUtils.setIfMax(configText);
-    		//Log.d("Exit", "EXIT");
-    	}
+        fileUtils.checkIfMax();
         
         device.setHomeButtonEnabledForICS();
         
@@ -96,7 +79,6 @@ public class FavoritesActivity extends Activity {
             	Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
             	Bundle bun = new Bundle();
             	bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
-            	//bun.putBoolean("max", max);
     			i.putExtras(bun);
     			startActivityForResult(i, 500);
     			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -274,7 +256,6 @@ public class FavoritesActivity extends Activity {
 	    	try {
 				menuFunc.minMax();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	    	return true;
@@ -282,19 +263,6 @@ public class FavoritesActivity extends Activity {
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
-    
-    /*private void minMax() {
-    	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
-       if(fullScreen) {
-    	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-    	   max = false;
-        } else {
-        	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-        	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        	max = true;
-        }
-	}*/
     
     private void startEditActivity() {
     	ArrayList<String> listToEdit = new ArrayList<String>();
@@ -334,7 +302,6 @@ public class FavoritesActivity extends Activity {
     					Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
     					Bundle bun = new Bundle();
     					bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
-    					//bun.putBoolean("max", max);
     					i.putExtras(bun);
     					startActivityForResult(i, 500);
     	    			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);	
@@ -358,7 +325,6 @@ public class FavoritesActivity extends Activity {
 					Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
 					Bundle bun = new Bundle();
 					bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
-					//bun.putBoolean("max", max);
 					i.putExtras(bun);
 					startActivityForResult(i, 500);
 	    			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -394,6 +360,8 @@ public class FavoritesActivity extends Activity {
     } 
     
     protected void onResume() {
+    	FileUtils fileUtils = new FileUtils(this);
+        fileUtils.checkIfMax();
 		super.onResume();
 		ImageButton btn = (ImageButton) findViewById(R.id.searchFavBtn);
 		btn.performClick();

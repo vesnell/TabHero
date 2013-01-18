@@ -108,4 +108,13 @@ public class FileUtils {
 		writer.write(maxForConfig + "," + textSize);
 		writer.close();
 	}
+	
+	public void checkIfMax() {
+		final String CONFIG = "config.txt";
+		File file = new File(this.dir + File.separator + CONFIG);
+    	if(file.isFile()) {
+    		String configText = readConfig(file);
+    		setIfMax(configText);
+    	}
+	}
 }

@@ -29,7 +29,6 @@ public class TabHero extends Activity {
 	private Button btnOnBase;
 	private GestureDetector gestureDetector;
 	private static final String DEFAULT_CONFIG = "MIN,12";
-	private static final String CONFIG = "config.txt";
 	
     @SuppressWarnings("deprecation")
 	@Override
@@ -50,7 +49,7 @@ public class TabHero extends Activity {
         	if(!outDir.isDirectory()) {
         		throw new IOException(getString(R.string.createDirectoryError) + getPackageName() + "." + getString(R.string.sdcardMountError));
         	}
-        	String fileName = CONFIG;
+        	String fileName = "config.txt";
         	File file = new File(fileUtils.dir + File.separator + fileName);
         	if(!file.isFile()) {
         		Writer writer;
@@ -133,5 +132,12 @@ public class TabHero extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+    
+    @Override
+    public void onResume() {
+    	FileUtils fileUtils = new FileUtils(this);
+        fileUtils.checkIfMax();
+    	super.onResume();
     }
 }

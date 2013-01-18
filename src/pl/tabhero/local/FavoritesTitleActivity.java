@@ -1,13 +1,11 @@
 package pl.tabhero.local;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 import pl.tabhero.R;
-import pl.tabhero.TabHero;
 import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.db.DBAdapter;
 import pl.tabhero.utils.FileUtils;
@@ -17,28 +15,21 @@ import pl.tabhero.utils.MyOnKeyListener;
 import pl.tabhero.utils.MyOnTouchListener;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.PolishComparator;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -61,8 +52,6 @@ public class FavoritesTitleActivity extends Activity {
 	private ArrayList<String> listOfChosenUrlFromBase;
 	private ArrayList<String> listOfChosenTitleFromBase2;
 	private ArrayList<String> listOfChosenUrlFromBase2;
-	private static final String CONFIG = "config.txt";
-	//private boolean max;
 	private String performerName;
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
@@ -73,11 +62,7 @@ public class FavoritesTitleActivity extends Activity {
         setContentView(R.layout.favoritestitle);
         
         FileUtils fileUtils = new FileUtils(this);
-        File file = new File(fileUtils.dir + File.separator + CONFIG);
-    	if(file.isFile()) {
-    		String configText = fileUtils.readConfig(file);
-    		fileUtils.setIfMax(configText);
-    	}
+        fileUtils.checkIfMax();
         
         device.setHomeButtonEnabledForICS();
         
@@ -93,12 +78,6 @@ public class FavoritesTitleActivity extends Activity {
         
         Intent i = getIntent();
         Bundle extras = i.getExtras();
-        
-        /*max = extras.getBoolean("max");
-		if(max) {
-			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		}*/
         
         performerName = extras.getString("performerName");
         chosenFavPerf.setText(performerName);
@@ -119,7 +98,6 @@ public class FavoritesTitleActivity extends Activity {
             	bun.putString("performerName", performerName);
             	bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
             	bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
-            	//bun.putBoolean("max", max);
     			i.putExtras(bun);
     			startActivityForResult(i, 500);	
     			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
@@ -226,7 +204,6 @@ public class FavoritesTitleActivity extends Activity {
 	    	try {
 				menuFunc.minMax();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	    	return true;
@@ -234,20 +211,6 @@ public class FavoritesTitleActivity extends Activity {
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
-    
-    /*private void minMax() {
-    	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
-       if(fullScreen) {
-    	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-    	   max = false;
-        }
-        else {
-        	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-        	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        	max = true;
-        }
-	}*/
     
     private void startEditActivity() {
     	ArrayList<String> listToEditTitles = new ArrayList<String>();
@@ -302,7 +265,6 @@ public class FavoritesTitleActivity extends Activity {
     					bun.putString("performerName", performerName);
     					bun.putString("songTitle", listOfChosenTitleFromBase2.get(position));
     					bun.putString("songUrl", listOfChosenUrlFromBase2.get(position));
-    					//bun.putBoolean("max", max);
     					i.putExtras(bun);
     					startActivityForResult(i, 500);	
     	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
@@ -328,7 +290,6 @@ public class FavoritesTitleActivity extends Activity {
 					bun.putString("performerName", performerName);
 					bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
 					bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
-					//bun.putBoolean("max", max);
 					i.putExtras(bun);
 					startActivityForResult(i, 500);	
 	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
@@ -368,6 +329,8 @@ public class FavoritesTitleActivity extends Activity {
 	
 	
 	protected void onResume() {
+		FileUtils fileUtils = new FileUtils(this);
+        fileUtils.checkIfMax();
 		super.onResume();
 		ImageButton btn = (ImageButton) findViewById(R.id.searchFavTitleBtn);
 		btn.performClick();

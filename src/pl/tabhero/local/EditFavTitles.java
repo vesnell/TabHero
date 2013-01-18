@@ -1,25 +1,17 @@
 package pl.tabhero.local;
 
 import java.util.ArrayList;
-
 import pl.tabhero.R;
-import pl.tabhero.TabHero;
-import pl.tabhero.R.anim;
-import pl.tabhero.R.id;
-import pl.tabhero.R.layout;
-import pl.tabhero.R.menu;
-import pl.tabhero.R.string;
 import pl.tabhero.db.DBAdapter;
+import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.selector.SelectArralAdapter;
 import pl.tabhero.utils.selector.SelectViewHolder;
 import pl.tabhero.utils.selector.mItems;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -47,6 +39,9 @@ public class EditFavTitles extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.editfavperfs);
+        
+        FileUtils fileUtils = new FileUtils(this);
+        fileUtils.checkIfMax();
         
         device.setHomeButtonEnabledForICS();
         
@@ -89,7 +84,6 @@ public class EditFavTitles extends Activity{
 	        	db.open();
 	        	for(mItems title : planetList) {
 	        		if(title.isChecked() == true) {	
-	        			//db.deletePerf(title.getName());
 	        			for(int i = 0; i < listToEditTitle.size(); i++) {
 	        				if(title.getName().equals(listToEditTitle.get(i))) {
 	        					db.deleteTab(listToEditUrl.get(i));

@@ -1,10 +1,8 @@
 package pl.tabhero;
 
+import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyTelephonyManager;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -16,6 +14,9 @@ public class HelpActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.help);
+        
+        FileUtils fileUtils = new FileUtils(this);
+        fileUtils.checkIfMax();
         
         device.setHomeButtonEnabledForICS();
 	}

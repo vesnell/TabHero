@@ -1,6 +1,5 @@
 package pl.tabhero.net;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import org.jsoup.nodes.Document;
@@ -42,8 +41,6 @@ public class SearchTitleActivity extends Activity {
 	private ImageButton btnTitleSearch;
 	private ArrayAdapter<String> listAdapter;
 	private MyProgressDialogs progressDialog = new MyProgressDialogs(this);
-	//private static boolean MAX;
-	private static final String CONFIG = "config.txt";
 	private static final int MENUWIFI = Menu.FIRST;
 	private String chordsUrl = "http://www.chords.pl";
 	private GestureDetector gestureDetector;
@@ -59,20 +56,10 @@ public class SearchTitleActivity extends Activity {
         device.setHomeButtonEnabledForICS();
         
         FileUtils fileUtils = new FileUtils(this);
-        File file = new File(fileUtils.dir + File.separator + CONFIG);
-    	if(file.isFile()) {
-    		String configText = fileUtils.readConfig(file);
-    		fileUtils.setIfMax(configText);
-    	}
+        fileUtils.checkIfMax();
 
         Intent i = getIntent();
 		Bundle extras = i.getExtras();
-
-		/*MAX = extras.getBoolean("max");
-		if (MAX) {
-			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		}*/
 
 		final String performerName = extras.getString("performerName");
         TextView chosenPerformer = (TextView) findViewById(R.id.chosenPerformer);
@@ -196,7 +183,6 @@ public class SearchTitleActivity extends Activity {
 				bun.putString("songTitle", tablature.songTitle);
 				bun.putString("songUrl", tablature.songUrl);
 				bun.putString("tab", tablature.songTablature);
-				//bun.putBoolean("max", MAX);
 				intent.putExtras(bun);
 				startActivity(intent);
 				overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
@@ -238,7 +224,6 @@ public class SearchTitleActivity extends Activity {
 	    	try {
 				menuFunc.minMax();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	    	return true;
@@ -246,20 +231,6 @@ public class SearchTitleActivity extends Activity {
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
-	
-	/*private void minMax() {
-    	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
-       if(fullScreen) {
-    	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-    	   MAX = false;
-        }
-        else {
-        	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-        	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        	MAX = true;
-        }
-	}*/
 	
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -270,5 +241,12 @@ public class SearchTitleActivity extends Activity {
     public void onBackPressed() {
     	super.onBackPressed();
     	overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+	
+	@Override
+    public void onResume() {
+    	FileUtils fileUtils = new FileUtils(this);
+        fileUtils.checkIfMax();
+    	super.onResume();
     }
 }

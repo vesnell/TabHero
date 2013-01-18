@@ -1,40 +1,26 @@
 package pl.tabhero.local;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import pl.tabhero.R;
-import pl.tabhero.TabHero;
-import pl.tabhero.R.anim;
-import pl.tabhero.R.id;
-import pl.tabhero.R.layout;
-import pl.tabhero.R.menu;
-import pl.tabhero.R.string;
 import pl.tabhero.db.DBAdapter;
+import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.selector.SelectArralAdapter;
 import pl.tabhero.utils.selector.SelectViewHolder;
 import pl.tabhero.utils.selector.mItems;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class EditFavPerfs extends Activity{
@@ -49,6 +35,9 @@ public class EditFavPerfs extends Activity{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.editfavperfs);
+        
+        FileUtils fileUtils = new FileUtils(this);
+        fileUtils.checkIfMax();
         
         device.setHomeButtonEnabledForICS();
 		

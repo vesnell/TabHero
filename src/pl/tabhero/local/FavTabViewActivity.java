@@ -1,6 +1,5 @@
 package pl.tabhero.local;
 
-import java.io.File;
 import java.io.IOException;
 import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
@@ -21,7 +20,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,8 +30,6 @@ public class FavTabViewActivity extends Activity {
 	private TextView head;
 	private LinearLayout buttons;
 	private LinearLayout lockButtons;
-	//private boolean max;
-	private static final String CONFIG = "config.txt";
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	private DBUtils dbUtils = new DBUtils(this);
 	private String performer;
@@ -46,11 +42,7 @@ public class FavTabViewActivity extends Activity {
         setContentView(R.layout.favtabview);
         
         FileUtils fileUtils = new FileUtils(this);
-        File file = new File(fileUtils.dir + File.separator + CONFIG);
-    	if(file.isFile()) {
-    		String configText = fileUtils.readConfig(file);
-    		fileUtils.setIfMax(configText);
-    	}
+        fileUtils.checkIfMax();
         
         device.setHomeButtonEnabledForICS();
         
@@ -68,12 +60,6 @@ public class FavTabViewActivity extends Activity {
         
         Intent i = getIntent();
         Bundle extras = i.getExtras();
-        
-        /*max = extras.getBoolean("max");
-		if(max) {
-			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		}*/
         
         performer = extras.getString("performerName");
         title = extras.getString("songTitle");
@@ -140,7 +126,6 @@ public class FavTabViewActivity extends Activity {
 	    	try {
 				menuFunc.minMax();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	    	return true;
@@ -151,20 +136,6 @@ public class FavTabViewActivity extends Activity {
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
-	
-	/*private void minMax() {
-    	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
-       if(fullScreen) {
-    	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    	   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-    	   max = false;
-        }
-        else {
-        	getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-        	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        	max = true;
-        }
-    }*/
 	
 	@Override
     public void onBackPressed() {
