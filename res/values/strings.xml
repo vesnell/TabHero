@@ -51,6 +51,8 @@
     <string name="createDirectoryError">Unable to create directory </string>
     <string name="sdcardMountError">Maybe the SD card is not mounted?</string>
     <string name="sdcardWriteError"> Unable to write to external storage.</string>
+    <string name="sdcardReadError">Unable to read external storage</string>
+    <string name="configReadError">Unable to read config file</string>
     <string name="sdcardWriteOK">Tablature successfully saved to: </string>
     <string name="changePerf">Change name of the band</string>
     <string name="cancel">Anuluj</string>

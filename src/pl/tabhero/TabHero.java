@@ -1,7 +1,14 @@
 package pl.tabhero;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+
 import pl.tabhero.local.FavoritesActivity;
 import pl.tabhero.net.SearchActivity;
+import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyGestureDetector;
 import android.os.Bundle;
 import android.app.Activity;
@@ -21,6 +28,8 @@ public class TabHero extends Activity {
 	private Button btnOnline;
 	private Button btnOnBase;
 	private GestureDetector gestureDetector;
+	private static final String DEFAULT_CONFIG = "MIN,12";
+	private static final String CONFIG = "config.txt";
 	
     @SuppressWarnings("deprecation")
 	@Override
@@ -31,7 +40,33 @@ public class TabHero extends Activity {
         
         btnOnline = (Button) findViewById(R.id.online);
         btnOnBase = (Button) findViewById(R.id.favorites);
-
+        
+        FileUtils fileUtils = new FileUtils(this);
+        File outDir = new File(fileUtils.dir);
+        if(!outDir.isDirectory()) {
+        	outDir.mkdir();
+        }
+        try {
+        	if(!outDir.isDirectory()) {
+        		throw new IOException(getString(R.string.createDirectoryError) + getPackageName() + "." + getString(R.string.sdcardMountError));
+        	}
+        	String fileName = CONFIG;
+        	File file = new File(fileUtils.dir + File.separator + fileName);
+        	if(!file.isFile()) {
+        		Writer writer;
+        		File outputFile = new File(outDir, fileName);
+        		writer = new BufferedWriter(new FileWriter(outputFile));
+        		writer.write(DEFAULT_CONFIG);
+        		writer.close();
+        		showInfo();
+        	} else {
+        		String configText = fileUtils.readConfig(file);
+        		fileUtils.setIfMax(configText);
+        	}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
 		gestureDetector = new GestureDetector(new MyGestureDetector(this));
 		final MyGestureDetector myGestureDetector = new MyGestureDetector(this);
 		

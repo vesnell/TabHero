@@ -1,8 +1,12 @@
 package pl.tabhero.net;
 
+import java.io.File;
+import java.io.IOException;
+
 import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.utils.ButtonsScale;
+import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyLongClickAdapterToLock;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.PinchZoom;
@@ -17,7 +21,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
  
@@ -27,7 +30,8 @@ public class TabViewActivity extends Activity {
 	private TextView tab;
 	private LinearLayout buttons;
 	private LinearLayout lockButtons;
-	private boolean max;
+	//private boolean max;
+	private static final String CONFIG = "config.txt";
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	private String performer;
 	private String title;
@@ -38,6 +42,13 @@ public class TabViewActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tabview);
+        
+        FileUtils fileUtils = new FileUtils(this);
+        File file = new File(fileUtils.dir + File.separator + CONFIG);
+    	if(file.isFile()) {
+    		String configText = fileUtils.readConfig(file);
+    		fileUtils.setIfMax(configText);
+    	}
         
         device.setHomeButtonEnabledForICS();
         
@@ -57,11 +68,11 @@ public class TabViewActivity extends Activity {
         Intent i = getIntent();
         Bundle extras = i.getExtras();
         
-        max = extras.getBoolean("max");
+        /*max = extras.getBoolean("max");
 		if(max) {
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		}
+		}*/
         
     	performer = extras.getString("performerName");
     	title = extras.getString("songTitle");
@@ -111,14 +122,19 @@ public class TabViewActivity extends Activity {
 	    	menuFunc.openWebBrowser(performer, title);
 	    	return true;
 	    case R.id.minmax:
-	    	minMax();
+	    	try {
+				menuFunc.minMax();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
 	
-	private void minMax() {
+	/*private void minMax() {
 		boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
 		if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -130,7 +146,7 @@ public class TabViewActivity extends Activity {
         	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         	max = true;
         }
-    }
+    }*/
     
 	 public void onPause() {
 		 super.onPause();

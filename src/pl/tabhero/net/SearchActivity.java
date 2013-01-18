@@ -1,9 +1,13 @@
 package pl.tabhero.net;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import org.jsoup.nodes.Document;
 import pl.tabhero.R;
+import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.core.Performers;
+import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.InternetUtils;
 import pl.tabhero.utils.MenuUtils;
 import pl.tabhero.utils.MyEditorKeyActions;
@@ -21,7 +25,6 @@ import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,9 +41,10 @@ public class SearchActivity extends Activity {
 	private ImageButton btnSearch;
 	private ArrayAdapter<String> listAdapter;
 	private MyProgressDialogs progressDialog = new MyProgressDialogs(this);
-	private static boolean MAX;
+	//private static boolean MAX;
 	private static final int MENUWIFI = Menu.FIRST;
 	private String chordsUrl = "http://www.chords.pl/wykonawcy/";
+	private static final String CONFIG = "config.txt";
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	private Connect connect = new Connect();
@@ -49,6 +53,13 @@ public class SearchActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
+        
+        FileUtils fileUtils = new FileUtils(this);
+        File file = new File(fileUtils.dir + File.separator + CONFIG);
+    	if(file.isFile()) {
+    		String configText = fileUtils.readConfig(file);
+    		fileUtils.setIfMax(configText);
+    	}
         
         device.setHomeButtonEnabledForICS();
         
@@ -118,7 +129,7 @@ public class SearchActivity extends Activity {
     					Bundle bun = new Bundle();
     					bun.putString("performerName", performer.listOfNames.get(position));
     					bun.putString("performerUrl", performer.listOfUrls.get(position));
-    					bun.putBoolean("max", MAX);
+    					//bun.putBoolean("max", MAX);
     					i.putExtras(bun);
     					startActivity(i);
     					overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -195,6 +206,7 @@ public class SearchActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		closeOptionsMenu();
+		MenuFunctions menuFunc = new MenuFunctions(this);
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
 	    	device.goHomeScreen();
@@ -203,14 +215,19 @@ public class SearchActivity extends Activity {
 	    	new WifiConnection(this).execute();
 	    	return true;
 	    case R.id.minmax:
-	    	minMax();
+	    	try {
+				menuFunc.minMax();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
     
-    private void minMax() {
+    /*private void minMax() {
     	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
        if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -222,7 +239,7 @@ public class SearchActivity extends Activity {
         	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         	MAX = true;
         }
-    }
+    }*/
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

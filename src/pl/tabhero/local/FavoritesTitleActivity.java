@@ -1,12 +1,16 @@
 package pl.tabhero.local;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 import pl.tabhero.R;
 import pl.tabhero.TabHero;
+import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.db.DBAdapter;
+import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
 import pl.tabhero.utils.MyOnKeyListener;
@@ -57,7 +61,8 @@ public class FavoritesTitleActivity extends Activity {
 	private ArrayList<String> listOfChosenUrlFromBase;
 	private ArrayList<String> listOfChosenTitleFromBase2;
 	private ArrayList<String> listOfChosenUrlFromBase2;
-	private boolean max;
+	private static final String CONFIG = "config.txt";
+	//private boolean max;
 	private String performerName;
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
@@ -66,6 +71,13 @@ public class FavoritesTitleActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favoritestitle);
+        
+        FileUtils fileUtils = new FileUtils(this);
+        File file = new File(fileUtils.dir + File.separator + CONFIG);
+    	if(file.isFile()) {
+    		String configText = fileUtils.readConfig(file);
+    		fileUtils.setIfMax(configText);
+    	}
         
         device.setHomeButtonEnabledForICS();
         
@@ -82,11 +94,11 @@ public class FavoritesTitleActivity extends Activity {
         Intent i = getIntent();
         Bundle extras = i.getExtras();
         
-        max = extras.getBoolean("max");
+        /*max = extras.getBoolean("max");
 		if(max) {
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		}
+		}*/
         
         performerName = extras.getString("performerName");
         chosenFavPerf.setText(performerName);
@@ -107,7 +119,7 @@ public class FavoritesTitleActivity extends Activity {
             	bun.putString("performerName", performerName);
             	bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
             	bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
-            	bun.putBoolean("max", max);
+            	//bun.putBoolean("max", max);
     			i.putExtras(bun);
     			startActivityForResult(i, 500);	
     			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
@@ -202,6 +214,7 @@ public class FavoritesTitleActivity extends Activity {
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+    	MenuFunctions menuFunc = new MenuFunctions(this);
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
 	    	device.goHomeScreen();
@@ -210,14 +223,19 @@ public class FavoritesTitleActivity extends Activity {
 	        startEditActivity();
 	        return true;
 	    case R.id.minmax:
-	    	minMax();
+	    	try {
+				menuFunc.minMax();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
     
-    private void minMax() {
+    /*private void minMax() {
     	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
        if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -229,7 +247,7 @@ public class FavoritesTitleActivity extends Activity {
         	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         	max = true;
         }
-	}
+	}*/
     
     private void startEditActivity() {
     	ArrayList<String> listToEditTitles = new ArrayList<String>();
@@ -284,7 +302,7 @@ public class FavoritesTitleActivity extends Activity {
     					bun.putString("performerName", performerName);
     					bun.putString("songTitle", listOfChosenTitleFromBase2.get(position));
     					bun.putString("songUrl", listOfChosenUrlFromBase2.get(position));
-    					bun.putBoolean("max", max);
+    					//bun.putBoolean("max", max);
     					i.putExtras(bun);
     					startActivityForResult(i, 500);	
     	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
@@ -310,7 +328,7 @@ public class FavoritesTitleActivity extends Activity {
 					bun.putString("performerName", performerName);
 					bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
 					bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
-					bun.putBoolean("max", max);
+					//bun.putBoolean("max", max);
 					i.putExtras(bun);
 					startActivityForResult(i, 500);	
 	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);

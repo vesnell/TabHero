@@ -52,6 +52,8 @@
     <string name="createDirectoryError">Nie można utworzyć folderu </string>
     <string name="sdcardMountError">Czy karta SD została zamontowana?</string>
     <string name="sdcardWriteError"> Nie udało się uzyskać możliwości zapisu.</string>
+    <string name="sdcardReadError">Nie udało się uzyskać możliwości odczytu.</string>
+    <string name="configReadError">Nie udało się odczytać pliku config.</string>
     <string name="sdcardWriteOK">Tabulatura została zapisana do: </string>
     <string name="changePerf">Zmień nazwę zespołu</string>
     <string name="cancel">Anuluj</string>

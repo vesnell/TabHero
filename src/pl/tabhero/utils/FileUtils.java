@@ -1,41 +1,56 @@
 package pl.tabhero.utils;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
+import pl.tabhero.R;
 import pl.tabhero.db.DBUtils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 public class FileUtils { 
 	
 	private Context context;
+	private Activity activity;
 	public String filePath;
 	public String fileName;
 	public File file;
 	public File outDir;
+	public String dir;
 	
 	public FileUtils(Context context) {
+		File root = Environment.getExternalStorageDirectory();
 		this.context = context;
+		this.activity = (Activity) context;
+		this.dir = root.getAbsolutePath() + File.separator + "Android" + File.separator + this.context.getPackageName();
 	}
 	
-	public void makeFiles(String songUrl) {
-		File root = Environment.getExternalStorageDirectory();
+	public void makePaths(String songUrl) {
 		String[] fileTab1 = songUrl.split("/");
 		String filePerf = fileTab1[4];
 		String[] fileTab2 = fileTab1[5].split(",");
 		String fileId = fileTab2[0];
 		String fileTitle = fileTab2[1];
-		String dir = root.getAbsolutePath() + File.separator + "Android" + File.separator + this.context.getPackageName();
 	    this.fileName = filePerf + "-" + fileTitle + "." + fileId + ".txt";
 	    this.filePath = dir + File.separator + fileName;
-	    this.file = new File(this.filePath);
-	    this.outDir = new File(dir);
+	}
+	
+	public void makeFiles() {
+		this.file = new File(this.filePath);
+	    this.outDir = new File(this.dir);
 	}
 	
 	public static String readFile(String path) throws IOException {
@@ -56,5 +71,41 @@ public class FileUtils {
 		dbUtils.updateTablatureDBU(songUrl, tabFromFile);
 		tablature = tabFromFile;
 		file.delete();
+	}
+	
+	@SuppressWarnings("resource")
+	public String readConfig(File file) {
+		StringBuilder text = new StringBuilder();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+		    String line;
+
+		    while ((line = br.readLine()) != null) {
+		        text.append(line);
+		        text.append('\n');
+		    }
+		}
+		catch (IOException e) {
+			Toast.makeText(this.context.getApplicationContext(), e.getMessage() + this.context.getString(R.string.sdcardReadError), Toast.LENGTH_LONG).show();
+		}
+		return text.toString();
+	}
+	
+	public void setIfMax(String configText) {
+		String max = configText.split(",")[0];
+		if(max.equals("MAX")) {
+			this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+			this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		} else if(max.equals("MIN")) {
+			this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+	    	this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+		}
+	}
+	
+	public void writeForConfig(File file, String maxForConfig, String textSize) throws IOException {
+		Writer writer;
+		writer = new BufferedWriter(new FileWriter(file));
+		writer.write(maxForConfig + "," + textSize);
+		writer.close();
 	}
 }

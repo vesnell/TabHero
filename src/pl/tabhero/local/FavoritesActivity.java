@@ -1,11 +1,15 @@
 package pl.tabhero.local;
  
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import pl.tabhero.R;
 import pl.tabhero.TabHero;
+import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.db.DBAdapter;
+import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
 import pl.tabhero.utils.MyOnKeyListener;
@@ -51,7 +55,8 @@ public class FavoritesActivity extends Activity {
 	private ArrayList<String> listOfFavPerfs;
 	private ArrayList<String> listOfChosenPerfsFromBase;
 	private ArrayAdapter<String> listAdapter;
-	private boolean max;
+	//private boolean max;
+	public static final String CONFIG = "config.txt";
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
@@ -59,6 +64,16 @@ public class FavoritesActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favorites);
+        
+        FileUtils fileUtils = new FileUtils(this);
+        File file = new File(fileUtils.dir + File.separator + CONFIG);
+    	if(file.isFile()) {
+    		//Log.d("Wejscie", fileUtils.dir + File.separator + CONFIG);
+    		String configText = fileUtils.readConfig(file);
+    		//Log.d("configtext", configText);
+    		fileUtils.setIfMax(configText);
+    		//Log.d("Exit", "EXIT");
+    	}
         
         device.setHomeButtonEnabledForICS();
         
@@ -81,7 +96,7 @@ public class FavoritesActivity extends Activity {
             	Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
             	Bundle bun = new Bundle();
             	bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
-            	bun.putBoolean("max", max);
+            	//bun.putBoolean("max", max);
     			i.putExtras(bun);
     			startActivityForResult(i, 500);
     			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
@@ -244,6 +259,7 @@ public class FavoritesActivity extends Activity {
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+    	MenuFunctions menuFunc = new MenuFunctions(this);
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
 	    	device.goHomeScreen();
@@ -255,14 +271,19 @@ public class FavoritesActivity extends Activity {
 	    	buildAlertDialogToAddOwnTab();
 	    	return true;
 	    case R.id.minmax:
-	    	minMax();
+	    	try {
+				menuFunc.minMax();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
     
-    private void minMax() {
+    /*private void minMax() {
     	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
        if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -273,7 +294,7 @@ public class FavoritesActivity extends Activity {
         	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         	max = true;
         }
-	}
+	}*/
     
     private void startEditActivity() {
     	ArrayList<String> listToEdit = new ArrayList<String>();
@@ -313,7 +334,7 @@ public class FavoritesActivity extends Activity {
     					Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
     					Bundle bun = new Bundle();
     					bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
-    					bun.putBoolean("max", max);
+    					//bun.putBoolean("max", max);
     					i.putExtras(bun);
     					startActivityForResult(i, 500);
     	    			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);	
@@ -337,7 +358,7 @@ public class FavoritesActivity extends Activity {
 					Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
 					Bundle bun = new Bundle();
 					bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
-					bun.putBoolean("max", max);
+					//bun.putBoolean("max", max);
 					i.putExtras(bun);
 					startActivityForResult(i, 500);
 	    			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);

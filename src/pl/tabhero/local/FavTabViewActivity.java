@@ -1,5 +1,6 @@
 package pl.tabhero.local;
 
+import java.io.File;
 import java.io.IOException;
 import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
@@ -31,7 +32,8 @@ public class FavTabViewActivity extends Activity {
 	private TextView head;
 	private LinearLayout buttons;
 	private LinearLayout lockButtons;
-	private boolean max;
+	//private boolean max;
+	private static final String CONFIG = "config.txt";
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	private DBUtils dbUtils = new DBUtils(this);
 	private String performer;
@@ -42,6 +44,13 @@ public class FavTabViewActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favtabview);
+        
+        FileUtils fileUtils = new FileUtils(this);
+        File file = new File(fileUtils.dir + File.separator + CONFIG);
+    	if(file.isFile()) {
+    		String configText = fileUtils.readConfig(file);
+    		fileUtils.setIfMax(configText);
+    	}
         
         device.setHomeButtonEnabledForICS();
         
@@ -60,11 +69,11 @@ public class FavTabViewActivity extends Activity {
         Intent i = getIntent();
         Bundle extras = i.getExtras();
         
-        max = extras.getBoolean("max");
+        /*max = extras.getBoolean("max");
 		if(max) {
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		}
+		}*/
         
         performer = extras.getString("performerName");
         title = extras.getString("songTitle");
@@ -74,8 +83,8 @@ public class FavTabViewActivity extends Activity {
         
         head.setText(performer + " - " + title);
         
-        FileUtils fileUtils = new FileUtils(this);
-        fileUtils.makeFiles(songUrl);
+        fileUtils.makePaths(songUrl);
+        fileUtils.makeFiles();
         if(fileUtils.file.isFile()) {
 			try {
 				fileUtils.updateTablatureFU(tablature, songUrl, fileUtils.file, fileUtils.filePath);
@@ -128,7 +137,12 @@ public class FavTabViewActivity extends Activity {
 	    	menuFunc.openWebBrowser(performer, title);
 	    	return true;
 	    case R.id.minmax:
-	    	minMax();
+	    	try {
+				menuFunc.minMax();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    	return true;
 	    case R.id.editTab:
 	    	menuFunc.editTab(tablature, songUrl);
@@ -138,7 +152,7 @@ public class FavTabViewActivity extends Activity {
 	    }
 	}
 	
-	private void minMax() {
+	/*private void minMax() {
     	boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
        if(fullScreen) {
     	   getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -150,7 +164,7 @@ public class FavTabViewActivity extends Activity {
         	getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         	max = true;
         }
-    }
+    }*/
 	
 	@Override
     public void onBackPressed() {

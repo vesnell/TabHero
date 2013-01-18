@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 public class MenuFunctions {
@@ -22,6 +23,7 @@ public class MenuFunctions {
 	private Context context;
 	private Activity activity;
 	private DBUtils dbUtils;
+	private static final String CONFIG = "config.txt";
 	
 	public MenuFunctions(Context context) {
 		this.context = context;
@@ -68,7 +70,8 @@ public class MenuFunctions {
 	public void editTab(String tablature, String songUrl) {
 		Writer writer;
 		FileUtils fileUtils = new FileUtils(this.context);
-        fileUtils.makeFiles(songUrl);
+        fileUtils.makePaths(songUrl);
+        fileUtils.makeFiles();
 	    if (!fileUtils.outDir.isDirectory()) {
 	      fileUtils.outDir.mkdir();
 	    }
@@ -114,4 +117,28 @@ public class MenuFunctions {
 		AlertDialog alert = builder.create();
 		alert.show();
     }
+	
+	public void minMax() throws IOException {
+		String maxForConfig;
+		boolean fullScreen = (this.activity.getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
+		if(fullScreen) {
+    	   this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    	   this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+    	   maxForConfig = "MIN";
+        } else {
+        	this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        	this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        	maxForConfig = "MAX";
+        }
+		FileUtils fileUtils = new FileUtils(this.context);
+		String configPath = fileUtils.dir + File.separator + CONFIG;
+		File file = new File(configPath);
+		if(file.isFile()) {
+			String text = fileUtils.readConfig(file);
+			String textSize = text.split(",")[1];
+			fileUtils.writeForConfig(file, maxForConfig, textSize);
+		} else {
+			Toast.makeText(this.context.getApplicationContext(), this.context.getString(R.string.configReadError), Toast.LENGTH_LONG).show();
+		}
+	}
 }
