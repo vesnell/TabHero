@@ -15,9 +15,11 @@ import java.nio.charset.Charset;
 import pl.tabhero.R;
 import pl.tabhero.db.DBUtils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -30,6 +32,7 @@ public class FileUtils {
 	public File file;
 	public File outDir;
 	public String dir;
+	private static final String CONFIG = "config.txt";
 	
 	public FileUtils(Context context) {
 		File root = Environment.getExternalStorageDirectory();
@@ -112,12 +115,35 @@ public class FileUtils {
 	public void checkIfMax() {
 		MyTelephonyManager device = new MyTelephonyManager(this.context);
 		if(!device.isTablet()) {
-			final String CONFIG = "config.txt";
 			File file = new File(this.dir + File.separator + CONFIG);
 			if(file.isFile()) {
 				String configText = readConfig(file);
 				setIfMax(configText);
 			}
+		}
+	}
+	
+	@SuppressLint("UseValueOf")
+	public Float getTabSize() {
+		File file = new File(this.dir + File.separator + CONFIG);
+		Float size = null;
+		if(file.isFile()) {
+			String configText = readConfig(file);
+			size = new Float(configText.split(",")[1]);
+		}
+		return size;
+	}
+	
+	public void setSizeToConfig(float size) throws IOException {
+		String maxForConfig;
+		File file = new File(this.dir + File.separator + CONFIG);
+		if(file.isFile()) {
+			String configText = readConfig(file);
+			maxForConfig = configText.split(",")[0];
+			Log.d("SIZE_setSize", Float.toString(size));
+			String textSize = Float.toString(size);
+			Log.d("SIZE_textSize", textSize);
+			writeForConfig(file, maxForConfig, textSize);
 		}
 	}
 }

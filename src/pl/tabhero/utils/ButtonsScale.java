@@ -1,11 +1,14 @@
 package pl.tabhero.utils;
 
+import java.io.IOException;
+
 import pl.tabhero.R;
 import pl.tabhero.local.FavTabViewActivity;
 import pl.tabhero.net.TabViewActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -14,16 +17,21 @@ import android.widget.TextView;
 
 public class ButtonsScale {
 	
+	private Context context;
 	private Activity activity;
 	private ImageButton btnPlus;
 	private ImageButton btnMinus;
 	private String className;
+	private float size;
+	private FileUtils fileUtils;
 	private static final String FAV_TAB_VIEW = FavTabViewActivity.class.getSimpleName();
 	private static final String NET_TAB_VIEW = TabViewActivity.class.getSimpleName();
 	
 	public ButtonsScale(Context context) {
+		this.context = context;
 		this.activity = (Activity) context;
 		this.className = this.activity.getClass().getSimpleName();
+		this.fileUtils = new FileUtils(this.context);
 	}
 	
 	public void init(LinearLayout buttons, TextView txt) {
@@ -42,11 +50,17 @@ public class ButtonsScale {
 		}
 		
 		btnPlus.setOnClickListener(new OnClickListener() {
-
 			public void onClick(View v) {
 				float scaleText = tab.getTextSize();
 				scaleText++;
 				tab.setTextSize(0, scaleText);
+				size = scaleText;
+				Log.d("SIZE1", Float.toString(size));
+				try {
+					fileUtils.setSizeToConfig(size);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
@@ -59,13 +73,18 @@ public class ButtonsScale {
 		}
 		
 		btnMinus.setOnClickListener(new OnClickListener() {
-
 			public void onClick(View v) {
 				float scaleText = tab.getTextSize();
 				scaleText--;
 				tab.setTextSize(0, scaleText);
+				size = scaleText;
+				Log.d("SIZE1", Float.toString(size));
+				try {
+					fileUtils.setSizeToConfig(size);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
-
 }

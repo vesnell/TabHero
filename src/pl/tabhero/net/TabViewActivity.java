@@ -51,6 +51,9 @@ public class TabViewActivity extends Activity {
         
     	TextView head = (TextView) findViewById(R.id.performerAndTitle);
     	tab = (TextView) findViewById(R.id.tabInTabView);
+    	Float size = fileUtils.getTabSize();
+    	tab.setTextSize(size);
+    	
     	buttons = (LinearLayout) findViewById(R.id.buttons);
     	buttons.setVisibility(View.GONE);
 
@@ -70,7 +73,7 @@ public class TabViewActivity extends Activity {
     	MyLongClickAdapterToLock myLongClickAdapterToLock = new MyLongClickAdapterToLock(this, lockButtons);
         tab.setOnLongClickListener(myLongClickAdapterToLock);
     	
-    	PinchZoom pinchZoom = new PinchZoom(tab, listOfSections);
+    	PinchZoom pinchZoom = new PinchZoom(this, tab, listOfSections);
         pinchZoom.drawMatrix();
         tab.setOnTouchListener(pinchZoom);
     }

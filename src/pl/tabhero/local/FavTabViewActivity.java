@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -52,6 +53,9 @@ public class FavTabViewActivity extends Activity {
         
         head = (TextView) findViewById(R.id.favPerformerAndTitle);
         tab = (TextView) findViewById(R.id.favTabInTabView);
+        Float size = fileUtils.getTabSize();
+        Log.d("SIZE2", Float.toString(size));
+    	tab.setTextSize(size);
 
         buttons = (LinearLayout) findViewById(R.id.favButtons);
         buttons.setVisibility(View.GONE);
@@ -85,7 +89,7 @@ public class FavTabViewActivity extends Activity {
         MyLongClickAdapterToLock myLongClickAdapterToLock = new MyLongClickAdapterToLock(this, lockButtons);
         tab.setOnLongClickListener(myLongClickAdapterToLock);
         
-        PinchZoom pinchZoom = new PinchZoom(tab, tablature);
+        PinchZoom pinchZoom = new PinchZoom(this, tab, tablature);
         pinchZoom.drawMatrix();
         tab.setOnTouchListener(pinchZoom);
 	}

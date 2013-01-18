@@ -101,8 +101,8 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:padding="15dip"
-                android:textSize="12sp"
                 android:typeface="monospace" />
+                <!-- android:textSize="12sp" /> -->
             
         </LinearLayout>
         </ScrollView>
