@@ -15,7 +15,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,12 +36,13 @@ public class FavTabViewActivity extends Activity {
 	private String title;
 	private String tablature;
 	private String songUrl;
+	private FileUtils fileUtils;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.favtabview);
         
-        FileUtils fileUtils = new FileUtils(this);
+        fileUtils = new FileUtils(this);
         fileUtils.checkIfMax();
         
         device.setHomeButtonEnabledForICS();
@@ -54,7 +54,7 @@ public class FavTabViewActivity extends Activity {
         head = (TextView) findViewById(R.id.favPerformerAndTitle);
         tab = (TextView) findViewById(R.id.favTabInTabView);
         Float size = fileUtils.getTabSize();
-        Log.d("SIZE2", Float.toString(size));
+        //Log.d("SIZE2", Float.toString(size));
     	tab.setTextSize(size);
 
         buttons = (LinearLayout) findViewById(R.id.favButtons);
@@ -143,6 +143,11 @@ public class FavTabViewActivity extends Activity {
 	
 	@Override
     public void onBackPressed() {
+		try {
+			fileUtils.setSizeToConfig(tab.getTextSize());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		super.onBackPressed();
     	overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
     }

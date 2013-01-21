@@ -33,13 +33,14 @@ public class TabViewActivity extends Activity {
 	private String title;
 	private String listOfSections;
 	private String songUrl;
+	private FileUtils fileUtils;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tabview);
         
-        FileUtils fileUtils = new FileUtils(this);
+        fileUtils = new FileUtils(this);
         fileUtils.checkIfMax();
         
         device.setHomeButtonEnabledForICS();
@@ -140,6 +141,11 @@ public class TabViewActivity extends Activity {
 	 
 	 @Override
 	 public void onBackPressed() {
+		try {
+			fileUtils.setSizeToConfig(tab.getTextSize());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		 super.onBackPressed();
 		 overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
 	 }

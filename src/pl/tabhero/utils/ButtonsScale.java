@@ -1,14 +1,12 @@
 package pl.tabhero.utils;
 
 import java.io.IOException;
-
 import pl.tabhero.R;
 import pl.tabhero.local.FavTabViewActivity;
 import pl.tabhero.net.TabViewActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -55,7 +53,6 @@ public class ButtonsScale {
 				scaleText++;
 				tab.setTextSize(0, scaleText);
 				size = scaleText;
-				Log.d("SIZE1", Float.toString(size));
 				try {
 					fileUtils.setSizeToConfig(size);
 				} catch (IOException e) {
@@ -78,12 +75,6 @@ public class ButtonsScale {
 				scaleText--;
 				tab.setTextSize(0, scaleText);
 				size = scaleText;
-				Log.d("SIZE1", Float.toString(size));
-				try {
-					fileUtils.setSizeToConfig(size);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 			}
 		});
 	}

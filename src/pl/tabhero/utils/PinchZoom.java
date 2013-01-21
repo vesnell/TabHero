@@ -94,10 +94,5 @@ public class PinchZoom implements OnTouchListener {
 		
 		myTouchEvent.setTextSize(0, sizeText);
 		myTouchEvent.setText(myStringTab);
-		try {
-			fileUtils.setSizeToConfig(sizeText);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }
