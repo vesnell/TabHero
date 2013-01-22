@@ -2,27 +2,19 @@ package pl.tabhero.local;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.TreeMap;
 import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
-import pl.tabhero.db.DBAdapter;
+import pl.tabhero.db.DBUtils;
 import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
 import pl.tabhero.utils.MyOnKeyListener;
 import pl.tabhero.utils.MyOnTouchListener;
 import pl.tabhero.utils.MyTelephonyManager;
-import pl.tabhero.utils.PolishComparator;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,8 +32,6 @@ import android.widget.Toast;
 
 public class FavoritesTitleActivity extends Activity {
 	
-	DBAdapter db = new DBAdapter(this);
-	
 	private TextView chosenFavPerf;
 	private EditText editFavTitle;
 	private ListView searchFavTitleListView;
@@ -55,6 +45,8 @@ public class FavoritesTitleActivity extends Activity {
 	private String performerName;
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
+	private MenuFunctions menuFunc = new MenuFunctions(this);
+	private DBUtils dbUtils = new DBUtils(this);
 	
 	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +74,7 @@ public class FavoritesTitleActivity extends Activity {
         performerName = extras.getString("performerName");
         chosenFavPerf.setText(performerName);
         
-        ArrayList<ArrayList<String>> listOfLists = addTitleFromBase(performerName);
+        ArrayList<ArrayList<String>> listOfLists = dbUtils.addTitleFromBase(performerName);
         ArrayList<String> listTitle = listOfLists.get(0);
         ArrayList<String> listUrl = listOfLists.get(1);
         listOfChosenTitleFromBase = listTitle;
@@ -106,78 +98,18 @@ public class FavoritesTitleActivity extends Activity {
         
         searchFavTitleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-				buildAlertDialogToChangeSong(listOfChosenTitleFromBase.get(position), listOfChosenUrlFromBase.get(position));
+				menuFunc.buildAlertDialogToChangeRecordName(listOfChosenTitleFromBase.get(position), listOfChosenUrlFromBase.get(position));
 				return false;
 			}
         	
         });
         
+        InputFilter filter = new MyFilter();
         editFavTitle.setFilters(new InputFilter[]{filter});
         
         OnKeyListener myOnKeyListener = new MyOnKeyListener(imgBtn);
         editFavTitle.setOnKeyListener(myOnKeyListener);
 	}
-	
-	private InputFilter filter = new MyFilter();
-	
-	private void buildAlertDialogToChangeSong(final String oldSongTitle, final String url) {
-    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final EditText input = new EditText(this);
-        input.setFilters(new InputFilter[]{filter}); 
-		builder.setMessage(R.string.changeTitle);	
-		input.setText(oldSongTitle);
-		builder.setView(input);
-
-		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				String newSongTitle = input.getText().toString();
-				changeSongTitle(newSongTitle, url);
-				onResume();
-				dialog.dismiss();
-			}
-		});
-
-		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				dialog.dismiss();
-			}
-		});
-		AlertDialog alert = builder.create();
-		alert.show();
-    }
-    
-    private void changeSongTitle(String newSongTitle, String url) {
-    	ArrayList<Long> listId = new ArrayList<Long>();
-    	ArrayList<String> listUrl = new ArrayList<String>();
-    	String[] splitTab;
-    	String[] splitTab2;
-    	String newSongUrl = "";
-    	int i = 0;
-    	db.open();
-        Cursor c = db.getRecordUrl(url);
-        if (c.moveToFirst())
-        {
-            do {
-            	listId.add(c.getLong(0));
-            	listUrl.add(c.getString(4));
-            } while (c.moveToNext());
-        }
-        for(long id : listId) {
-        	db.updateSongTitle(newSongTitle, id);
-        	splitTab = listUrl.get(i).split("/");
-        	splitTab2 = splitTab[5].split(",");
-        	splitTab2[1] = newSongTitle;
-        	splitTab[5] = splitTab2[0] + "," + splitTab2[1];
-        	for(int j = 0; j < 5; j++)
-        		newSongUrl += splitTab[j] + "/";
-        	newSongUrl += splitTab[5];
-        	db.updateSongUrl(newSongUrl, id);
-        	i++;
-        	Log.d("NOWY URL", newSongUrl);
-        	newSongUrl = "";
-        }
-		db.close();
-    }
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -192,14 +124,16 @@ public class FavoritesTitleActivity extends Activity {
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-    	MenuFunctions menuFunc = new MenuFunctions(this);
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
 	    	device.goHomeScreen();
 	    	return true;
 	    case R.id.delFromFavWithCheckBox:
-	        startEditActivity();
+	        startEditTitleActivity();
 	        return true;
+	    case R.id.addOwnRecord:
+	    	menuFunc.buildAlertDialogNewTitle(performerName);
+	    	return true;
 	    case R.id.minmax:
 	    	try {
 				menuFunc.minMax();
@@ -212,7 +146,7 @@ public class FavoritesTitleActivity extends Activity {
 	    }
 	}
     
-    private void startEditActivity() {
+    private void startEditTitleActivity() {
     	ArrayList<String> listToEditTitles = new ArrayList<String>();
     	ArrayList<String> listToEditUrl = new ArrayList<String>();
     	if(listOfChosenTitleFromBase2.size() == 0) {
@@ -227,14 +161,14 @@ public class FavoritesTitleActivity extends Activity {
 		bun.putStringArrayList("listOfTitles", listToEditTitles);
 		bun.putStringArrayList("listOfUrl", listToEditUrl);
 		i.putExtras(bun);
-		startActivityForResult(i, 500);	
+		startActivity(i);	
 		overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
     }
 	
 	public void searchView(View v) {
 		device.hideKeyboard(editFavTitle);
 		
-		ArrayList<ArrayList<String>> listOfLists = addTitleFromBase(performerName);
+		ArrayList<ArrayList<String>> listOfLists = dbUtils.addTitleFromBase(performerName);
         ArrayList<String> listTitle = listOfLists.get(0);
         ArrayList<String> listUrl = listOfLists.get(1);
         listOfChosenTitleFromBase = listTitle;
@@ -273,7 +207,7 @@ public class FavoritesTitleActivity extends Activity {
     			
     			searchFavTitleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
     				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-    					buildAlertDialogToChangeSong(listOfChosenTitleFromBase2.get(position), listOfChosenUrlFromBase2.get(position));
+    					menuFunc.buildAlertDialogToChangeRecordName(listOfChosenTitleFromBase2.get(position), listOfChosenUrlFromBase2.get(position));
     					return false;
     				}
     	        	
@@ -298,35 +232,12 @@ public class FavoritesTitleActivity extends Activity {
 			
 			searchFavTitleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-					buildAlertDialogToChangeSong(listOfChosenTitleFromBase.get(position), listOfChosenUrlFromBase.get(position));
+					menuFunc.buildAlertDialogToChangeRecordName(listOfChosenTitleFromBase.get(position), listOfChosenUrlFromBase.get(position));
 					return false;
 				}
-	        	
 	        });
     	}
-		
 	}
-	
-	public ArrayList<ArrayList<String>> addTitleFromBase(String perfName) {
-		Comparator<String> comparator = new PolishComparator();
-    	Map<String, String> mapTitlesUrls = new TreeMap<String, String>(comparator);
-    	db.open();
-        Cursor c = db.getRecordPerf(perfName);
-        if (c.moveToFirst())
-        {
-            do {
-            	mapTitlesUrls.put(c.getString(2), c.getString(4));
-            } while (c.moveToNext());
-        }
-        db.close();
-        ArrayList<String> listTitles = new ArrayList<String>(mapTitlesUrls.keySet());
-		ArrayList<String> listUrl = new ArrayList<String>(mapTitlesUrls.values());
-    	ArrayList<ArrayList<String>> listOfList = new ArrayList<ArrayList<String>>();
-        listOfList.add(listTitles);
-        listOfList.add(listUrl);
-        return listOfList;      
-    }
-	
 	
 	protected void onResume() {
 		FileUtils fileUtils = new FileUtils(this);

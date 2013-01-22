@@ -3,4 +3,8 @@
           android:icon="@drawable/favorites_original_minus"
           android:title="@string/edit"
           android:showAsAction="always" />
+    <item android:id="@+id/addOwnRecord"
+          android:icon="@drawable/favorites_original"
+          android:title="@string/addOwnRecord"
+          android:showAsAction="always" />
 </menu>

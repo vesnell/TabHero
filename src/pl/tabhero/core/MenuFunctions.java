@@ -5,17 +5,24 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import pl.tabhero.R;
 import pl.tabhero.db.DBUtils;
+import pl.tabhero.local.EditFavPerfs;
+import pl.tabhero.local.FavoritesActivity;
 import pl.tabhero.local.FavoritesTitleActivity;
 import pl.tabhero.utils.FileUtils;
+import pl.tabhero.utils.MyFilter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MenuFunctions {
@@ -24,11 +31,15 @@ public class MenuFunctions {
 	private Activity activity;
 	private DBUtils dbUtils;
 	private static final String CONFIG = "config.txt";
+	private String className;
+	private static final String FAV_PERF_VIEW = FavoritesActivity.class.getSimpleName();
+	private static final String FAV_TITLE_VIEW = FavoritesTitleActivity.class.getSimpleName();
 	
 	public MenuFunctions(Context context) {
 		this.context = context;
 		this.activity = (Activity) context;
 		this.dbUtils = new DBUtils(this.context);
+		this.className = this.activity.getClass().getSimpleName();
 	}
 	
 	public void addToFav(String performer, String title, String tab, String songUrl) {
@@ -141,4 +152,107 @@ public class MenuFunctions {
 			Toast.makeText(this.context.getApplicationContext(), this.context.getString(R.string.configReadError), Toast.LENGTH_LONG).show();
 		}
 	}
+	
+	//local activties
+	
+	private InputFilter filter = new MyFilter();
+    
+    public void buildAlertDialogToAddOwnTab() {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+        final EditText inputPerf = new EditText(this.context);
+        inputPerf.setFilters(new InputFilter[]{filter});
+        builder.setMessage(R.string.addOwnPerf);	
+		builder.setView(inputPerf);
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String newPerfName = inputPerf.getText().toString();
+				buildAlertDialogNewTitle(newPerfName);
+				dialog.dismiss();
+			}
+		});
+
+		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				dialog.dismiss();
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+    }
+    
+    public void buildAlertDialogNewTitle(final String newPerfName) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+        final EditText inputTitle = new EditText(this.context);
+        inputTitle.setFilters(new InputFilter[]{filter});
+        builder.setMessage(this.context.getString(R.string.addOwnTitle) + " " + newPerfName);	
+		builder.setView(inputTitle);
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String newSongTitle = inputTitle.getText().toString();
+				dbUtils.addToBaseNewRecord(newPerfName, newSongTitle);
+				Intent refresh = null;
+				if(className.equals(FAV_PERF_VIEW)) {
+					refresh = new Intent(activity, FavoritesActivity.class);
+				} else if(className.equals(FAV_TITLE_VIEW)) {
+					refresh = new Intent(activity, FavoritesTitleActivity.class);
+				}
+				activity.startActivity(refresh);
+				dialog.dismiss();
+			}
+		});
+
+		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				dialog.dismiss();
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+    }
+    
+    public void startEditPerfActivity(ArrayList<String> listToEdit) {
+    	Intent i = new Intent(this.activity, EditFavPerfs.class);
+		Bundle bun = new Bundle();
+		bun.putStringArrayList("listOfPerformers", listToEdit);
+		i.putExtras(bun);
+		this.context.startActivity(i);
+		this.activity.overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+    }
+    
+    public void buildAlertDialogToChangeRecordName(final String oldRecordName, final String url) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+        final EditText input = new EditText(this.context);
+        input.setFilters(new InputFilter[]{filter});
+        if(className.equals(FAV_PERF_VIEW)) {
+        	builder.setMessage(R.string.changePerf);
+		} else if(className.equals(FAV_TITLE_VIEW)) {
+			builder.setMessage(R.string.changeTitle);
+		}
+		input.setText(oldRecordName);
+		builder.setView(input);
+
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String newRecordName = input.getText().toString();
+				Intent refresh = null;
+				if(className.equals(FAV_PERF_VIEW)) {
+					dbUtils.changePerfName(newRecordName, oldRecordName);
+					refresh = new Intent(activity, FavoritesActivity.class);
+				} else if(className.equals(FAV_TITLE_VIEW)) {
+					dbUtils.changeSongTitle(newRecordName, url);
+					refresh = new Intent(activity, FavoritesTitleActivity.class);
+				}
+				activity.startActivity(refresh);
+				dialog.dismiss();
+			}
+		});
+
+		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				dialog.dismiss();
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+    }
 }
