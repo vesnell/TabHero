@@ -7,6 +7,7 @@ import pl.tabhero.TabHero;
 import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.db.DBUtils;
 import pl.tabhero.utils.FileUtils;
+import pl.tabhero.utils.LongClickOnItemToChangeRecordName;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
 import pl.tabhero.utils.MyOnKeyListener;
@@ -35,9 +36,7 @@ public class FavoritesActivity extends Activity {
 	private ListView searchListView;
 	private EditText editFavPerformer;
 	private ImageButton imgBtn;
-	private ArrayList<String> listOfFavPerfs;
 	private ArrayList<String> listOfChosenPerfsFromBase;
-	private ArrayAdapter<String> listAdapter;
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	private DBUtils dbUtils = new DBUtils(this);
@@ -62,11 +61,22 @@ public class FavoritesActivity extends Activity {
         OnTouchListener myOnTouchListener = new MyOnTouchListener(gestureDetector);
         searchListView.setOnTouchListener(myOnTouchListener);
         
-        listOfChosenPerfsFromBase = dbUtils.addPerfFromBase();
-
-        listAdapter = new ArrayAdapter<String>(this, R.layout.artistsfav, listOfChosenPerfsFromBase);
-        searchListView.setAdapter(listAdapter);
         device.hideKeyboard(editFavPerformer);
+        
+        listOfChosenPerfsFromBase = dbUtils.addPerfFromBase();
+        createListOfPerfsAndHandleIt(listOfChosenPerfsFromBase);
+        
+        InputFilter filter = new MyFilter();
+        editFavPerformer.setFilters(new InputFilter[]{filter});
+        
+        OnKeyListener myOnKeyListener = new MyOnKeyListener(imgBtn);
+        editFavPerformer.setOnKeyListener(myOnKeyListener); 
+    }
+	
+	private void createListOfPerfsAndHandleIt(final ArrayList<String> listOfChosenPerfsFromBase) {
+		ArrayAdapter<String> listAdapter = 
+				new ArrayAdapter<String>(this, R.layout.artistsfav, listOfChosenPerfsFromBase);
+        searchListView.setAdapter(listAdapter);
         searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             	Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
@@ -76,21 +86,13 @@ public class FavoritesActivity extends Activity {
     			startActivityForResult(i, 500);
     			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
            }
-        } );
-        
-        searchListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-			public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-				menuFunc.buildAlertDialogToChangeRecordName(listOfChosenPerfsFromBase.get(position), null);
-				return false;
-			}
         });
         
-        InputFilter filter = new MyFilter();
-        editFavPerformer.setFilters(new InputFilter[]{filter});
-        
-        OnKeyListener myOnKeyListener = new MyOnKeyListener(imgBtn);
-        editFavPerformer.setOnKeyListener(myOnKeyListener); 
-    }
+        //***** change record name onLongClick *****
+        LongClickOnItemToChangeRecordName longClickToChangeRecordName = 
+        		new LongClickOnItemToChangeRecordName(this, listOfChosenPerfsFromBase);
+        searchListView.setOnItemLongClickListener(longClickToChangeRecordName);
+	}
     
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -128,65 +130,25 @@ public class FavoritesActivity extends Activity {
 	}
     
 	public void searchView(View v) {
-    	device.hideKeyboard(editFavPerformer);
-    	listOfChosenPerfsFromBase.clear();
-    	listOfChosenPerfsFromBase = dbUtils.addPerfFromBase();
-    	listOfFavPerfs = dbUtils.addPerfFromBase();
-    	String performer = new String();
+		String performer = new String();
     	performer = editFavPerformer.getText().toString().toLowerCase();
+    	device.hideKeyboard(editFavPerformer);
     	
     	if(performer.length() > 0) {
     		if(performer.charAt(0) == ' ')
     			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
     		else {
     			boolean checkContains;
-    			listOfChosenPerfsFromBase.clear();
-    			for(String p : listOfFavPerfs) {
+    			ArrayList<String> listOfFavPerfs = new ArrayList<String>();
+    			for(String p : listOfChosenPerfsFromBase) {
     				checkContains = p.toLowerCase().contains(performer);
     				if(checkContains == true)
-    					listOfChosenPerfsFromBase.add(p);
+    					listOfFavPerfs.add(p);
     			}
-    			listOfFavPerfs.clear();
-    			listAdapter = new ArrayAdapter<String>(this, R.layout.artistsfav, listOfChosenPerfsFromBase);
-    			searchListView.setAdapter(listAdapter);
-    			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-    				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    					Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
-    					Bundle bun = new Bundle();
-    					bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
-    					i.putExtras(bun);
-    					startActivity(i);
-    	    			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);	
-    				}
-    			} );
-    			
-    			searchListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-    				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-    					menuFunc.buildAlertDialogToChangeRecordName(listOfChosenPerfsFromBase.get(position), null);
-    					return false;
-    				}
-    	        });
+    			createListOfPerfsAndHandleIt(listOfFavPerfs);
     		}
     	} else {
-			listAdapter = new ArrayAdapter<String>(this, R.layout.artistsfav, listOfChosenPerfsFromBase);
-			searchListView.setAdapter(listAdapter);
-			searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
-					Bundle bun = new Bundle();
-					bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
-					i.putExtras(bun);
-					startActivity(i);
-	    			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-				}
-			} );
-			
-			searchListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-					menuFunc.buildAlertDialogToChangeRecordName(listOfChosenPerfsFromBase.get(position), null);
-					return false;
-				}
-	        });
+    		createListOfPerfsAndHandleIt(listOfChosenPerfsFromBase);
     	}
     }
     

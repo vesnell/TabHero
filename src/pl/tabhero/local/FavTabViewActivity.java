@@ -54,7 +54,6 @@ public class FavTabViewActivity extends Activity {
         head = (TextView) findViewById(R.id.favPerformerAndTitle);
         tab = (TextView) findViewById(R.id.favTabInTabView);
         Float size = fileUtils.getTabSize();
-        //Log.d("SIZE2", Float.toString(size));
     	tab.setTextSize(size);
 
         buttons = (LinearLayout) findViewById(R.id.favButtons);
