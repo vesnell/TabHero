@@ -65,7 +65,7 @@ public class FavoritesActivity extends Activity {
         
         listOfChosenPerfsFromBase = dbUtils.addPerfFromBase();
         createListOfPerfsAndHandleIt(listOfChosenPerfsFromBase);
-        
+
         InputFilter filter = new MyFilter();
         editFavPerformer.setFilters(new InputFilter[]{filter});
         
@@ -73,24 +73,46 @@ public class FavoritesActivity extends Activity {
         editFavPerformer.setOnKeyListener(myOnKeyListener); 
     }
 	
-	private void createListOfPerfsAndHandleIt(final ArrayList<String> listOfChosenPerfsFromBase) {
+	public void searchView(View v) {
+		ArrayList<String> listOfPerfs = dbUtils.addPerfFromBase();
+		String performer = new String();
+    	performer = editFavPerformer.getText().toString().toLowerCase();
+    	device.hideKeyboard(editFavPerformer);
+    	
+    	if(performer.length() > 0) {
+    		if(performer.charAt(0) == ' ')
+    			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
+    		else {
+    			boolean checkContains;
+    			ArrayList<String> listOfFavPerfs = new ArrayList<String>();
+    			for(String p : listOfPerfs) {
+    				checkContains = p.toLowerCase().contains(performer);
+    				if(checkContains == true)
+    					listOfFavPerfs.add(p);
+    			}
+    			createListOfPerfsAndHandleIt(listOfFavPerfs);
+    		}
+    	} else {
+    		createListOfPerfsAndHandleIt(listOfPerfs);
+    	}
+    }
+	
+	private void createListOfPerfsAndHandleIt(final ArrayList<String> listOfPerfs) {
 		ArrayAdapter<String> listAdapter = 
-				new ArrayAdapter<String>(this, R.layout.artistsfav, listOfChosenPerfsFromBase);
+				new ArrayAdapter<String>(this, R.layout.artistsfav, listOfPerfs);
         searchListView.setAdapter(listAdapter);
         searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             	Intent i = new Intent(FavoritesActivity.this, FavoritesTitleActivity.class);
             	Bundle bun = new Bundle();
-            	bun.putString("performerName", listOfChosenPerfsFromBase.get(position));
+            	bun.putString("performerName", listOfPerfs.get(position));
     			i.putExtras(bun);
-    			startActivityForResult(i, 500);
+    			startActivity(i);
     			overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
            }
         });
-        
-        //***** change record name onLongClick *****
         LongClickOnItemToChangeRecordName longClickToChangeRecordName = 
-        		new LongClickOnItemToChangeRecordName(this, listOfChosenPerfsFromBase);
+        		new LongClickOnItemToChangeRecordName(this, listOfPerfs, null);
         searchListView.setOnItemLongClickListener(longClickToChangeRecordName);
 	}
     
@@ -112,7 +134,8 @@ public class FavoritesActivity extends Activity {
 	    	device.goHomeScreen();
 	    	return true;
 	    case R.id.delFromFavWithCheckBox:
-	        menuFunc.startEditPerfActivity(listOfChosenPerfsFromBase);
+	        //menuFunc.startEditPerfActivity(listOfChosenPerfsFromBase);
+	    	//zrobic przekazywanie nowszej listy z bazy po wyedytowaniu performera
 	        return true;
 	    case R.id.addOwnRecord:
 	    	menuFunc.buildAlertDialogToAddOwnTab();
@@ -128,29 +151,6 @@ public class FavoritesActivity extends Activity {
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
-    
-	public void searchView(View v) {
-		String performer = new String();
-    	performer = editFavPerformer.getText().toString().toLowerCase();
-    	device.hideKeyboard(editFavPerformer);
-    	
-    	if(performer.length() > 0) {
-    		if(performer.charAt(0) == ' ')
-    			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
-    		else {
-    			boolean checkContains;
-    			ArrayList<String> listOfFavPerfs = new ArrayList<String>();
-    			for(String p : listOfChosenPerfsFromBase) {
-    				checkContains = p.toLowerCase().contains(performer);
-    				if(checkContains == true)
-    					listOfFavPerfs.add(p);
-    			}
-    			createListOfPerfsAndHandleIt(listOfFavPerfs);
-    		}
-    	} else {
-    		createListOfPerfsAndHandleIt(listOfChosenPerfsFromBase);
-    	}
-    }
     
     protected void onResume() {
     	FileUtils fileUtils = new FileUtils(this);

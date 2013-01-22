@@ -234,15 +234,13 @@ public class MenuFunctions {
 		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String newRecordName = input.getText().toString();
-				Intent refresh = null;
 				if(className.equals(FAV_PERF_VIEW)) {
 					dbUtils.changePerfName(newRecordName, oldRecordName);
-					refresh = new Intent(activity, FavoritesActivity.class);
+					refresh();
 				} else if(className.equals(FAV_TITLE_VIEW)) {
 					dbUtils.changeSongTitle(newRecordName, url);
-					refresh = new Intent(activity, FavoritesTitleActivity.class);
+					refresh();
 				}
-				activity.startActivity(refresh);
 				dialog.dismiss();
 			}
 		});
@@ -254,5 +252,16 @@ public class MenuFunctions {
 		});
 		AlertDialog alert = builder.create();
 		alert.show();
+    }
+    
+    public void refresh() {
+    	//this.activity.finish();
+    	Intent refresh = null;
+		if(className.equals(FAV_PERF_VIEW)) {
+			refresh = new Intent(this.context, FavoritesActivity.class);
+		} else if(className.equals(FAV_TITLE_VIEW)) {
+			refresh = new Intent(this.context, FavoritesTitleActivity.class);
+		}
+		this.activity.startActivity(refresh);
     }
 }

@@ -6,6 +6,7 @@ import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.db.DBUtils;
 import pl.tabhero.utils.FileUtils;
+import pl.tabhero.utils.LongClickOnItemToChangeRecordName;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
 import pl.tabhero.utils.MyOnKeyListener;
@@ -91,18 +92,14 @@ public class FavoritesTitleActivity extends Activity {
             	bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
             	bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
     			i.putExtras(bun);
-    			startActivityForResult(i, 500);	
+    			startActivity(i);	
     			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
            }
         } );
         
-        searchFavTitleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-			public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-				menuFunc.buildAlertDialogToChangeRecordName(listOfChosenTitleFromBase.get(position), listOfChosenUrlFromBase.get(position));
-				return false;
-			}
-        	
-        });
+        LongClickOnItemToChangeRecordName longClickToChangeRecordName = 
+        		new LongClickOnItemToChangeRecordName(this, listOfChosenTitleFromBase, listOfChosenUrlFromBase);
+        searchFavTitleListView.setOnItemLongClickListener(longClickToChangeRecordName);
         
         InputFilter filter = new MyFilter();
         editFavTitle.setFilters(new InputFilter[]{filter});
@@ -200,18 +197,14 @@ public class FavoritesTitleActivity extends Activity {
     					bun.putString("songTitle", listOfChosenTitleFromBase2.get(position));
     					bun.putString("songUrl", listOfChosenUrlFromBase2.get(position));
     					i.putExtras(bun);
-    					startActivityForResult(i, 500);	
+    					startActivity(i);	
     	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
     				}
     			});
     			
-    			searchFavTitleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-    				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-    					menuFunc.buildAlertDialogToChangeRecordName(listOfChosenTitleFromBase2.get(position), listOfChosenUrlFromBase2.get(position));
-    					return false;
-    				}
-    	        	
-    	        });
+    			LongClickOnItemToChangeRecordName longClickToChangeRecordName = 
+    	        		new LongClickOnItemToChangeRecordName(this, listOfChosenTitleFromBase2, listOfChosenUrlFromBase2);
+    	        searchFavTitleListView.setOnItemLongClickListener(longClickToChangeRecordName);
     		}
     		
     	} else {
@@ -225,17 +218,14 @@ public class FavoritesTitleActivity extends Activity {
 					bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
 					bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
 					i.putExtras(bun);
-					startActivityForResult(i, 500);	
+					startActivity(i);	
 	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
 				}
 			} );
 			
-			searchFavTitleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-				public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-					menuFunc.buildAlertDialogToChangeRecordName(listOfChosenTitleFromBase.get(position), listOfChosenUrlFromBase.get(position));
-					return false;
-				}
-	        });
+			LongClickOnItemToChangeRecordName longClickToChangeRecordName = 
+	        		new LongClickOnItemToChangeRecordName(this, listOfChosenTitleFromBase, listOfChosenUrlFromBase);
+	        searchFavTitleListView.setOnItemLongClickListener(longClickToChangeRecordName);
     	}
 	}
 	

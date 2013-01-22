@@ -30,12 +30,12 @@
             android:id="@+id/searchFavBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:onClick="searchView"
             android:text="@string/search"
             android:textColor="#ffffff"
     		android:background="#eaeaea"
     		android:src="@drawable/loop_border"
-    		android:drawableBottom="@drawable/white_line" />
+    		android:drawableBottom="@drawable/white_line"
+        	android:onClick="searchView" />
         </LinearLayout>
         
         <ListView
