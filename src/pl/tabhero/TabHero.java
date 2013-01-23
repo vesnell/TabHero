@@ -6,10 +6,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
+import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.local.FavoritesActivity;
 import pl.tabhero.net.SearchActivity;
 import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyGestureDetector;
+import pl.tabhero.utils.MyTelephonyManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -93,16 +95,29 @@ public class TabHero extends Activity {
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.main, menu);
+	    MyTelephonyManager device = new MyTelephonyManager(this);
+	    if(device.isTablet()) {
+	    	inflater.inflate(R.menu.mainiftablet, menu);
+	    } else {
+	    	inflater.inflate(R.menu.main, menu);
+	    }
 	    return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		MenuFunctions menuFunc = new MenuFunctions(this);
 	    switch (item.getItemId()) {
 	    case R.id.info:
 	        showInfo();
 	        return true;
+	    case R.id.minmax:
+	    	try {
+				menuFunc.minMax();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
@@ -139,5 +154,12 @@ public class TabHero extends Activity {
     	FileUtils fileUtils = new FileUtils(this);
         fileUtils.checkIfMax();
     	super.onResume();
+    }
+    
+    @Override
+    public void onBackPressed() {
+    	TabHero.this.finish();
+    	super.onBackPressed();
+    	overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
     }
 }

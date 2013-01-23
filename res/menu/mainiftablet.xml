@@ -3,8 +3,4 @@
         android:title="@string/info"
         android:icon="@drawable/info"
         android:showAsAction="ifRoom|withText" />
-    <item android:id="@+id/minmax"
-          android:title="@string/minmax"
-          android:icon="@drawable/minmax"
-          android:showAsAction="always" />
 </menu>

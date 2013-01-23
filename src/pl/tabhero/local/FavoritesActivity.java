@@ -170,6 +170,7 @@ public class FavoritesActivity extends Activity {
     @Override
     public void onBackPressed() {
     	Intent intent = new Intent(this, TabHero.class);
+    	FavoritesActivity.this.finish();
     	startActivity(intent);
     	overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }

@@ -239,6 +239,7 @@ public class SearchTitleActivity extends Activity {
 	
 	@Override
     public void onBackPressed() {
+		SearchTitleActivity.this.finish();
     	super.onBackPressed();
     	overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }

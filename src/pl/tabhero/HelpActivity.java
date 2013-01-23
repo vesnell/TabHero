@@ -34,6 +34,7 @@ public class HelpActivity extends Activity {
 	
 	@Override
     public void onBackPressed() {
+		HelpActivity.this.finish();
 		super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
     }

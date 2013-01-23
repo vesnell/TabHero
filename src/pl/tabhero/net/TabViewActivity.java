@@ -146,8 +146,9 @@ public class TabViewActivity extends Activity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		 super.onBackPressed();
-		 overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+		TabViewActivity.this.finish();
+		super.onBackPressed();
+		overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
 	 }
 
 }

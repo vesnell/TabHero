@@ -193,6 +193,7 @@ public class FavoritesTitleActivity extends Activity {
 	@Override
     public void onBackPressed() {
     	Intent intent = new Intent(this, FavoritesActivity.class);
+    	FavoritesTitleActivity.this.finish();
     	startActivity(intent);
     	overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
