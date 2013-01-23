@@ -41,6 +41,9 @@ public class FavoritesTitleActivity extends Activity {
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	private DBUtils dbUtils = new DBUtils(this);
+	private boolean onEditClick = false;
+	private ArrayList<String> listTitlesToEdit = new ArrayList<String>();
+	private ArrayList<String> listUrlsToEdit = new ArrayList<String>();
 	
 	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,39 @@ public class FavoritesTitleActivity extends Activity {
         
         OnKeyListener myOnKeyListener = new MyOnKeyListener(imgBtn);
         editFavTitle.setOnKeyListener(myOnKeyListener);
+	}
+	
+	public void searchView(View v) {
+		String title = new String();
+		title = editFavTitle.getText().toString().toLowerCase();
+		ArrayList<ArrayList<String>> listOfLists = dbUtils.addTitleFromBase(performerName);
+        ArrayList<String> listTitle = listOfLists.get(0);
+        ArrayList<String> listUrl = listOfLists.get(1);
+        device.hideKeyboard(editFavTitle);
+
+    	if(title.length() > 0) {
+    		if(title.charAt(0) == ' ')
+    			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
+    		else {
+    			boolean checkContains;
+    			ArrayList<String> listOfFavTitles = new ArrayList<String>();
+    			ArrayList<String> listOfFavUrls = new ArrayList<String>();
+    			for(int i = 0; i < listTitle.size(); i++) {
+    				checkContains = listTitle.get(i).toLowerCase().contains(title);
+    				if(checkContains == true) {
+    					listOfFavTitles.add(listTitle.get(i));
+    					listOfFavUrls.add(listUrl.get(i));
+    				}
+    			}
+    			createListOfTitlesAndHandleIt(listOfFavTitles, listOfFavUrls);
+    			listTitlesToEdit = listOfFavTitles;
+    			listUrlsToEdit = listOfFavUrls;
+    			onEditClick = true;
+    		}
+    	} else {
+    		createListOfTitlesAndHandleIt(listTitle, listUrl);
+    		onEditClick = false;
+    	}
 	}
 	
 	private void createListOfTitlesAndHandleIt(final ArrayList<String> listOfTitles, final ArrayList<String> listOfUrls) {
@@ -123,7 +159,13 @@ public class FavoritesTitleActivity extends Activity {
 	    	device.goHomeScreen();
 	    	return true;
 	    case R.id.delFromFavWithCheckBox:
-	        menuFunc.startEditTitleActivity(dbUtils.addTitleFromBase(performerName).get(0), dbUtils.addTitleFromBase(performerName).get(1));
+	    	if(onEditClick) {
+	    		menuFunc.startEditTitleActivity(listTitlesToEdit, listUrlsToEdit);
+	    	} else {
+	    		menuFunc.startEditTitleActivity(
+	    			dbUtils.addTitleFromBase(performerName).get(0), 
+	    			dbUtils.addTitleFromBase(performerName).get(1));
+	    	}
 	        return true;
 	    case R.id.addOwnRecord:
 	    	menuFunc.buildAlertDialogNewTitle(performerName);
@@ -138,36 +180,6 @@ public class FavoritesTitleActivity extends Activity {
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
-	}
-	
-	public void searchView(View v) {
-		String title = new String();
-		title = editFavTitle.getText().toString().toLowerCase();
-		ArrayList<ArrayList<String>> listOfLists = dbUtils.addTitleFromBase(performerName);
-        ArrayList<String> listTitle = listOfLists.get(0);
-        ArrayList<String> listUrl = listOfLists.get(1);
-        device.hideKeyboard(editFavTitle);
-
-    	if(title.length() > 0) {
-    		if(title.charAt(0) == ' ')
-    			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
-    		else {
-    			boolean checkContains;
-    			ArrayList<String> listOfFavTitles = new ArrayList<String>();
-    			ArrayList<String> listOfFavUrls = new ArrayList<String>();
-    			for(int i = 0; i < listTitle.size(); i++) {
-    				checkContains = listTitle.get(i).toLowerCase().contains(title);
-    				if(checkContains == true) {
-    					listOfFavTitles.add(listTitle.get(i));
-    					listOfFavUrls.add(listUrl.get(i));
-    				}
-    			}
-    			createListOfTitlesAndHandleIt(listOfFavTitles, listOfFavUrls);
-    		}
-    		
-    	} else {
-    		createListOfTitlesAndHandleIt(listTitle, listUrl);
-    	}
 	}
 	
 	protected void onResume() {

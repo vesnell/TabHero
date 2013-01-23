@@ -40,6 +40,8 @@ public class FavoritesActivity extends Activity {
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	private DBUtils dbUtils = new DBUtils(this);
 	private MenuFunctions menuFunc = new MenuFunctions(this);
+	private boolean onEditClick = false;
+	private ArrayList<String> listToEdit = new ArrayList<String>();
 	
 	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
@@ -90,9 +92,12 @@ public class FavoritesActivity extends Activity {
     					listOfFavPerfs.add(p);
     			}
     			createListOfPerfsAndHandleIt(listOfFavPerfs);
+    			listToEdit = listOfFavPerfs;
+    			onEditClick = true;
     		}
     	} else {
     		createListOfPerfsAndHandleIt(listOfPerfs);
+    		onEditClick = false;
     	}
     }
 	
@@ -133,7 +138,11 @@ public class FavoritesActivity extends Activity {
 	    	device.goHomeScreen();
 	    	return true;
 	    case R.id.delFromFavWithCheckBox:
-	        menuFunc.startEditPerfActivity(dbUtils.addPerfFromBase());
+	    	if(onEditClick) {
+	    		menuFunc.startEditPerfActivity(listToEdit);
+	    	} else {
+	    		menuFunc.startEditPerfActivity(dbUtils.addPerfFromBase());
+	    	}
 	        return true;
 	    case R.id.addOwnRecord:
 	    	menuFunc.buildAlertDialogToAddOwnTab();
