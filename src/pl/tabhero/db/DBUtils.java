@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 import pl.tabhero.R;
 import pl.tabhero.utils.PolishComparator;
+import pl.tabhero.utils.selector.mItems;
 import android.content.Context;
 import android.database.Cursor;
 import android.widget.Toast;
@@ -236,4 +237,28 @@ public class DBUtils {
         }
 		db.close();
     }
+	
+	public void deletePerfsInEdit(ArrayList<mItems> performersCheckList) {
+		db.open();
+    	for(mItems perf : performersCheckList) {
+    		if(perf.isChecked() == true) {	
+    			db.deletePerf(perf.getName());
+    		}
+    	}
+    	db.close();
+	}
+	
+	public void deleteTitlesInEdit(ArrayList<mItems> titleCheckList, ArrayList<String> titleList, ArrayList<String> urlList) {
+		db.open();
+    	for(mItems title : titleCheckList) {
+    		if(title.isChecked() == true) {	
+    			for(int i = 0; i < titleList.size(); i++) {
+    				if(title.getName().equals(titleList.get(i))) {
+    					db.deleteTab(urlList.get(i));
+    				}
+    			}
+    		}
+    	}
+    	db.close();
+	}
 }

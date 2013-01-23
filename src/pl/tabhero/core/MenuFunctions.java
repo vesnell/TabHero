@@ -14,6 +14,8 @@ import pl.tabhero.local.FavoritesActivity;
 import pl.tabhero.local.FavoritesTitleActivity;
 import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyFilter;
+import pl.tabhero.utils.selector.SelectArralAdapter;
+import pl.tabhero.utils.selector.mItems;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -23,7 +25,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class MenuFunctions {
@@ -273,5 +277,17 @@ public class MenuFunctions {
 			refresh = new Intent(this.context, FavoritesTitleActivity.class);
 		}
 		this.activity.startActivity(refresh);
+    }
+    
+    public void checkReverse(ArrayList<mItems> recordCheckList, ListView delListView) {
+    	for(mItems perf : recordCheckList) {
+    		if(perf.isChecked() == true) {
+    			perf.setChecked(false);
+    		} else {
+    			perf.setChecked(true);
+    		}
+    	}
+    	ArrayAdapter<mItems> listAdapter = new SelectArralAdapter(this.context, recordCheckList);
+		delListView.setAdapter(listAdapter);
     }
 }

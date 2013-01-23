@@ -2,7 +2,8 @@ package pl.tabhero.local;
 
 import java.util.ArrayList;
 import pl.tabhero.R;
-import pl.tabhero.db.DBAdapter;
+import pl.tabhero.core.MenuFunctions;
+import pl.tabhero.db.DBUtils;
 import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.selector.SelectArralAdapter;
@@ -19,17 +20,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class EditFavPerfs extends Activity{
-	DBAdapter db = new DBAdapter(this);
 	
-	private Button btnDeleteFavPerfs;
+	private DBUtils dbUtils = new DBUtils(this);
 	private ListView delFavListView;
-	private ArrayAdapter<mItems> listAdapter;
-	private ArrayList<mItems> planetList;
+	private ArrayList<mItems> performerCheckList;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,32 +39,28 @@ public class EditFavPerfs extends Activity{
         
         device.setHomeButtonEnabledForICS();
 		
-		btnDeleteFavPerfs = (Button) findViewById(R.id.deleteFavPerfs);
 		delFavListView = (ListView) findViewById(R.id.delFavListView);
 		
 		Intent i = getIntent();
 		Bundle extras = i.getExtras();
 		
-		delFavListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			public void onItemClick(AdapterView<?> parent, View item, int position, long id) {
-				mItems planet = listAdapter.getItem(position);
-				planet.toggleChecked();
-				SelectViewHolder viewHolder = (SelectViewHolder) item.getTag();
-				viewHolder.getCheckBox().setChecked(planet.isChecked());
-			}
-			
-		});
-		
 		ArrayList<String> listToEdit = extras.getStringArrayList("listOfPerformers");
-		planetList = new ArrayList<mItems>();
+		
+		performerCheckList = new ArrayList<mItems>();
 		for(String perf : listToEdit) {
-			planetList.add(new mItems(perf));
+			performerCheckList.add(new mItems(perf));
 		}
 		
-		listAdapter = new SelectArralAdapter(this, planetList);
+		final ArrayAdapter<mItems> listAdapter = new SelectArralAdapter(this, performerCheckList);
 		delFavListView.setAdapter(listAdapter);
-		
+		delFavListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View item, int position, long id) {
+				mItems performerChckboxItem = listAdapter.getItem(position);
+				performerChckboxItem.toggleChecked();
+				SelectViewHolder viewHolder = (SelectViewHolder) item.getTag();
+				viewHolder.getCheckBox().setChecked(performerChckboxItem.isChecked());
+			}
+		});
 	}
 	
 	public void deleteAndBackToFavorites(View v) {
@@ -74,17 +68,9 @@ public class EditFavPerfs extends Activity{
 	    builder.setMessage(R.string.areYouSure);
 	    builder.setNegativeButton(R.string.yes, new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int which) {
-	        	db.open();
-	        	for(mItems perf : planetList) {
-	        		if(perf.isChecked() == true) {	
-	        			db.deletePerf(perf.getName());
-	        		}
-	        	}
+	        	dbUtils.deletePerfsInEdit(performerCheckList);
 	        	Toast.makeText(getApplicationContext(), R.string.delPerfFromBase, Toast.LENGTH_LONG).show();
-	        	db.close();
-	        	Intent i = new Intent(EditFavPerfs.this, FavoritesActivity.class);
-	        	startActivityForResult(i, 500);
-	        	overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+	        	onBackPressed();
 	        }
 	    });
 	    builder.setPositiveButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -106,41 +92,24 @@ public class EditFavPerfs extends Activity{
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+    	MenuFunctions menuFunc = new MenuFunctions(this);
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
 	    	device.goHomeScreen();
 	    	return true;
 	    case R.id.checkReverse:
-	        checkReverse();
+	        menuFunc.checkReverse(performerCheckList, delFavListView);
 	        return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
-    
-    private void checkReverse() {
-    	for(mItems perf : planetList) {
-    		if(perf.isChecked() == true) {
-    			perf.setChecked(false);
-    		} else {
-    			perf.setChecked(true);
-    		}
-    	}
-    	listAdapter = new SelectArralAdapter(this, planetList);
-		delFavListView.setAdapter(listAdapter);
-    }
 	
 	@Override
 	public void onBackPressed() {
 		Intent intent = new Intent(this, FavoritesActivity.class);
-		startActivityForResult(intent, 500);
+		EditFavPerfs.this.finish();
+		startActivity(intent);
 		overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
 	}
-	
-	@Override
-	protected void onPause() {
-	    super.onPause();
-	    finish();
-	}
-
 }
