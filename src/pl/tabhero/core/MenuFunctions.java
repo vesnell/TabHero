@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import pl.tabhero.R;
 import pl.tabhero.db.DBUtils;
 import pl.tabhero.local.EditFavPerfs;
+import pl.tabhero.local.EditFavTitles;
 import pl.tabhero.local.FavoritesActivity;
 import pl.tabhero.local.FavoritesTitleActivity;
 import pl.tabhero.utils.FileUtils;
@@ -219,6 +220,16 @@ public class MenuFunctions {
 		this.activity.overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
     }
     
+    public void startEditTitleActivity(ArrayList<String> listToEditTitles, ArrayList<String> listToEditUrl) {
+    	Intent i = new Intent(this.activity, EditFavTitles.class);
+		Bundle bun = new Bundle();
+		bun.putStringArrayList("listOfTitles", listToEditTitles);
+		bun.putStringArrayList("listOfUrl", listToEditUrl);
+		i.putExtras(bun);
+		this.context.startActivity(i);	
+		this.activity.overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+    }
+    
     public void buildAlertDialogToChangeRecordName(final String oldRecordName, final String url) {
     	AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
         final EditText input = new EditText(this.context);
@@ -255,7 +266,6 @@ public class MenuFunctions {
     }
     
     public void refresh() {
-    	//this.activity.finish();
     	Intent refresh = null;
 		if(className.equals(FAV_PERF_VIEW)) {
 			refresh = new Intent(this.context, FavoritesActivity.class);

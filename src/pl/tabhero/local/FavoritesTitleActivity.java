@@ -37,16 +37,9 @@ public class FavoritesTitleActivity extends Activity {
 	private EditText editFavTitle;
 	private ListView searchFavTitleListView;
 	private ImageButton imgBtn;
-	private ArrayAdapter<String> listAdapter;
-	private ArrayList<String> listOfFavTitle;
-	private ArrayList<String> listOfChosenTitleFromBase;
-	private ArrayList<String> listOfChosenUrlFromBase;
-	private ArrayList<String> listOfChosenTitleFromBase2;
-	private ArrayList<String> listOfChosenUrlFromBase2;
 	private String performerName;
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
-	private MenuFunctions menuFunc = new MenuFunctions(this);
 	private DBUtils dbUtils = new DBUtils(this);
 	
 	@SuppressWarnings("deprecation")
@@ -78,19 +71,28 @@ public class FavoritesTitleActivity extends Activity {
         ArrayList<ArrayList<String>> listOfLists = dbUtils.addTitleFromBase(performerName);
         ArrayList<String> listTitle = listOfLists.get(0);
         ArrayList<String> listUrl = listOfLists.get(1);
-        listOfChosenTitleFromBase = listTitle;
-        listOfChosenUrlFromBase = listUrl;
+        createListOfTitlesAndHandleIt(listTitle, listUrl);
         
-        listAdapter = new ArrayAdapter<String>(this, R.layout.titlesfav, listOfChosenTitleFromBase);
-        searchFavTitleListView.setAdapter(listAdapter);
         device.hideKeyboard(editFavTitle);
+        
+        InputFilter filter = new MyFilter();
+        editFavTitle.setFilters(new InputFilter[]{filter});
+        
+        OnKeyListener myOnKeyListener = new MyOnKeyListener(imgBtn);
+        editFavTitle.setOnKeyListener(myOnKeyListener);
+	}
+	
+	private void createListOfTitlesAndHandleIt(final ArrayList<String> listOfTitles, final ArrayList<String> listOfUrls) {
+		ArrayAdapter<String> listAdapter = 
+				new ArrayAdapter<String>(this, R.layout.titlesfav, listOfTitles);
+        searchFavTitleListView.setAdapter(listAdapter);
         searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             	Intent i = new Intent(FavoritesTitleActivity.this, FavTabViewActivity.class);
             	Bundle bun = new Bundle();
             	bun.putString("performerName", performerName);
-            	bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
-            	bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
+            	bun.putString("songTitle", listOfTitles.get(position));
+            	bun.putString("songUrl", listOfUrls.get(position));
     			i.putExtras(bun);
     			startActivity(i);	
     			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
@@ -98,14 +100,8 @@ public class FavoritesTitleActivity extends Activity {
         } );
         
         LongClickOnItemToChangeRecordName longClickToChangeRecordName = 
-        		new LongClickOnItemToChangeRecordName(this, listOfChosenTitleFromBase, listOfChosenUrlFromBase);
+        		new LongClickOnItemToChangeRecordName(this, listOfTitles, listOfUrls);
         searchFavTitleListView.setOnItemLongClickListener(longClickToChangeRecordName);
-        
-        InputFilter filter = new MyFilter();
-        editFavTitle.setFilters(new InputFilter[]{filter});
-        
-        OnKeyListener myOnKeyListener = new MyOnKeyListener(imgBtn);
-        editFavTitle.setOnKeyListener(myOnKeyListener);
 	}
 	
 	@Override
@@ -121,12 +117,13 @@ public class FavoritesTitleActivity extends Activity {
     
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+    	MenuFunctions menuFunc = new MenuFunctions(this);
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
 	    	device.goHomeScreen();
 	    	return true;
 	    case R.id.delFromFavWithCheckBox:
-	        startEditTitleActivity();
+	        menuFunc.startEditTitleActivity(dbUtils.addTitleFromBase(performerName).get(0), dbUtils.addTitleFromBase(performerName).get(1));
 	        return true;
 	    case R.id.addOwnRecord:
 	    	menuFunc.buildAlertDialogNewTitle(performerName);
@@ -142,90 +139,34 @@ public class FavoritesTitleActivity extends Activity {
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
-    
-    private void startEditTitleActivity() {
-    	ArrayList<String> listToEditTitles = new ArrayList<String>();
-    	ArrayList<String> listToEditUrl = new ArrayList<String>();
-    	if(listOfChosenTitleFromBase2.size() == 0) {
-    		listToEditTitles = listOfChosenTitleFromBase;
-    		listToEditUrl = listOfChosenUrlFromBase;
-    	} else {
-    		listToEditTitles = listOfChosenTitleFromBase2;
-    		listToEditUrl = listOfChosenUrlFromBase2;
-    	}
-    	Intent i = new Intent(FavoritesTitleActivity.this, EditFavTitles.class);
-		Bundle bun = new Bundle();
-		bun.putStringArrayList("listOfTitles", listToEditTitles);
-		bun.putStringArrayList("listOfUrl", listToEditUrl);
-		i.putExtras(bun);
-		startActivity(i);	
-		overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
-    }
 	
 	public void searchView(View v) {
-		device.hideKeyboard(editFavTitle);
-		
+		String title = new String();
+		title = editFavTitle.getText().toString().toLowerCase();
 		ArrayList<ArrayList<String>> listOfLists = dbUtils.addTitleFromBase(performerName);
         ArrayList<String> listTitle = listOfLists.get(0);
         ArrayList<String> listUrl = listOfLists.get(1);
-        listOfChosenTitleFromBase = listTitle;
-        listOfChosenUrlFromBase = listUrl;
-        
-		String title = new String();
-		listOfChosenTitleFromBase2 = new ArrayList<String>();
-		listOfChosenUrlFromBase2 = new ArrayList<String>(); 
-    	title = editFavTitle.getText().toString().toLowerCase();
+        device.hideKeyboard(editFavTitle);
+
     	if(title.length() > 0) {
     		if(title.charAt(0) == ' ')
     			Toast.makeText(getApplicationContext(), R.string.hintSpace, Toast.LENGTH_LONG).show();
     		else {
     			boolean checkContains;
-    			for(int i = 0; i < listOfChosenTitleFromBase.size(); i++) {
-    				checkContains = listOfChosenTitleFromBase.get(i).toLowerCase().contains(title);
+    			ArrayList<String> listOfFavTitles = new ArrayList<String>();
+    			ArrayList<String> listOfFavUrls = new ArrayList<String>();
+    			for(int i = 0; i < listTitle.size(); i++) {
+    				checkContains = listTitle.get(i).toLowerCase().contains(title);
     				if(checkContains == true) {
-    					listOfChosenTitleFromBase2.add(listOfChosenTitleFromBase.get(i));
-    					listOfChosenUrlFromBase2.add(listOfChosenUrlFromBase.get(i));
+    					listOfFavTitles.add(listTitle.get(i));
+    					listOfFavUrls.add(listUrl.get(i));
     				}
     			}
-    			listAdapter = new ArrayAdapter<String>(this, R.layout.titlesfav, listOfChosenTitleFromBase2);
-    			searchFavTitleListView.setAdapter(listAdapter);
-    			searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-    				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    					Intent i = new Intent(FavoritesTitleActivity.this, FavTabViewActivity.class);
-    					Bundle bun = new Bundle();
-    					bun.putString("performerName", performerName);
-    					bun.putString("songTitle", listOfChosenTitleFromBase2.get(position));
-    					bun.putString("songUrl", listOfChosenUrlFromBase2.get(position));
-    					i.putExtras(bun);
-    					startActivity(i);	
-    	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
-    				}
-    			});
-    			
-    			LongClickOnItemToChangeRecordName longClickToChangeRecordName = 
-    	        		new LongClickOnItemToChangeRecordName(this, listOfChosenTitleFromBase2, listOfChosenUrlFromBase2);
-    	        searchFavTitleListView.setOnItemLongClickListener(longClickToChangeRecordName);
+    			createListOfTitlesAndHandleIt(listOfFavTitles, listOfFavUrls);
     		}
     		
     	} else {
-    		listAdapter = new ArrayAdapter<String>(this, R.layout.titlesfav, listOfChosenTitleFromBase);
-			searchFavTitleListView.setAdapter(listAdapter);
-			searchFavTitleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					Intent i = new Intent(FavoritesTitleActivity.this, FavTabViewActivity.class);
-					Bundle bun = new Bundle();
-					bun.putString("performerName", performerName);
-					bun.putString("songTitle", listOfChosenTitleFromBase.get(position));
-					bun.putString("songUrl", listOfChosenUrlFromBase.get(position));
-					i.putExtras(bun);
-					startActivity(i);	
-	    			overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
-				}
-			} );
-			
-			LongClickOnItemToChangeRecordName longClickToChangeRecordName = 
-	        		new LongClickOnItemToChangeRecordName(this, listOfChosenTitleFromBase, listOfChosenUrlFromBase);
-	        searchFavTitleListView.setOnItemLongClickListener(longClickToChangeRecordName);
+    		createListOfTitlesAndHandleIt(listTitle, listUrl);
     	}
 	}
 	
