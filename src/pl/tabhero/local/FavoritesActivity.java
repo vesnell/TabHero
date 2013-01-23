@@ -36,7 +36,6 @@ public class FavoritesActivity extends Activity {
 	private ListView searchListView;
 	private EditText editFavPerformer;
 	private ImageButton imgBtn;
-	private ArrayList<String> listOfChosenPerfsFromBase;
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	private DBUtils dbUtils = new DBUtils(this);
@@ -63,7 +62,7 @@ public class FavoritesActivity extends Activity {
         
         device.hideKeyboard(editFavPerformer);
         
-        listOfChosenPerfsFromBase = dbUtils.addPerfFromBase();
+        ArrayList<String> listOfChosenPerfsFromBase = dbUtils.addPerfFromBase();
         createListOfPerfsAndHandleIt(listOfChosenPerfsFromBase);
 
         InputFilter filter = new MyFilter();
@@ -134,8 +133,7 @@ public class FavoritesActivity extends Activity {
 	    	device.goHomeScreen();
 	    	return true;
 	    case R.id.delFromFavWithCheckBox:
-	        //menuFunc.startEditPerfActivity(listOfChosenPerfsFromBase);
-	    	//zrobic przekazywanie nowszej listy z bazy po wyedytowaniu performera
+	        menuFunc.startEditPerfActivity(dbUtils.addPerfFromBase());
 	        return true;
 	    case R.id.addOwnRecord:
 	    	menuFunc.buildAlertDialogToAddOwnTab();
