@@ -35,6 +35,7 @@ public class MyTelephonyManager {
 	public void goHomeScreen() {
 		Intent intent = new Intent(this.context, TabHero.class);
     	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    	this.activity.finish();
     	this.context.startActivity(intent);
     	this.activity.overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
 	}
