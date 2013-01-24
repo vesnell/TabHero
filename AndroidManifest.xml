@@ -22,8 +22,7 @@
         <activity
             android:name="pl.tabhero.TabHero"
             android:label="@string/title_activity_main"
-            android:launchMode="singleTask"
-            android:configChanges="orientation|screenSize|keyboardHidden|keyboard" >
+            android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
