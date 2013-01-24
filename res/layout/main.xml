@@ -5,15 +5,6 @@
     android:orientation="vertical"
     android:background="#eaeaea" >
 
-    <!-- <ImageView
-        android:id="@+id/startImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/start" /> -->
-		<!-- android:layout_below="@+id/startImg" -->
-
      <Button
          android:id="@+id/online"
          android:layout_width="wrap_content"
@@ -41,44 +32,5 @@
          android:drawableRight="@drawable/arrowblack"
          android:textColor="#ffffff"
          android:background="#000000" />
-
-     <!--<Button
-        android:id="@+id/btnInfo"
-    	android:layout_height="wrap_content"
-    	android:layout_width="fill_parent"
-    	android:layout_alignTop="@+id/foreground"
-    	android:layout_alignBottom="@id/foreground"
-    	android:layout_alignRight="@id/foreground"
-    	android:layout_alignLeft="@id/foreground" />
-
-   		 <RelativeLayout
-   		    android:id="@id/foreground"
-   		    android:layout_width="match_parent"
-   		    android:layout_height="wrap_content"
-   		    android:layout_alignParentLeft="true"
-   		    android:layout_below="@+id/favorites"
-   		    android:layout_marginTop="15sp"
-   		    android:gravity="center_vertical" >
-
-   		    <TextView
-   		        android:id="@+id/button_text"
-   		        android:layout_width="wrap_content"
-   		        android:layout_height="wrap_content"
-   		        android:layout_alignParentRight="true"
-   		        android:layout_centerVertical="true"
-   		        android:layout_marginRight="100sp"
-   		        android:text="@string/info"
-   		        android:textSize="20sp" />
-
-   		    <ImageView
-   		        android:layout_width="wrap_content"
-   		        android:layout_height="wrap_content"
-   		        android:layout_alignParentTop="true"
-   		        android:layout_toLeftOf="@+id/button_text"
-   		        android:paddingBottom="10dip"
-   		        android:paddingTop="10dip"
-   		        android:src="@drawable/info" />
-
-   		</RelativeLayout> -->
 
 </RelativeLayout>
