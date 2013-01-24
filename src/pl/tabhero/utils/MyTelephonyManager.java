@@ -46,6 +46,12 @@ public class MyTelephonyManager {
         }
 	}
 	
+	public void wifiOpenOptionsMenu() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			this.activity.openOptionsMenu();
+		}
+	}
+	
 	public void hideKeyboard(EditText editText) {
 		InputMethodManager imm = (InputMethodManager)this.context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
