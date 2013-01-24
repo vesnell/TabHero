@@ -46,16 +46,16 @@ public class FavoritesActivity extends Activity {
 	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.favorites);
+        setContentView(R.layout.search);
         
         FileUtils fileUtils = new FileUtils(this);
         fileUtils.checkIfMax();
         
         device.setHomeButtonEnabledForICS();
         
-        editFavPerformer = (EditText) findViewById(R.id.editFavPerformer);
-        searchListView = (ListView) findViewById(R.id.searchFavListView);
-        imgBtn = (ImageButton) findViewById(R.id.searchFavBtn);
+        editFavPerformer = (EditText) findViewById(R.id.editPerformer);
+        searchListView = (ListView) findViewById(R.id.searchListView);
+        imgBtn = (ImageButton) findViewById(R.id.searchBtn);
         
         gestureDetector = new GestureDetector(new MyGestureDetector(this));
         
@@ -163,7 +163,7 @@ public class FavoritesActivity extends Activity {
     	FileUtils fileUtils = new FileUtils(this);
         fileUtils.checkIfMax();
 		super.onResume();
-		ImageButton btn = (ImageButton) findViewById(R.id.searchFavBtn);
+		ImageButton btn = (ImageButton) findViewById(R.id.searchBtn);
 		btn.performClick();
 	}
     

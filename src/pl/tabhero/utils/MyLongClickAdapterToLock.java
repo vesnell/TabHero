@@ -1,8 +1,6 @@
 package pl.tabhero.utils;
 
 import pl.tabhero.R;
-import pl.tabhero.local.FavTabViewActivity;
-import pl.tabhero.net.TabViewActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
@@ -22,8 +20,6 @@ public class MyLongClickAdapterToLock implements AdapterView.OnLongClickListener
 	private ImageButton btnUnLock;
 	private boolean lock = false;
 	private Activity activity;
-	private static final String FAV_TAB_VIEW = FavTabViewActivity.class.getSimpleName();
-	private static final String NET_TAB_VIEW = TabViewActivity.class.getSimpleName();
 	
 	public MyLongClickAdapterToLock(Context context, LinearLayout lockButtons) {
 		this.context = context;
@@ -33,15 +29,9 @@ public class MyLongClickAdapterToLock implements AdapterView.OnLongClickListener
 
 	@Override
 	public boolean onLongClick(View v) {
-		String className = this.activity.getClass().getSimpleName();
 		this.lockButtons.setVisibility(View.VISIBLE);
-		if(className.equals(FAV_TAB_VIEW)) {
-			btnLock = (ImageButton) this.activity.findViewById(R.id.favBtnLock);
-			btnUnLock = (ImageButton) this.activity.findViewById(R.id.favBtnUnLock);
-		} else if(className.equals(NET_TAB_VIEW)) {
-			btnLock = (ImageButton) this.activity.findViewById(R.id.btnLock);
-			btnUnLock = (ImageButton) this.activity.findViewById(R.id.btnUnLock);
-		}
+		btnLock = (ImageButton) this.activity.findViewById(R.id.btnLock);
+		btnUnLock = (ImageButton) this.activity.findViewById(R.id.btnUnLock);
 		if(!lock) {
 			btnUnLock.setVisibility(View.GONE);
 			btnLock.setOnClickListener(new OnClickListener() {

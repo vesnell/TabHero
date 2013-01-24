@@ -48,17 +48,17 @@ public class FavoritesTitleActivity extends Activity {
 	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.favoritestitle);
+        setContentView(R.layout.searchtitle);
         
         FileUtils fileUtils = new FileUtils(this);
         fileUtils.checkIfMax();
         
         device.setHomeButtonEnabledForICS();
         
-        chosenFavPerf = (TextView) findViewById(R.id.chosenFavPerformer);
-        editFavTitle = (EditText) findViewById(R.id.editFavTitle);
-        searchFavTitleListView = (ListView) findViewById(R.id.searchFavTitleListView);
-        imgBtn = (ImageButton) findViewById(R.id.searchFavTitleBtn);
+        chosenFavPerf = (TextView) findViewById(R.id.chosenPerformer);
+        editFavTitle = (EditText) findViewById(R.id.editTitle);
+        searchFavTitleListView = (ListView) findViewById(R.id.searchTitleListView);
+        imgBtn = (ImageButton) findViewById(R.id.searchTitleBtn);
         
         gestureDetector = new GestureDetector(new MyGestureDetector(this));
         
@@ -85,7 +85,7 @@ public class FavoritesTitleActivity extends Activity {
         editFavTitle.setOnKeyListener(myOnKeyListener);
 	}
 	
-	public void searchView(View v) {
+	public void searchTitleView(View v) {
 		String title = new String();
 		title = editFavTitle.getText().toString().toLowerCase();
 		ArrayList<ArrayList<String>> listOfLists = dbUtils.addTitleFromBase(performerName);
@@ -186,7 +186,7 @@ public class FavoritesTitleActivity extends Activity {
 		FileUtils fileUtils = new FileUtils(this);
         fileUtils.checkIfMax();
 		super.onResume();
-		ImageButton btn = (ImageButton) findViewById(R.id.searchFavTitleBtn);
+		ImageButton btn = (ImageButton) findViewById(R.id.searchTitleBtn);
 		btn.performClick();
 	}
 	

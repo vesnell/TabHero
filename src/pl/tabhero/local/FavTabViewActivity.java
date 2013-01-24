@@ -40,7 +40,7 @@ public class FavTabViewActivity extends Activity {
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.favtabview);
+        setContentView(R.layout.tabview);
         
         fileUtils = new FileUtils(this);
         fileUtils.checkIfMax();
@@ -51,14 +51,14 @@ public class FavTabViewActivity extends Activity {
         mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "lockScreenApp");
         mWakeLock.acquire();
         
-        head = (TextView) findViewById(R.id.favPerformerAndTitle);
-        tab = (TextView) findViewById(R.id.favTabInTabView);
+        head = (TextView) findViewById(R.id.performerAndTitle);
+        tab = (TextView) findViewById(R.id.tabInTabView);
         Float size = fileUtils.getTabSize();
     	tab.setTextSize(size);
 
-        buttons = (LinearLayout) findViewById(R.id.favButtons);
+        buttons = (LinearLayout) findViewById(R.id.buttons);
         buttons.setVisibility(View.GONE);
-        lockButtons = (LinearLayout) findViewById(R.id.favLockButtons);
+        lockButtons = (LinearLayout) findViewById(R.id.lockButtons);
     	lockButtons.setVisibility(View.GONE);
         
         Intent i = getIntent();

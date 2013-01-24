@@ -2,8 +2,6 @@ package pl.tabhero.utils;
 
 import java.io.IOException;
 import pl.tabhero.R;
-import pl.tabhero.local.FavTabViewActivity;
-import pl.tabhero.net.TabViewActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
@@ -19,16 +17,12 @@ public class ButtonsScale {
 	private Activity activity;
 	private ImageButton btnPlus;
 	private ImageButton btnMinus;
-	private String className;
 	private float size;
 	private FileUtils fileUtils;
-	private static final String FAV_TAB_VIEW = FavTabViewActivity.class.getSimpleName();
-	private static final String NET_TAB_VIEW = TabViewActivity.class.getSimpleName();
 	
 	public ButtonsScale(Context context) {
 		this.context = context;
 		this.activity = (Activity) context;
-		this.className = this.activity.getClass().getSimpleName();
 		this.fileUtils = new FileUtils(this.context);
 	}
 	
@@ -41,11 +35,7 @@ public class ButtonsScale {
 	}
 	
 	private void initBtnPlusOnClick(final TextView tab) {
-		if(this.className.equals(NET_TAB_VIEW)) {
-			btnPlus = (ImageButton) this.activity.findViewById(R.id.btnPlus);
-		} else if(this.className.equals(FAV_TAB_VIEW)) {
-			btnPlus = (ImageButton) this.activity.findViewById(R.id.favBtnPlus);
-		}
+		btnPlus = (ImageButton) this.activity.findViewById(R.id.btnPlus);
 		
 		btnPlus.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -63,11 +53,7 @@ public class ButtonsScale {
 	}
 	
 	private void initBtnMinusOnClick(final TextView tab) {
-		if(this.className.equals(NET_TAB_VIEW)) {
-			btnMinus = (ImageButton) this.activity.findViewById(R.id.btnMinus);
-		} else if(this.className.equals(FAV_TAB_VIEW)) {
-			btnMinus = (ImageButton) this.activity.findViewById(R.id.favBtnMinus);
-		}
+		btnMinus = (ImageButton) this.activity.findViewById(R.id.btnMinus);
 		
 		btnMinus.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {

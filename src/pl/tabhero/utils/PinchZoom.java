@@ -1,6 +1,5 @@
 package pl.tabhero.utils;
 
-import java.io.IOException;
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
