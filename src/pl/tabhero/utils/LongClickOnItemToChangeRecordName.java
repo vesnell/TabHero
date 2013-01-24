@@ -7,6 +7,7 @@ import pl.tabhero.local.FavoritesTitleActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -30,6 +31,8 @@ public class LongClickOnItemToChangeRecordName implements AdapterView.OnItemLong
 
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+		Vibrator v = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
+		v.vibrate(100);
 		MenuFunctions menuFunc = new MenuFunctions(this.context);
 		if(className.equals(FAV_PERFS_VIEW)) {
 			menuFunc.buildAlertDialogToChangeRecordName(this.listOfRecords.get(position), null);
