@@ -234,6 +234,7 @@ public class SearchActivity extends Activity {
     public void onResume() {
     	FileUtils fileUtils = new FileUtils(this);
         fileUtils.checkIfMax();
+        openOptionsMenu();
     	super.onResume();
     }
 }
