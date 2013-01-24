@@ -15,7 +15,7 @@ import pl.tabhero.local.FavoritesTitleActivity;
 import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.selector.SelectArralAdapter;
-import pl.tabhero.utils.selector.mItems;
+import pl.tabhero.utils.selector.ItemsOnCheckboxList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -279,15 +279,15 @@ public class MenuFunctions {
 		this.activity.startActivity(refresh);
     }
     
-    public void checkReverse(ArrayList<mItems> recordCheckList, ListView delListView) {
-    	for(mItems perf : recordCheckList) {
+    public void checkReverse(ArrayList<ItemsOnCheckboxList> recordCheckList, ListView delListView) {
+    	for(ItemsOnCheckboxList perf : recordCheckList) {
     		if(perf.isChecked() == true) {
     			perf.setChecked(false);
     		} else {
     			perf.setChecked(true);
     		}
     	}
-    	ArrayAdapter<mItems> listAdapter = new SelectArralAdapter(this.context, recordCheckList);
+    	ArrayAdapter<ItemsOnCheckboxList> listAdapter = new SelectArralAdapter(this.context, recordCheckList);
 		delListView.setAdapter(listAdapter);
     }
 }

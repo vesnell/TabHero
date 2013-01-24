@@ -1,19 +1,14 @@
 package pl.tabhero.utils.selector;
 
-
-/** Holds planet data. */
-public class mItems {
+public class ItemsOnCheckboxList {
 	private String name = "";
 	private boolean checked = false;
 
-	public mItems() {
-	}
-
-	public mItems(String name) {
+	public ItemsOnCheckboxList(String name) {
 		this.name = name;
 	}
 
-	public mItems(String name, boolean checked) {
+	public ItemsOnCheckboxList(String name, boolean checked) {
 		this.name = name;
 		this.checked = checked;
 	}
@@ -41,8 +36,4 @@ public class mItems {
 	public void toggleChecked() {
 		checked = !checked;
 	}
-
-	
-	/** Custom adapter for displaying an array of Planet objects. */
-	
 }

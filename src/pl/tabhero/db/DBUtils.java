@@ -8,7 +8,7 @@ import java.util.TreeMap;
 
 import pl.tabhero.R;
 import pl.tabhero.utils.PolishComparator;
-import pl.tabhero.utils.selector.mItems;
+import pl.tabhero.utils.selector.ItemsOnCheckboxList;
 import android.content.Context;
 import android.database.Cursor;
 import android.widget.Toast;
@@ -238,9 +238,9 @@ public class DBUtils {
 		db.close();
     }
 	
-	public void deletePerfsInEdit(ArrayList<mItems> performersCheckList) {
+	public void deletePerfsInEdit(ArrayList<ItemsOnCheckboxList> performersCheckList) {
 		db.open();
-    	for(mItems perf : performersCheckList) {
+    	for(ItemsOnCheckboxList perf : performersCheckList) {
     		if(perf.isChecked() == true) {	
     			db.deletePerf(perf.getName());
     		}
@@ -248,9 +248,9 @@ public class DBUtils {
     	db.close();
 	}
 	
-	public void deleteTitlesInEdit(ArrayList<mItems> titleCheckList, ArrayList<String> titleList, ArrayList<String> urlList) {
+	public void deleteTitlesInEdit(ArrayList<ItemsOnCheckboxList> titleCheckList, ArrayList<String> titleList, ArrayList<String> urlList) {
 		db.open();
-    	for(mItems title : titleCheckList) {
+    	for(ItemsOnCheckboxList title : titleCheckList) {
     		if(title.isChecked() == true) {	
     			for(int i = 0; i < titleList.size(); i++) {
     				if(title.getName().equals(titleList.get(i))) {

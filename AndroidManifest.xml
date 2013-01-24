@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="pl.tabhero"
     android:versionCode="1"
     android:versionName="1.0" >
@@ -25,29 +26,23 @@
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".net.SearchActivity"
             	    android:configChanges="orientation|screenSize|keyboardHidden|keyboard" />
-          	      <!-- android:screenOrientation = "portrait" />  -->
         <activity android:name=".net.SearchTitleActivity"  
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
-        		 <!--  android:screenOrientation = "portrait" />  -->
         <activity android:name=".local.FavoritesActivity"
             	  android:launchMode="singleTask" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
-            	 <!--  android:screenOrientation = "portrait" />  -->
         <activity android:name=".net.TabViewActivity" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
-            	  <!--  android:screenOrientation="landscape" /> -->
         <activity android:name=".local.FavoritesTitleActivity" 
             	  android:launchMode="singleTask"
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
         <activity android:name=".local.FavTabViewActivity" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
-            	  <!--  android:screenOrientation="landscape" /> -->
         <activity android:name=".local.EditFavPerfs" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
         <activity android:name=".local.EditFavTitles" 
@@ -55,5 +50,4 @@
         <activity android:name=".HelpActivity" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
     </application>
-
 </manifest>

@@ -7,9 +7,6 @@ public class SelectViewHolder {
 	private CheckBox checkBox;
 	private TextView textView;
 
-	public SelectViewHolder() {
-	}
-
 	public SelectViewHolder(TextView textView, CheckBox checkBox) {
 		this.checkBox = checkBox;
 		this.textView = textView;

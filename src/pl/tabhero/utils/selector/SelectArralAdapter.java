@@ -1,11 +1,7 @@
 package pl.tabhero.utils.selector;
 
 import java.util.List;
-
 import pl.tabhero.R;
-import pl.tabhero.R.id;
-import pl.tabhero.R.layout;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-public class SelectArralAdapter extends ArrayAdapter<mItems> {
+public class SelectArralAdapter extends ArrayAdapter<ItemsOnCheckboxList> {
 	private LayoutInflater inflater;
 
-	public SelectArralAdapter(Context context, List<mItems> planetList) {
-		super(context, R.layout.listwithcheckbox, R.id.rowDelArtistsView, planetList);
+	public SelectArralAdapter(Context context, List<ItemsOnCheckboxList> itemsList) {
+		super(context, R.layout.listwithcheckbox, R.id.rowDelArtistsView, itemsList);
 		// Cache the LayoutInflate to avoid asking for a new one each time.
 		inflater = LayoutInflater.from(context);
 	}
@@ -26,16 +22,13 @@ public class SelectArralAdapter extends ArrayAdapter<mItems> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// Planet to display
-		mItems planet = (mItems) this.getItem(position);
-
+		ItemsOnCheckboxList item = (ItemsOnCheckboxList) this.getItem(position);
 		// The child views in each row.
 		CheckBox checkBox;
 		TextView textView;
-
 		// Create a new row view
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.listwithcheckbox, null);
-
 			// Find the child views.
 			textView = (TextView) convertView.findViewById(R.id.rowDelArtistsView);
 			checkBox = (CheckBox) convertView.findViewById(R.id.checkbox);
@@ -47,8 +40,8 @@ public class SelectArralAdapter extends ArrayAdapter<mItems> {
 			checkBox.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					CheckBox cb = (CheckBox) v;
-					mItems planet = (mItems) cb.getTag();
-					planet.setChecked(cb.isChecked());
+					ItemsOnCheckboxList item = (ItemsOnCheckboxList) cb.getTag();
+					item.setChecked(cb.isChecked());
 				}
 			});
 		}
@@ -60,13 +53,12 @@ public class SelectArralAdapter extends ArrayAdapter<mItems> {
 			checkBox = viewHolder.getCheckBox();
 			textView = viewHolder.getTextView();
 		}
-
 		// Tag the CheckBox with the Planet it is displaying, so that we can
 		// access the planet in onClick() when the CheckBox is toggled.
-		checkBox.setTag(planet);
+		checkBox.setTag(item);
 		// Display planet data
-		checkBox.setChecked(planet.isChecked());
-		textView.setText(planet.getName());
+		checkBox.setChecked(item.isChecked());
+		textView.setText(item.getName());
 		return convertView;
 	}
 }

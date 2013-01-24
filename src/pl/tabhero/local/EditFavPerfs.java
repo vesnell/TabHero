@@ -8,7 +8,7 @@ import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.selector.SelectArralAdapter;
 import pl.tabhero.utils.selector.SelectViewHolder;
-import pl.tabhero.utils.selector.mItems;
+import pl.tabhero.utils.selector.ItemsOnCheckboxList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -27,7 +27,7 @@ public class EditFavPerfs extends Activity{
 	
 	private DBUtils dbUtils = new DBUtils(this);
 	private ListView delFavListView;
-	private ArrayList<mItems> performerCheckList;
+	private ArrayList<ItemsOnCheckboxList> performerCheckList;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,16 +46,16 @@ public class EditFavPerfs extends Activity{
 		
 		ArrayList<String> listToEdit = extras.getStringArrayList("listOfPerformers");
 		
-		performerCheckList = new ArrayList<mItems>();
+		performerCheckList = new ArrayList<ItemsOnCheckboxList>();
 		for(String perf : listToEdit) {
-			performerCheckList.add(new mItems(perf));
+			performerCheckList.add(new ItemsOnCheckboxList(perf));
 		}
 		
-		final ArrayAdapter<mItems> listAdapter = new SelectArralAdapter(this, performerCheckList);
+		final ArrayAdapter<ItemsOnCheckboxList> listAdapter = new SelectArralAdapter(this, performerCheckList);
 		delFavListView.setAdapter(listAdapter);
 		delFavListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View item, int position, long id) {
-				mItems performerChckboxItem = listAdapter.getItem(position);
+				ItemsOnCheckboxList performerChckboxItem = listAdapter.getItem(position);
 				performerChckboxItem.toggleChecked();
 				SelectViewHolder viewHolder = (SelectViewHolder) item.getTag();
 				viewHolder.getCheckBox().setChecked(performerChckboxItem.isChecked());
