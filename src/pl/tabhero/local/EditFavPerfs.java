@@ -32,7 +32,7 @@ public class EditFavPerfs extends Activity{
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.editfavperfs);
+        setContentView(R.layout.editrecords);
         
         FileUtils fileUtils = new FileUtils(this);
         fileUtils.checkIfMax();
