@@ -70,6 +70,13 @@
     <string name="choosePerf">You have to choose performer from the list to continue</string>
     <string name="chooseTitle">You have to choose title from the list to continue</string>
     <string name="checkConnectionService">Checking connection with service</string>
+    <string name="tablatureUpdateError">Failed to update tablature</string>
+    <string name="minmaxError">Changed size window problem</string>
+    <string name="configReadWriteError">Unknown error with read/write on SDCard to config file</string>
+    <string name="unknownConnectionError">Unknwon error with connect to service</string>
+    <string name="createDatabaseError">Create database error</string>
+    <string name="sleepTaskError">Sleep task error</string>
+    
     <string name="helptextview">Display help, where should be a description how to use app and what is the funcionality of this app.\n
         And more other stuff.</string>
 </resources>

@@ -151,7 +151,7 @@ public class FavoritesActivity extends Activity {
 	    	try {
 				menuFunc.minMax();
 			} catch (IOException e) {
-				e.printStackTrace();
+				Toast.makeText(getApplicationContext(), R.string.minmaxError, Toast.LENGTH_LONG).show();
 			}
 	    	return true;
 	    default:

@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ButtonsScale {
 	
@@ -46,7 +47,7 @@ public class ButtonsScale {
 				try {
 					fileUtils.setSizeToConfig(size);
 				} catch (IOException e) {
-					e.printStackTrace();
+					Toast.makeText(context.getApplicationContext(), R.string.sdcardWriteError, Toast.LENGTH_LONG).show();
 				}
 			}
 		});

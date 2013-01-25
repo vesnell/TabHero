@@ -64,7 +64,7 @@ public class WifiConnection extends AsyncTask<Void, Void, Void> {
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Toast.makeText(this.progressDialog.context.getApplicationContext(), R.string.sleepTaskError, Toast.LENGTH_LONG).show();
 			}
 			end = System.currentTimeMillis();
 		} while((myWifi.checkInternetConnection() != bool) && (end  - start < 15000));

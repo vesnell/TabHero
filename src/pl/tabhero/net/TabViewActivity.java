@@ -21,6 +21,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
  
 public class TabViewActivity extends Activity {
 	
@@ -116,7 +117,7 @@ public class TabViewActivity extends Activity {
 	    	try {
 				menuFunc.minMax();
 			} catch (IOException e) {
-				e.printStackTrace();
+				Toast.makeText(getApplicationContext(), R.string.minmaxError, Toast.LENGTH_LONG).show();
 			}
 	    	return true;
 	    default:

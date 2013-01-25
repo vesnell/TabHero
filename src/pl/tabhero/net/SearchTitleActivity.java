@@ -101,9 +101,9 @@ public class SearchTitleActivity extends Activity {
 					Toast.makeText(getApplicationContext(), R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
 				}
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Toast.makeText(getApplicationContext(), R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
 			} catch (ExecutionException e) {
-				e.printStackTrace();
+				Toast.makeText(getApplicationContext(), R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
 			}
 		}
 	}
@@ -139,9 +139,9 @@ public class SearchTitleActivity extends Activity {
 									Toast.makeText(getApplicationContext(), R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
 								}
 							} catch (InterruptedException e) {
-								e.printStackTrace();
+								Toast.makeText(getApplicationContext(), R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
 							} catch (ExecutionException e) {
-								e.printStackTrace();
+								Toast.makeText(getApplicationContext(), R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
 							}
 						}
 					}
@@ -224,7 +224,7 @@ public class SearchTitleActivity extends Activity {
 	    	try {
 				menuFunc.minMax();
 			} catch (IOException e) {
-				e.printStackTrace();
+				Toast.makeText(getApplicationContext(), R.string.minmaxError, Toast.LENGTH_LONG).show();
 			}
 	    	return true;
 	    default:

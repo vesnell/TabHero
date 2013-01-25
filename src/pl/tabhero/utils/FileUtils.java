@@ -160,7 +160,7 @@ public class FileUtils {
 			FileUtils fileUtils = new FileUtils(this.context);
 			fileUtils.setSizeToConfig(tab.getTextSize());
 		} catch (IOException e) {
-			e.printStackTrace();
+			Toast.makeText(this.context.getApplicationContext(), R.string.sdcardWriteError, Toast.LENGTH_LONG).show();
 		}
 	}
 }

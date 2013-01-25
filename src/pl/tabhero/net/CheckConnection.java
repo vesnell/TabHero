@@ -2,10 +2,13 @@ package pl.tabhero.net;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import pl.tabhero.R;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 public class CheckConnection extends AsyncTask<Void, Void, Boolean> {
 
@@ -49,7 +52,7 @@ public class CheckConnection extends AsyncTask<Void, Void, Boolean> {
             }
         }
         catch(Exception e) {
-            e.printStackTrace();
+        	Toast.makeText(this.context.getApplicationContext(), R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
         }
         return false;
     }

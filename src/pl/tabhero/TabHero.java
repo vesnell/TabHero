@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class TabHero extends Activity {
 
@@ -65,7 +66,7 @@ public class TabHero extends Activity {
         		fileUtils.setIfMax(configText);
         	}
 		} catch (IOException e) {
-			e.printStackTrace();
+			Toast.makeText(getApplicationContext(), R.string.configReadWriteError, Toast.LENGTH_LONG).show();
 		}
         
 		gestureDetector = new GestureDetector(new MyGestureDetector(this));
@@ -115,7 +116,7 @@ public class TabHero extends Activity {
 	    	try {
 				menuFunc.minMax();
 			} catch (IOException e) {
-				e.printStackTrace();
+				Toast.makeText(getApplicationContext(), R.string.minmaxError, Toast.LENGTH_LONG).show();
 			}
 	    	return true;
 	    default:

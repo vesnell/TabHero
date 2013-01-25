@@ -22,6 +22,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class FavTabViewActivity extends Activity {
 	
@@ -77,7 +78,7 @@ public class FavTabViewActivity extends Activity {
 			try {
 				fileUtils.updateTablatureFU(tablature, songUrl, fileUtils.file, fileUtils.filePath);
 			} catch (IOException e) {
-				e.printStackTrace();
+				Toast.makeText(getApplicationContext(), R.string.tablatureUpdateError, Toast.LENGTH_LONG).show();
 			}
 			tablature = dbUtils.getTablature(songUrl);
         }
@@ -130,7 +131,7 @@ public class FavTabViewActivity extends Activity {
 	    	try {
 				menuFunc.minMax();
 			} catch (IOException e) {
-				e.printStackTrace();
+				Toast.makeText(getApplicationContext(), R.string.minmaxError, Toast.LENGTH_LONG).show();
 			}
 	    	return true;
 	    case R.id.editTab:
