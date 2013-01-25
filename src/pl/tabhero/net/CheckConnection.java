@@ -13,10 +13,11 @@ import android.widget.Toast;
 public class CheckConnection extends AsyncTask<Void, Void, Boolean> {
 
 	private Context context;
-	private String chordsUrl = "http://www.chords.pl/wykonawcy/";
+	private final String chordsUrl;
 	
 	public CheckConnection(Context context) {
 		this.context = context;
+		chordsUrl = this.context.getString(R.string.chordsWykonawcyUrl);
 	}
 
 	protected void onPostExecute(boolean isWebAv) {

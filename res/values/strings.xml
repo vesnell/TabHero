@@ -77,6 +77,18 @@
     <string name="createDatabaseError">Create database error</string>
     <string name="sleepTaskError">Sleep task error</string>
     
+    <string name="configNameFile">config.txt</string>
+    <string name="configDefault">MIN,12</string>
+    <string name="configMIN">MIN</string>
+    <string name="configMAX">MAX</string>
+    <string name="googleUrl">http://www.google.com/search?q=</string>
+    <string name="spaceUrl">%20</string>
+    <string name="lyricsUrl">lyrics</string>
+    <string name="chordsUrl">http://www.chords.pl</string>
+    <string name="chordsWykonawcyUrl">http://www.chords.pl/wykonawcy/</string>
+    <string name="androidDir">Android</string>
+    <string name="dataDir">data</string>
+    
     <string name="helptextview">Display help, where should be a description how to use app and what is the funcionality of this app.\n
         And more other stuff.</string>
 </resources>

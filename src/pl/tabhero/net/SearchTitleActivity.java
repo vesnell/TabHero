@@ -42,7 +42,7 @@ public class SearchTitleActivity extends Activity {
 	private ArrayAdapter<String> listAdapter;
 	private MyProgressDialogs progressDialog = new MyProgressDialogs(this);
 	private static final int MENUWIFI = Menu.FIRST;
-	private String chordsUrl = "http://www.chords.pl";
+	private String chordsUrl;
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	private Connect connect = new Connect();
@@ -52,6 +52,8 @@ public class SearchTitleActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.searchtitle);
+        
+        chordsUrl = getString(R.string.chordsUrl);
 
         device.setHomeButtonEnabledForICS();
         

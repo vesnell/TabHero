@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
-
 import pl.tabhero.R;
 import pl.tabhero.utils.PolishComparator;
 import pl.tabhero.utils.selector.ItemsOnCheckboxList;

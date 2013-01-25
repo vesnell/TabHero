@@ -35,16 +35,27 @@ public class MenuFunctions {
 	private Context context;
 	private Activity activity;
 	private DBUtils dbUtils;
-	private static final String CONFIG = "config.txt";
+	private final String CONFIG;
+	private final String MAX;
+	private final String MIN;
 	private String className;
 	private static final String FAV_PERF_VIEW = FavoritesActivity.class.getSimpleName();
 	private static final String FAV_TITLE_VIEW = FavoritesTitleActivity.class.getSimpleName();
+	private final String GOOGLE;
+	private final String SPACE;
+	private final String LYRICS;
 	
 	public MenuFunctions(Context context) {
 		this.context = context;
 		this.activity = (Activity) context;
 		this.dbUtils = new DBUtils(this.context);
 		this.className = this.activity.getClass().getSimpleName();
+		GOOGLE = this.context.getString(R.string.googleUrl);
+		SPACE = this.context.getString(R.string.spaceUrl);
+		LYRICS = this.context.getString(R.string.lyricsUrl);
+		CONFIG = this.context.getString(R.string.configNameFile);
+		MAX = this.context.getString(R.string.configMAX);
+		MIN = this.context.getString(R.string.configMIN);
 	}
 	
 	public void addToFav(String performer, String title, String tab, String songUrl) {
@@ -106,9 +117,9 @@ public class MenuFunctions {
 	}
 	
 	public void openWebBrowser(String performer, String title) {
-		String perf = performer.replaceAll(" ", "%20");
-		String tit = title.replaceAll(" ", "%20");
-		String question = "http://www.google.com/search?q=" + perf + "%20" + tit + "%20lyrics";
+		String perf = performer.replaceAll(" ", SPACE);
+		String tit = title.replaceAll(" ", SPACE);
+		String question = GOOGLE + perf + SPACE + tit + SPACE + LYRICS;
 		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(question));
 		this.context.startActivity(browserIntent);
 		this.activity.overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
@@ -140,11 +151,11 @@ public class MenuFunctions {
 		if(fullScreen) {
     	   this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     	   this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-    	   maxForConfig = "MIN";
+    	   maxForConfig = MIN;
         } else {
         	this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         	this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        	maxForConfig = "MAX";
+        	maxForConfig = MAX;
         }
 		FileUtils fileUtils = new FileUtils(this.context);
 		String configPath = fileUtils.dir + File.separator + CONFIG;
@@ -157,9 +168,7 @@ public class MenuFunctions {
 			Toast.makeText(this.context.getApplicationContext(), this.context.getString(R.string.configReadError), Toast.LENGTH_LONG).show();
 		}
 	}
-	
-	//local activties
-	
+		
 	private InputFilter filter = new MyFilter();
     
     public void buildAlertDialogToAddOwnTab() {

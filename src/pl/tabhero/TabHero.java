@@ -31,12 +31,16 @@ public class TabHero extends Activity {
 	private Button btnOnline;
 	private Button btnOnBase;
 	private GestureDetector gestureDetector;
-	private static final String DEFAULT_CONFIG = "MIN,12";
+	private String FILE_NAME;
+	private String DEFAULT_CONFIG;
 	
     @SuppressWarnings("deprecation")
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        FILE_NAME = getString(R.string.configNameFile);
+        DEFAULT_CONFIG = getString(R.string.configDefault);
         
         setContentView(R.layout.main);
         
@@ -52,11 +56,10 @@ public class TabHero extends Activity {
         	if(!outDir.isDirectory()) {
         		throw new IOException(getString(R.string.createDirectoryError) + getPackageName() + "." + getString(R.string.sdcardMountError));
         	}
-        	String fileName = "config.txt";
-        	File file = new File(fileUtils.dir + File.separator + fileName);
+        	File file = new File(fileUtils.dir + File.separator + FILE_NAME);
         	if(!file.isFile()) {
         		Writer writer;
-        		File outputFile = new File(outDir, fileName);
+        		File outputFile = new File(outDir, FILE_NAME);
         		writer = new BufferedWriter(new FileWriter(outputFile));
         		writer.write(DEFAULT_CONFIG);
         		writer.close();

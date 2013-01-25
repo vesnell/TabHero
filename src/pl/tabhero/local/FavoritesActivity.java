@@ -39,7 +39,7 @@ public class FavoritesActivity extends Activity {
 	private GestureDetector gestureDetector;
 	private MyTelephonyManager device = new MyTelephonyManager(this);
 	private DBUtils dbUtils = new DBUtils(this);
-	private MenuFunctions menuFunc = new MenuFunctions(this);
+	private MenuFunctions menuFunc;
 	private boolean onEditClick = false;
 	private ArrayList<String> listToEdit = new ArrayList<String>();
 	
@@ -47,6 +47,8 @@ public class FavoritesActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
+        
+        menuFunc = new MenuFunctions(this);
         
         FileUtils fileUtils = new FileUtils(this);
         fileUtils.checkIfMax();

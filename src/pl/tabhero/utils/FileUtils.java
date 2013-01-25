@@ -30,13 +30,22 @@ public class FileUtils {
 	public File file;
 	public File outDir;
 	public String dir;
-	private static final String CONFIG = "config.txt";
+	private final String CONFIG;
+	private final String MAX;
+	private final String MIN;
+	private final String ANDROID;
+	private final String data;
 	
 	public FileUtils(Context context) {
 		File root = Environment.getExternalStorageDirectory();
 		this.context = context;
 		this.activity = (Activity) context;
-		this.dir = root.getAbsolutePath() + File.separator + "Android" + File.separator + this.context.getPackageName();
+		ANDROID = this.context.getString(R.string.androidDir);
+		data = this.context.getString(R.string.dataDir);
+		this.dir = root.getAbsolutePath() + File.separator + ANDROID + File.separator + this.context.getPackageName();
+		CONFIG = this.context.getString(R.string.configNameFile);
+		MAX = this.context.getString(R.string.configMAX);
+		MIN = this.context.getString(R.string.configMIN);
 	}
 	
 	public void makePaths(String songUrl) {
@@ -94,10 +103,10 @@ public class FileUtils {
 	
 	public void setIfMax(String configText) {
 		String max = configText.split(",")[0];
-		if(max.equals("MAX")) {
+		if(max.equals(MAX)) {
 			this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 			this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		} else if(max.equals("MIN")) {
+		} else if(max.equals(MIN)) {
 			this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	    	this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
 		}
