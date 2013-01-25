@@ -36,13 +36,12 @@ public class FavTabViewActivity extends Activity {
 	private String title;
 	private String tablature;
 	private String songUrl;
-	private FileUtils fileUtils;
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tabview);
         
-        fileUtils = new FileUtils(this);
+        FileUtils fileUtils = new FileUtils(this);
         fileUtils.checkIfMax();
         
         device.setHomeButtonEnabledForICS();
@@ -53,7 +52,7 @@ public class FavTabViewActivity extends Activity {
         
         head = (TextView) findViewById(R.id.performerAndTitle);
         tab = (TextView) findViewById(R.id.tabInTabView);
-        Float size = fileUtils.getTabSize();
+        Float size = fileUtils.setSizeTextAndCheckSDCardReadable();
     	tab.setTextSize(size);
 
         buttons = (LinearLayout) findViewById(R.id.buttons);
@@ -117,6 +116,8 @@ public class FavTabViewActivity extends Activity {
 		MenuFunctions menuFunc = new MenuFunctions(this);
 	    switch (item.getItemId()) {
 	    case android.R.id.home:
+	    	FileUtils fileUtils = new FileUtils(this);
+			fileUtils.saveTabSize(tab);
 	    	device.goHomeScreen();
 	    	return true;
 	    case R.id.delFromFav:
@@ -142,11 +143,8 @@ public class FavTabViewActivity extends Activity {
 	
 	@Override
     public void onBackPressed() {
-		try {
-			fileUtils.setSizeToConfig(tab.getTextSize());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		FileUtils fileUtils = new FileUtils(this);
+		fileUtils.saveTabSize(tab);
 		FavTabViewActivity.this.finish();
 		super.onBackPressed();
     	overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);

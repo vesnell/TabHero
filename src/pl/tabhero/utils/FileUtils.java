@@ -11,16 +11,14 @@ import java.io.Writer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
-
 import pl.tabhero.R;
 import pl.tabhero.db.DBUtils;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class FileUtils { 
@@ -123,6 +121,18 @@ public class FileUtils {
 		}
 	}
 	
+	public float setSizeTextAndCheckSDCardReadable() {
+		FileUtils fileUtils = new FileUtils(this.context);
+		File file = new File(this.dir + File.separator + CONFIG);
+		Float size;
+		if(file.isFile()) {
+			size = fileUtils.getTabSize();
+		} else {
+			size = 12f;
+		}
+		return size;
+	}
+	
 	@SuppressLint("UseValueOf")
 	public Float getTabSize() {
 		File file = new File(this.dir + File.separator + CONFIG);
@@ -140,10 +150,17 @@ public class FileUtils {
 		if(file.isFile()) {
 			String configText = readConfig(file);
 			maxForConfig = configText.split(",")[0];
-			Log.d("SIZE_setSize", Float.toString(size));
 			String textSize = Float.toString(size);
-			Log.d("SIZE_textSize", textSize);
 			writeForConfig(file, maxForConfig, textSize);
+		}
+	}
+	
+	public void saveTabSize(TextView tab) {
+		try {
+			FileUtils fileUtils = new FileUtils(this.context);
+			fileUtils.setSizeToConfig(tab.getTextSize());
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

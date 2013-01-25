@@ -31,12 +31,10 @@ public class PinchZoom implements OnTouchListener {
 	   switch(event.getAction() & MotionEvent.ACTION_MASK) {
 	   		case MotionEvent.ACTION_DOWN:
 	   			//A pressed gesture has started, the motion contains the initial starting location.
-	   			//Log.d("pinch", "1");
 	   			touchState = TOUCH;
 	   			break;
 	   		case MotionEvent.ACTION_POINTER_DOWN:
 	   			//A non-primary pointer has gone down.
-	   			//Log.d("pinch", "2");
 	   			touchState = PINCH;
 	    
 	   			//Get the distance when the second pointer touch
@@ -50,7 +48,6 @@ public class PinchZoom implements OnTouchListener {
 	    
 	   			if(touchState == PINCH){      
 	   				//Get the current distance
-	   				//Log.d("pinch", "3");
 	   				distx = event.getX(0) - event.getX(1);
 	   				disty = event.getY(0) - event.getY(1);
 	   				distCurrent = Math.sqrt(distx * distx + disty * disty);
@@ -61,12 +58,10 @@ public class PinchZoom implements OnTouchListener {
 	   			break;
 	   		case MotionEvent.ACTION_UP:
 	   			//A pressed gesture has finished.
-	   			//Log.d("pinch", "4");
 	   			touchState = IDLE;
 	   			break;
 	   		case MotionEvent.ACTION_POINTER_UP:
 	   			//A non-primary pointer has gone up.
-	   			//Log.d("pinch", "5");
 	   			touchState = TOUCH;
 	   			break;
 	   		}
@@ -88,7 +83,7 @@ public class PinchZoom implements OnTouchListener {
 				sizeText = 50;
 			}
 		} else {
-			sizeText = fileUtils.getTabSize();
+			sizeText = fileUtils.setSizeTextAndCheckSDCardReadable();
 		}
 		
 		myTouchEvent.setTextSize(0, sizeText);
