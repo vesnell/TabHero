@@ -97,31 +97,44 @@
     <string name="describeMain3">Przycisk przenoszący do wyszukania tabulatury w Internecie.</string>
     <string name="describeMain4">Przycisk przenoszący do wyszukania tabulatury spośród ulubionych.</string>
     <string name="describeMain5">Dodatkową opcją zastępującą klikanie przycisków 3. i 4. jest możliwość przejścia do następnego ekranu przez odpowiedni gest smyrnięcia ekranu w prawo lub lewo.</string>
-    <string name="searchScreen">Ekran wyszukiwania</string>
-    <!-- <string name="describeMain">Ekran główny:\n
-        1. Klawisz menu wyświetlający skrócone informacje oraz dający możliwość wyświetlenia pomocy.\n
-        2. Klawisz menu do chowania lub odkrywania górnego paska. Opcja niedostępna dla tabletów.\n
-        3. Przycisk przejścia do możliwości wyszukiwania tabulatur/akordów w Internecie.\n
-        4. Przycisk przejścia do tabulatur/akordów już zachowanych w bazie telefonu.\n
-        Dodatkową opcją zastępującą klikanie przycisków 3. i 4. jest możliwość przejścia do następnego ekranu przez odpowiedni gest smyrnięcia ekranu w prawo lub lewo.</string> -->
-    <string name="describeSearch">Ekran szukania w Internecie wykonawcy/utworu:\n
-        1. Klawisz menu do włączenia wifi. Ikonka informuje, że nie ma włączonego wifi.\n
-        2. Klawisz menu do wyłączenia wifi. Ikonka informuje, że jest ustanowione połączenie wifi.\n
-        - Możliwe jest cofnięcie się do poprzedniego ekranu poprzez klawisz powrotu na telefonie lub poprzez smyrnięcie palcem wstecz.\n
-        - Możliwe także jest wrócenie się od razu do ekranu głównego poprzez naciśnięcie w lewym górnym rogu na ikonkę programu.\n
-        - Klawisz lupki pozwala na rozpoczęcie wyszukiwania wykonawcy/utworu.\n
-        - Wyszukiwanie odbywa się poprzez znalezienie w dostępnych nazwach wykonawców/utworów identycznego jak wprowadzony ciąg znaków.\n
+    <string name="searchScreen">Ekran wyszukiwania w Internecie</string>
+    <string name="describeSearch1">Klawisz pozwalający na wrócenie się od razu do ekranu głównego z każdego innego ekranu.</string>
+	<string name="describeSearch2">Klawisz menu do włączenia wifi. Ikonka informuje, że nie ma włączonego wifi.</string>
+    <string name="describeSearch3">Klawisz menu do wyłączenia wifi. Ikonka informuje, że jest ustanowione połączenie wifi.</string>
+    <string name="describeSearch4">Klawisz ten we wszystkich ekranach wyszukiwania pozwala na rozpoczęcie wyszukiwania wykonawcy/utworu.\n
+        - Wyszukiwanie odbywa się poprzez znalezienie w dostępnych nazwach wykonawców/utworów identycznego jak wprowadzony ciąg znaków.</string>
+    <string name="describeSearch5">Miejsce na wprowadzenie nazwy wykonawcy/zespołu, lub ciągu znaków, który ma ten wykonawca/utwór zawierać.\n
         - Rozpoczęcie wyszukiwania bez wpisania żadnego znaku wyświetli wszystkie możliwe wyniki.*\n
-        * Wyjątkiem jest ekran wyszukiwania wykonawcy w Internecie, gdzie pierwszy wprowadzony znak jest pierwszą literą/znakiem nazwy zespołu/wykonawcy.</string>
-    <string name="describeTab">Ekran wyświetlający znalezioną w Internecie tabulaturę/akordy:\n
-        1. Klawisz menu umożliwiający dodanie tabulatury/akordów do bazy.\n
-        2. Klawisz menu, który otwiera przeglądarkę w poszukiwaniu tekstu utworu.\n
-        - Długie tapnięcie na tabulaturę powoduje wyświetlenie przycisków:\n
-        3. do odblokowania zablokowanego ekranu przed obróceniem;\n
-        4. do zablokowanie ekranu przed obróceniem.\n
-        - Wyświetlona tabulatura obsługuje również gesty uszczypnięcia odpowiednio powiększając i zmniejszając wyświetlany tekst.\n
-        - Aby dokładniej dopasować wielkość czcionki wyświatlanej tabulatury należy tapnąć na czarny pasek z nazwą wykonwacy i tytułem nad tabulaturą, aby wyświetlić klawisze plus i minus.\n
-        - Ekran z wyświetlaną tabulaturą ma zablokowaną możliwość samoczynnego uśpienia.</string>
-    <string name="describeFavorites"></string>
-    <string name="describeRemove"></string>    
+        * Wyjątkiem jest ekran wyszukiwania wykonawcy w Internecie, gdzie pierwszy wprowadzony znak musi być pierwszą literą/znakiem nazwy zespołu/wykonawcy.</string>
+    <string name="describeSearch6">Lista znalezionych wykonawców/utworów, gdzie po wybraniu jednej z opcji przechodzi się do następnego ekranu.</string>
+    <string name="describeSearch7">Możliwe jest cofnięcie się do poprzedniego ekranu poprzez klawisz wstecz na telefonie lub poprzez odpowiedni gest palcem na ekranie.</string>
+    <string name="tabScreen">Ekran z tabulaturą</string>
+    <string name="describeTab1">Klawisz menu w ekranie wyświetlania z Internetu, który umożliwa dodanie wyświetlanej tabulatury do bazy.\n
+        - W przypadku posiadania już danej tabulatury w bazie lub zmiany jej nazwy w Ulubionych wyświetlony zostanie odpowiedni komunikat.</string>
+    <string name="describeTab2">Klawisz menu, który otwiera przeglądarkę w poszukiwaniu tekstu utworu.</string>
+    <string name="describeTab3">Klawisz menu w ekranie wyświetlania z Ulubionych, który usuwa wyświetloną tabulaturę z bazy.</string>
+    <string name="describeTab4">Klawisz menu w ekranie wyświetlania z Ulubionych, który tworzy plik txt z tabulaturą na wewnętrznej pamięci telefonu, co umożliwia edycję tabulatury.\n
+        - Po ponownym wyświetleniu tabulatury jest ona już aktualna i zastępuje ona poprzednią zapisaną w bazie, a plik z tabulaturą jest automatycznie usuwany z pamięci telefonu.\n
+        - Ścieżka dostępu: /sdcard/Android/pl.tabhero/nazwa_zespołu-nazwa_utworu.id_tabulatury.txt\n
+        - Aby program TabHero zaktualizował tabulaturę nie wolno zmienić nazwy pliku.</string>
+    <string name="describeTab5">Nieruchomy pasek z nazwą wykonawcy i utworu.\n
+        - Po jego dotknięciu u dołu ekranu pojawiają się klawisze plus i minus (6).</string>
+    <string name="describeTab6">Klawisze umożliwiające niewielkie pomniejszenie lub powiększenie czcionki wyświetlanej tabulatury.</string>
+    <string name="describeTab7">Wyświetlana tabulatura.\n
+        - Możliwe jest jej dynamiczne pomniejszanie lub powiększanie poprzez gest uszczypnięcia na wyświetlanej tabulaturze.\n
+        - Poprzez długie przytrzymanie palca na tabulaturze u dołu ekranu pojawi się klawisz kłódki (8).</string>
+    <string name="describeTab8">Klawisze umożliwiające zablokowanie orientacji ekranu lub jej odblokowanie.</string>
+    <string name="describeTab9">Ekran z wyświetlaną tabulaturą ma zablokowaną możliwość samoczynnego uśpienia.</string>
+    <string name="favoritesScreen">Ekran Ulubionych</string>
+    <string name="describeFav1">Klawisz menu umożliwiający przejście do Ekranu Usuwania.</string>
+    <string name="describeFav2">Klawisz menu pozwalający na dodanie własnego wykonawcy i/lub utworu do bazy.</string>
+    <string name="describeFav3">Lista ulubionych wykonawców/utworów, gdzie po wybraniu jednej z opcji przechodzi się do następnego ekranu.\n
+        - Długie przytrzymanie palcem na jednej z opcji pozwala na zmianę nazwy tego wykonawcy/utworu.</string>
+    <string name="describeFav4">Możliwe jest cofnięcie się do poprzedniego ekranu poprzez klawisz wstecz na telefonie lub poprzez odpowiedni gest palcem na ekranie.</string>
+    <string name="removeScreen">Ekran Usuwania</string>
+    <string name="describeRem1">CheckBox umożliwiający zaznaczenie wybranego wykonawcy/utworu z listy.</string>
+    <string name="describeRem2">Klawisz menu pozwalający odwrócić zaznaczenie na liście, tzn.: wszystkie zaznaczone opcje zostaną odznaczone, a niezaznaczone zostaną zaznaczone.</string>
+    <string name="describeRem3">Przycisk usuwający z bazy zaznaczonych wykonawców (wraz ze wszystkimi ich utworami) lub zaznaczone utwory.</string>
+    <string name="autor">Autorem aplikacji jest Wacław Szabłowski\n
+        szablowski.waclaw@gmail.com</string>    
 </resources>
