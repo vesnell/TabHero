@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/textDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:paddingLeft="4.0dip"
+        android:paddingTop="5.0dip"
+        android:paddingRight="4.0dip"
+        android:paddingBottom="1.0dip"
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:layout_below="@id/textDialog" >
+
+        <Button
+            android:id="@+id/dialogButtonOK"
+            android:layout_width="0.0dip" android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:text="@string/ok" />
+
+        <Button
+            android:id="@+id/dialogButtonHelp"
+            android:layout_width="0.0dip" android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:text="@string/help" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -37,7 +37,7 @@
     <string name="openWebBrowser">Znajdź tekst</string>
     <string name="info">Informacje</string>
     <string name="ok">OK</string>
-    <string name="message_info">Aplikacja bazuje na tabulaturach z serwisu chords.pl</string>
+    <string name="message_info">Autor: Wacław Szabłowski\nszablowski.waclaw@gmail.com</string>
     <string name="help">Pomoc</string>
     <string name="reverse_selection">Odwróć zaznaczenie</string>
     <string name="notDelFromPerfsBase">Nie usunięto zespołów</string>
@@ -77,6 +77,9 @@
     <string name="unknownConnectionError">Nieokreślony problem w połączeniu z serwisem</string>
     <string name="createDatabaseError">Problem ze stworzeniem bazy danych</string>
     <string name="sleepTaskError">Problem z uśpieniem procesu</string>
+    <string name="versionReadError">Problem przy odczycie informacji o programie</string>
+    <string name="firstRun">Dziękuję za zainstalowanie aplikacji i zapraszam do pomocy aby zapoznać się ze wszystkimi funkcjami programu</string>
+    <string name="hello">Witaj!</string>
     
     <string name="helptextview">Poniżej zaprezentowane są screeny aplikacji z systemu android w wersji 4.0 na telefon. W systemach 2.3 i niższych większość opcji dostępna jest pod przyciskiem MENU.</string>
     <string name="mainScreen">Ekran główny</string>

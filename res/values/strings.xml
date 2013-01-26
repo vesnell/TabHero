@@ -36,7 +36,7 @@
     <string name="openWebBrowser">Find lyrics</string>
     <string name="info">Informations</string>
     <string name="ok">OK</string>
-    <string name="message_info">Appliaction is based on tablatures from chords.pl service.</string>
+    <string name="message_info">Author: Wacław Szabłowski\nszablowski.waclaw@gmail.com</string>
     <string name="help">Help</string>
     <string name="reverse_selection">Reverse selection</string>
     <string name="notDelFromPerfsBase">Artists weren\'t delete</string>
@@ -76,6 +76,9 @@
     <string name="unknownConnectionError">Unknwon error with connect to service</string>
     <string name="createDatabaseError">Create database error</string>
     <string name="sleepTaskError">Sleep task error</string>
+    <string name="versionReadError">Read info app error</string>
+    <string name="firstRun">Thank you for downloading this app and click Help to view summary of this program functions</string>
+    <string name="hello">Hello!</string>
     
     <string name="configNameFile">config.txt</string>
     <string name="configDefault">MIN,12</string>

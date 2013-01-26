@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import pl.tabhero.HelpActivity;
 import pl.tabhero.R;
 import pl.tabhero.db.DBUtils;
 import pl.tabhero.local.EditFavPerfs;
@@ -18,16 +19,22 @@ import pl.tabhero.utils.selector.SelectArralAdapter;
 import pl.tabhero.utils.selector.ItemsOnCheckboxList;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MenuFunctions {
@@ -299,4 +306,60 @@ public class MenuFunctions {
     	ArrayAdapter<ItemsOnCheckboxList> listAdapter = new SelectArralAdapter(this.context, recordCheckList);
 		delListView.setAdapter(listAdapter);
     }
+    
+    public void showInfo() {
+    	String versionCode = "";
+    	String appName = "";
+    	try {
+    		appName = this.context.getString(R.string.app_name);
+			versionCode = this.context.getPackageManager().getPackageInfo(this.context.getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
+			Toast.makeText(this.context.getApplicationContext(), R.string.versionReadError, Toast.LENGTH_LONG).show();
+		}    	
+    	final Dialog builder = new Dialog(this.context);
+    	builder.setContentView(R.layout.builderlayout);
+	    builder.setTitle(R.string.info);
+	    TextView text = (TextView) builder.findViewById(R.id.textDialog);
+		text.setText(this.context.getString(R.string.message_info) + "\n\n" + 
+	    		appName + " v" + versionCode);
+		Button dialogButtonHelp = (Button) builder.findViewById(R.id.dialogButtonHelp);
+		Button dialogButtonOK = (Button) builder.findViewById(R.id.dialogButtonOK);
+		dialogButtonHelp.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context, HelpActivity.class);
+				context.startActivity(intent);
+				activity.overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+				builder.dismiss();
+			}
+		});
+		dialogButtonOK.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				builder.dismiss();
+			}
+		});
+		builder.show();
+	}
+    
+    public void firstRun() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+	    builder.setTitle(R.string.hello);
+	    builder.setMessage(this.context.getString(R.string.firstRun));
+	    builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+	        public void onClick(DialogInterface dialog, int which) {
+	            dialog.dismiss();
+	        }
+	    });
+	    builder.setPositiveButton(R.string.help, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				Intent intent = new Intent(context, HelpActivity.class);
+				context.startActivity(intent);
+				activity.overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+				dialog.dismiss();
+			}
+		});
+	    AlertDialog alert = builder.create();
+	    alert.show();
+	}
 }

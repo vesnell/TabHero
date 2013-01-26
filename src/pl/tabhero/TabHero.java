@@ -60,10 +60,11 @@ public class TabHero extends Activity {
         	if(!file.isFile()) {
         		Writer writer;
         		File outputFile = new File(outDir, FILE_NAME);
+        		MenuFunctions menuFunc = new MenuFunctions(this);
         		writer = new BufferedWriter(new FileWriter(outputFile));
         		writer.write(DEFAULT_CONFIG);
         		writer.close();
-        		showInfo();
+        		menuFunc.firstRun();
         	} else {
         		String configText = fileUtils.readConfig(file);
         		fileUtils.setIfMax(configText);
@@ -113,7 +114,7 @@ public class TabHero extends Activity {
 		MenuFunctions menuFunc = new MenuFunctions(this);
 	    switch (item.getItemId()) {
 	    case R.id.info:
-	        showInfo();
+	        menuFunc.showInfo();
 	        return true;
 	    case R.id.minmax:
 	    	try {
@@ -125,27 +126,6 @@ public class TabHero extends Activity {
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
-	}
-	
-	private void showInfo() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(TabHero.this);
-	    builder.setTitle(R.string.info);
-	    builder.setMessage(R.string.message_info);
-	    builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) {
-	            dialog.dismiss();
-	        }
-	    });
-	    builder.setPositiveButton(R.string.help, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				Intent intent = new Intent(TabHero.this, HelpActivity.class);
-				startActivity(intent);
-				overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
-				dialog.dismiss();
-			}
-		});
-	    AlertDialog alert = builder.create();
-	    alert.show();
 	}
     
     @Override
