@@ -77,7 +77,7 @@
     <string name="createDatabaseError">Create database error</string>
     <string name="sleepTaskError">Sleep task error</string>
     <string name="versionReadError">Read info app error</string>
-    <string name="firstRun">Thank you for downloading this app and click Help to view summary of this program functions</string>
+    <string name="firstRun">Thank you for downloading this app and click Help to view summary of this program functions.</string>
     <string name="hello">Hello!</string>
     
     <string name="configNameFile">config.txt</string>
@@ -138,6 +138,7 @@
     <string name="describeRem1">CheckBox umożliwiający zaznaczenie wybranego wykonawcy/utworu z listy.</string>
     <string name="describeRem2">Klawisz menu pozwalający odwrócić zaznaczenie na liście, tzn.: wszystkie zaznaczone opcje zostaną odznaczone, a niezaznaczone zostaną zaznaczone.</string>
     <string name="describeRem3">Przycisk usuwający z bazy zaznaczonych wykonawców (wraz ze wszystkimi ich utworami) lub zaznaczone utwory.</string>
-    <string name="autor">Autorem aplikacji jest Wacław Szabłowski\n
-        szablowski.waclaw@gmail.com</string>    
+    <string name="author">Wacław Szabłowski\n
+        szablowski.waclaw@gmail.com</string>  
+    <string name="comments">Wszelkie uwagi co do aplikacji proszę kierować na maila. Ofertami pracy także nie pogardzę :)</string>
 </resources>

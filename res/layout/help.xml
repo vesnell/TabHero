@@ -720,17 +720,26 @@
 					android:layout_toRightOf="@id/img53" />
 			</RelativeLayout>
 			<TextView
-			    	android:id="@+id/autor"
+			    	android:id="@+id/comments"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/comments"
+					android:textColor="#ffffff"
+					android:layout_below="@id/rem3" />
+			<TextView
+			    	android:id="@+id/author"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
 					android:layout_gravity="center"
 					android:padding="5sp"
 					android:textSize="12sp"
-					android:text="@string/autor"
+					android:text="@string/author"
 					android:textColor="#ffffff"
-					android:gravity="center"
-					android:layout_below="@id/rem3" />
-
+					android:gravity="right"
+					android:layout_below="@id/comments" />
+			
 			<View
 			    android:id="@+id/line1"
 			    android:layout_width="fill_parent"

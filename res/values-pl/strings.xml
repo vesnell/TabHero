@@ -78,7 +78,7 @@
     <string name="createDatabaseError">Problem ze stworzeniem bazy danych</string>
     <string name="sleepTaskError">Problem z uśpieniem procesu</string>
     <string name="versionReadError">Problem przy odczycie informacji o programie</string>
-    <string name="firstRun">Dziękuję za zainstalowanie aplikacji i zapraszam do pomocy aby zapoznać się ze wszystkimi funkcjami programu</string>
+    <string name="firstRun">Dziękuję za zainstalowanie aplikacji. Kliknij \"Pomoc\" aby zapoznać się ze wszystkimi funkcjami programu.</string>
     <string name="hello">Witaj!</string>
     
     <string name="helptextview">Poniżej zaprezentowane są screeny aplikacji z systemu android w wersji 4.0 na telefon. W systemach 2.3 i niższych większość opcji dostępna jest pod przyciskiem MENU.</string>
@@ -126,6 +126,7 @@
     <string name="describeRem1">CheckBox umożliwiający zaznaczenie wybranego wykonawcy/utworu z listy.</string>
     <string name="describeRem2">Klawisz menu pozwalający odwrócić zaznaczenie na liście, tzn.: wszystkie zaznaczone opcje zostaną odznaczone, a niezaznaczone zostaną zaznaczone.</string>
     <string name="describeRem3">Przycisk usuwający z bazy zaznaczonych wykonawców (wraz ze wszystkimi ich utworami) lub zaznaczone utwory.</string>
-    <string name="autor">Autorem aplikacji jest Wacław Szabłowski\n
+    <string name="author">Wacław Szabłowski\n
         szablowski.waclaw@gmail.com</string>
+    <string name="comments">Wszelkie uwagi co do aplikacji proszę kierować na maila. Ofertami pracy także nie pogardzę :)</string>
 </resources>
