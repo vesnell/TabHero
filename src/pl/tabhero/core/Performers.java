@@ -3,6 +3,7 @@ package pl.tabhero.core;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -34,7 +35,7 @@ public class Performers {
     	for(Element el : performers) {
     		String localUrl = el.attr("href");
     		String localPerformer = Jsoup.parse(el.toString()).select("a").first().ownText().replace("\\", "");
-    		if(localPerformer.toLowerCase().contains(this.typedName) == true) {
+    		if(localPerformer.toLowerCase(Locale.getDefault()).contains(this.typedName) == true) {
     			mapOfChosenPerformers.put(localPerformer, localUrl);
     		}
     	}

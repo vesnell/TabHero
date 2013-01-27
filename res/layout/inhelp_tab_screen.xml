@@ -1,0 +1,223 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" >
+			<TextView
+			    android:id="@+id/tabScreen"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:padding="10sp"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				android:text="@string/tabScreen"
+				android:textColor="#ffffff" />
+			<ImageView
+			    android:id="@+id/describeTabImg"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentRight="true"
+			    android:layout_below="@id/tabScreen"
+			    android:src="@drawable/describetab"
+			    android:contentDescription="@string/imageDescTabScreen" />
+			<RelativeLayout 
+			    android:id="@+id/tab1"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/describeTabImg" >
+			    <ImageView
+			    	android:id="@+id/img31"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a1"
+			    	android:contentDescription="@string/imageDesc1" />
+				<TextView
+			    	android:id="@+id/describeTabText1"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeTab1"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img31" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/tab2"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/tab1" >
+			    <ImageView
+			    	android:id="@+id/img32"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a2"
+			    	android:contentDescription="@string/imageDesc2" />
+				<TextView
+			    	android:id="@+id/describeTabText2"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeTab2"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img32" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/tab3"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/tab2" >
+			    <ImageView
+			    	android:id="@+id/img33"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a3"
+			    	android:contentDescription="@string/imageDesc3" />
+				<TextView
+			    	android:id="@+id/describeTabText3"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeTab3"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img33" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/tab4"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/tab3" >
+			    <ImageView
+			    	android:id="@+id/img34"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a4"
+			    	android:contentDescription="@string/imageDesc4" />
+				<TextView
+			    	android:id="@+id/describeTabText4"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeTab4"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img34" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/tab5"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/tab4" >
+			    <ImageView
+			    	android:id="@+id/img35"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a5"
+			    	android:contentDescription="@string/imageDesc5" />
+				<TextView
+			    	android:id="@+id/describeTabText5"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeTab5"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img35" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/tab6"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/tab5" >
+			    <ImageView
+			    	android:id="@+id/img36"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a6"
+			    	android:contentDescription="@string/imageDesc6" />
+				<TextView
+			    	android:id="@+id/describeTabText6"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeTab6"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img36" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/tab7"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/tab6" >
+			    <ImageView
+			    	android:id="@+id/img37"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a7"
+			    	android:contentDescription="@string/imageDesc7" />
+				<TextView
+			    	android:id="@+id/describeTabText7"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeTab7"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img37" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/tab8"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/tab7" >
+			    <ImageView
+			    	android:id="@+id/img38"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a8"
+			    	android:contentDescription="@string/imageDesc8" />
+				<TextView
+			    	android:id="@+id/describeTabText8"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeTab8"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img38" />
+			</RelativeLayout>
+			<TextView
+			    	android:id="@+id/describeTabText9"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeTab9"
+					android:textColor="#ffffff"
+					android:layout_below="@id/tab8" />
+</RelativeLayout>

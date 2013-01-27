@@ -1,0 +1,127 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"  >
+			<TextView
+			    android:id="@+id/mainScreen"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:padding="10sp"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				android:text="@string/mainScreen"
+				android:textColor="#ffffff" />
+			<ImageView
+			    android:id="@+id/describeMainImg"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentRight="true"
+			    android:layout_below="@id/mainScreen"
+			    android:src="@drawable/describemain"
+			    android:contentDescription="@string/imageDescMainScreen" />
+			<RelativeLayout 
+			    android:id="@+id/main1"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/describeMainImg" >
+			    <ImageView
+			    	android:id="@+id/img11"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a1"
+			    	android:contentDescription="@string/imageDesc1" />
+				<TextView
+			    	android:id="@+id/describeMainText1"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeMain1"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img11" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/main2"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/main1" >
+				<ImageView
+			    	android:id="@+id/img12"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a2"
+			    	android:contentDescription="@string/imageDesc2" />
+				<TextView
+			    	android:id="@+id/describeMainText2"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeMain2"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img12" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/main3"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/main2" >
+				<ImageView
+			    	android:id="@+id/img13"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a3"
+			    	android:contentDescription="@string/imageDesc3" />
+				<TextView
+			    	android:id="@+id/describeMainText3"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeMain3"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img13" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/main4"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/main3" >
+				<ImageView
+			    	android:id="@+id/img14"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a4"
+			    	android:contentDescription="@string/imageDesc4" />
+				<TextView
+			    	android:id="@+id/describeMainText4"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeMain4"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img14" />
+			</RelativeLayout>
+			<TextView
+			    	android:id="@+id/describeMainText5"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeMain5"
+					android:textColor="#ffffff"
+					android:layout_below="@id/main4" />
+			</RelativeLayout>

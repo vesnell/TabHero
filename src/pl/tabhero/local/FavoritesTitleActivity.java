@@ -2,6 +2,8 @@ package pl.tabhero.local;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
+
 import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.db.DBUtils;
@@ -87,7 +89,7 @@ public class FavoritesTitleActivity extends Activity {
 	
 	public void searchTitleView(View v) {
 		String title = new String();
-		title = editFavTitle.getText().toString().toLowerCase();
+		title = editFavTitle.getText().toString().toLowerCase(Locale.getDefault());
 		ArrayList<ArrayList<String>> listOfLists = dbUtils.addTitleFromBase(performerName);
         ArrayList<String> listTitle = listOfLists.get(0);
         ArrayList<String> listUrl = listOfLists.get(1);
@@ -101,7 +103,7 @@ public class FavoritesTitleActivity extends Activity {
     			ArrayList<String> listOfFavTitles = new ArrayList<String>();
     			ArrayList<String> listOfFavUrls = new ArrayList<String>();
     			for(int i = 0; i < listTitle.size(); i++) {
-    				checkContains = listTitle.get(i).toLowerCase().contains(title);
+    				checkContains = listTitle.get(i).toLowerCase(Locale.getDefault()).contains(title);
     				if(checkContains == true) {
     					listOfFavTitles.add(listTitle.get(i));
     					listOfFavUrls.add(listUrl.get(i));

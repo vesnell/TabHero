@@ -41,7 +41,7 @@ public class Songs {
     		String localUrl = el.attr("href");
     		localUrl = chordsUrl + localUrl;
     		String localTitle = Jsoup.parse(el.toString()).select("a").first().ownText().replace("\\", "");
-    		if(localTitle.toLowerCase().contains(this.typedTitle) == true) {
+    		if(localTitle.toLowerCase(Locale.getDefault()).contains(this.typedTitle) == true) {
     			unsortedChosenTitles.put(localUrl, localTitle);
     		}
     	}

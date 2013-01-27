@@ -12,7 +12,7 @@
 		android:layout_gravity="center"
 		android:padding="5dip"
 		android:text="@string/chosen_performer"
-		android:textSize="18dip"
+		android:textSize="18sp"
 		android:gravity = "center"
 		android:textColor="#ffffff"
 		android:background="#000000" />
@@ -24,7 +24,7 @@
 		android:layout_below="@+id/chosenPerformer" >
 		<EditText
 		    android:id="@+id/editTitle"
-		    android:layout_width="wrap_content"
+		    android:layout_width="0dip"
 		    android:layout_height="wrap_content"
 		    android:layout_weight="0.76"
 		  	android:singleLine="true"
@@ -39,7 +39,8 @@
             android:text="@string/search"
          	android:textColor="#ffffff"
 		    android:src="@drawable/loop_border"
-         	android:drawableBottom="@drawable/white_line" />
+         	android:drawableBottom="@drawable/white_line"
+         	android:contentDescription="@string/imageDescLoopBtn" />
 	</LinearLayout>
     <ListView
         android:id="@+id/searchTitleListView"

@@ -43,6 +43,7 @@
          android:layout_below="@+id/favorites"
          android:layout_centerHorizontal="true"
          android:layout_marginTop="44dp"
-         android:src="@drawable/tabhero_icon" />
+         android:src="@drawable/tabhero_icon"
+         android:contentDescription="@string/imageDescAppIcon" />
 
 </RelativeLayout>

@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TabHero</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
     <string name="title_activity_main">TabHero</string>
     <string name="search">Szukaj</string>
     <string name="favorites">Idź do ulubionych</string>
-    <string name="search_layout">Wyszukiwarka</string>
-    <string name="favorites_layout">Ulubione utwory</string>
     <string name="hint_title">Wpisz tytuł piosenki</string>
     <string name="hint_author">Wpisz wykonawcę</string>
-    <string name="start">Start</string>
     <string name="online">Szukaj w Internecie</string>
     <string name="chosen_performer">Wybrany wykonawca</string>
-    <string name="srchPerf">Szukam wykonawcy...</string>
-    <string name="srchSong">Szukam utworu...</string>
-    <string name="srchTab">Pobieram tabulaturę...</string>
+    <string name="srchPerf">Szukam wykonawcy&#8230;</string>
+    <string name="srchSong">Szukam utworu&#8230;</string>
+    <string name="srchTab">Pobieram tabulaturę&#8230;</string>
     <string name="wait">Czekaj!</string>
     <string name="hintEmpty">Musisz wpisać wykonawcę!</string>
     <string name="hintSpace">Pierwszy znak nie może być spacją ani kropką.</string>
@@ -47,7 +42,6 @@
     <string name="wifiOff">Wifi wyłączone</string>
     <string name="wifiTrueError">Błąd włączania wifi</string>
     <string name="wifiFalseError">Błąd wyłączania wifi</string>
-    <string name="errorWifi">Wystąpił problem z wifi</string>
     <string name="editTab">Edytuj tabulaturę</string>
     <string name="createDirectoryError">Nie można utworzyć folderu </string>
     <string name="sdcardMountError">Czy karta SD została zamontowana?</string>
@@ -70,7 +64,6 @@
     <string name="websiteConnectionError">Problem z połączeniem z serwisem</string>
     <string name="choosePerf">Musisz wybrać z listy wykonawcę aby przejść dalej</string>
     <string name="chooseTitle">Musisz wybrać z listy tytuł aby przejść dalej</string>
-    <string name="checkConnectionService">Sprawdzenie dostępności serwisu</string>
     <string name="tablatureUpdateError">Nie udało się zaktualizować tabulatury</string>
     <string name="minmaxError">Problem ze zmianą wielkości okna</string>
     <string name="configReadWriteError">Nieokreślony problem z odczytem/zapisem pliku config</string>
@@ -80,6 +73,18 @@
     <string name="versionReadError">Problem przy odczycie informacji o programie</string>
     <string name="firstRun">Dziękuję za zainstalowanie aplikacji. Kliknij \"Pomoc\" aby zapoznać się ze wszystkimi funkcjami programu.</string>
     <string name="hello">Witaj!</string>
+    
+    <string name="configNameFile">config.txt</string>
+    <string name="configDefault">MIN,12</string>
+    <string name="configMIN">MIN</string>
+    <string name="configMAX">MAX</string>
+    <string name="googleUrl">http://www.google.com/search?q=</string>
+    <string name="spaceUrl">%20</string>
+    <string name="lyricsUrl">lyrics</string>
+    <string name="chordsUrl">http://www.chords.pl</string>
+    <string name="chordsWykonawcyUrl">http://www.chords.pl/wykonawcy/</string>
+    <string name="androidDir">Android</string>
+    <string name="dataDir">data</string>
     
     <string name="helptextview">Poniżej zaprezentowane są screeny aplikacji z systemu android w wersji 4.0 na telefon. W systemach 2.3 i niższych większość opcji dostępna jest pod przyciskiem MENU.</string>
     <string name="mainScreen">Ekran główny</string>
@@ -129,4 +134,24 @@
     <string name="author">Wacław Szabłowski\n
         szablowski.waclaw@gmail.com</string>
     <string name="comments">Wszelkie uwagi co do aplikacji proszę kierować na maila. Ofertami pracy także nie pogardzę :)</string>
+    
+    <string name="imageDescFavScreen">Opis ekranu Ulubione</string>
+    <string name="imageDescMainScreen">Opis ekranu głównego</string>
+    <string name="imageDescTabScreen">Opis ekranu tabulatury</string>
+    <string name="imageDescSearchScreen">Opis ekranu wyszukiwania</string>
+    <string name="imageDescRemScreen">Opis ekranu usuwania</string>
+    <string name="imageDesc1">1</string>
+    <string name="imageDesc2">2</string>
+    <string name="imageDesc3">3</string>
+    <string name="imageDesc4">4</string>
+    <string name="imageDesc5">5</string>
+    <string name="imageDesc6">6</string>
+    <string name="imageDesc7">7</string>
+    <string name="imageDesc8">8</string>
+    <string name="imageDescAppIcon">Ikona aplikacji</string>
+    <string name="imageDescLoopBtn">Przycisk wyszukiwania</string>
+    <string name="imageDescLockBtn">Przycisk blokowania orientacji ekranu</string>
+    <string name="imageDescUnlockBtn">Przycisk odblokowywania orientacji ekranu</string>
+    <string name="imageDescMinusBtn">Przycisk pomniejszania czcionki tabulatury</string>
+    <string name="imageDescPlusBtn">Przycisk powiększania czcionki tabulatury</string>
 </resources>

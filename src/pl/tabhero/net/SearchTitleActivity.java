@@ -1,6 +1,7 @@
 package pl.tabhero.net;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import org.jsoup.nodes.Document;
 import pl.tabhero.R;
@@ -84,7 +85,7 @@ public class SearchTitleActivity extends Activity {
     }
 
 	public void searchTitleView(View v) {
-		String typedTitle = editTitle.getText().toString().toLowerCase();
+		String typedTitle = editTitle.getText().toString().toLowerCase(Locale.getDefault());
 		device.hideKeyboard(editTitle);
 
 		Intent i = getIntent();

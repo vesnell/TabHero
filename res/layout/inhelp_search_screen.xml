@@ -1,0 +1,175 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" >
+    		<TextView
+			    android:id="@+id/searchScreen"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:padding="10sp"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				android:text="@string/searchScreen"
+				android:textColor="#ffffff" />
+			<ImageView
+			    android:id="@+id/describeSearchImg"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentRight="true"
+			    android:layout_below="@id/searchScreen"
+			    android:src="@drawable/describesearch"
+			    android:contentDescription="@string/imageDescSearchScreen" />
+			<RelativeLayout 
+			    android:id="@+id/search1"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/describeSearchImg" >
+			    <ImageView
+			    	android:id="@+id/img21"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a1"
+			    	android:contentDescription="@string/imageDesc1" />
+				<TextView
+			    	android:id="@+id/describeSearchText1"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeSearch1"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img21" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/search2"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/search1" >
+			    <ImageView
+			    	android:id="@+id/img22"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a2"
+			    	android:contentDescription="@string/imageDesc2" />
+				<TextView
+			    	android:id="@+id/describeSearchText2"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeSearch2"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img22" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/search3"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/search2" >
+			    <ImageView
+			    	android:id="@+id/img23"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a3"
+			    	android:contentDescription="@string/imageDesc3" />
+				<TextView
+			    	android:id="@+id/describeSearchText3"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeSearch3"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img23" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/search4"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/search3" >
+			    <ImageView
+			    	android:id="@+id/img24"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a4"
+			    	android:contentDescription="@string/imageDesc4" />
+				<TextView
+			    	android:id="@+id/describeSearchText4"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeSearch4"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img24" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/search5"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/search4" >
+			    <ImageView
+			    	android:id="@+id/img25"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a5"
+			    	android:contentDescription="@string/imageDesc5" />
+				<TextView
+			    	android:id="@+id/describeSearchText5"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeSearch5"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img25" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/search6"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/search5" >
+			    <ImageView
+			    	android:id="@+id/img26"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a6"
+			    	android:contentDescription="@string/imageDesc6" />
+				<TextView
+			    	android:id="@+id/describeSearchText6"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeSearch6"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img26" />
+			</RelativeLayout>
+			<TextView
+			    android:id="@+id/describeSearchText7"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_gravity="center"
+				android:padding="5sp"
+				android:textSize="12sp"
+				android:text="@string/describeSearch7"
+				android:textColor="#ffffff"
+				android:layout_below="@id/search6" />
+</RelativeLayout>

@@ -2,6 +2,8 @@ package pl.tabhero.local;
  
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
+
 import pl.tabhero.R;
 import pl.tabhero.TabHero;
 import pl.tabhero.core.MenuFunctions;
@@ -79,7 +81,7 @@ public class FavoritesActivity extends Activity {
 	public void searchView(View v) {
 		ArrayList<String> listOfPerfs = dbUtils.addPerfFromBase();
 		String performer = new String();
-    	performer = editFavPerformer.getText().toString().toLowerCase();
+    	performer = editFavPerformer.getText().toString().toLowerCase(Locale.getDefault());
     	device.hideKeyboard(editFavPerformer);
     	
     	if(performer.length() > 0) {
@@ -89,7 +91,7 @@ public class FavoritesActivity extends Activity {
     			boolean checkContains;
     			ArrayList<String> listOfFavPerfs = new ArrayList<String>();
     			for(String p : listOfPerfs) {
-    				checkContains = p.toLowerCase().contains(performer);
+    				checkContains = p.toLowerCase(Locale.getDefault()).contains(performer);
     				if(checkContains == true)
     					listOfFavPerfs.add(p);
     			}

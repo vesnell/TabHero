@@ -135,10 +135,10 @@ public class TabViewActivity extends Activity {
 		 mWakeLock.acquire();
 	 }
 	 
-	 public void onDestroy() {
+	 /*public void onDestroy() {
 		 mWakeLock.release();
 		 super.onDestroy();
-	 }
+	 }*/
 	 
 	 @Override
 	 public void onBackPressed() {

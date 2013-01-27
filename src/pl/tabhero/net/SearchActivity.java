@@ -1,6 +1,7 @@
 package pl.tabhero.net;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import org.jsoup.nodes.Document;
 import pl.tabhero.R;
@@ -75,7 +76,7 @@ public class SearchActivity extends Activity {
     }
     
     public void searchView(View v) {
-    	String typedPerformer = editPerformer.getText().toString().toLowerCase();
+    	String typedPerformer = editPerformer.getText().toString().toLowerCase(Locale.getDefault());
     	Performers performer = new Performers(typedPerformer);
 		device.hideKeyboard(editPerformer);
 		

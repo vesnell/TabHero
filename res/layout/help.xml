@@ -21,7 +21,7 @@
 			<RelativeLayout
 			    android:id="@+id/groupOfHelp"
 			    android:layout_width="fill_parent"
-			    android:layout_height="match_parent" >
+			    android:layout_height="wrap_content" >
 
 			<TextView
 			    android:id="@+id/textViewHelp"
@@ -32,714 +32,43 @@
 				android:textSize="12sp"
 				android:text="@string/helptextview"
 				android:textColor="#ffffff" />	
-			<TextView
+			<include 
 			    android:id="@+id/mainScreen"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:padding="10sp"
-				android:textSize="20sp"
-				android:textStyle="bold"
-				android:text="@string/mainScreen"
-				android:textColor="#ffffff"
-				android:layout_below="@id/textViewHelp" />
-			<ImageView
-			    android:id="@+id/describeMainImg"
-			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:layout_alignParentLeft="true"
-			    android:layout_alignParentRight="true"
-			    android:layout_below="@id/mainScreen"
-			    android:src="@drawable/describemain" />
-			<RelativeLayout 
-			    android:id="@+id/main1"
 			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/describeMainImg" >
-			    <ImageView
-			    	android:id="@+id/img11"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a1" />
-				<TextView
-			    	android:id="@+id/describeMainText1"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeMain1"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img11" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/main2"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/main1" >
-				<ImageView
-			    	android:id="@+id/img12"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a2" />
-				<TextView
-			    	android:id="@+id/describeMainText2"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeMain2"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img12" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/main3"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/main2" >
-				<ImageView
-			    	android:id="@+id/img13"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a3" />
-				<TextView
-			    	android:id="@+id/describeMainText3"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeMain3"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img13" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/main4"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/main3" >
-				<ImageView
-			    	android:id="@+id/img14"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a4" />
-				<TextView
-			    	android:id="@+id/describeMainText4"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeMain4"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img14" />
-			</RelativeLayout>
-			<TextView
-			    	android:id="@+id/describeMainText5"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeMain5"
-					android:textColor="#ffffff"
-					android:layout_below="@id/main4" />
-			<TextView
+			    android:layout_below="@id/textViewHelp"
+			    layout="@layout/inhelp_main_screen" />			
+			<include 
 			    android:id="@+id/searchScreen"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:padding="10sp"
-				android:textSize="20sp"
-				android:textStyle="bold"
-				android:text="@string/searchScreen"
-				android:textColor="#ffffff"
-				android:layout_below="@id/describeMainText5" />
-			<ImageView
-			    android:id="@+id/describeSearchImg"
-			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:layout_alignParentLeft="true"
-			    android:layout_alignParentRight="true"
-			    android:layout_below="@id/searchScreen"
-			    android:src="@drawable/describesearch" />
-			<RelativeLayout 
-			    android:id="@+id/search1"
 			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/describeSearchImg" >
-			    <ImageView
-			    	android:id="@+id/img21"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a1" />
-				<TextView
-			    	android:id="@+id/describeSearchText1"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeSearch1"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img21" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/search2"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/search1" >
-			    <ImageView
-			    	android:id="@+id/img22"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a2" />
-				<TextView
-			    	android:id="@+id/describeSearchText2"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeSearch2"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img22" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/search3"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/search2" >
-			    <ImageView
-			    	android:id="@+id/img23"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a3" />
-				<TextView
-			    	android:id="@+id/describeSearchText3"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeSearch3"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img23" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/search4"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/search3" >
-			    <ImageView
-			    	android:id="@+id/img24"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a4" />
-				<TextView
-			    	android:id="@+id/describeSearchText4"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeSearch4"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img24" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/search5"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/search4" >
-			    <ImageView
-			    	android:id="@+id/img25"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a5" />
-				<TextView
-			    	android:id="@+id/describeSearchText5"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeSearch5"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img25" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/search6"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/search5" >
-			    <ImageView
-			    	android:id="@+id/img26"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a6" />
-				<TextView
-			    	android:id="@+id/describeSearchText6"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeSearch6"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img26" />
-			</RelativeLayout>
-			<TextView
-			    android:id="@+id/describeSearchText7"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:layout_gravity="center"
-				android:padding="5sp"
-				android:textSize="12sp"
-				android:text="@string/describeSearch7"
-				android:textColor="#ffffff"
-				android:layout_below="@id/search6" />
-			<TextView
+			    android:layout_below="@id/mainScreen"
+			    layout="@layout/inhelp_search_screen" />
+			<include 
 			    android:id="@+id/tabScreen"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:padding="10sp"
-				android:textSize="20sp"
-				android:textStyle="bold"
-				android:text="@string/tabScreen"
-				android:textColor="#ffffff"
-				android:layout_below="@id/describeSearchText7" />
-			<ImageView
-			    android:id="@+id/describeTabImg"
-			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
-			    android:layout_alignParentLeft="true"
-			    android:layout_alignParentRight="true"
+			    android:layout_width="wrap_content"
+			    android:layout_below="@id/searchScreen"
+			    layout="@layout/inhelp_tab_screen" />
+			<include 
+			    android:id="@+id/favScreen"
+			    android:layout_height="wrap_content"
+			    android:layout_width="wrap_content"
 			    android:layout_below="@id/tabScreen"
-			    android:src="@drawable/describetab" />
-			<RelativeLayout 
-			    android:id="@+id/tab1"
-			    android:layout_width="wrap_content"
+			    layout="@layout/inhelp_favorites_screen" />
+			<include 
+			    android:id="@+id/remScreen"
 			    android:layout_height="wrap_content"
-			    android:layout_below="@id/describeTabImg" >
-			    <ImageView
-			    	android:id="@+id/img31"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a1" />
-				<TextView
-			    	android:id="@+id/describeTabText1"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeTab1"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img31" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/tab2"
 			    android:layout_width="wrap_content"
+			    android:layout_below="@id/favScreen"
+			    layout="@layout/inhelp_remove_screen" />
+			<include 
+			    android:id="@+id/footer"
 			    android:layout_height="wrap_content"
-			    android:layout_below="@id/tab1" >
-			    <ImageView
-			    	android:id="@+id/img32"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a2" />
-				<TextView
-			    	android:id="@+id/describeTabText2"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeTab2"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img32" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/tab3"
 			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/tab2" >
-			    <ImageView
-			    	android:id="@+id/img33"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a3" />
-				<TextView
-			    	android:id="@+id/describeTabText3"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeTab3"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img33" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/tab4"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/tab3" >
-			    <ImageView
-			    	android:id="@+id/img34"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a4" />
-				<TextView
-			    	android:id="@+id/describeTabText4"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeTab4"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img34" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/tab5"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/tab4" >
-			    <ImageView
-			    	android:id="@+id/img35"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a5" />
-				<TextView
-			    	android:id="@+id/describeTabText5"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeTab5"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img35" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/tab6"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/tab5" >
-			    <ImageView
-			    	android:id="@+id/img36"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a6" />
-				<TextView
-			    	android:id="@+id/describeTabText6"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeTab6"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img36" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/tab7"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/tab6" >
-			    <ImageView
-			    	android:id="@+id/img37"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a7" />
-				<TextView
-			    	android:id="@+id/describeTabText7"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeTab7"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img37" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/tab8"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/tab7" >
-			    <ImageView
-			    	android:id="@+id/img38"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a8" />
-				<TextView
-			    	android:id="@+id/describeTabText8"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeTab8"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img38" />
-			</RelativeLayout>
-			<TextView
-			    	android:id="@+id/describeTabText9"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeTab9"
-					android:textColor="#ffffff"
-					android:layout_below="@id/tab8" />
-			<TextView
-			    android:id="@+id/favoritesScreen"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:padding="10sp"
-				android:textSize="20sp"
-				android:textStyle="bold"
-				android:text="@string/favoritesScreen"
-				android:textColor="#ffffff"
-				android:layout_below="@id/describeTabText9" />
-			<ImageView
-			    android:id="@+id/describeFavoritesImg"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentLeft="true"
-			    android:layout_alignParentRight="true"
-			    android:layout_below="@id/favoritesScreen"
-			    android:src="@drawable/describefavorites" />
-			<RelativeLayout 
-			    android:id="@+id/fav1"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/describeFavoritesImg" >
-			    <ImageView
-			    	android:id="@+id/img41"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a1" />
-				<TextView
-			    	android:id="@+id/describeFavText1"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeFav1"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img41" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/fav2"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/fav1" >
-			    <ImageView
-			    	android:id="@+id/img42"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a2" />
-				<TextView
-			    	android:id="@+id/describeFavText2"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeFav2"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img42" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/fav3"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/fav2" >
-			    <ImageView
-			    	android:id="@+id/img43"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a3" />
-				<TextView
-			    	android:id="@+id/describeFavText3"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeFav3"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img43" />
-			</RelativeLayout>
-			<TextView
-			    android:id="@+id/describeFavText4"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:layout_gravity="center"
-				android:padding="5sp"
-				android:textSize="12sp"
-				android:text="@string/describeFav4"
-				android:textColor="#ffffff"
-				android:layout_below="@id/fav3" />
-			<TextView
-			    android:id="@+id/removeScreen"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:padding="10sp"
-				android:textSize="20sp"
-				android:textStyle="bold"
-				android:text="@string/removeScreen"
-				android:textColor="#ffffff"
-				android:layout_below="@id/describeFavText4" />
-			<ImageView
-			    android:id="@+id/describeRemoveImg"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentLeft="true"
-			    android:layout_alignParentRight="true"
-			    android:layout_below="@id/removeScreen"
-			    android:src="@drawable/describeremove" />
-			<RelativeLayout 
-			    android:id="@+id/rem1"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/describeRemoveImg" >
-			    <ImageView
-			    	android:id="@+id/img51"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a1" />
-				<TextView
-			    	android:id="@+id/describeRemText1"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeRem1"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img51" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/rem2"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/rem1" >
-			    <ImageView
-			    	android:id="@+id/img52"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a2" />
-				<TextView
-			    	android:id="@+id/describeRemText2"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeRem2"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img52" />
-			</RelativeLayout>
-			<RelativeLayout 
-			    android:id="@+id/rem3"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/rem2" >
-			    <ImageView
-			    	android:id="@+id/img53"
-			    	android:layout_width="wrap_content"
-			    	android:layout_height="wrap_content"
-			    	android:layout_alignParentLeft="true"
-			    	android:layout_alignParentTop="true"
-			    	android:src="@drawable/a3" />
-				<TextView
-			    	android:id="@+id/describeRemText3"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/describeRem3"
-					android:textColor="#ffffff"
-					android:layout_toRightOf="@id/img53" />
-			</RelativeLayout>
-			<TextView
-			    	android:id="@+id/comments"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/comments"
-					android:textColor="#ffffff"
-					android:layout_below="@id/rem3" />
-			<TextView
-			    	android:id="@+id/author"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_gravity="center"
-					android:padding="5sp"
-					android:textSize="12sp"
-					android:text="@string/author"
-					android:textColor="#ffffff"
-					android:gravity="right"
-					android:layout_below="@id/comments" />
-			
+			    android:layout_below="@id/remScreen"
+			    layout="@layout/inhelp_footer" />
+
 			<View
 			    android:id="@+id/line1"
 			    android:layout_width="fill_parent"
@@ -751,35 +80,35 @@
 			    android:id="@+id/line2"
 			    android:layout_width="fill_parent"
 			    android:layout_height="2dip"
-			    android:layout_alignBottom="@+id/describeMainText5"
+			    android:layout_alignBottom="@+id/mainScreen"
 			    android:layout_alignParentLeft="true"
 			    android:background="#FF0000" />
 			<View
 			    android:id="@+id/line3"
 			    android:layout_width="fill_parent"
 			    android:layout_height="2dip"
-			    android:layout_alignBottom="@+id/describeSearchText7"
+			    android:layout_alignBottom="@+id/searchScreen"
 			    android:layout_alignParentLeft="true"
 			    android:background="#FF0000" />
 			<View
 			    android:id="@+id/line4"
 			    android:layout_width="fill_parent"
 			    android:layout_height="2dip"
-			    android:layout_alignBottom="@+id/describeTabText9"
+			    android:layout_alignBottom="@+id/tabScreen"
 			    android:layout_alignParentLeft="true"
 			    android:background="#FF0000" />
 			<View
 			    android:id="@+id/line5"
 			    android:layout_width="fill_parent"
 			    android:layout_height="2dip"
-			    android:layout_alignBottom="@+id/describeFavText4"
+			    android:layout_alignBottom="@+id/favScreen"
 			    android:layout_alignParentLeft="true"
 			    android:background="#FF0000" />
 			<View
 			    android:id="@+id/line6"
 			    android:layout_width="fill_parent"
 			    android:layout_height="2dip"
-			    android:layout_alignBottom="@+id/rem3"
+			    android:layout_alignBottom="@+id/remScreen"
 			    android:layout_alignParentLeft="true"
 			    android:background="#FF0000" />
 			

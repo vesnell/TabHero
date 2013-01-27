@@ -12,7 +12,7 @@
 		android:background="@null" >
 		<EditText
 			android:id="@+id/editPerformer"
-			android:layout_width="wrap_content"
+			android:layout_width="0dip"
 			android:layout_height="wrap_content"
 			android:layout_weight="0.76"
 			android:hint="@string/hint_author"
@@ -26,7 +26,8 @@
 			android:drawableBottom="@drawable/white_line"
 			android:onClick="searchView"
 			android:src="@drawable/loop_border"
-			android:textColor="#ffffff" />
+			android:textColor="#ffffff"
+			android:contentDescription="@string/imageDescLoopBtn" />
 	</LinearLayout>
 	<ListView
 		android:id="@+id/searchListView"

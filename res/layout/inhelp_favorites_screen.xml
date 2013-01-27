@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" >
+    <TextView
+			    android:id="@+id/favoritesScreen"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:padding="10sp"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				android:text="@string/favoritesScreen"
+				android:textColor="#ffffff" />
+			<ImageView
+			    android:id="@+id/describeFavoritesImg"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentRight="true"
+			    android:layout_below="@id/favoritesScreen"
+			    android:src="@drawable/describefavorites"
+			    android:contentDescription="@string/imageDescFavScreen" />
+			<RelativeLayout 
+			    android:id="@+id/fav1"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/describeFavoritesImg" >
+			    <ImageView
+			    	android:id="@+id/img41"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a1"
+			    	android:contentDescription="@string/imageDesc1" />
+				<TextView
+			    	android:id="@+id/describeFavText1"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeFav1"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img41" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/fav2"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/fav1" >
+			    <ImageView
+			    	android:id="@+id/img42"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a2"
+			    	android:contentDescription="@string/imageDesc2" />
+				<TextView
+			    	android:id="@+id/describeFavText2"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeFav2"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img42" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/fav3"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/fav2" >
+			    <ImageView
+			    	android:id="@+id/img43"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a3"
+			    	android:contentDescription="@string/imageDesc3" />
+				<TextView
+			    	android:id="@+id/describeFavText3"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeFav3"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img43" />
+			</RelativeLayout>
+			<TextView
+			    android:id="@+id/describeFavText4"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_gravity="center"
+				android:padding="5sp"
+				android:textSize="12sp"
+				android:text="@string/describeFav4"
+				android:textColor="#ffffff"
+				android:layout_below="@id/fav3" />
+</RelativeLayout>

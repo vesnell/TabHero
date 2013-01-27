@@ -1,20 +1,15 @@
 <resources>
     <string name="app_name">TabHero</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
     <string name="title_activity_main">TabHero</string>
     <string name="search">Search</string>
     <string name="favorites">Go to favorites</string>
-    <string name="search_layout">Search</string>
-    <string name="favorites_layout">Favorite songs</string>
     <string name="hint_title">Enter the name of the song</string>
     <string name="hint_author">Enter artist</string>
-    <string name="start">Start</string>
     <string name="online">Search in Internet</string>
     <string name="chosen_performer">Selected artist</string>
-    <string name="srchPerf">Artist searching...</string>
-    <string name="srchSong">Song searching...</string>
-    <string name="srchTab">Tabulature downloading...</string>
+    <string name="srchPerf">Artist searching&#8230;</string>
+    <string name="srchSong">Song searching&#8230; </string>
+    <string name="srchTab">Tabulature downloading&#8230;</string>
     <string name="wait">Wait!</string>
     <string name="hintEmpty">You have to enter the artist!</string>
     <string name="hintSpace">The first character can not be a space or dot.</string>
@@ -46,7 +41,6 @@
     <string name="wifiOff">Wifi is off</string>
     <string name="wifiTrueError">Wifi setting enable error</string>
     <string name="wifiFalseError">Wifi setting disable error</string>
-    <string name="errorWifi">Wifi error</string>
     <string name="editTab">Edit tablature</string>
     <string name="createDirectoryError">Unable to create directory </string>
     <string name="sdcardMountError">Maybe the SD card is not mounted?</string>
@@ -69,7 +63,6 @@
     <string name="websiteConnectionError">Website service connection error</string>
     <string name="choosePerf">You have to choose performer from the list to continue</string>
     <string name="chooseTitle">You have to choose title from the list to continue</string>
-    <string name="checkConnectionService">Checking connection with service</string>
     <string name="tablatureUpdateError">Failed to update tablature</string>
     <string name="minmaxError">Changed size window problem</string>
     <string name="configReadWriteError">Unknown error with read/write on SDCard to config file</string>
@@ -141,4 +134,24 @@
     <string name="author">Wacław Szabłowski\n
         szablowski.waclaw@gmail.com</string>  
     <string name="comments">Wszelkie uwagi co do aplikacji proszę kierować na maila. Ofertami pracy także nie pogardzę :)</string>
+    
+    <string name="imageDescFavScreen">Opis ekranu Ulubione</string>
+    <string name="imageDescMainScreen">Opis ekranu głównego</string>
+    <string name="imageDescTabScreen">Opis ekranu tabulatury</string>
+    <string name="imageDescSearchScreen">Opis ekranu wyszukiwania</string>
+    <string name="imageDescRemScreen">Opis ekranu usuwania</string>
+    <string name="imageDesc1">1</string>
+    <string name="imageDesc2">2</string>
+    <string name="imageDesc3">3</string>
+    <string name="imageDesc4">4</string>
+    <string name="imageDesc5">5</string>
+    <string name="imageDesc6">6</string>
+    <string name="imageDesc7">7</string>
+    <string name="imageDesc8">8</string>
+    <string name="imageDescAppIcon">Ikona aplikacji</string>
+    <string name="imageDescLoopBtn">Przycisk wyszukiwania</string>
+    <string name="imageDescLockBtn">Przycisk blokowania orientacji ekranu</string>
+    <string name="imageDescUnlockBtn">Przycisk odblokowywania orientacji ekranu</string>
+    <string name="imageDescMinusBtn">Przycisk pomniejszania czcionki tabulatury</string>
+    <string name="imageDescPlusBtn">Przycisk powiększania czcionki tabulatury</string>
 </resources>

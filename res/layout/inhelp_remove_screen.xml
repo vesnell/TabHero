@@ -1,0 +1,93 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" >
+			<TextView
+			    android:id="@+id/removeScreen"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:padding="10sp"
+				android:textSize="20sp"
+				android:textStyle="bold"
+				android:text="@string/removeScreen"
+				android:textColor="#ffffff" />
+			<ImageView
+			    android:id="@+id/describeRemoveImg"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentRight="true"
+			    android:layout_below="@id/removeScreen"
+			    android:src="@drawable/describeremove"
+			    android:contentDescription="@string/imageDescRemScreen" />
+			<RelativeLayout 
+			    android:id="@+id/rem1"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/describeRemoveImg" >
+			    <ImageView
+			    	android:id="@+id/img51"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a1"
+			    	android:contentDescription="@string/imageDesc1" />
+				<TextView
+			    	android:id="@+id/describeRemText1"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeRem1"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img51" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/rem2"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/rem1" >
+			    <ImageView
+			    	android:id="@+id/img52"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a2"
+			    	android:contentDescription="@string/imageDesc2" />
+				<TextView
+			    	android:id="@+id/describeRemText2"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeRem2"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img52" />
+			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/rem3"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/rem2" >
+			    <ImageView
+			    	android:id="@+id/img53"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a3"
+			    	android:contentDescription="@string/imageDesc3" />
+				<TextView
+			    	android:id="@+id/describeRemText3"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeRem3"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img53" />
+			</RelativeLayout>
+</RelativeLayout>

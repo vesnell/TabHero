@@ -161,9 +161,8 @@ public class FavTabViewActivity extends Activity {
 		 mWakeLock.acquire();
 	 }
 	 
-	 public void onDestroy() {
+	 /*public void onDestroy() {
 		 mWakeLock.release();
 		 super.onDestroy();
-		 
-	 }
+	 }*/
 }

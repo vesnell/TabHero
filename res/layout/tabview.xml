@@ -19,14 +19,16 @@
         	android:layout_height="wrap_content"
         	android:background="@null"
         	android:layout_weight="0.06"
-        	android:src="@drawable/lock" />
+        	android:src="@drawable/lock"
+        	android:contentDescription="@string/imageDescLockBtn" />
     	<ImageButton 
         	android:id="@+id/btnUnLock"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:background="@null"
         	android:layout_weight="0.06"
-        	android:src="@drawable/unlock" />
+        	android:src="@drawable/unlock"
+        	android:contentDescription="@string/imageDescUnlockBtn" />
 	</LinearLayout>
     <TextView
         android:id="@+id/performerAndTitle"
@@ -51,7 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.06"
             android:background="@null"
-            android:src="@drawable/minussmall" >
+            android:src="@drawable/minussmall"
+            android:contentDescription="@string/imageDescMinusBtn" >
         </ImageButton>
         <ImageButton
             android:id="@+id/btnPlus"
@@ -59,28 +62,27 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.05"
             android:background="@null"
-            android:src="@drawable/plussmall" >
+            android:src="@drawable/plussmall"
+            android:contentDescription="@string/imageDescPlusBtn" >
         </ImageButton>
     </LinearLayout>
-	<LinearLayout 
-	    android:id="@+id/scrollWithTab"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_above="@+id/buttons"
-	    android:layout_below="@+id/performerAndTitle"
-	    android:orientation="horizontal" >
     	<HorizontalScrollView
         	android:id="@+id/horizontalScrollInTabView"
         	android:layout_width="match_parent"
         	android:layout_height="match_parent"
-        	android:fillViewport="true" >
+        	android:fillViewport="true"
+        	android:layout_above="@+id/buttons"
+	    	android:layout_below="@+id/performerAndTitle" >
+
         	<ScrollView
-            	android:id="@+id/scrollInTabView"
-            	android:layout_width="match_parent"
-            	android:layout_height="match_parent" >
+        	    android:id="@+id/scrollInTabView"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="match_parent" >
+
         		<LinearLayout
-            		android:layout_width="match_parent"
-            		android:layout_height="match_parent" > 
+        		    android:layout_width="match_parent"
+        		    android:layout_height="wrap_content" >
+ 
             		<TextView
                 		android:id="@+id/tabInTabView"
                 		android:layout_width="match_parent"
@@ -91,5 +93,4 @@
         		</LinearLayout>
         	</ScrollView>
     	</HorizontalScrollView>
-    </LinearLayout>
 </RelativeLayout>
