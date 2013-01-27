@@ -21,155 +21,202 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FileUtils { 
-	
-	private Context context;
-	private Activity activity;
-	public String filePath;
-	public String fileName;
-	public File file;
-	public File outDir;
-	public String dir;
-	private final String CONFIG;
-	private final String MAX;
-	private final String MIN;
-	private final String ANDROID;
-	private final String data;
-	
-	public FileUtils(Context context) {
-		File root = Environment.getExternalStorageDirectory();
-		this.context = context;
-		this.activity = (Activity) context;
-		ANDROID = this.context.getString(R.string.androidDir);
-		data = this.context.getString(R.string.dataDir);
-		this.dir = root.getAbsolutePath() + File.separator + ANDROID + File.separator + this.context.getPackageName();
-		CONFIG = this.context.getString(R.string.configNameFile);
-		MAX = this.context.getString(R.string.configMAX);
-		MIN = this.context.getString(R.string.configMIN);
-	}
-	
-	public void makePaths(String songUrl) {
-		String[] fileTab1 = songUrl.split("/");
-		String filePerf = fileTab1[4];
-		String[] fileTab2 = fileTab1[5].split(",");
-		String fileId = fileTab2[0];
-		String fileTitle = fileTab2[1];
-	    this.fileName = filePerf + "-" + fileTitle + "." + fileId + ".txt";
-	    this.filePath = dir + File.separator + fileName;
-	}
-	
-	public void makeFiles() {
-		this.file = new File(this.filePath);
-	    this.outDir = new File(this.dir);
-	}
-	
-	public static String readFile(String path) throws IOException {
-		  FileInputStream stream = new FileInputStream(new File(path));
-		  try {
-		    FileChannel fc = stream.getChannel();
-		    MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-		    return Charset.defaultCharset().decode(bb).toString();
-		  }
-		  finally {
-		    stream.close();
-		  }
-		}
-	
-	public void updateTablatureFU(String tablature, String songUrl, File file, String fileName) throws IOException {
-		String tabFromFile = readFile(fileName);
-		DBUtils dbUtils = new DBUtils(this.context);
-		dbUtils.updateTablatureDBU(songUrl, tabFromFile);
-		tablature = tabFromFile;
-		file.delete();
-	}
-	
-	@SuppressWarnings("resource")
-	public String readConfig(File file) {
-		StringBuilder text = new StringBuilder();
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));
-		    String line;
+public class FileUtils {
 
-		    while ((line = br.readLine()) != null) {
-		        text.append(line);
-		        text.append('\n');
-		    }
-		}
-		catch (IOException e) {
-			Toast.makeText(this.context.getApplicationContext(), e.getMessage() + this.context.getString(R.string.sdcardReadError), Toast.LENGTH_LONG).show();
-		}
-		return text.toString();
-	}
-	
-	public void setIfMax(String configText) {
-		String max = configText.split(",")[0];
-		if(max.equals(MAX)) {
-			this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-			this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		} else if(max.equals(MIN)) {
-			this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-	    	this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-		}
-	}
-	
-	public void writeForConfig(File file, String maxForConfig, String textSize) throws IOException {
-		Writer writer;
-		writer = new BufferedWriter(new FileWriter(file));
-		writer.write(maxForConfig + "," + textSize);
-		writer.close();
-	}
-	
-	public void checkIfMax() {
-		MyTelephonyManager device = new MyTelephonyManager(this.context);
-		if(!device.isTablet()) {
-			File file = new File(this.dir + File.separator + CONFIG);
-			if(file.isFile()) {
-				String configText = readConfig(file);
-				setIfMax(configText);
-			}
-		}
-	}
-	
-	public float setSizeTextAndCheckSDCardReadable() {
-		FileUtils fileUtils = new FileUtils(this.context);
-		File file = new File(this.dir + File.separator + CONFIG);
-		Float size;
-		if(file.isFile()) {
-			size = fileUtils.getTabSize();
-		} else {
-			size = 12f;
-		}
-		return size;
-	}
-	
-	@SuppressLint("UseValueOf")
-	public Float getTabSize() {
-		File file = new File(this.dir + File.separator + CONFIG);
-		Float size = null;
-		if(file.isFile()) {
-			String configText = readConfig(file);
-			size = new Float(configText.split(",")[1]);
-		}
-		return size;
-	}
-	
-	public void setSizeToConfig(float size) throws IOException {
-		String maxForConfig;
-		File file = new File(this.dir + File.separator + CONFIG);
-		if(file.isFile()) {
-			String configText = readConfig(file);
-			maxForConfig = configText.split(",")[0];
-			String textSize = Float.toString(size);
-			writeForConfig(file, maxForConfig, textSize);
-		}
-	}
-	
-	public void saveTabSize(TextView tab) {
-		try {
-			FileUtils fileUtils = new FileUtils(this.context);
-			fileUtils.setSizeToConfig(tab.getTextSize());
-		} catch (IOException e) {
-			Toast.makeText(this.context.getApplicationContext(), R.string.sdcardWriteError, Toast.LENGTH_LONG).show();
-		}
-	}
+    private Context context;
+    private Activity activity;
+    private String filePath;
+    private String fileName;
+    private File file;
+    private File outDir;
+    private String dir;
+    private final String config;
+    private final String maximize;
+    private final String minimize;
+    private final String androidDir;
+    private final String data;
+    private static final int POINTER_ON_PERF = 4;
+    private static final int POINTER_ON_TITLE_ID = 5;
+    private static final float DEFAULT_SIZE_TEXT = 12f;
+
+    public FileUtils(Context context) {
+        File root = Environment.getExternalStorageDirectory();
+        this.context = context;
+        this.activity = (Activity) context;
+        androidDir = this.context.getString(R.string.androidDir);
+        data = this.context.getString(R.string.dataDir);
+        this.setDir(root.getAbsolutePath() + File.separator + androidDir + File.separator
+                + this.context.getPackageName());
+        config = this.context.getString(R.string.configNameFile);
+        maximize = this.context.getString(R.string.configMAX);
+        minimize = this.context.getString(R.string.configMIN);
+    }
+
+    public void makePaths(String songUrl) {
+        String[] fileTab1 = songUrl.split("/");
+        String filePerf = fileTab1[POINTER_ON_PERF];
+        String[] fileTab2 = fileTab1[POINTER_ON_TITLE_ID].split(",");
+        String fileId = fileTab2[0];
+        String fileTitle = fileTab2[1];
+        this.setFileName(filePerf + "-" + fileTitle + "." + fileId + ".txt");
+        this.setFilePath(getDir() + File.separator + getFileName());
+    }
+
+    public void makeFiles() {
+        this.setFile(new File(this.getFilePath()));
+        this.setOutDir(new File(this.getDir()));
+    }
+
+    public static String readFile(String path) throws IOException {
+        FileInputStream stream = new FileInputStream(new File(path));
+        try {
+            FileChannel fc = stream.getChannel();
+            MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+            return Charset.defaultCharset().decode(bb).toString();
+        } finally {
+            stream.close();
+        }
+    }
+
+    public void updateTablatureFU(String tablature, String songUrl, File file, String fileName) throws IOException {
+        String tabFromFile = readFile(fileName);
+        DBUtils dbUtils = new DBUtils(this.context);
+        dbUtils.updateTablatureDBU(songUrl, tabFromFile);
+        tablature = tabFromFile;
+        file.delete();
+    }
+
+    @SuppressWarnings("resource")
+    public String readConfig(File file) {
+        StringBuilder text = new StringBuilder();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+        } catch (IOException e) {
+            Toast.makeText(this.context.getApplicationContext(),
+                    e.getMessage() + this.context.getString(R.string.sdcardReadError),
+                    Toast.LENGTH_LONG).show();
+        }
+        return text.toString();
+    }
+
+    public void setIfMax(String configText) {
+        String max = configText.split(",")[0];
+        if (max.equals(maximize)) {
+            this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else if (max.equals(minimize)) {
+            this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        }
+    }
+
+    public void writeForConfig(File file, String maxForConfig, String textSize) throws IOException {
+        Writer writer;
+        writer = new BufferedWriter(new FileWriter(file));
+        writer.write(maxForConfig + "," + textSize);
+        writer.close();
+    }
+
+    public void checkIfMax() {
+        MyTelephonyManager device = new MyTelephonyManager(this.context);
+        if (!device.isTablet()) {
+            File file = new File(this.getDir() + File.separator + config);
+            if (file.isFile()) {
+                String configText = readConfig(file);
+                setIfMax(configText);
+            }
+        }
+    }
+
+    public float setSizeTextAndCheckSDCardReadable() {
+        FileUtils fileUtils = new FileUtils(this.context);
+        File file = new File(this.getDir() + File.separator + config);
+        Float size;
+        if (file.isFile()) {
+            size = fileUtils.getTabSize();
+        } else {
+            size = DEFAULT_SIZE_TEXT;
+        }
+        return size;
+    }
+
+    @SuppressLint("UseValueOf")
+    public Float getTabSize() {
+        File file = new File(this.getDir() + File.separator + config);
+        Float size = null;
+        if (file.isFile()) {
+            String configText = readConfig(file);
+            size = new Float(configText.split(",")[1]);
+        }
+        return size;
+    }
+
+    public void setSizeToConfig(float size) throws IOException {
+        String maxForConfig;
+        File file = new File(this.getDir() + File.separator + config);
+        if (file.isFile()) {
+            String configText = readConfig(file);
+            maxForConfig = configText.split(",")[0];
+            String textSize = Float.toString(size);
+            writeForConfig(file, maxForConfig, textSize);
+        }
+    }
+
+    public void saveTabSize(TextView tab) {
+        try {
+            FileUtils fileUtils = new FileUtils(this.context);
+            fileUtils.setSizeToConfig(tab.getTextSize());
+        } catch (IOException e) {
+            Toast.makeText(this.context.getApplicationContext(),
+                    R.string.sdcardWriteError, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public File getOutDir() {
+        return outDir;
+    }
+
+    public void setOutDir(File outDir) {
+        this.outDir = outDir;
+    }
+
+    public String getDir() {
+        return dir;
+    }
+
+    public void setDir(String dir) {
+        this.dir = dir;
+    }
 }

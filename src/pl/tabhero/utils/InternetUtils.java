@@ -5,21 +5,16 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 
 public class InternetUtils {
-	
-	public Context context;
-	public Activity activity;
-	
-	public InternetUtils(Context context) {
-		this.context = context;
-		this.activity = (Activity) context;
-	}
-	
-	public boolean checkInternetConnection() {
+
+    private Activity activity;
+
+    public InternetUtils(Context context) {
+        this.activity = (Activity) context;
+    }
+
+    public boolean checkInternetConnection() {
         ConnectivityManager cm = (ConnectivityManager) this.activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable() && cm.getActiveNetworkInfo().isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
-	}
+        return cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable() && cm.getActiveNetworkInfo().isConnected();
+    }
 }

@@ -12,30 +12,32 @@ import android.widget.Toast;
 
 public class CheckConnection extends AsyncTask<Void, Void, Boolean> {
 
-	private Context context;
-	private final String chordsUrl;
-	
-	public CheckConnection(Context context) {
-		this.context = context;
-		chordsUrl = this.context.getString(R.string.chordsWykonawcyUrl);
-	}
+    private Context context;
+    private final String chordsUrl;
+    private static final int MILSEC_CONNECT_TIMEOUT = 2000;
+    private static final int RESPONSE_CODE_AVAILABLE = 200;
 
-	protected void onPostExecute(boolean isWebAv) {
-		super.onPostExecute(isWebAv);
-	}
+    public CheckConnection(Context context) {
+        this.context = context;
+        chordsUrl = this.context.getString(R.string.chordsWykonawcyUrl);
+    }
 
-	@Override
-	protected Boolean doInBackground(Void... params) {
-		Boolean isWebAv;
-		if(isConnected()) {
-			isWebAv = true;
-		} else {
-			isWebAv = false;
-		}
-		return isWebAv;
-	}
-	
-	public boolean isConnected() {
+    protected void onPostExecute(boolean isWebAv) {
+        super.onPostExecute(isWebAv);
+    }
+
+    @Override
+    protected Boolean doInBackground(Void... params) {
+        Boolean isWebAv;
+        if (isConnected()) {
+            isWebAv = true;
+        } else {
+            isWebAv = false;
+        }
+        return isWebAv;
+    }
+
+    public boolean isConnected() {
         try {
             ConnectivityManager cm = (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -43,17 +45,13 @@ public class CheckConnection extends AsyncTask<Void, Void, Boolean> {
                 URL url = new URL(chordsUrl);
                 HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
                 urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(2000);
+                urlc.setConnectTimeout(MILSEC_CONNECT_TIMEOUT);
                 urlc.connect();
-                if (urlc.getResponseCode() == 200) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return urlc.getResponseCode() == RESPONSE_CODE_AVAILABLE;
             }
-        }
-        catch(Exception e) {
-        	Toast.makeText(this.context.getApplicationContext(), R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this.context.getApplicationContext(),
+                    R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
         }
         return false;
     }

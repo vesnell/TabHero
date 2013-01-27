@@ -6,24 +6,32 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 public class Connect {
-	
-	public Document doc;
-	public boolean errorConnection;
 
-	public Connect() {
-		this.errorConnection = false;
-	}
-	
-	public Document tryEnable(String url) {
-		this.doc = null;
-	    try {
-			this.doc = Jsoup.connect(url).get();
-			this.errorConnection = false;
-		} catch (MalformedURLException ep) {
-			this.errorConnection = true;
-		} catch (IOException e) {
-			this.errorConnection = true;
-		}
-	    return this.doc;
-	}
+    private Document doc;
+    private boolean errorConnection;
+
+    public Connect() {
+        this.setErrorConnection(false);
+    }
+
+    public Document tryEnable(String url) {
+        this.doc = null;
+        try {
+            this.doc = Jsoup.connect(url).get();
+            this.setErrorConnection(false);
+        } catch (MalformedURLException ep) {
+            this.setErrorConnection(true);
+        } catch (IOException e) {
+            this.setErrorConnection(true);
+        }
+        return this.doc;
+    }
+
+    public boolean isErrorConnection() {
+        return errorConnection;
+    }
+
+    public void setErrorConnection(boolean errorConnection) {
+        this.errorConnection = errorConnection;
+    }
 }
