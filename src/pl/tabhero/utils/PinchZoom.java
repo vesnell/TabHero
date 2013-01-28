@@ -1,6 +1,9 @@
 package pl.tabhero.utils;
 
+import java.math.BigDecimal;
+
 import android.content.Context;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -19,6 +22,7 @@ public class PinchZoom implements OnTouchListener {
     private double dist0, distCurrent;
     private TextView myTouchEvent;
     private String myStringTab;
+    private double prevScale = 0;
 
     public PinchZoom(Context context, TextView tabView, String stringTab) {
         this.context = context;
@@ -79,11 +83,16 @@ public class PinchZoom implements OnTouchListener {
             curScale = MIN_DIV;
         }
         if (!(Double.isNaN(curScale))) {
-            sizeText = (int) (sizeText * curScale);
-            if (sizeText < MIN_SIZE_TEXT) {
-                sizeText = MIN_SIZE_TEXT;
-            } else if (sizeText > MAX_SIZE_TEXT) {
-                sizeText = MAX_SIZE_TEXT;
+            Log.d("PINCH_PREV", Double.toString(prevScale));
+            Log.d("PINCH_CUR", Double.toString(curScale));
+            if (roundToThreeDigits(curScale) != roundToThreeDigits(prevScale)) {
+                sizeText = (int) (sizeText * curScale);
+                prevScale = curScale;
+                if (sizeText < MIN_SIZE_TEXT) {
+                    sizeText = MIN_SIZE_TEXT;
+                } else if (sizeText > MAX_SIZE_TEXT) {
+                    sizeText = MAX_SIZE_TEXT;
+                }
             }
         } else {
             sizeText = fileUtils.setSizeTextAndCheckSDCardReadable();
@@ -91,5 +100,9 @@ public class PinchZoom implements OnTouchListener {
 
         myTouchEvent.setTextSize(0, sizeText);
         myTouchEvent.setText(myStringTab);
+    }
+    
+    private static double roundToThreeDigits(double input) {
+        return new BigDecimal(input).setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 }
