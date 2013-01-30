@@ -37,11 +37,13 @@
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
         <activity android:name=".local.FavoritesActivity"
             	  android:launchMode="singleTask" 
+            	  android:windowSoftInputMode="stateHidden"
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
         <activity android:name=".net.TabViewActivity" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
         <activity android:name=".local.FavoritesTitleActivity" 
             	  android:launchMode="singleTask"
+            	  android:windowSoftInputMode="stateHidden"
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
         <activity android:name=".local.FavTabViewActivity" 
             	  android:configChanges="orientation|screenSize|keyboardHidden|keyboard"/>
