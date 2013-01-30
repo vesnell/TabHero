@@ -117,7 +117,7 @@
     <string name="describeTab4">Menu button in tablature screen to create on internal memory file with a displayed tablature, which allows edit this tablature.\n
         - After re-displayed this tablature it\'s actual and replaced previous in favorites and the file is automatically deleted from memory.\n
         - Path: /sdcard/Android/pl.tabhero/performer_name-song_name.tablature_id.txt\n
-        - To update tablature from the file don't change the name of this file.</string>
+        - To update tablature from the file don\'t change the name of this file.</string>
     <string name="describeTab5">Name of the performer and the song bar.\n
         - If you touch this bar at the bottom of the screen appear buttons plus and minus (6).</string>
     <string name="describeTab6">Buttons to small decrease and increase displayed tablature character size.</string>
