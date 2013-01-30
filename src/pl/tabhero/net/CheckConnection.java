@@ -2,7 +2,6 @@ package pl.tabhero.net;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import pl.tabhero.R;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -19,7 +18,7 @@ public class CheckConnection extends AsyncTask<Void, Void, Boolean> {
 
     public CheckConnection(Context context) {
         this.context = context;
-        chordsUrl = this.context.getString(R.string.chordsWykonawcyUrl);
+        this.chordsUrl = this.context.getString(R.string.chordsWykonawcyUrl);
     }
 
     protected void onPostExecute(boolean isWebAv) {
@@ -42,7 +41,7 @@ public class CheckConnection extends AsyncTask<Void, Void, Boolean> {
             ConnectivityManager cm = (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = cm.getActiveNetworkInfo();
             if (netInfo != null && netInfo.isConnected()) {
-                URL url = new URL(chordsUrl);
+                URL url = new URL(this.chordsUrl);
                 HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
                 urlc.setRequestProperty("Connection", "close");
                 urlc.setConnectTimeout(MILSEC_CONNECT_TIMEOUT);
