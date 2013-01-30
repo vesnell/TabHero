@@ -9,11 +9,13 @@ import android.widget.Toast;
 
 public class WifiConnection extends AsyncTask<Void, Void, Void> {
 
+    private Context context;
     private MyProgressDialogs progressDialog;
     private static final int MILSECONDS_SLEEP = 500;
     private static final int MILSECONDS_WAIT = 15000;
 
     public WifiConnection(Context context) {
+        this.context = context;
         this.progressDialog = new MyProgressDialogs(context);
     }
 
@@ -23,6 +25,10 @@ public class WifiConnection extends AsyncTask<Void, Void, Void> {
         if (wifi.isWifiEnabled()) {
             progressDialog.start(this.progressDialog.getContext().getString(R.string.wifiTryOff));
         } else {
+            MobileData mobileData = new MobileData(this.context);
+            if (mobileData.isEnabled()) {
+                mobileData.setMobileDataEnabled(false);
+            }
             progressDialog.start(this.progressDialog.getContext().getString(R.string.wifiTryOn));
         }
     }

@@ -74,6 +74,7 @@
     <string name="firstRun">Dziękuję za zainstalowanie aplikacji. Kliknij \"Pomoc\" aby zapoznać się ze wszystkimi funkcjami programu.</string>
     <string name="hello">Witaj!</string>
     <string name="mobileData">Przesył danych włączony</string>
+    <string name="mobileDataCheckError">Problem przy sprawdzaniu przesyłu danych przez sieć komórkową</string>
     
     <string name="configNameFile">config.txt</string>
     <string name="configDefault">MIN,12</string>

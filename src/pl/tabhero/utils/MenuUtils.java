@@ -56,15 +56,18 @@ public class MenuUtils {
     
     @SuppressLint("NewApi")
     private void setMobileDataIcon(Menu menu) {
-        MobileData mobileData = new MobileData(this.context);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            if (mobileData.isEnabled()) {
-                menu.add(1, MOBILEDATA, 0, "").setIcon(R.drawable.mobiledata).setShowAsAction(MOBILEDATA);
+        WifiManager wifi = (WifiManager) this.context.getSystemService(Context.WIFI_SERVICE);
+        if (!wifi.isWifiEnabled()) {
+            MobileData mobileData = new MobileData(this.context);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                if (mobileData.isEnabled()) {
+                    menu.add(1, MOBILEDATA, 0, "").setIcon(R.drawable.mobiledata).setShowAsAction(MOBILEDATA);
+                }
+            } else {
+                if (mobileData.isEnabled()) {
+                    menu.add(1, MOBILEDATA, 0, R.string.mobileData).setIcon(R.drawable.mobiledata);
+                }    
             }
-        } else {
-            if (mobileData.isEnabled()) {
-                menu.add(1, MOBILEDATA, 0, R.string.mobileData).setIcon(R.drawable.mobiledata);
-            }    
         }
     }
 }
