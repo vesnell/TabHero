@@ -1,17 +1,13 @@
 package pl.tabhero.utils;
 
-import java.util.concurrent.ExecutionException;
 import pl.tabhero.R;
-import pl.tabhero.net.CheckConnection;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.net.wifi.WifiManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.widget.Toast;
 
 public class MenuUtils {
 
@@ -32,15 +28,7 @@ public class MenuUtils {
     public Menu setMyWifiMenu() {
         this.menu.clear();
         setWifiMenuIcon(this.menu);
-        try {
-            setMobileDataIcon(this.menu);
-        } catch (InterruptedException e) {
-            Toast.makeText(this.context.getApplicationContext(),
-                    R.string.mobileDataCheckError, Toast.LENGTH_LONG).show();
-        } catch (ExecutionException e) {
-            Toast.makeText(this.context.getApplicationContext(),
-                    R.string.mobileDataCheckError, Toast.LENGTH_LONG).show();
-        }
+        setMobileDataIcon(this.menu);
         MenuInflater inflater = this.activity.getMenuInflater();
         if (!(device.isTablet())) {
             inflater.inflate(R.menu.searchart, menu);
@@ -67,11 +55,10 @@ public class MenuUtils {
     }
     
     @SuppressLint("NewApi")
-    private void setMobileDataIcon(Menu menu) throws InterruptedException, ExecutionException {
+    private void setMobileDataIcon(Menu menu) {
+        MobileData mobileData = new MobileData(this.context);
         WifiManager wifi = (WifiManager) this.context.getSystemService(Context.WIFI_SERVICE);
-        AsyncTask<Void, Void, Boolean> checkConnection = new CheckConnection(this.context).execute();
-        if (!wifi.isWifiEnabled() && checkConnection.get()) {
-            MobileData mobileData = new MobileData(this.context);
+        if (!wifi.isWifiEnabled() && mobileData.isEnabled()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                 if (mobileData.isEnabled()) {
                     menu.add(1, MOBILEDATA, 0, "").setIcon(R.drawable.mobiledata).setShowAsAction(MOBILEDATA);

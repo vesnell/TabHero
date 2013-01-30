@@ -60,7 +60,7 @@ public class MobileData {
         device.netOpenOptionsMenu();
     }
     
-    private void timer(final boolean bool) {
+    public void timer(final boolean bool) {
         InternetUtils myWifi = new InternetUtils(this.context);
         long start = System.currentTimeMillis();
         long end = 0;
