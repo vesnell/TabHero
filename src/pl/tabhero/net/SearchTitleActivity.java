@@ -11,6 +11,7 @@ import pl.tabhero.core.Tablature;
 import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.InternetUtils;
 import pl.tabhero.utils.MenuUtils;
+import pl.tabhero.utils.MobileData;
 import pl.tabhero.utils.MyEditorKeyActions;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
@@ -226,6 +227,7 @@ public class SearchTitleActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         closeOptionsMenu();
         MenuFunctions menuFunc = new MenuFunctions(this);
+        MobileData mobileData = new MobileData(this);
         switch (item.getItemId()) {
         case android.R.id.home:
             device.goHomeScreen();
@@ -234,6 +236,7 @@ public class SearchTitleActivity extends Activity {
             new WifiConnection(this).execute();
             return true;
         case MOBILEDATA:
+            mobileData.turnOff();
             return true;
         case R.id.minmax:
             try {
@@ -263,7 +266,7 @@ public class SearchTitleActivity extends Activity {
     public void onResume() {
         FileUtils fileUtils = new FileUtils(this);
         fileUtils.checkIfMax();
-        device.wifiOpenOptionsMenu();
+        device.netOpenOptionsMenu();
         super.onResume();
     }
 }

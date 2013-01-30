@@ -10,6 +10,8 @@ import android.widget.Toast;
 public class MobileData {
     
     private Context context;
+    private static final int MILSECONDS_SLEEP = 1000;
+    private static final int MILSECONDS_WAIT = 15000;
     
     public MobileData(Context context) {
         this.context = context;
@@ -50,5 +52,26 @@ public class MobileData {
         }
         return result;
     }
-
+    
+    public void turnOff() {
+        MyTelephonyManager device = new MyTelephonyManager(this.context);
+        setMobileDataEnabled(false);
+        timer(false);
+        device.netOpenOptionsMenu();
+    }
+    
+    private void timer(final boolean bool) {
+        InternetUtils myWifi = new InternetUtils(this.context);
+        long start = System.currentTimeMillis();
+        long end = 0;
+        do {
+            try {
+                Thread.sleep(MILSECONDS_SLEEP);
+            } catch (InterruptedException e) {
+                Toast.makeText(this.context.getApplicationContext(),
+                        R.string.sleepTaskError, Toast.LENGTH_LONG).show();
+            }
+            end = System.currentTimeMillis();
+        } while((myWifi.checkInternetConnection() != bool) && (end  - start < MILSECONDS_WAIT));
+    }
 }
