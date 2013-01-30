@@ -162,14 +162,38 @@
 					android:textColor="#ffffff"
 					android:layout_toRightOf="@id/img26" />
 			</RelativeLayout>
+			<RelativeLayout 
+			    android:id="@+id/search7"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/search6" >
+			    <ImageView
+			    	android:id="@+id/img27"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a7"
+			    	android:contentDescription="@string/imageDesc7" />
+				<TextView
+			    	android:id="@+id/describeSearchText7"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeSearch7"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img27" />
+			</RelativeLayout>
 			<TextView
-			    android:id="@+id/describeSearchText7"
+			    android:id="@+id/describeSearchText8"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:layout_gravity="center"
 				android:padding="5sp"
 				android:textSize="12sp"
-				android:text="@string/describeSearch7"
+				android:text="@string/describeSearch8"
 				android:textColor="#ffffff"
-				android:layout_below="@id/search6" />
+				android:layout_below="@id/search7" />
 </RelativeLayout>

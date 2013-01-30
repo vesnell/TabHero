@@ -97,15 +97,17 @@
     <string name="describeMain5">Dodatkową opcją zastępującą klikanie przycisków 3. i 4. jest możliwość przejścia do następnego ekranu przez odpowiedni gest smyrnięcia ekranu w prawo lub lewo.</string>
     <string name="searchScreen">Ekran wyszukiwania w Internecie</string>
     <string name="describeSearch1">Klawisz pozwalający na wrócenie się od razu do ekranu głównego z każdego innego ekranu.</string>
-	<string name="describeSearch2">Klawisz menu do włączenia wifi. Ikonka informuje, że nie ma włączonego wifi.</string>
-    <string name="describeSearch3">Klawisz menu do wyłączenia wifi. Ikonka informuje, że jest ustanowione połączenie wifi.</string>
-    <string name="describeSearch4">Klawisz ten we wszystkich ekranach wyszukiwania pozwala na rozpoczęcie wyszukiwania wykonawcy/utworu.\n
+    <string name="describeSearch2">Klawisz menu do wyłączenia wifi. Ikonka informuje, że jest ustanowione połączenie wifi.</string>
+    <string name="describeSearch3">Klawisz menu informujący, że jest włączony przesył danych z sieci komórkowej. Jeśli nie jest wyświetlony, to przesył danych nie jest włączony.</string>
+    <string name="describeSearch4">Klawisz menu do włączenia wifi. Ikonka informuje, że nie ma włączonego wifi.\n
+        - Dodatkowo jeśli jest jeszcze włączony przesył danych z sieci komórkowej (3), to włączenie tej opcji wyłącza przesył danych (3) i chowa ikonkę (3).</string>
+    <string name="describeSearch5">Klawisz ten we wszystkich ekranach wyszukiwania pozwala na rozpoczęcie wyszukiwania wykonawcy/utworu.\n
         - Wyszukiwanie odbywa się poprzez znalezienie w dostępnych nazwach wykonawców/utworów identycznego jak wprowadzony ciąg znaków.</string>
-    <string name="describeSearch5">Miejsce na wprowadzenie nazwy wykonawcy/zespołu, lub ciągu znaków, który ma ten wykonawca/utwór zawierać.\n
+    <string name="describeSearch6">Miejsce na wprowadzenie nazwy wykonawcy/zespołu, lub ciągu znaków, który ma ten wykonawca/utwór zawierać.\n
         - Rozpoczęcie wyszukiwania bez wpisania żadnego znaku wyświetli wszystkie możliwe wyniki.*\n
         * Wyjątkiem jest ekran wyszukiwania wykonawcy w Internecie, gdzie pierwszy wprowadzony znak musi być pierwszą literą/znakiem nazwy zespołu/wykonawcy.</string>
-    <string name="describeSearch6">Lista znalezionych wykonawców/utworów, gdzie po wybraniu jednej z opcji przechodzi się do następnego ekranu.</string>
-    <string name="describeSearch7">Możliwe jest cofnięcie się do poprzedniego ekranu poprzez klawisz wstecz na telefonie lub poprzez odpowiedni gest palcem na ekranie.</string>
+    <string name="describeSearch7">Lista znalezionych wykonawców/utworów, gdzie po wybraniu jednej z opcji przechodzi się do następnego ekranu.</string>
+    <string name="describeSearch8">Możliwe jest cofnięcie się do poprzedniego ekranu poprzez klawisz wstecz na telefonie lub poprzez odpowiedni gest palcem na ekranie.</string>
     <string name="tabScreen">Ekran z tabulaturą</string>
     <string name="describeTab1">Klawisz menu w ekranie wyświetlania z Internetu, który umożliwa dodanie wyświetlanej tabulatury do bazy.\n
         - W przypadku posiadania już danej tabulatury w bazie lub zmiany jej nazwy w Ulubionych wyświetlony zostanie odpowiedni komunikat.</string>
