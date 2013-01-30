@@ -87,8 +87,7 @@
     <string name="androidDir">Android</string>
     <string name="dataDir">data</string>
     
-    <string name="helptextview">Display help, where should be a description how to use app and what is the funcionality of this app.\n
-        And more other stuff.</string>
+    <string name="helptextview">There are presented a few of screenshots below from ICS android OS on mobile phone. In GB android OS and older most of options are available when you hit menu button.</string>
     <string name="mainScreen">Main Screen</string>
     <string name="describeMain1">Menu button which shows short informations and which can be used to shows help.</string>
     <string name="describeMain2">Menu button to toggle bar. Not available for tablets.</string>
