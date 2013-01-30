@@ -94,7 +94,7 @@
     <string name="describeMain2">Klawisz menu do chowania lub odkrywania górnego paska. Opcja niedostępna dla tabletów.</string>
     <string name="describeMain3">Przycisk przenoszący do wyszukania tabulatury w Internecie.</string>
     <string name="describeMain4">Przycisk przenoszący do wyszukania tabulatury spośród ulubionych.</string>
-    <string name="describeMain5">Dodatkową opcją zastępującą klikanie przycisków 3. i 4. jest możliwość przejścia do następnego ekranu przez odpowiedni gest smyrnięcia ekranu w prawo lub lewo.</string>
+    <string name="describeMain5">Dodatkową opcją zastępującą klikanie przycisków (3) i (4) jest możliwość przejścia do następnego ekranu przez odpowiedni gest smyrnięcia ekranu w prawo lub lewo.</string>
     <string name="searchScreen">Ekran wyszukiwania w Internecie</string>
     <string name="describeSearch1">Klawisz pozwalający na wrócenie się od razu do ekranu głównego z każdego innego ekranu.</string>
     <string name="describeSearch2">Klawisz menu do wyłączenia wifi. Ikonka informuje, że jest ustanowione połączenie wifi.</string>
@@ -102,7 +102,7 @@
         - Jeśli nie jest wyświetlony to znaczy, że przesył danych nie jest włączony lub włączone jest wifi (2).\n
         - Wciśnięcie klawisza wyłącza przesył danych z sieci komórkowej.</string>
     <string name="describeSearch4">Klawisz menu do włączenia wifi. Ikonka informuje, że nie ma włączonego wifi.\n
-        - Dodatkowo jeśli jest jeszcze włączony przesył danych z sieci komórkowej (3), to włączenie tej opcji wyłącza przesył danych (3) i chowa ikonkę (3).</string>
+        - Dodatkowo jeśli jest jeszcze włączony przesył danych z sieci komórkowej (3), to włączenie tej opcji wyłącza przesył danych i chowa ikonkę (3).</string>
     <string name="describeSearch5">Klawisz ten we wszystkich ekranach wyszukiwania pozwala na rozpoczęcie wyszukiwania wykonawcy/utworu.\n
         - Wyszukiwanie odbywa się poprzez znalezienie w dostępnych nazwach wykonawców/utworów identycznego jak wprowadzony ciąg znaków.</string>
     <string name="describeSearch6">Miejsce na wprowadzenie nazwy wykonawcy/zespołu, lub ciągu znaków, który ma ten wykonawca/utwór zawierać.\n

@@ -15,7 +15,6 @@ public class DBAdapter {
     public static final String KEY_TITLE = "title";
     public static final String KEY_TAB = "tab";
     public static final String KEY_URL = "url";
-    private static final String TAG = "DBAdapter";
 
     private static final String DATABASE_NAME = "TabHeroDB";
     private static final String DATABASE_TABLE = "tabhero";

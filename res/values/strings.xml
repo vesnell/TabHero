@@ -90,62 +90,62 @@
     <string name="helptextview">Display help, where should be a description how to use app and what is the funcionality of this app.\n
         And more other stuff.</string>
     <string name="mainScreen">Main Screen</string>
-    <string name="describeMain1">Klawisz menu wyświetlający skrócone informacje oraz dający możliwość wyświetlenia pomocy.</string>
-    <string name="describeMain2">Klawisz menu do chowania lub odkrywania górnego paska. Opcja niedostępna dla tabletów.</string>
-    <string name="describeMain3">Przycisk przenoszący do wyszukania tabulatury w Internecie.</string>
-    <string name="describeMain4">Przycisk przenoszący do wyszukania tabulatury spośród ulubionych.</string>
-    <string name="describeMain5">Dodatkową opcją zastępującą klikanie przycisków 3. i 4. jest możliwość przejścia do następnego ekranu przez odpowiedni gest smyrnięcia ekranu w prawo lub lewo.</string>
-    <string name="searchScreen">Ekran wyszukiwania w Internecie</string>
-    <string name="describeSearch1">Klawisz pozwalający na wrócenie się od razu do ekranu głównego z każdego innego ekranu.</string>
-    <string name="describeSearch2">Klawisz menu do wyłączenia wifi. Ikonka informuje, że jest ustanowione połączenie wifi.</string>
-    <string name="describeSearch3">Klawisz menu informujący, że jest włączony przesył danych z sieci komórkowej.\n
-        - Jeśli nie jest wyświetlony to znaczy, że przesył danych nie jest włączony lub włączone jest wifi (2).\n
-        - Wciśnięcie klawisza wyłącza przesył danych z sieci komórkowej.</string>
-    <string name="describeSearch4">Klawisz menu do włączenia wifi. Ikonka informuje, że nie ma włączonego wifi.\n
-        - Dodatkowo jeśli jest jeszcze włączony przesył danych z sieci komórkowej (3), to włączenie tej opcji wyłącza przesył danych (3) i chowa ikonkę (3).</string>
-    <string name="describeSearch5">Klawisz ten we wszystkich ekranach wyszukiwania pozwala na rozpoczęcie wyszukiwania wykonawcy/utworu.\n
-        - Wyszukiwanie odbywa się poprzez znalezienie w dostępnych nazwach wykonawców/utworów identycznego jak wprowadzony ciąg znaków.</string>
-    <string name="describeSearch6">Miejsce na wprowadzenie nazwy wykonawcy/zespołu, lub ciągu znaków, który ma ten wykonawca/utwór zawierać.\n
-        - Rozpoczęcie wyszukiwania bez wpisania żadnego znaku wyświetli wszystkie możliwe wyniki.*\n
-        * Wyjątkiem jest ekran wyszukiwania wykonawcy w Internecie, gdzie pierwszy wprowadzony znak musi być pierwszą literą/znakiem nazwy zespołu/wykonawcy.</string>
-    <string name="describeSearch7">Lista znalezionych wykonawców/utworów, gdzie po wybraniu jednej z opcji przechodzi się do następnego ekranu.</string>
-    <string name="describeSearch8">Możliwe jest cofnięcie się do poprzedniego ekranu poprzez klawisz wstecz na telefonie lub poprzez odpowiedni gest palcem na ekranie.</string>
-    <string name="tabScreen">Ekran z tabulaturą</string>
-    <string name="describeTab1">Klawisz menu w ekranie wyświetlania z Internetu, który umożliwa dodanie wyświetlanej tabulatury do bazy.\n
-        - W przypadku posiadania już danej tabulatury w bazie lub zmiany jej nazwy w Ulubionych wyświetlony zostanie odpowiedni komunikat.</string>
-    <string name="describeTab2">Klawisz menu, który otwiera przeglądarkę w poszukiwaniu tekstu utworu.</string>
-    <string name="describeTab3">Klawisz menu w ekranie wyświetlania z Ulubionych, który usuwa wyświetloną tabulaturę z bazy.</string>
-    <string name="describeTab4">Klawisz menu w ekranie wyświetlania z Ulubionych, który tworzy plik txt z tabulaturą na wewnętrznej pamięci telefonu, co umożliwia edycję tabulatury.\n
-        - Po ponownym wyświetleniu tabulatury jest ona już aktualna i zastępuje ona poprzednią zapisaną w bazie, a plik z tabulaturą jest automatycznie usuwany z pamięci telefonu.\n
-        - Ścieżka dostępu: /sdcard/Android/pl.tabhero/nazwa_zespołu-nazwa_utworu.id_tabulatury.txt\n
-        - Aby program TabHero zaktualizował tabulaturę nie wolno zmienić nazwy pliku.</string>
-    <string name="describeTab5">Nieruchomy pasek z nazwą wykonawcy i utworu.\n
-        - Po jego dotknięciu u dołu ekranu pojawiają się klawisze plus i minus (6).</string>
-    <string name="describeTab6">Klawisze umożliwiające niewielkie pomniejszenie lub powiększenie czcionki wyświetlanej tabulatury.</string>
-    <string name="describeTab7">Wyświetlana tabulatura.\n
-        - Możliwe jest jej dynamiczne pomniejszanie lub powiększanie poprzez gest uszczypnięcia na wyświetlanej tabulaturze.\n
-        - Poprzez długie przytrzymanie palca na tabulaturze u dołu ekranu pojawi się klawisz kłódki (8).</string>
-    <string name="describeTab8">Klawisze umożliwiające zablokowanie orientacji ekranu lub jej odblokowanie.</string>
-    <string name="describeTab9">Ekran z wyświetlaną tabulaturą ma zablokowaną możliwość samoczynnego uśpienia.</string>
-    <string name="favoritesScreen">Ekran Ulubionych</string>
-    <string name="describeFav1">Klawisz menu umożliwiający przejście do Ekranu Usuwania.</string>
-    <string name="describeFav2">Klawisz menu pozwalający na dodanie własnego wykonawcy i/lub utworu do bazy.</string>
-    <string name="describeFav3">Lista ulubionych wykonawców/utworów, gdzie po wybraniu jednej z opcji przechodzi się do następnego ekranu.\n
-        - Długie przytrzymanie palcem na jednej z opcji pozwala na zmianę nazwy tego wykonawcy/utworu.</string>
-    <string name="describeFav4">Możliwe jest cofnięcie się do poprzedniego ekranu poprzez klawisz wstecz na telefonie lub poprzez odpowiedni gest palcem na ekranie.</string>
-    <string name="removeScreen">Ekran Usuwania</string>
-    <string name="describeRem1">CheckBox umożliwiający zaznaczenie wybranego wykonawcy/utworu z listy.</string>
-    <string name="describeRem2">Klawisz menu pozwalający odwrócić zaznaczenie na liście, tzn.: wszystkie zaznaczone opcje zostaną odznaczone, a niezaznaczone zostaną zaznaczone.</string>
-    <string name="describeRem3">Przycisk usuwający z bazy zaznaczonych wykonawców (wraz ze wszystkimi ich utworami) lub zaznaczone utwory.</string>
+    <string name="describeMain1">Menu button which shows short informations and which can be used to shows help.</string>
+    <string name="describeMain2">Menu button to toggle bar. Not available for tablets.</string>
+    <string name="describeMain3">Button which moves to search tablature via Internet.</string>
+    <string name="describeMain4">Button which moves to search tablature in Favorites.</string>
+    <string name="describeMain5">Additional option which replaces (3) and (4) buttons is ability to move to the next screen by swipe your finger gesture.</string>
+    <string name="searchScreen">Search via Internet Screen</string>
+    <string name="describeSearch1">Button for go back to main screen from any other screen.</string>
+    <string name="describeSearch2">Menu button to turn off wifi. This icon informs wifi is enabled.</string>
+    <string name="describeSearch3">Menu button which informs mobile data is on.\n
+        - If you can\'t see this button, it means mobile data is off or wifi is enabled (2).\n
+        - Pressing button turns off mobile data.</string>
+    <string name="describeSearch4">Menu button to enable wifi. This icon informs wifi is off.\n
+        - Additionally if mobile data is on (3), then if you press this button mobile data will turn off and hides icon (3).</string>
+    <string name="describeSearch5">This button allows you to start searching performer/song on every search screen.\n
+        - Search is performed by finding identical to the input string in available names of performers/songs.</string>
+    <string name="describeSearch6">Place to input name of the performer/song or string, which this performer/song should contains.\n
+        - If you don\'t type any character and start searching, you\'ll get all the possibilities.*\n
+        * Performer search screen via Internet is an exception, where first typed character is a first letter of searching performer/song.</string>
+    <string name="describeSearch7">List of performers/songs found, where if you choose one of the options move to the next screen.</string>
+    <string name="describeSearch8">You can go back to previous screen if you press \"back\" button on device or if you swipe back on the screen.</string>
+    <string name="tabScreen">Tablature screen</string>
+    <string name="describeTab1">Menu button in tablature screen via Internet to add displayed tablature to favorites.\n
+        - If this tablature is already exists in favorites or if you changed name this performer/song in favorites will be displayed message.</string>
+    <string name="describeTab2">Menu button to open web browser to search lyrics of this song.</string>
+    <string name="describeTab3">Menu button in tablature screen in favorites to remove displayed tablature.</string>
+    <string name="describeTab4">Menu button in tablature screen to create on internal memory file with a displayed tablature, which allows edit this tablature.\n
+        - After re-displayed this tablature it\'s actual and replaced previous in favorites and the file is automatically deleted from memory.\n
+        - Path: /sdcard/Android/pl.tabhero/performer_name-song_name.tablature_id.txt\n
+        - To update tablature from the file don't change the name of this file.</string>
+    <string name="describeTab5">Name of the performer and the song bar.\n
+        - If you touch this bar at the bottom of the screen appear buttons plus and minus (6).</string>
+    <string name="describeTab6">Buttons to small decrease and increase displayed tablature character size.</string>
+    <string name="describeTab7">Displayed tablature.\n
+        - You can decrease or increase tablature size by pinch gesture on this tablature.\n
+        - On long touch on this tablature at the bottom of the screen will be apper a padlock icon (8).</string>
+    <string name="describeTab8">Buttons to lock or unlock orientation of the screen.</string>
+    <string name="describeTab9">Tablature screen are blocked to automatically off.</string>
+    <string name="favoritesScreen">Favorites screen</string>
+    <string name="describeFav1">Menu button to move to remove screen.</string>
+    <string name="describeFav2">Menu button to add your own performer/song to favorites.</string>
+    <string name="describeFav3">List of favorites performers/songs where if you choose one of these options move to the next screen.\n
+        - On long touch on one of these options you can chanege name of this performer/song.</string>
+    <string name="describeFav4">You can go back to previous screen if you press \"back\" button on device or if you swipe back on the screen.</string>
+    <string name="removeScreen">Remove screen</string>
+    <string name="describeRem1">CheckBox to select chosen performer/song.</string>
+    <string name="describeRem2">Menu button to invert selection, e.g.: all selected options will be cleared, all unselected will be selected.</string>
+    <string name="describeRem3">Button to remove all selected performers (and all their songs) or all selected songs.</string>
     <string name="author">Wacław Szabłowski\n
         szablowski.waclaw@gmail.com</string>  
-    <string name="comments">Wszelkie uwagi co do aplikacji proszę kierować na maila. Ofertami pracy także nie pogardzę :)</string>
+    <string name="comments">Any comments about the application send via e-mail. Job offers will be also acceptable :)</string>
     
-    <string name="imageDescFavScreen">Opis ekranu Ulubione</string>
-    <string name="imageDescMainScreen">Opis ekranu głównego</string>
-    <string name="imageDescTabScreen">Opis ekranu tabulatury</string>
-    <string name="imageDescSearchScreen">Opis ekranu wyszukiwania</string>
-    <string name="imageDescRemScreen">Opis ekranu usuwania</string>
+    <string name="imageDescFavScreen">Description of the favorites screen</string>
+    <string name="imageDescMainScreen">Description of the main screen</string>
+    <string name="imageDescTabScreen">Description of the tablature screen</string>
+    <string name="imageDescSearchScreen">Description of the search screen</string>
+    <string name="imageDescRemScreen">Description of the remove screen</string>
     <string name="imageDesc1">1</string>
     <string name="imageDesc2">2</string>
     <string name="imageDesc3">3</string>
@@ -154,10 +154,10 @@
     <string name="imageDesc6">6</string>
     <string name="imageDesc7">7</string>
     <string name="imageDesc8">8</string>
-    <string name="imageDescAppIcon">Ikona aplikacji</string>
-    <string name="imageDescLoopBtn">Przycisk wyszukiwania</string>
-    <string name="imageDescLockBtn">Przycisk blokowania orientacji ekranu</string>
-    <string name="imageDescUnlockBtn">Przycisk odblokowywania orientacji ekranu</string>
-    <string name="imageDescMinusBtn">Przycisk pomniejszania czcionki tabulatury</string>
-    <string name="imageDescPlusBtn">Przycisk powiększania czcionki tabulatury</string>
+    <string name="imageDescAppIcon">App icon</string>
+    <string name="imageDescLoopBtn">Search button</string>
+    <string name="imageDescLockBtn">Button to lock orientation of the screen</string>
+    <string name="imageDescUnlockBtn">Button to unlock orientation of the screen</string>
+    <string name="imageDescMinusBtn">Button to decrease character size of the tablature</string>
+    <string name="imageDescPlusBtn">Button to increase character size of the tablature</string>
 </resources>
