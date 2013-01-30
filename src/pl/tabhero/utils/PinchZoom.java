@@ -1,9 +1,7 @@
 package pl.tabhero.utils;
 
 import java.math.BigDecimal;
-
 import android.content.Context;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -83,8 +81,6 @@ public class PinchZoom implements OnTouchListener {
             curScale = MIN_DIV;
         }
         if (!(Double.isNaN(curScale))) {
-            Log.d("PINCH_PREV", Double.toString(prevScale));
-            Log.d("PINCH_CUR", Double.toString(curScale));
             if (roundToThreeDigits(curScale) != roundToThreeDigits(prevScale)) {
                 sizeText = (int) (sizeText * curScale);
                 prevScale = curScale;

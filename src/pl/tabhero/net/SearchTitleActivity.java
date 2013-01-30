@@ -42,7 +42,8 @@ public class SearchTitleActivity extends Activity {
     private ImageButton btnTitleSearch;
     private ArrayAdapter<String> listAdapter;
     private MyProgressDialogs progressDialog = new MyProgressDialogs(this);
-    private static final int MENUWIFI = Menu.FIRST;
+    private static final int MENUWIFI = Menu.FIRST + 1;
+    private static final int MOBILEDATA = Menu.FIRST;
     private String chordsUrl;
     private GestureDetector gestureDetector;
     private MyTelephonyManager device = new MyTelephonyManager(this);
@@ -231,6 +232,8 @@ public class SearchTitleActivity extends Activity {
             return true;
         case MENUWIFI:
             new WifiConnection(this).execute();
+            return true;
+        case MOBILEDATA:
             return true;
         case R.id.minmax:
             try {

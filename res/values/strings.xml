@@ -72,6 +72,7 @@
     <string name="versionReadError">Read info app error</string>
     <string name="firstRun">Thank you for downloading this app and click Help to view summary of this program functions.</string>
     <string name="hello">Hello!</string>
+    <string name="mobileData">Mobile data is running</string>
     
     <string name="configNameFile">config.txt</string>
     <string name="configDefault">MIN,12</string>
