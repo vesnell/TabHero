@@ -5,75 +5,75 @@
     <string name="favorites">Go to favorites</string>
     <string name="hint_title">Enter the name of the song</string>
     <string name="hint_author">Enter artist</string>
-    <string name="online">Search in Internet</string>
+    <string name="online">Search on the Internet</string>
     <string name="chosen_performer">Selected artist</string>
     <string name="srchPerf">Artist searching&#8230;</string>
     <string name="srchSong">Song searching&#8230; </string>
-    <string name="srchTab">Tabulature downloading&#8230;</string>
-    <string name="wait">Wait!</string>
+    <string name="srchTab">Downloading tablature&#8230;</string>
+    <string name="wait">Please wait</string>
     <string name="hintEmpty">You have to enter the artist!</string>
-    <string name="hintSpace">The first character can not be a space or dot.</string>
-    <string name="connectionError">Connecting to the internet problem</string>
+    <string name="hintSpace">The first character must not be a space or dot.</string>
+    <string name="connectionError">Internet connection problem</string>
     <string name="addToFav">Add to favorites</string>
-    <string name="delFromFav">Remove</string>
+    <string name="delFromFav">Remove from favorites</string>
     <string name="addToBaseSuccess">Successfully added to favorites</string>
-    <string name="recordExist">This tabulature is already exist in your favorites</string>
-    <string name="areYouSure">Are you sure, you want to delete?</string>
-    <string name="delFromBaseSuccess">Tabulature was deleted</string>
+    <string name="recordExist">This tablature already exists on your favorites</string>
+    <string name="areYouSure">Are you sure you want to delete this item?</string>
+    <string name="delFromBaseSuccess">Tablature was deleted</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="notDelFromBase">Tablature wasn\'t delete</string>
-    <string name="delPerfFromBase">Artists were removed</string>
+    <string name="notDelFromBase">Tablature wasn\'t deleted</string>
+    <string name="delPerfFromBase">Artists were removed successfully</string>
     <string name="edit">Edit list</string>
     <string name="deleteFavPerfs">Remove from favorites</string>
-    <string name="delTitleFromBase">Songs have been removed</string>
-    <string name="errorInInternetConnection">Connecting to the internet problem</string>
-    <string name="openWebBrowser">Find lyrics</string>
-    <string name="info">Informations</string>
+    <string name="delTitleFromBase">Songs have been removed successfully</string>
+    <string name="errorInInternetConnection">Internet connection problem</string>
+    <string name="openWebBrowser">Search for lyrics</string>
+    <string name="info">Info</string>
     <string name="ok">OK</string>
     <string name="message_info">Author: Wacław Szabłowski\nszablowski.waclaw@gmail.com</string>
     <string name="help">Help</string>
     <string name="reverse_selection">Reverse selection</string>
-    <string name="notDelFromPerfsBase">Artists weren\'t delete</string>
-    <string name="notDelFromTitlesBase">Tablatures weren\'t delete</string>
-    <string name="minmax">Maximalize/Reduce view</string>
-    <string name="wifiOn">Wifi is on</string>
-    <string name="wifiOff">Wifi is off</string>
-    <string name="wifiTrueError">Wifi setting enable error</string>
-    <string name="wifiFalseError">Wifi setting disable error</string>
+    <string name="notDelFromPerfsBase">Artists weren\'t deleted</string>
+    <string name="notDelFromTitlesBase">Tablatures weren\'t deleted</string>
+    <string name="minmax">Toggle bar</string>
+    <string name="wifiOn">WiFi on</string>
+    <string name="wifiOff">WiFi off</string>
+    <string name="wifiTrueError">Activating WiFi error</string>
+    <string name="wifiFalseError">Deactivating WiFi error</string>
     <string name="editTab">Edit tablature</string>
     <string name="createDirectoryError">Unable to create directory </string>
-    <string name="sdcardMountError">Maybe the SD card is not mounted?</string>
+    <string name="sdcardMountError">Perhaps the SD card is not mounted?</string>
     <string name="sdcardWriteError"> Unable to write to external storage.</string>
     <string name="sdcardReadError">Unable to read external storage</string>
     <string name="configReadError">Unable to read config file</string>
     <string name="sdcardWriteOK">Tablature successfully saved to: </string>
-    <string name="changePerf">Change name of the band</string>
-    <string name="cancel">Anuluj</string>
+    <string name="changePerf">Change name of the performer</string>
+    <string name="cancel">Cancel</string>
     <string name="changeTitle">Change title of this song</string>
     <string name="addOwnRecord">Add your own tablature</string>
-    <string name="tabExist">This tablature was added to favorites, but its title or artist was edited. Do you still want to add to favorites?</string>
-    <string name="notAddTab">Tablature isn\'t add to favorite</string>
-    <string name="lockOn">Orientation of the screen is locked</string>
-    <string name="lockOff">Orientation of the screen is unlocked</string>
-    <string name="wifiTryOn">Wifi is starting</string>
-    <string name="wifiTryOff">Wifi is shutting down</string>
+    <string name="tabExist">This tablature was added to favorites, but its title or artist was edited. Do you still want to add it to favorites?</string>
+    <string name="notAddTab">Tablature not added to favorites</string>
+    <string name="lockOn">Screen orientation locked</string>
+    <string name="lockOff">Screen orientation unlocked</string>
+    <string name="wifiTryOn">Starting WiFi&#8230;</string>
+    <string name="wifiTryOff">Turning off WiFi&#8230;</string>
     <string name="addOwnPerf">Add your own performer</string>
-    <string name="addOwnTitle">Add a song title of performer</string>
-    <string name="websiteConnectionError">Website service connection error</string>
-    <string name="choosePerf">You have to choose performer from the list to continue</string>
-    <string name="chooseTitle">You have to choose title from the list to continue</string>
+    <string name="addOwnTitle">Add a song title for this performer</string>
+    <string name="websiteConnectionError">Website connection error</string>
+    <string name="choosePerf">You have to choose or type in performer to continue</string>
+    <string name="chooseTitle">You have to choose or type in title to continue</string>
     <string name="tablatureUpdateError">Failed to update tablature</string>
-    <string name="minmaxError">Changed size window problem</string>
-    <string name="configReadWriteError">Unknown error with read/write on SDCard to config file</string>
-    <string name="unknownConnectionError">Unknwon error with connect to service</string>
-    <string name="createDatabaseError">Create database error</string>
-    <string name="sleepTaskError">Sleep task error</string>
-    <string name="versionReadError">Read info app error</string>
-    <string name="firstRun">Thank you for downloading this app and click Help to view summary of this program functions.</string>
-    <string name="hello">Hello!</string>
-    <string name="mobileData">Mobile data is running</string>
-    <string name="mobileDataCheckError">Checking mobile data connection problem</string>
+    <string name="minmaxError">Toggle status bar problem</string>
+    <string name="configReadWriteError">Unknown input/output error on SDCard while writing to config file</string>
+    <string name="unknownConnectionError">Website connection error</string>
+    <string name="createDatabaseError">Error creating database</string>
+    <string name="sleepTaskError">Error while trying to task sleep</string>
+    <string name="versionReadError">Info read error</string>
+    <string name="firstRun">Thanks for downloading this app. Click Help to view summary of this program\'s functions.</string>
+    <string name="hello">Welcome!</string>
+    <string name="mobileData">Mobile data transfer on</string>
+    <string name="mobileDataCheckError">Mobile data transfer connection problem</string>
     
     <string name="configNameFile">config.txt</string>
     <string name="configDefault">MIN,12</string>
@@ -87,58 +87,58 @@
     <string name="androidDir">Android</string>
     <string name="dataDir">data</string>
     
-    <string name="helptextview">There are presented a few of screenshots below from ICS android OS on mobile phone. In GB android OS and older most of options are available when you hit menu button.</string>
+    <string name="helptextview">Screenshots below present TabHero on Android Ice Cream Sandwich version. On Android Ginger Bread version and older, most of these options are available pressing menu button.</string>
     <string name="mainScreen">Main Screen</string>
-    <string name="describeMain1">Menu button which shows short informations and which can be used to shows help.</string>
-    <string name="describeMain2">Menu button to toggle bar. Not available for tablets.</string>
-    <string name="describeMain3">Button which moves to search tablature via Internet.</string>
-    <string name="describeMain4">Button which moves to search tablature in Favorites.</string>
-    <string name="describeMain5">Additional option which replaces (3) and (4) buttons is ability to move to the next screen by swipe your finger gesture.</string>
-    <string name="searchScreen">Search via Internet Screen</string>
-    <string name="describeSearch1">Button for go back to main screen from any other screen.</string>
-    <string name="describeSearch2">Menu button to turn off wifi. This icon informs wifi is enabled.</string>
-    <string name="describeSearch3">Menu button which informs mobile data is on.\n
+    <string name="describeMain1">Menu button which shows short information and from which help can be displayed.</string>
+    <string name="describeMain2">Menu button toggles status bar. Not available for tablet devices.</string>
+    <string name="describeMain3">Go to tablature Internet search.</string>
+    <string name="describeMain4">Go to tablature Favorites search.</string>
+    <string name="describeMain5">Instead of pressing buttons (3) and (4), you can go to the those sections by swiping screen to left or right.</string>
+    <string name="searchScreen">Search via Internet</string>
+    <string name="describeSearch1">\”Home\” button.</string>
+    <string name="describeSearch2">Pressing this button turns WiFi off. Shown when WiFi is on.</string>
+    <string name="describeSearch3">Shown when mobile data transfer is on.\n
         - If you can\'t see this button, it means mobile data is off or wifi is enabled (2).\n
         - Pressing button turns off mobile data.</string>
-    <string name="describeSearch4">Menu button to enable wifi. This icon informs wifi is off.\n
-        - Additionally if mobile data is on (3), then if you press this button mobile data will turn off and hides icon (3).</string>
-    <string name="describeSearch5">This button allows you to start searching performer/song on every search screen.\n
-        - Search is performed by finding identical to the input string in available names of performers/songs.</string>
-    <string name="describeSearch6">Place to input name of the performer/song or string, which this performer/song should contains.\n
-        - If you don\'t type any character and start searching, you\'ll get all the possibilities.*\n
-        * Performer search screen via Internet is an exception, where first typed character is a first letter of searching performer/song.</string>
-    <string name="describeSearch7">List of performers/songs found, where if you choose one of the options move to the next screen.</string>
-    <string name="describeSearch8">You can go back to previous screen if you press \"back\" button on device or if you swipe back on the screen.</string>
-    <string name="tabScreen">Tablature screen</string>
-    <string name="describeTab1">Menu button in tablature screen via Internet to add displayed tablature to favorites.\n
-        - If this tablature is already exists in favorites or if you changed name this performer/song in favorites will be displayed message.</string>
-    <string name="describeTab2">Menu button to open web browser to search lyrics of this song.</string>
-    <string name="describeTab3">Menu button in tablature screen in favorites to remove displayed tablature.</string>
-    <string name="describeTab4">Menu button in tablature screen to create on internal memory file with a displayed tablature, which allows edit this tablature.\n
-        - After re-displayed this tablature it\'s actual and replaced previous in favorites and the file is automatically deleted from memory.\n
+    <string name="describeSearch4">Pressing this button turns WiFi on. Shown when WiFi is off.\n
+        - In addition, if mobile data is on (3), then you can press this button to turn off mobile data transfer.</string>
+    <string name="describeSearch5">Search for performers or songs on any search screen.\n
+        - Search for input string in available names of performers/songs.</string>
+    <string name="describeSearch6">Type performer or song name here.\n
+        - If you don\'t type in any character and start searching, you\'ll get all the possibilities.*\n
+        * Internet performer search is an exception. First typed character is a first letter of searched performer.</string>
+    <string name="describeSearch7">List of performers/songs found. Select one to see details.</string>
+    <string name="describeSearch8">You can go back to previous screen by pressing \"back\" button on your device or swiping back the screen.</string>
+    <string name="tabScreen">Tablature view</string>
+    <string name="describeTab1">Add displayed tablature to favorites.\n
+        - If this tablature already exists in favorites or the name of this performer/song in favorites has changed, an appropriate message will be displayed.</string>
+    <string name="describeTab2">Search for lyrics of this song in web browser.</string>
+    <string name="describeTab3">Remove currently displayed tablature from favorites.</string>
+    <string name="describeTab4">Save currently displayed tablature as file on internal memory. It allows to edit this tablature.\n
+        - After editing previously saved tablature, your tablature in favorites is replaced with a new one (with your changes) and the file is automatically deleted from memory.\n
         - Path: /sdcard/Android/pl.tabhero/performer_name-song_name.tablature_id.txt\n
-        - To update tablature from the file don\'t change the name of this file.</string>
-    <string name="describeTab5">Name of the performer and the song bar.\n
-        - If you touch this bar at the bottom of the screen appear buttons plus and minus (6).</string>
-    <string name="describeTab6">Buttons to small decrease and increase displayed tablature character size.</string>
-    <string name="describeTab7">Displayed tablature.\n
-        - You can decrease or increase tablature size by pinch gesture on this tablature.\n
-        - On long touch on this tablature at the bottom of the screen will be apper a padlock icon (8).</string>
-    <string name="describeTab8">Buttons to lock or unlock orientation of the screen.</string>
-    <string name="describeTab9">Tablature screen are blocked to automatically off.</string>
-    <string name="favoritesScreen">Favorites screen</string>
-    <string name="describeFav1">Menu button to move to remove screen.</string>
-    <string name="describeFav2">Menu button to add your own performer/song to favorites.</string>
-    <string name="describeFav3">List of favorites performers/songs where if you choose one of these options move to the next screen.\n
-        - On long touch on one of these options you can chanege name of this performer/song.</string>
-    <string name="describeFav4">You can go back to previous screen if you press \"back\" button on device or if you swipe back on the screen.</string>
-    <string name="removeScreen">Remove screen</string>
-    <string name="describeRem1">CheckBox to select chosen performer/song.</string>
-    <string name="describeRem2">Menu button to invert selection, e.g.: all selected options will be cleared, all unselected will be selected.</string>
-    <string name="describeRem3">Button to remove all selected performers (and all their songs) or all selected songs.</string>
+        - To update tablature from file make sure not to change the name of this file.</string>
+    <string name="describeTab5">Static bar with the performer and the song names.\n
+        - If you touch this bar, at the bottom of the screen plus and minus buttons (6) will appear.</string>
+    <string name="describeTab6">Slightly scales tablature font down or up.</string>
+    <string name="describeTab7">Current tablature.\n
+        - You can scale tablature size up or down by pinch gesture.\n
+        - Long press to show orientation lock/unlock button (8).</string>
+    <string name="describeTab8">Press to lock or unlock orientation of the screen.</string>
+    <string name="describeTab9">Auto-sleep is disabled on tablature screen.</string>
+    <string name="favoritesScreen">Favorites</string>
+    <string name="describeFav1">Show remove items screen.</string>
+    <string name="describeFav2">Add your own performer/song to favorites.</string>
+    <string name="describeFav3">Choose one of performers or songs to view details.\n
+        - On long touch on one of these items you can change name of this performer/song.</string>
+    <string name="describeFav4">You can go back to previous screen by pressing \"back\" button on your device or swiping back the screen.</string>
+    <string name="removeScreen">Remove items</string>
+    <string name="describeRem1">Select performer/song for deletion.</string>
+    <string name="describeRem2">Invert selection, e.g.: all selected options will be cleared, all unselected will be selected.</string>
+    <string name="describeRem3">Remove all selected performers (and all their songs) or all selected songs.</string>
     <string name="author">Wacław Szabłowski\n
         szablowski.waclaw@gmail.com</string>  
-    <string name="comments">Any comments about the application send via e-mail. Job offers will be also acceptable :)</string>
+    <string name="comments">Having problems with TabHero? Questions, suggestions? Please mail me. Job offers will be also acceptable :)</string>
     
     <string name="imageDescFavScreen">Description of the favorites screen</string>
     <string name="imageDescMainScreen">Description of the main screen</string>
@@ -157,6 +157,6 @@
     <string name="imageDescLoopBtn">Search button</string>
     <string name="imageDescLockBtn">Button to lock orientation of the screen</string>
     <string name="imageDescUnlockBtn">Button to unlock orientation of the screen</string>
-    <string name="imageDescMinusBtn">Button to decrease character size of the tablature</string>
-    <string name="imageDescPlusBtn">Button to increase character size of the tablature</string>
+    <string name="imageDescMinusBtn">Button to scale down font size of the tablature</string>
+    <string name="imageDescPlusBtn">Button to scale up font size of the tablature</string>
 </resources>
