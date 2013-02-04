@@ -27,7 +27,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -403,14 +402,17 @@ public class MenuFunctions {
         if (mCheckBoxResult.contains(isNotChecked)) {
             final String maxForConfig = mMaxForConfig;
             final String textSize = mTextSize;
-            AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
-            LayoutInflater builderInflater = LayoutInflater.from(this.context);
-            View searchTitleCheckboxLayout = builderInflater.inflate(R.layout.checkbox_in_search_title, null);
-            final CheckBox dontShowAgain = (CheckBox) searchTitleCheckboxLayout.findViewById(R.id.skip);
-            builder.setView(searchTitleCheckboxLayout);
+            
+            final Dialog builder = new Dialog(this.context);
+            builder.setContentView(R.layout.checkbox_in_search_title);
             builder.setTitle(R.string.hint);
-            builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
+            TextView text = (TextView) builder.findViewById(R.id.textHint);
+            text.setText(this.context.getString(R.string.infoAboutHintEmpty));
+            Button dialogButtonHelp = (Button) builder.findViewById(R.id.okButton);
+            final CheckBox dontShowAgain = (CheckBox) builder.findViewById(R.id.skip);
+            dialogButtonHelp.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     String checkBoxResult = isNotChecked;
                     if (dontShowAgain.isChecked()) {
                     checkBoxResult = isChecked;
@@ -421,11 +423,10 @@ public class MenuFunctions {
                         Toast.makeText(context.getApplicationContext(),
                                 context.getString(R.string.configWriteError), Toast.LENGTH_LONG).show();
                     }
-                    dialog.dismiss();
+                    builder.dismiss();
                 }
             });
-            AlertDialog alert = builder.create();
-            alert.show();
+            builder.show();
         }
     }
 }
