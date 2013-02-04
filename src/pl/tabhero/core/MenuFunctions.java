@@ -409,7 +409,6 @@ public class MenuFunctions {
             final CheckBox dontShowAgain = (CheckBox) searchTitleCheckboxLayout.findViewById(R.id.skip);
             builder.setView(searchTitleCheckboxLayout);
             builder.setTitle(R.string.hint);
-            builder.setMessage(this.context.getString(R.string.infoAboutHintEmpty));
             builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     String checkBoxResult = isNotChecked;
