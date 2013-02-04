@@ -84,6 +84,14 @@ public class SearchTitleActivity extends Activity {
 
         OnTouchListener myOnTouchListener = new MyOnTouchListener(gestureDetector);
         searchListView.setOnTouchListener(myOnTouchListener);
+        
+        //AlertDialog info with checkbox "dont show again" about how to find all available titles
+        MenuFunctions menuFunc = new MenuFunctions(this);
+        try {
+            menuFunc.searchTitleRun();
+        } catch (IOException e) {
+            Toast.makeText(getApplicationContext(), R.string.configReadWriteError, Toast.LENGTH_LONG).show();
+        }
     }
 
     public void searchTitleView(View v) {
@@ -129,35 +137,40 @@ public class SearchTitleActivity extends Activity {
             if (!connect.isErrorConnection()) {
                 song.setListOfTitles();
                 song.setListOfUrls();
-                listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.titlesnet, song.getListOfTitles());
-                searchListView.setAdapter(listAdapter);
-                searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String posUrl = song.getListOfSongUrls().get(position);
-                        String posTitle = song.getListOfTitles().get(position);
-                        Tablature tablature = new Tablature(posTitle, posUrl);
-                        if (!(myWifi.checkInternetConnection())) {
-                            Toast.makeText(getApplicationContext(),
-                                    R.string.connectionError, Toast.LENGTH_LONG).show();
-                        } else {
-                            AsyncTask<Void, Void, Boolean> checkConnection2 = new CheckConnection(SearchTitleActivity.this).execute();
-                            try {
-                                if (checkConnection2.get()) {
-                                    new GetTablature().execute(tablature);
-                                } else {
+                if (song.getListOfTitles().size() > 0) {
+                    listAdapter = new ArrayAdapter<String>(SearchTitleActivity.this, R.layout.titlesnet, song.getListOfTitles());
+                    searchListView.setAdapter(listAdapter);
+                    searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            String posUrl = song.getListOfSongUrls().get(position);
+                            String posTitle = song.getListOfTitles().get(position);
+                            Tablature tablature = new Tablature(posTitle, posUrl);
+                            if (!(myWifi.checkInternetConnection())) {
+                                Toast.makeText(getApplicationContext(),
+                                        R.string.connectionError, Toast.LENGTH_LONG).show();
+                            } else {
+                                AsyncTask<Void, Void, Boolean> checkConnection2 = new CheckConnection(SearchTitleActivity.this).execute();
+                                try {
+                                    if (checkConnection2.get()) {
+                                        new GetTablature().execute(tablature);
+                                    } else {
+                                        Toast.makeText(getApplicationContext(),
+                                                R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
+                                    }
+                                } catch (InterruptedException e) {
                                     Toast.makeText(getApplicationContext(),
-                                            R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
+                                            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
+                                } catch (ExecutionException e) {
+                                    Toast.makeText(getApplicationContext(),
+                                            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
                                 }
-                            } catch (InterruptedException e) {
-                                Toast.makeText(getApplicationContext(),
-                                        R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
-                            } catch (ExecutionException e) {
-                                Toast.makeText(getApplicationContext(),
-                                        R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
                             }
                         }
-                    }
-                });
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            String.format(getString(R.string.noRecordsFound), song.getTypedTitle()), Toast.LENGTH_LONG).show();
+                }
             } else {
                 Toast.makeText(getApplicationContext(),
                         R.string.websiteConnectionError, Toast.LENGTH_LONG).show();

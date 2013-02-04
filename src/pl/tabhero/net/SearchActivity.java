@@ -122,19 +122,24 @@ public class SearchActivity extends Activity {
                 performer.setListOfNames();
                 performer.setListOfUrls();
 
-                listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artistsnet, performer.getListOfNames());
-                searchListView.setAdapter(listAdapter);
-                searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
-                        Bundle bun = new Bundle();
-                        bun.putString("performerName", performer.getListOfNames().get(position));
-                        bun.putString("performerUrl", performer.getListOfUrls().get(position));
-                        i.putExtras(bun);
-                        startActivity(i);
-                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                    }
-                });
+                if (performer.getListOfNames().size() > 0) {
+                    listAdapter = new ArrayAdapter<String>(SearchActivity.this, R.layout.artistsnet, performer.getListOfNames());
+                    searchListView.setAdapter(listAdapter);
+                    searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent i = new Intent(SearchActivity.this, SearchTitleActivity.class);
+                            Bundle bun = new Bundle();
+                            bun.putString("performerName", performer.getListOfNames().get(position));
+                            bun.putString("performerUrl", performer.getListOfUrls().get(position));
+                            i.putExtras(bun);
+                            startActivity(i);
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        }
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            String.format(getString(R.string.noRecordsFound), performer.getTypedName()), Toast.LENGTH_LONG).show();
+                }
             } else {
                 Toast.makeText(getApplicationContext(),
                         R.string.websiteConnectionError, Toast.LENGTH_LONG).show();

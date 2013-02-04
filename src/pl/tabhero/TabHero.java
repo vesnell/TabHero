@@ -30,6 +30,7 @@ public class TabHero extends Activity {
     private GestureDetector gestureDetector;
     private String fileName;
     private String defaultConfig;
+    private static final int CONFIG_SIZE = 3;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -64,8 +65,16 @@ public class TabHero extends Activity {
                 writer.close();
                 menuFunc.firstRun();
             } else {
-                String configText = fileUtils.readConfig(file);
-                fileUtils.setIfMax(configText);
+                String text = fileUtils.readConfig(file);
+                if (text.split(",").length == CONFIG_SIZE) {
+                    String configText = fileUtils.readConfig(file);
+                    fileUtils.setIfMax(configText);
+                } else {
+                    String maxForConfig = text.split(",")[0];
+                    String textSize = text.split(",")[1];
+                    String checkBoxResult = getString(R.string.isNotChecked);
+                    fileUtils.writeForConfig(file, maxForConfig, textSize, checkBoxResult);
+                }
             }
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(),

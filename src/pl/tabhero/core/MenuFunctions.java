@@ -27,11 +27,13 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -51,6 +53,9 @@ public class MenuFunctions {
     private final String googleSearch;
     private final String spaceCode;
     private final String lyricsString;
+    private final String isNotChecked;
+    private final String isChecked;
+    private final String defaultSize;
 
     public MenuFunctions(Context context) {
         this.context = context;
@@ -63,6 +68,9 @@ public class MenuFunctions {
         config = this.context.getString(R.string.configNameFile);
         maximize = this.context.getString(R.string.configMAX);
         minimize = this.context.getString(R.string.configMIN);
+        isNotChecked = this.context.getString(R.string.isNotChecked);
+        isChecked = this.context.getString(R.string.isChecked);
+        defaultSize = this.context.getString(R.string.defaultSize);
     }
 
     public void addToFav(String performer, String title, String tab, String songUrl) {
@@ -180,7 +188,8 @@ public class MenuFunctions {
         if (file.isFile()) {
             String text = fileUtils.readConfig(file);
             String textSize = text.split(",")[1];
-            fileUtils.writeForConfig(file, maxForConfig, textSize);
+            String checkBoxResult = text.split(",")[2];
+            fileUtils.writeForConfig(file, maxForConfig, textSize, checkBoxResult);
         } else {
             Toast.makeText(this.context.getApplicationContext(),
                     this.context.getString(R.string.configReadError), Toast.LENGTH_LONG).show();
@@ -373,5 +382,51 @@ public class MenuFunctions {
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+    
+    public void searchTitleRun() throws IOException {
+        final FileUtils fileUtils = new FileUtils(this.context);
+        String configPath = fileUtils.getDir() + File.separator + config;
+        final File file = new File(configPath);
+        String mMaxForConfig = minimize;
+        String mTextSize = defaultSize;
+        String mCheckBoxResult = isNotChecked;
+        if (file.isFile()) {
+            String text = fileUtils.readConfig(file);
+            mMaxForConfig = text.split(",")[0];
+            mTextSize = text.split(",")[1];
+            mCheckBoxResult = text.split(",")[2];
+        } else {
+            Toast.makeText(this.context.getApplicationContext(),
+                    this.context.getString(R.string.configReadError), Toast.LENGTH_LONG).show();
+        }
+        if (mCheckBoxResult.contains(isNotChecked)) {
+            final String maxForConfig = mMaxForConfig;
+            final String textSize = mTextSize;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+            LayoutInflater builderInflater = LayoutInflater.from(this.context);
+            View searchTitleCheckboxLayout = builderInflater.inflate(R.layout.checkbox_in_search_title, null);
+            final CheckBox dontShowAgain = (CheckBox) searchTitleCheckboxLayout.findViewById(R.id.skip);
+            builder.setView(searchTitleCheckboxLayout);
+            builder.setTitle(R.string.hint);
+            builder.setMessage(this.context.getString(R.string.infoAboutHintEmpty));
+            builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    String checkBoxResult = isNotChecked;
+                    if (dontShowAgain.isChecked()) {
+                    checkBoxResult = isChecked;
+                    }
+                    try {
+                        fileUtils.writeForConfig(file, maxForConfig, textSize, checkBoxResult);
+                    } catch (IOException e) {
+                        Toast.makeText(context.getApplicationContext(),
+                                context.getString(R.string.configWriteError), Toast.LENGTH_LONG).show();
+                    }
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
     }
 }

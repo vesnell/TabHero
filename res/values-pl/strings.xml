@@ -48,6 +48,7 @@
     <string name="sdcardWriteError"> Nie udało się uzyskać możliwości zapisu.</string>
     <string name="sdcardReadError">Nie udało się uzyskać możliwości odczytu.</string>
     <string name="configReadError">Nie udało się odczytać pliku config.</string>
+    <string name="configWriteError">Nie udało się zapisać do pliku config.</string>
     <string name="sdcardWriteOK">Tabulatura została zapisana do: </string>
     <string name="changePerf">Zmień nazwę zespołu</string>
     <string name="cancel">Anuluj</string>
@@ -75,9 +76,14 @@
     <string name="hello">Witaj!</string>
     <string name="mobileData">Przesył danych włączony</string>
     <string name="mobileDataCheckError">Problem przy sprawdzaniu przesyłu danych przez sieć komórkową</string>
+    <string name="favoritesEmpty">Nie masz jeszcze żadnej tabulatury w ulubionych</string>
+    <string name="noRecordsFound">Nie znaleziono żadnych wyników pasujących do \"%s\"</string>
+    <string name="dontShowAgain">Nie pokazuj tego okna więcej</string>
+    <string name="hint">Porada</string>
+    <string name="infoAboutHintEmpty">Aby wyszukać wszystkie dostępne utwory tego wykonawcy wciśnij lupkę pozostawiając puste pole edycji</string>
     
     <string name="configNameFile">config.txt</string>
-    <string name="configDefault">MIN,12</string>
+    <string name="configDefault">MIN,12,isNotChecked</string>
     <string name="configMIN">MIN</string>
     <string name="configMAX">MAX</string>
     <string name="googleUrl">http://www.google.com/search?q=</string>
@@ -87,6 +93,9 @@
     <string name="chordsWykonawcyUrl">http://www.chords.pl/wykonawcy/</string>
     <string name="androidDir">Android</string>
     <string name="dataDir">data</string>
+    <string name="isNotChecked">isNotChecked</string>
+    <string name="isChecked">isChecked</string>
+    <string name="defaultSize">12</string>
     
     <string name="helptextview">Poniżej zaprezentowane są screeny aplikacji z systemu android w wersji 4.0 na telefon. W systemach 2.3 i niższych większość opcji dostępna jest pod przyciskiem MENU.</string>
     <string name="mainScreen">Ekran główny</string>

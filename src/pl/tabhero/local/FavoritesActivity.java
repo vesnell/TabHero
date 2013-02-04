@@ -68,7 +68,11 @@ public class FavoritesActivity extends Activity {
         device.hideKeyboard(editFavPerformer);
 
         ArrayList<String> listOfChosenPerfsFromBase = dbUtils.addPerfFromBase();
-        createListOfPerfsAndHandleIt(listOfChosenPerfsFromBase);
+        if (listOfChosenPerfsFromBase.size() == 0) {
+            Toast.makeText(getApplicationContext(), R.string.favoritesEmpty, Toast.LENGTH_LONG).show();
+        } else {
+            createListOfPerfsAndHandleIt(listOfChosenPerfsFromBase);
+        }
 
         InputFilter filter = new MyFilter();
         editFavPerformer.setFilters(new InputFilter[]{filter});

@@ -118,10 +118,10 @@ public class FileUtils {
         }
     }
 
-    public void writeForConfig(File file, String maxForConfig, String textSize) throws IOException {
+    public void writeForConfig(File file, String maxForConfig, String textSize, String checkBoxResult) throws IOException {
         Writer writer;
         writer = new BufferedWriter(new FileWriter(file));
-        writer.write(maxForConfig + "," + textSize);
+        writer.write(maxForConfig + "," + textSize + "," + checkBoxResult);
         writer.close();
     }
 
@@ -161,12 +161,14 @@ public class FileUtils {
 
     public void setSizeToConfig(float size) throws IOException {
         String maxForConfig;
+        String checkBoxResult;
         File file = new File(this.getDir() + File.separator + config);
         if (file.isFile()) {
             String configText = readConfig(file);
             maxForConfig = configText.split(",")[0];
+            checkBoxResult = configText.split(",")[2];
             String textSize = Float.toString(size);
-            writeForConfig(file, maxForConfig, textSize);
+            writeForConfig(file, maxForConfig, textSize, checkBoxResult);
         }
     }
 

@@ -28,6 +28,10 @@ public class Songs {
         this.typedTitle = typedTitle;
         this.setPerformerUrl(performerUrl);
     }
+    
+    public String getTypedTitle() {
+        return this.typedTitle;
+    }
 
     public void setMapOfChosenTitles(Document doc) {
         String codeSongs = doc.select("table.piosenki").toString();

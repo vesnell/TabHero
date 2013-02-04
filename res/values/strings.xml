@@ -47,6 +47,7 @@
     <string name="sdcardWriteError"> Unable to write to external storage.</string>
     <string name="sdcardReadError">Unable to read external storage</string>
     <string name="configReadError">Unable to read config file</string>
+    <string name="configWriteError">Unable to write config file</string>
     <string name="sdcardWriteOK">Tablature successfully saved to: </string>
     <string name="changePerf">Change name of the performer</string>
     <string name="cancel">Cancel</string>
@@ -74,9 +75,14 @@
     <string name="hello">Welcome!</string>
     <string name="mobileData">Mobile data transfer on</string>
     <string name="mobileDataCheckError">Mobile data transfer connection problem</string>
+    <string name="favoritesEmpty">There are no tablatures in favorites</string>
+    <string name="noRecordsFound">No records matching \"%s\" found</string>
+    <string name="dontShowAgain">Don\'t show again</string>
+    <string name="hint">Hint</string>
+    <string name="infoAboutHintEmpty">Press magnifier icon with empty textbox to find this performer\'s all available songs</string>
     
     <string name="configNameFile">config.txt</string>
-    <string name="configDefault">MIN,12</string>
+    <string name="configDefault">MIN,12,isNotChecked</string>
     <string name="configMIN">MIN</string>
     <string name="configMAX">MAX</string>
     <string name="googleUrl">http://www.google.com/search?q=</string>
@@ -86,6 +92,9 @@
     <string name="chordsWykonawcyUrl">http://www.chords.pl/wykonawcy/</string>
     <string name="androidDir">Android</string>
     <string name="dataDir">data</string>
+    <string name="isNotChecked">isNotChecked</string>
+    <string name="isChecked">isChecked</string>
+    <string name="defaultSize">12</string>
     
     <string name="helptextview">Screenshots below present TabHero on Android Ice Cream Sandwich version. On Android Ginger Bread version and older, most of these options are available pressing menu button.</string>
     <string name="mainScreen">Main Screen</string>
