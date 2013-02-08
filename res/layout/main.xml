@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:background="@drawable/background" >
+    android:background="@drawable/tap3" >
     <!-- android:background="#eaeaea" >  -->
 
      <Button
@@ -43,7 +43,7 @@
          android:layout_below="@+id/favorites"
          android:layout_centerHorizontal="true"
          android:layout_marginTop="44dp"
-         android:src="@drawable/tabhero_icon"
+         android:src="@drawable/icon_obrys"
          android:contentDescription="@string/imageDescAppIcon" />
 
 </RelativeLayout>

@@ -16,7 +16,7 @@
 			    android:layout_alignParentLeft="true"
 			    android:layout_alignParentRight="true"
 			    android:layout_below="@id/mainScreen"
-			    android:src="@drawable/describemain"
+			    android:src="@drawable/describemainnew"
 			    android:contentDescription="@string/imageDescMainScreen" />
 			<RelativeLayout 
 			    android:id="@+id/main1"
