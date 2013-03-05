@@ -1,6 +1,5 @@
 package pl.tabhero.net;
 
-import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import org.jsoup.nodes.Document;
@@ -57,7 +56,7 @@ public class SearchActivity extends Activity {
         chordsUrl = getString(R.string.chordsWykonawcyUrl);
 
         FileUtils fileUtils = new FileUtils(this);
-        fileUtils.checkIfMax();
+        fileUtils.fillUIFromPreferences();
 
         device.setHomeButtonEnabledForICS();
 
@@ -227,11 +226,7 @@ public class SearchActivity extends Activity {
             mobileData.turnOff();
             return true;
         case R.id.minmax:
-            try {
-                menuFunc.minMax();
-            } catch (IOException e) {
-                Toast.makeText(getApplicationContext(), R.string.minmaxError, Toast.LENGTH_LONG).show();
-            }
+            menuFunc.minMax();
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -253,7 +248,7 @@ public class SearchActivity extends Activity {
     @Override
     public void onResume() {
         FileUtils fileUtils = new FileUtils(this);
-        fileUtils.checkIfMax();
+        fileUtils.fillUIFromPreferences();
         device.netOpenOptionsMenu();
         super.onResume();
     }

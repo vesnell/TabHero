@@ -37,7 +37,7 @@ public class EditFavTitles extends Activity {
         setContentView(R.layout.editrecords);
 
         FileUtils fileUtils = new FileUtils(this);
-        fileUtils.checkIfMax();
+        fileUtils.fillUIFromPreferences();
 
         device.setHomeButtonEnabledForICS();
 

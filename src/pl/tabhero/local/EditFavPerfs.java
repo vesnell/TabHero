@@ -35,7 +35,7 @@ public class EditFavPerfs extends Activity {
         setContentView(R.layout.editrecords);
 
         FileUtils fileUtils = new FileUtils(this);
-        fileUtils.checkIfMax();
+        fileUtils.fillUIFromPreferences();
 
         device.setHomeButtonEnabledForICS();
 

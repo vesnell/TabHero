@@ -81,10 +81,12 @@
     <string name="hint">Hint</string>
     <string name="infoAboutHintEmpty">Press magnifier icon with empty textbox to find this performer\'s all available songs</string>
     
-    <string name="configNameFile">config.txt</string>
-    <string name="configDefault">MIN,12,isNotChecked</string>
+    <string name="configNameFile">My_Preferences</string>
+    <string name="isCheckedInConfig">isCheckedInConfig</string>
+    <string name="isConfigMax">isConfigMax</string>
     <string name="configMIN">MIN</string>
     <string name="configMAX">MAX</string>
+    <string name="configSize">configSize</string>
     <string name="googleUrl">http://www.google.com/search?q=</string>
     <string name="spaceUrl">%20</string>
     <string name="lyricsUrl">lyrics</string>

@@ -61,7 +61,7 @@ public class SearchTitleActivity extends Activity {
         device.setHomeButtonEnabledForICS();
 
         FileUtils fileUtils = new FileUtils(this);
-        fileUtils.checkIfMax();
+        fileUtils.fillUIFromPreferences();
 
         Intent i = getIntent();
         Bundle extras = i.getExtras();
@@ -252,11 +252,7 @@ public class SearchTitleActivity extends Activity {
             mobileData.turnOff();
             return true;
         case R.id.minmax:
-            try {
-                menuFunc.minMax();
-            } catch (IOException e) {
-                Toast.makeText(getApplicationContext(), R.string.minmaxError, Toast.LENGTH_LONG).show();
-            }
+            menuFunc.minMax();
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -278,7 +274,7 @@ public class SearchTitleActivity extends Activity {
     @Override
     public void onResume() {
         FileUtils fileUtils = new FileUtils(this);
-        fileUtils.checkIfMax();
+        fileUtils.fillUIFromPreferences();
         device.netOpenOptionsMenu();
         super.onResume();
     }

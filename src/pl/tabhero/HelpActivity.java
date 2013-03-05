@@ -16,7 +16,7 @@ public class HelpActivity extends Activity {
         setContentView(R.layout.help);
 
         FileUtils fileUtils = new FileUtils(this);
-        fileUtils.checkIfMax();
+        fileUtils.fillUIFromPreferences();
 
         device.setHomeButtonEnabledForICS();
     }

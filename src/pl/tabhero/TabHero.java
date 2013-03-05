@@ -1,10 +1,5 @@
 package pl.tabhero;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.local.FavoritesActivity;
 import pl.tabhero.net.SearchActivity;
@@ -21,65 +16,25 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class TabHero extends Activity {
 
     private Button btnOnline;
     private Button btnOnBase;
     private GestureDetector gestureDetector;
-    private String fileName;
-    private String defaultConfig;
-    private static final int CONFIG_SIZE = 3;
 
     @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        fileName = getString(R.string.configNameFile);
-        defaultConfig = getString(R.string.configDefault);
-
         setContentView(R.layout.main);
 
         btnOnline = (Button) findViewById(R.id.online);
         btnOnBase = (Button) findViewById(R.id.favorites);
-
+        
         FileUtils fileUtils = new FileUtils(this);
-        File outDir = new File(fileUtils.getDir());
-        if (!outDir.isDirectory()) {
-            outDir.mkdir();
-        }
-        try {
-            if (!outDir.isDirectory()) {
-                throw new IOException(getString(R.string.createDirectoryError) + getPackageName()
-                        + "." + getString(R.string.sdcardMountError));
-            }
-            File file = new File(fileUtils.getDir() + File.separator + fileName);
-            if (!file.isFile()) {
-                Writer writer;
-                File outputFile = new File(outDir, fileName);
-                MenuFunctions menuFunc = new MenuFunctions(this);
-                writer = new BufferedWriter(new FileWriter(outputFile));
-                writer.write(defaultConfig);
-                writer.close();
-                menuFunc.firstRun();
-            } else {
-                String text = fileUtils.readConfig(file);
-                if (text.split(",").length == CONFIG_SIZE) {
-                    String configText = fileUtils.readConfig(file);
-                    fileUtils.setIfMax(configText);
-                } else {
-                    String maxForConfig = text.split(",")[0];
-                    String textSize = text.split(",")[1];
-                    String checkBoxResult = getString(R.string.isNotChecked);
-                    fileUtils.writeForConfig(file, maxForConfig, textSize, checkBoxResult);
-                }
-            }
-        } catch (IOException e) {
-            Toast.makeText(getApplicationContext(),
-                    R.string.configReadWriteError, Toast.LENGTH_LONG).show();
-        }
+        fileUtils.fillUIFromPreferences();
 
         gestureDetector = new GestureDetector(new MyGestureDetector(this));
         final MyGestureDetector myGestureDetector = new MyGestureDetector(this);
@@ -122,11 +77,7 @@ public class TabHero extends Activity {
             menuFunc.showInfo();
             return true;
         case R.id.minmax:
-            try {
-                menuFunc.minMax();
-            } catch (IOException e) {
-                Toast.makeText(getApplicationContext(), R.string.minmaxError, Toast.LENGTH_LONG).show();
-            }
+            menuFunc.minMax();
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -141,7 +92,7 @@ public class TabHero extends Activity {
     @Override
     public void onResume() {
         FileUtils fileUtils = new FileUtils(this);
-        fileUtils.checkIfMax();
+        fileUtils.fillUIFromPreferences();
         super.onResume();
     }
 

@@ -1,6 +1,5 @@
 package pl.tabhero.net;
 
-import java.io.IOException;
 import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.utils.ButtonsScale;
@@ -21,7 +20,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class TabViewActivity extends Activity {
 
@@ -41,7 +39,7 @@ public class TabViewActivity extends Activity {
         setContentView(R.layout.tabview);
 
         FileUtils fileUtils = new FileUtils(this);
-        fileUtils.checkIfMax();
+        fileUtils.fillUIFromPreferences();
 
         device.setHomeButtonEnabledForICS();
 
@@ -52,7 +50,7 @@ public class TabViewActivity extends Activity {
 
         TextView head = (TextView) findViewById(R.id.performerAndTitle);
         tab = (TextView) findViewById(R.id.tabInTabView);
-        Float size = fileUtils.setSizeTextAndCheckSDCardReadable();
+        Float size = fileUtils.setSizeText();
         tab.setTextSize(size);
 
         buttons = (LinearLayout) findViewById(R.id.buttons);
@@ -114,11 +112,7 @@ public class TabViewActivity extends Activity {
             menuFunc.openWebBrowser(performer, title);
             return true;
         case R.id.minmax:
-            try {
-                menuFunc.minMax();
-            } catch (IOException e) {
-                Toast.makeText(getApplicationContext(), R.string.minmaxError, Toast.LENGTH_LONG).show();
-            }
+            menuFunc.minMax();
             return true;
         default:
             return super.onOptionsItemSelected(item);

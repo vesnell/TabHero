@@ -91,7 +91,7 @@ public class PinchZoom implements OnTouchListener {
                 }
             }
         } else {
-            sizeText = fileUtils.setSizeTextAndCheckSDCardReadable();
+            sizeText = fileUtils.setSizeText();
         }
 
         myTouchEvent.setTextSize(0, sizeText);

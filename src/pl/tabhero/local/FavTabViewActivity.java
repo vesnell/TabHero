@@ -43,7 +43,7 @@ public class FavTabViewActivity extends Activity {
         setContentView(R.layout.tabview);
 
         FileUtils fileUtils = new FileUtils(this);
-        fileUtils.checkIfMax();
+        fileUtils.fillUIFromPreferences();
 
         device.setHomeButtonEnabledForICS();
 
@@ -53,7 +53,7 @@ public class FavTabViewActivity extends Activity {
 
         head = (TextView) findViewById(R.id.performerAndTitle);
         tab = (TextView) findViewById(R.id.tabInTabView);
-        Float size = fileUtils.setSizeTextAndCheckSDCardReadable();
+        Float size = fileUtils.setSizeText();
         tab.setTextSize(size);
 
         buttons = (LinearLayout) findViewById(R.id.buttons);
@@ -129,11 +129,7 @@ public class FavTabViewActivity extends Activity {
             menuFunc.openWebBrowser(performer, title);
             return true;
         case R.id.minmax:
-            try {
-                menuFunc.minMax();
-            } catch (IOException e) {
-                Toast.makeText(getApplicationContext(), R.string.minmaxError, Toast.LENGTH_LONG).show();
-            }
+            menuFunc.minMax();
             return true;
         case R.id.editTab:
             menuFunc.editTab(tablature, songUrl);

@@ -23,6 +23,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,7 +44,6 @@ public class MenuFunctions {
     private Context context;
     private Activity activity;
     private DBUtils dbUtils;
-    private final String config;
     private final String maximize;
     private final String minimize;
     private String className;
@@ -52,9 +52,6 @@ public class MenuFunctions {
     private final String googleSearch;
     private final String spaceCode;
     private final String lyricsString;
-    private final String isNotChecked;
-    private final String isChecked;
-    private final String defaultSize;
 
     public MenuFunctions(Context context) {
         this.context = context;
@@ -64,12 +61,8 @@ public class MenuFunctions {
         googleSearch = this.context.getString(R.string.googleUrl);
         spaceCode = this.context.getString(R.string.spaceUrl);
         lyricsString = this.context.getString(R.string.lyricsUrl);
-        config = this.context.getString(R.string.configNameFile);
         maximize = this.context.getString(R.string.configMAX);
         minimize = this.context.getString(R.string.configMIN);
-        isNotChecked = this.context.getString(R.string.isNotChecked);
-        isChecked = this.context.getString(R.string.isChecked);
-        defaultSize = this.context.getString(R.string.defaultSize);
     }
 
     public void addToFav(String performer, String title, String tab, String songUrl) {
@@ -166,7 +159,9 @@ public class MenuFunctions {
         alert.show();
     }
 
-    public void minMax() throws IOException {
+    public void minMax() {
+        String configName = this.context.getString(R.string.configNameFile);
+        SharedPreferences preferences = this.context.getSharedPreferences(configName, Activity.MODE_PRIVATE);
         String maxForConfig;
         boolean fullScreen = (this.activity.getWindow().getAttributes().flags
                 & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
@@ -181,18 +176,10 @@ public class MenuFunctions {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
             maxForConfig = maximize;
         }
-        FileUtils fileUtils = new FileUtils(this.context);
-        String configPath = fileUtils.getDir() + File.separator + config;
-        File file = new File(configPath);
-        if (file.isFile()) {
-            String text = fileUtils.readConfig(file);
-            String textSize = text.split(",")[1];
-            String checkBoxResult = text.split(",")[2];
-            fileUtils.writeForConfig(file, maxForConfig, textSize, checkBoxResult);
-        } else {
-            Toast.makeText(this.context.getApplicationContext(),
-                    this.context.getString(R.string.configReadError), Toast.LENGTH_LONG).show();
-        }
+        
+        SharedPreferences.Editor preferencesEditor = preferences.edit();
+        preferencesEditor.putString(this.context.getString(R.string.isConfigMax), maxForConfig);
+        preferencesEditor.commit();
     }
 
     private InputFilter filter = new MyFilter();
@@ -384,25 +371,10 @@ public class MenuFunctions {
     }
     
     public void searchTitleRun() throws IOException {
-        final FileUtils fileUtils = new FileUtils(this.context);
-        String configPath = fileUtils.getDir() + File.separator + config;
-        final File file = new File(configPath);
-        String mMaxForConfig = minimize;
-        String mTextSize = defaultSize;
-        String mCheckBoxResult = isNotChecked;
-        if (file.isFile()) {
-            String text = fileUtils.readConfig(file);
-            mMaxForConfig = text.split(",")[0];
-            mTextSize = text.split(",")[1];
-            mCheckBoxResult = text.split(",")[2];
-        } else {
-            Toast.makeText(this.context.getApplicationContext(),
-                    this.context.getString(R.string.configReadError), Toast.LENGTH_LONG).show();
-        }
-        if (mCheckBoxResult.contains(isNotChecked)) {
-            final String maxForConfig = mMaxForConfig;
-            final String textSize = mTextSize;
-            
+        String configName = this.context.getString(R.string.configNameFile);
+        final SharedPreferences preferences = this.context.getSharedPreferences(configName, Activity.MODE_PRIVATE);
+        boolean isChecked = preferences.getBoolean(this.context.getString(R.string.isCheckedInConfig), false);
+        if (!isChecked) {
             final Dialog builder = new Dialog(this.context);
             builder.setContentView(R.layout.checkbox_in_search_title);
             builder.setTitle(R.string.hint);
@@ -413,15 +385,10 @@ public class MenuFunctions {
             dialogButtonHelp.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String checkBoxResult = isNotChecked;
                     if (dontShowAgain.isChecked()) {
-                    checkBoxResult = isChecked;
-                    }
-                    try {
-                        fileUtils.writeForConfig(file, maxForConfig, textSize, checkBoxResult);
-                    } catch (IOException e) {
-                        Toast.makeText(context.getApplicationContext(),
-                                context.getString(R.string.configWriteError), Toast.LENGTH_LONG).show();
+                        SharedPreferences.Editor preferencesEditor = preferences.edit();
+                        preferencesEditor.putBoolean(context.getString(R.string.isCheckedInConfig), true);
+                        preferencesEditor.commit();
                     }
                     builder.dismiss();
                 }

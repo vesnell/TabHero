@@ -13,9 +13,9 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import pl.tabhero.R;
 import pl.tabhero.db.DBUtils;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -30,11 +30,9 @@ public class FileUtils {
     private File file;
     private File outDir;
     private String dir;
-    private final String config;
     private final String maximize;
     private final String minimize;
     private final String androidDir;
-    private final String data;
     private static final int POINTER_ON_PERF = 4;
     private static final int POINTER_ON_TITLE_ID = 5;
     private static final float DEFAULT_SIZE_TEXT = 12f;
@@ -44,10 +42,9 @@ public class FileUtils {
         this.context = context;
         this.activity = (Activity) context;
         androidDir = this.context.getString(R.string.androidDir);
-        data = this.context.getString(R.string.dataDir);
         this.setDir(root.getAbsolutePath() + File.separator + androidDir + File.separator
                 + this.context.getPackageName());
-        config = this.context.getString(R.string.configNameFile);
+
         maximize = this.context.getString(R.string.configMAX);
         minimize = this.context.getString(R.string.configMIN);
     }
@@ -105,8 +102,7 @@ public class FileUtils {
         return text.toString();
     }
 
-    public void setIfMax(String configText) {
-        String max = configText.split(",")[0];
+    public void setIfMax(String max) {
         if (max.equals(maximize)) {
             this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
             this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -125,61 +121,35 @@ public class FileUtils {
         writer.close();
     }
 
-    public void checkIfMax() {
-        MyTelephonyManager device = new MyTelephonyManager(this.context);
-        if (!device.isTablet()) {
-            File file = new File(this.getDir() + File.separator + config);
-            if (file.isFile()) {
-                String configText = readConfig(file);
-                setIfMax(configText);
-            }
-        }
-    }
-
-    public float setSizeTextAndCheckSDCardReadable() {
-        FileUtils fileUtils = new FileUtils(this.context);
-        File file = new File(this.getDir() + File.separator + config);
-        Float size;
-        if (file.isFile()) {
-            size = fileUtils.getTabSize();
-        } else {
-            size = DEFAULT_SIZE_TEXT;
-        }
+    public float setSizeText() {
+        Float size = getTabSize();
         return size;
     }
 
-    @SuppressLint("UseValueOf")
     public Float getTabSize() {
-        File file = new File(this.getDir() + File.separator + config);
-        Float size = null;
-        if (file.isFile()) {
-            String configText = readConfig(file);
-            size = new Float(configText.split(",")[1]);
-        }
+        String configName = this.context.getString(R.string.configNameFile);
+        SharedPreferences preferences = this.context.getSharedPreferences(configName, Activity.MODE_PRIVATE);
+        Float size = preferences.getFloat(this.context.getString(R.string.configSize), DEFAULT_SIZE_TEXT);
         return size;
     }
 
-    public void setSizeToConfig(float size) throws IOException {
-        String maxForConfig;
-        String checkBoxResult;
-        File file = new File(this.getDir() + File.separator + config);
-        if (file.isFile()) {
-            String configText = readConfig(file);
-            maxForConfig = configText.split(",")[0];
-            checkBoxResult = configText.split(",")[2];
-            String textSize = Float.toString(size);
-            writeForConfig(file, maxForConfig, textSize, checkBoxResult);
-        }
+    public void setSizeToConfig(float size) {
+        String configName = this.context.getString(R.string.configNameFile);
+        SharedPreferences preferences = this.context.getSharedPreferences(configName, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor preferencesEditor = preferences.edit();
+        preferencesEditor.putFloat(this.context.getString(R.string.configSize), size);
+        preferencesEditor.commit();
     }
 
     public void saveTabSize(TextView tab) {
-        try {
-            FileUtils fileUtils = new FileUtils(this.context);
-            fileUtils.setSizeToConfig(tab.getTextSize());
-        } catch (IOException e) {
-            Toast.makeText(this.context.getApplicationContext(),
-                    R.string.sdcardWriteError, Toast.LENGTH_LONG).show();
-        }
+        setSizeToConfig(tab.getTextSize());
+    }
+    
+    public void fillUIFromPreferences() {
+        String configName = this.context.getString(R.string.configNameFile);
+        SharedPreferences preferences = this.context.getSharedPreferences(configName, Activity.MODE_PRIVATE);
+        String isConfigMax = preferences.getString(this.context.getString(R.string.isConfigMax), "");
+        setIfMax(isConfigMax);
     }
 
     public File getFile() {
