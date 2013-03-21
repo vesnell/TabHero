@@ -15,12 +15,6 @@ public class DBAdapter {
     public static final String KEY_TITLE = "title";
     public static final String KEY_TAB = "tab";
     public static final String KEY_URL = "url";
-    
-    //public static final String KEY_ROWID2 = "id";
-    //public static final String KEY_PERFORMER2 = "performer";
-    //public static final String KEY_TITLE2 = "title";
-    //public static final String KEY_TAB2 = "tab";
-    //public static final String KEY_URL2 = "url";
     public static final String KEY_VIEWDATE = "date";
     public static final String KEY_VIEWTYPE = "type";
 

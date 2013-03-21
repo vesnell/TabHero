@@ -165,10 +165,8 @@ public class FileUtils {
         if (!dbUtils.isExistRecordByUrl2(performer, title, tab, url, date, type)) {
             Log.d("NIE_ISTNIEJE", "NIE ISTNIEJE");
             if (dbUtils.getCount() < 10) {
-                Log.d("COUNT", Integer.toString(dbUtils.getCount()));
                 dbUtils.addToLastTen(performer, title, tab, url, date, type);
             } else if (dbUtils.getCount() == 10) {
-                Log.d("COUNT2", Integer.toString(dbUtils.getCount()));
                 ArrayList<String> stringDates = dbUtils.getLastTenDates();
                 ArrayList<Date> dates = new ArrayList<Date>();
                 DateCompare compare = new DateCompare();
@@ -176,19 +174,14 @@ public class FileUtils {
                 Date convertedDate; 
                 for (String s : stringDates) {
                     try {
-                        Log.d("DATE_TO_CONVERT", s);
                         convertedDate = sdf.parse(s);
                         dates.add(convertedDate);
                     } catch (ParseException e) {
-                        Log.d("CONVERT_ERROR", s);
                         Toast.makeText(context.getApplicationContext(),
                                 R.string.parseDateError, Toast.LENGTH_LONG).show();
                     }
                 }
                 Collections.sort(dates, compare);
-                Log.d("DATE1", dates.get(0).toString()); //najstarsza
-                Log.d("DATE2", dates.get(1).toString());
-                Log.d("DATE3", dates.get(2).toString());
                 String oldestDate = sdf.format(dates.get(0));
                 dbUtils.deleteRecordByDate(oldestDate);
                 dates.clear();
@@ -196,8 +189,6 @@ public class FileUtils {
             }
         } else {
             Log.d("ISTNIEJE", "ISTNIEJE");
-            //dbUtils.updateRecordIfPossible(performer, title, tab, url, date, type);
-        //    dbUtils.tryUpdadeLastTenIfPossible(performer, title, tab, url, date);
         }
     }
     

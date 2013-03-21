@@ -5,9 +5,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-
+import java.util.Date;
 import pl.tabhero.HelpActivity;
 import pl.tabhero.R;
 import pl.tabhero.db.DBUtils;
@@ -420,7 +421,7 @@ public class MenuFunctions {
             builder.setTitle(R.string.lastShown);
             ListView lastTenListView = (ListView) builder.findViewById(R.id.lastTenListView);       
             final ArrayList<ItemOfLastTen> listOfLastTen = dbUtils.getLastTenItems();
-            Collections.reverse(listOfLastTen);
+            sortByDate(listOfLastTen);
             MyLastTenAdapter adapter = new MyLastTenAdapter(this.context, listOfLastTen);
             lastTenListView.setAdapter(adapter);
             lastTenListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -429,7 +430,7 @@ public class MenuFunctions {
                     String title = listOfLastTen.get(position).getTitle();
                     String tablature = listOfLastTen.get(position).getTablature();
                     String url = listOfLastTen.get(position).getUrl();
-                    String date = listOfLastTen.get(position).getDate();
+                    //String date = listOfLastTen.get(position).getDate();
                     String type = listOfLastTen.get(position).getType();
                     Intent intent = new Intent(context, TabViewActivity.class);
                     Bundle bun = new Bundle();
@@ -449,5 +450,29 @@ public class MenuFunctions {
             Toast.makeText(this.context.getApplicationContext(),
                     R.string.lastTenEmpty, Toast.LENGTH_LONG).show();
         }
+    }
+    
+    private void sortByDate(ArrayList<ItemOfLastTen> listOfLastTen) {
+        int n = listOfLastTen.size();
+        do {
+            for (int i = 0; i < n - 1; i++) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+                Date date1 = null;
+                Date date2 = null;
+                try {
+                    date1 = sdf.parse(listOfLastTen.get(i).getDate());
+                    date2 = sdf.parse(listOfLastTen.get(i + 1).getDate());
+                } catch (ParseException e) {
+                    Toast.makeText(this.context.getApplicationContext(),
+                            R.string.parseDateError, Toast.LENGTH_LONG).show();
+                }  
+                if (date1.before(date2)) {
+                    ItemOfLastTen temp = listOfLastTen.get(i + 1);
+                    listOfLastTen.set(i + 1, listOfLastTen.get(i));
+                    listOfLastTen.set(i, temp);                    
+                }
+            }
+            n = n - 1;
+        } while (n > 1);
     }
 }

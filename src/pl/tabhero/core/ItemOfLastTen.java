@@ -65,5 +65,4 @@ public class ItemOfLastTen {
     public void setType(String type) {
         this.type = type;
     }
-
 }

@@ -86,6 +86,8 @@
     <string name="net">Internet</string>
     <string name="parseDateError">Parse date error</string>
     <string name="lastTenEmpty">The list of recently shown tablatures is empty</string>
+    <string name="dateString">Date:</string>
+    <string name="typeString">Recently shown in:</string>
     
     <string name="configNameFile">My_Preferences</string>
     <string name="isCheckedInConfig">isCheckedInConfig</string>

@@ -88,6 +88,8 @@
     <string name="parseDateError">Błąd parsowania daty</string>
     <string name="lastTenEmpty">Lista ostatnio przeglądanych tabulatur jest pusta</string>
     <string name="isFirstRun">isFirstRun</string>
+    <string name="dateString">Data:</string>
+    <string name="typeString">Ostatnio oglądane w:</string>
     
     <string name="configNameFile">My_Preferences</string>
     <string name="isCheckedInConfig">isCheckedInConfig</string>
