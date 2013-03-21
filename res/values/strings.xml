@@ -80,7 +80,7 @@
     <string name="dontShowAgain">Don\'t show again</string>
     <string name="hint">Hint</string>
     <string name="infoAboutHintEmpty">Press magnifier icon with empty textbox to find this performer\'s all available songs</string>
-    <string name="menuRecentlyShown">Recently shown tablatures</string>
+    <string name="menuRecentlyShown">Last 10 viewed</string>
     <string name="lastShown">Recently shown</string>
     <string name="fav">Favorites</string>
     <string name="net">Internet</string>

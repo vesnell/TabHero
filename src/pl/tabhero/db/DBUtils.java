@@ -33,6 +33,46 @@ public class DBUtils {
         this.context = context;
         this.db = new DBAdapter(this.context);
     }
+    
+    /*public void upgradeDB(int oldVersion, int newVersion) {
+        if (db.DATABASE_VERSION == oldVersion) {
+            //Log.d("UPGRADING", "UPGRADING...");
+            Toast.makeText(this.context.getApplicationContext(),
+                    "Start database upgrade", Toast.LENGTH_LONG).show();
+            ArrayList<OldBase> listOldBase = new ArrayList<OldBase>();
+            db.open();
+            Cursor c = db.getAllRecords();
+            if (c.moveToFirst()) {
+                do {
+                    String performer = c.getString(PERF_COLUMN);
+                    String title = c.getString(TITLE_COLUMN);
+                    String tablature = c.getString(TAB_COLUMN);
+                    String url = c.getString(URL_COLUMN);
+                    OldBase oldBase = new OldBase(performer, title, tablature, url);
+                    listOldBase.add(oldBase);
+                } while (c.moveToNext());
+            }
+            c.close();
+            db.dropDB(oldVersion, newVersion);
+            db.close();
+            db.open();
+            for (int i = 0; i < listOldBase.size(); i++) {
+                String performer = listOldBase.get(i).getPerformer();
+                String title = listOldBase.get(i).getTitle();
+                String tab = listOldBase.get(i).getTablature();
+                String songUrl = listOldBase.get(i).getUrl();
+                db.insertRecord(performer, title, tab, songUrl);
+            }
+            Toast.makeText(this.context.getApplicationContext(),
+                    "Stop database upgrade", Toast.LENGTH_LONG).show();
+            db.close();
+        }
+    }
+    
+    public boolean doesDatabaseExist(String dbName) {
+        File dbFile = this.context.getDatabasePath(dbName);
+        return dbFile.exists();
+    }*/
 
     public boolean isIdExistByUrl(String songUrl) {
         String url;

@@ -21,7 +21,7 @@ public class DBAdapter {
     private static final String DATABASE_NAME = "TabHeroDB";
     private static final String DATABASE_TABLE = "tabhero";
     private static final String DATABASE_TABLE2 = "lastview";
-    private static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
 
     private static final String DATABASE_CREATE =
             "create table if not exists tabhero (id integer primary key autoincrement, "
@@ -64,11 +64,19 @@ public class DBAdapter {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             //Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
             //      + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS tabhero");
-            db.execSQL("DROP TABLE IF EXISTS lastview");
-            onCreate(db);
+            if (newVersion - oldVersion == 1) {
+                db.execSQL(DATABASE_CREATE2);
+            } else {
+                db.execSQL("DROP TABLE IF EXISTS tabhero");
+                db.execSQL("DROP TABLE IF EXISTS lastview");
+                onCreate(db);
+            }
         }
     }
+    
+    /*public void dropDB(int oldVersion, int newVersion) {
+        dbHelper.onUpgrade(db, oldVersion, newVersion);
+    }*/
 
     //---opens the database---
     public DBAdapter open() {

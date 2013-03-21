@@ -81,7 +81,7 @@
     <string name="dontShowAgain">Nie pokazuj tego okna więcej</string>
     <string name="hint">Porada</string>
     <string name="infoAboutHintEmpty">Aby wyszukać wszystkie dostępne utwory tego wykonawcy wciśnij lupkę pozostawiając puste pole edycji</string>
-    <string name="menuRecentlyShown">Ostatnio wyświetlane tabulatury</string>
+    <string name="menuRecentlyShown">Ostatnich 10 oglądanych</string>
     <string name="lastShown">Ostatnio wyświetlane</string>
     <string name="fav">Ulubione</string>
     <string name="net">Internet</string>
