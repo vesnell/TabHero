@@ -4,6 +4,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 public class Tablature {
+    private String songPerformer;
     private String songTablature;
     private String songTitle;
     private String songUrl;
@@ -23,6 +24,14 @@ public class Tablature {
             tab += table[i] + "\n";
         }
         this.songTablature = tab;
+    }
+    
+    public String getSongPerformer() {
+        return songPerformer;
+    }
+    
+    public void setSongPerformer(String songPerformer) {
+        this.songPerformer = songPerformer;
     }
 
     public String getSongTitle() {

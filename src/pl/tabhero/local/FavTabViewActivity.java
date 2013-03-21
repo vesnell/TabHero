@@ -1,6 +1,9 @@
 package pl.tabhero.local;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.db.DBUtils;
@@ -85,6 +88,10 @@ public class FavTabViewActivity extends Activity {
         }
 
         tab.setText(tablature);
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateAndTime = sdf.format(new Date());
+        fileUtils.setToLastTen(performer, title, tablature, songUrl, currentDateAndTime, getString(R.string.fav));
 
         MyLongClickAdapterToLock myLongClickAdapterToLock = new MyLongClickAdapterToLock(this, lockButtons);
         tab.setOnLongClickListener(myLongClickAdapterToLock);

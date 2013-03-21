@@ -1,0 +1,97 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:paddingLeft="10sp" 
+    android:paddingRight="10sp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:paddingTop="2sp" >
+    <LinearLayout 
+        android:id="@+id/LinearLayout01"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" >
+    <TextView 
+        android:layout_height="wrap_content"
+    	android:layout_width="wrap_content" 
+    	android:id="@+id/perf"
+        android:text="Performer" 
+        android:typeface="sans" 
+        android:textSize="16sp" 
+        android:textStyle="bold" >
+    </TextView>
+    <TextView 
+        android:layout_height="wrap_content"
+    	android:layout_width="wrap_content" 
+    	android:id="@+id/mysl"
+        android:text=" - " 
+        android:typeface="sans" 
+        android:textSize="16sp" 
+        android:textStyle="bold" >
+    </TextView>
+    <TextView 
+        android:layout_height="wrap_content"
+    	android:layout_width="wrap_content" 
+    	android:id="@+id/title"
+        android:text="Title" 
+        android:typeface="sans" 
+        android:textSize="16sp" 
+        android:textStyle="bold" >
+    </TextView>
+    </LinearLayout>
+    <LinearLayout 
+        android:id="@+id/LinearLayout02"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent" >
+        <TextView 
+            android:id="@+id/dateString" 
+            android:layout_width="wrap_content"
+         	android:layout_height="wrap_content" 
+         	android:textStyle="bold"
+            android:text="Date:  " 
+            android:textSize="13sp">
+        </TextView>
+        <TextView 
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content" 
+             android:text="date"
+             android:id="@+id/date" 
+             android:textSize="13sp">  
+        </TextView>
+        </LinearLayout> 
+        <LinearLayout 
+            android:id="@+id/LinearLayout03"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent">
+            <TextView 
+                android:id="@+id/typeString" 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:textStyle="bold"
+                android:text="Type:  " 
+                android:textSize="13sp">
+            </TextView>
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:text="type"
+                android:id="@+id/type" 
+                android:textSize="13sp" 
+                android:layout_weight="1">
+            </TextView>
+            <!-- <Button 
+                android:layout_width="wrap_content" 
+                android:id="@+id/btnRemove" 
+                android:text="Remove" 
+                android:layout_height="40dip">
+            </Button> -->
+        </LinearLayout>
+
+<!-- <TextView
+	android:id="@+id/boxOfLastTenListView"   
+	android:layout_width="fill_parent"   
+	android:layout_height="wrap_content"  
+	android:padding="10dp"  
+	android:textSize="16sp"
+    android:textColor="#ffffff"
+    android:background="#000000" 
+	android:drawableLeft="@drawable/rightarrow" />    -->
+</LinearLayout>

@@ -7,4 +7,7 @@
           android:title="@string/minmax"
           android:icon="@drawable/minmax"
           android:showAsAction="always" />
+    <item android:id="@+id/lastten"
+          android:title="@string/menuRecentlyShown"
+  		  android:showAsAction="never" />
 </menu>

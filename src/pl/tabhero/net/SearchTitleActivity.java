@@ -1,6 +1,5 @@
 package pl.tabhero.net;
 
-import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import org.jsoup.nodes.Document;
@@ -87,11 +86,7 @@ public class SearchTitleActivity extends Activity {
         
         //AlertDialog info with checkbox "dont show again" about how to find all available titles
         MenuFunctions menuFunc = new MenuFunctions(this);
-        try {
-            menuFunc.searchTitleRun();
-        } catch (IOException e) {
-            Toast.makeText(getApplicationContext(), R.string.configReadWriteError, Toast.LENGTH_LONG).show();
-        }
+        menuFunc.searchTitleRun();
     }
 
     public void searchTitleView(View v) {

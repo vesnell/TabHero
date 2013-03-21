@@ -80,6 +80,12 @@
     <string name="dontShowAgain">Don\'t show again</string>
     <string name="hint">Hint</string>
     <string name="infoAboutHintEmpty">Press magnifier icon with empty textbox to find this performer\'s all available songs</string>
+    <string name="menuRecentlyShown">Recently shown tablatures</string>
+    <string name="lastShown">Recently shown</string>
+    <string name="fav">Favorites</string>
+    <string name="net">Internet</string>
+    <string name="parseDateError">Parse date error</string>
+    <string name="lastTenEmpty">The list of recently shown tablatures is empty</string>
     
     <string name="configNameFile">My_Preferences</string>
     <string name="isCheckedInConfig">isCheckedInConfig</string>
@@ -97,6 +103,8 @@
     <string name="isNotChecked">isNotChecked</string>
     <string name="isChecked">isChecked</string>
     <string name="defaultSize">12</string>
+    <string name="lastTenString">lastTenString</string>
+    <string name="isFirstRun">isFirstRun</string>
     
     <string name="helptextview">Screenshots below present TabHero on Android Ice Cream Sandwich version. On Android Ginger Bread version and older, most of these options are available pressing menu button.</string>
     <string name="mainScreen">Main Screen</string>

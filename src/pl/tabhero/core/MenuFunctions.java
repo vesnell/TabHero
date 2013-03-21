@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import pl.tabhero.HelpActivity;
 import pl.tabhero.R;
 import pl.tabhero.db.DBUtils;
@@ -13,8 +15,10 @@ import pl.tabhero.local.EditFavPerfs;
 import pl.tabhero.local.EditFavTitles;
 import pl.tabhero.local.FavoritesActivity;
 import pl.tabhero.local.FavoritesTitleActivity;
+import pl.tabhero.net.TabViewActivity;
 import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyFilter;
+import pl.tabhero.utils.selector.MyLastTenAdapter;
 import pl.tabhero.utils.selector.SelectArralAdapter;
 import pl.tabhero.utils.selector.ItemsOnCheckboxList;
 import android.app.Activity;
@@ -31,6 +35,7 @@ import android.text.InputFilter;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -350,27 +355,36 @@ public class MenuFunctions {
     }
 
     public void firstRun() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
-        builder.setTitle(R.string.hello);
-        builder.setMessage(this.context.getString(R.string.firstRun));
-        builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.setPositiveButton(R.string.help, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(context, HelpActivity.class);
-                context.startActivity(intent);
-                activity.overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
-                dialog.dismiss();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
+        String configName = this.context.getString(R.string.configNameFile);
+        SharedPreferences preferences = this.context.getSharedPreferences(configName, Activity.MODE_PRIVATE);
+        boolean isFirstRun = preferences.getBoolean(this.context.getString(R.string.isFirstRun), true);
+        if (isFirstRun) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+            builder.setTitle(R.string.hello);
+            builder.setMessage(this.context.getString(R.string.firstRun));
+            builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.setPositiveButton(R.string.help, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = new Intent(context, HelpActivity.class);
+                    context.startActivity(intent);
+                    activity.overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+            isFirstRun = false;
+        }
+        SharedPreferences.Editor preferencesEditor = preferences.edit();
+        preferencesEditor.putBoolean(this.context.getString(R.string.isFirstRun), isFirstRun);
+        preferencesEditor.commit();
     }
     
-    public void searchTitleRun() throws IOException {
+    public void searchTitleRun() {
         String configName = this.context.getString(R.string.configNameFile);
         final SharedPreferences preferences = this.context.getSharedPreferences(configName, Activity.MODE_PRIVATE);
         boolean isChecked = preferences.getBoolean(this.context.getString(R.string.isCheckedInConfig), false);
@@ -394,6 +408,46 @@ public class MenuFunctions {
                 }
             });
             builder.show();
+        }
+    }
+    
+    public void showLastTen() {
+        
+        final DBUtils dbUtils = new DBUtils(this.context);
+        if (dbUtils.getCount() != 0) {
+            final Dialog builder = new Dialog(this.context);
+            builder.setContentView(R.layout.last_ten_list);
+            builder.setTitle(R.string.lastShown);
+            ListView lastTenListView = (ListView) builder.findViewById(R.id.lastTenListView);       
+            final ArrayList<ItemOfLastTen> listOfLastTen = dbUtils.getLastTenItems();
+            Collections.reverse(listOfLastTen);
+            MyLastTenAdapter adapter = new MyLastTenAdapter(this.context, listOfLastTen);
+            lastTenListView.setAdapter(adapter);
+            lastTenListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String perf = listOfLastTen.get(position).getPerformer();
+                    String title = listOfLastTen.get(position).getTitle();
+                    String tablature = listOfLastTen.get(position).getTablature();
+                    String url = listOfLastTen.get(position).getUrl();
+                    String date = listOfLastTen.get(position).getDate();
+                    String type = listOfLastTen.get(position).getType();
+                    Intent intent = new Intent(context, TabViewActivity.class);
+                    Bundle bun = new Bundle();
+                    bun.putString("performerName", perf);
+                    bun.putString("songTitle", title);
+                    bun.putString("songUrl", url);
+                    bun.putString("tab", tablature);
+                    bun.putString("type", type);
+                    intent.putExtras(bun);
+                    context.startActivity(intent);
+                    activity.overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+                    builder.dismiss();
+                }
+            });
+            builder.show();
+        } else {
+            Toast.makeText(this.context.getApplicationContext(),
+                    R.string.lastTenEmpty, Toast.LENGTH_LONG).show();
         }
     }
 }

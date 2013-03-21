@@ -11,12 +11,20 @@ import java.io.Writer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+
 import pl.tabhero.R;
 import pl.tabhero.db.DBUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -150,6 +158,53 @@ public class FileUtils {
         SharedPreferences preferences = this.context.getSharedPreferences(configName, Activity.MODE_PRIVATE);
         String isConfigMax = preferences.getString(this.context.getString(R.string.isConfigMax), "");
         setIfMax(isConfigMax);
+    }
+    
+    public void setToLastTen(String performer, String title, String tab, String url, String date, String type) {
+        DBUtils dbUtils = new DBUtils(this.context);
+        if (!dbUtils.isExistRecordByUrl2(performer, title, tab, url, date, type)) {
+            Log.d("NIE_ISTNIEJE", "NIE ISTNIEJE");
+            if (dbUtils.getCount() < 10) {
+                Log.d("COUNT", Integer.toString(dbUtils.getCount()));
+                dbUtils.addToLastTen(performer, title, tab, url, date, type);
+            } else if (dbUtils.getCount() == 10) {
+                Log.d("COUNT2", Integer.toString(dbUtils.getCount()));
+                ArrayList<String> stringDates = dbUtils.getLastTenDates();
+                ArrayList<Date> dates = new ArrayList<Date>();
+                DateCompare compare = new DateCompare();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+                Date convertedDate; 
+                for (String s : stringDates) {
+                    try {
+                        Log.d("DATE_TO_CONVERT", s);
+                        convertedDate = sdf.parse(s);
+                        dates.add(convertedDate);
+                    } catch (ParseException e) {
+                        Log.d("CONVERT_ERROR", s);
+                        Toast.makeText(context.getApplicationContext(),
+                                R.string.parseDateError, Toast.LENGTH_LONG).show();
+                    }
+                }
+                Collections.sort(dates, compare);
+                Log.d("DATE1", dates.get(0).toString()); //najstarsza
+                Log.d("DATE2", dates.get(1).toString());
+                Log.d("DATE3", dates.get(2).toString());
+                String oldestDate = sdf.format(dates.get(0));
+                dbUtils.deleteRecordByDate(oldestDate);
+                dates.clear();
+                dbUtils.addToLastTen(performer, title, tab, url, date, type);
+            }
+        } else {
+            Log.d("ISTNIEJE", "ISTNIEJE");
+            //dbUtils.updateRecordIfPossible(performer, title, tab, url, date, type);
+        //    dbUtils.tryUpdadeLastTenIfPossible(performer, title, tab, url, date);
+        }
+    }
+    
+    public class DateCompare implements Comparator<Date> {
+            public int compare(Date one, Date two) {
+                return one.compareTo(two);
+            }
     }
 
     public File getFile() {

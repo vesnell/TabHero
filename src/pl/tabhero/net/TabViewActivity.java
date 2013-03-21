@@ -1,5 +1,8 @@
 package pl.tabhero.net;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.utils.ButtonsScale;
@@ -30,7 +33,7 @@ public class TabViewActivity extends Activity {
     private MyTelephonyManager device = new MyTelephonyManager(this);
     private String performer;
     private String title;
-    private String listOfSections;
+    private String tablature;
     private String songUrl;
 
     @Override
@@ -64,15 +67,24 @@ public class TabViewActivity extends Activity {
 
         performer = extras.getString("performerName");
         title = extras.getString("songTitle");
-        listOfSections = extras.getString("tab");
+        tablature = extras.getString("tab");
         songUrl = extras.getString("songUrl");
+        String type = extras.getString("type");
+                
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateAndTime = sdf.format(new Date());
+        if (type == null) {
+            fileUtils.setToLastTen(performer, title, tablature, songUrl, currentDateAndTime, getString(R.string.net));
+        } else {
+            fileUtils.setToLastTen(performer, title, tablature, songUrl, currentDateAndTime, type);
+        }
 
         head.setText(performer + " - " + title);
 
         MyLongClickAdapterToLock myLongClickAdapterToLock = new MyLongClickAdapterToLock(this, lockButtons);
         tab.setOnLongClickListener(myLongClickAdapterToLock);
 
-        PinchZoom pinchZoom = new PinchZoom(this, tab, listOfSections);
+        PinchZoom pinchZoom = new PinchZoom(this, tab, tablature);
         pinchZoom.drawMatrix();
         tab.setOnTouchListener(pinchZoom);
     }
@@ -106,7 +118,7 @@ public class TabViewActivity extends Activity {
             device.goHomeScreen();
             return true;
         case R.id.addToFav:
-            menuFunc.addToFav(performer, title, listOfSections, songUrl);
+            menuFunc.addToFav(performer, title, tablature, songUrl);
             return true;
         case R.id.openWebBrowser:
             menuFunc.openWebBrowser(performer, title);

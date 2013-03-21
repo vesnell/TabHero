@@ -35,6 +35,9 @@ public class TabHero extends Activity {
         
         FileUtils fileUtils = new FileUtils(this);
         fileUtils.fillUIFromPreferences();
+        
+        MenuFunctions menuFunc = new MenuFunctions(this);
+        menuFunc.firstRun();
 
         gestureDetector = new GestureDetector(new MyGestureDetector(this));
         final MyGestureDetector myGestureDetector = new MyGestureDetector(this);
@@ -78,6 +81,9 @@ public class TabHero extends Activity {
             return true;
         case R.id.minmax:
             menuFunc.minMax();
+            return true;
+        case R.id.lastten:
+            menuFunc.showLastTen();
             return true;
         default:
             return super.onOptionsItemSelected(item);
