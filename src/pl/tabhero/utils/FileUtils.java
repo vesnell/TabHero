@@ -170,7 +170,7 @@ public class FileUtils {
                 ArrayList<String> stringDates = dbUtils.getLastTenDates();
                 ArrayList<Date> dates = new ArrayList<Date>();
                 DateCompare compare = new DateCompare();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+                SimpleDateFormat sdf = new SimpleDateFormat(this.context.getString(R.string.formatDate));
                 Date convertedDate; 
                 for (String s : stringDates) {
                     try {

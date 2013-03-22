@@ -64,7 +64,7 @@ public class DBAdapter {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             //Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
             //      + newVersion + ", which will destroy all old data");
-            if (newVersion - oldVersion == 1) {
+            if (oldVersion == 2 && newVersion == 3) {
                 db.execSQL(DATABASE_CREATE2);
             } else {
                 db.execSQL("DROP TABLE IF EXISTS tabhero");
@@ -73,10 +73,6 @@ public class DBAdapter {
             }
         }
     }
-    
-    /*public void dropDB(int oldVersion, int newVersion) {
-        dbHelper.onUpgrade(db, oldVersion, newVersion);
-    }*/
 
     //---opens the database---
     public DBAdapter open() {

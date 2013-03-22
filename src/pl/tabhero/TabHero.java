@@ -34,12 +34,6 @@ public class TabHero extends Activity {
         btnOnline = (Button) findViewById(R.id.online);
         btnOnBase = (Button) findViewById(R.id.favorites);
         
-        /*DBUtils dbUtils = new DBUtils(this);
-        boolean dbExist = dbUtils.doesDatabaseExist(DATABASE_NAME);
-        if (dbExist) {
-            dbUtils.upgradeDB(2, 3);
-        }*/
-        
         FileUtils fileUtils = new FileUtils(this);
         fileUtils.fillUIFromPreferences();
         

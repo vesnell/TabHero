@@ -1,10 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:paddingLeft="10sp" 
-    android:paddingRight="10sp"
+    android:paddingLeft="5sp" 
+    android:paddingRight="5sp"
     android:layout_height="wrap_content"
     android:orientation="vertical" 
-    android:paddingTop="2sp" >
+    android:paddingTop="2sp"
+    android:paddingBottom="2sp"
+    android:background="#000000" >
     <LinearLayout 
         android:id="@+id/LinearLayout01"
         android:layout_height="wrap_content"
@@ -16,7 +18,8 @@
         android:text="Performer" 
         android:typeface="sans" 
         android:textSize="16sp" 
-        android:textStyle="bold" >
+        android:textStyle="bold"
+        android:textColor="#ffffff" >
     </TextView>
     <TextView 
         android:layout_height="wrap_content"
@@ -25,7 +28,8 @@
         android:text=" - " 
         android:typeface="sans" 
         android:textSize="16sp" 
-        android:textStyle="bold" >
+        android:textStyle="bold"
+        android:textColor="#ffffff" >
     </TextView>
     <TextView 
         android:layout_height="wrap_content"
@@ -34,22 +38,24 @@
         android:text="Title" 
         android:typeface="sans" 
         android:textSize="16sp" 
-        android:textStyle="bold" >
+        android:textStyle="bold"
+        android:textColor="#ffffff" >
     </TextView>
     </LinearLayout>
     <RelativeLayout 
         android:id="@+id/LinearLayout02"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent" >
+        android:layout_width="fill_parent"
+        android:gravity="center" >
         <TextView 
             android:id="@+id/dateString" 
             android:layout_width="wrap_content"
          	android:layout_height="wrap_content" 
          	android:textStyle="bold"
             android:text="@string/dateString" 
-            android:textSize="13sp">
+            android:textSize="13sp"
+            android:textColor="#ffffff" >
         </TextView>
-
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
@@ -57,31 +63,34 @@
             android:paddingLeft="5sp"
             android:layout_toRightOf="@+id/dateString"
             android:text="date"
-            android:textSize="13sp" >
+            android:textSize="13sp"
+            android:textColor="#ffffff" >
   
         </TextView>
         </RelativeLayout> 
         <RelativeLayout 
             android:id="@+id/LinearLayout03"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent">
-            <TextView 
-                android:id="@+id/typeString" 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" 
-                android:textStyle="bold"
-                android:text="@string/typeString"
-                android:textSize="13sp">
-            </TextView>
-
-            <TextView
+            android:layout_width="fill_parent" >       
+			<TextView
                 android:id="@+id/type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="5sp"
-                android:layout_toRightOf="@+id/typeString"
+                android:layout_alignParentRight="true"
                 android:text="type"
-                android:textSize="13sp" >
+                android:textSize="13sp"
+                android:textColor="#ffffff" >
+            </TextView>
+            <TextView
+                android:id="@+id/typeString"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/type"
+                android:paddingRight="5sp"
+                android:text="@string/typeString"
+                android:textColor="#ffffff"
+                android:textSize="13sp"
+                android:textStyle="bold" >
 
             </TextView>
             <!-- <Button 

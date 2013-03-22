@@ -456,7 +456,7 @@ public class MenuFunctions {
         int n = listOfLastTen.size();
         do {
             for (int i = 0; i < n - 1; i++) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+                SimpleDateFormat sdf = new SimpleDateFormat(this.context.getString(R.string.formatDate));
                 Date date1 = null;
                 Date date2 = null;
                 try {

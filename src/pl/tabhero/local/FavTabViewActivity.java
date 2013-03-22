@@ -89,7 +89,7 @@ public class FavTabViewActivity extends Activity {
 
         tab.setText(tablature);
         
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.formatDate));
         String currentDateAndTime = sdf.format(new Date());
         fileUtils.setToLastTen(performer, title, tablature, songUrl, currentDateAndTime, getString(R.string.fav));
 

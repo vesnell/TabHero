@@ -107,6 +107,7 @@
     <string name="defaultSize">12</string>
     <string name="lastTenString">lastTenString</string>
     <string name="isFirstRun">isFirstRun</string>
+    <string name="formatDate">yyyy-MM-dd HH:mm:ss</string>
     
     <string name="helptextview">Screenshots below present TabHero on Android Ice Cream Sandwich version. On Android Ginger Bread version and older, most of these options are available pressing menu button.</string>
     <string name="mainScreen">Main Screen</string>

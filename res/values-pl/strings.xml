@@ -108,6 +108,7 @@
     <string name="isChecked">isChecked</string>
     <string name="defaultSize">12</string>
     <string name="lastTenString">lastTenString</string>
+    <string name="formatDate">yyyy-MM-dd HH:mm:ss</string>
     
     <string name="helptextview">Poniżej zaprezentowane są screeny aplikacji z systemu android w wersji 4.0 na telefon. W systemach 2.3 i niższych większość opcji dostępna jest pod przyciskiem MENU.</string>
     <string name="mainScreen">Ekran główny</string>

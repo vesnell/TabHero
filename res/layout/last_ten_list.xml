@@ -3,13 +3,15 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-  	android:padding="10dp" >
+  	android:padding="5sp" >
   	<ListView 
   	    android:id="@+id/lastTenListView"
   	    android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:divider="#FF0000"
+        android:dividerHeight="1sp"
         android:gravity="center"/>
 
 </RelativeLayout>

@@ -71,7 +71,7 @@ public class TabViewActivity extends Activity {
         songUrl = extras.getString("songUrl");
         String type = extras.getString("type");
                 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.formatDate));
         String currentDateAndTime = sdf.format(new Date());
         if (type == null) {
             fileUtils.setToLastTen(performer, title, tablature, songUrl, currentDateAndTime, getString(R.string.net));

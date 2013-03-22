@@ -33,46 +33,6 @@ public class DBUtils {
         this.context = context;
         this.db = new DBAdapter(this.context);
     }
-    
-    /*public void upgradeDB(int oldVersion, int newVersion) {
-        if (db.DATABASE_VERSION == oldVersion) {
-            //Log.d("UPGRADING", "UPGRADING...");
-            Toast.makeText(this.context.getApplicationContext(),
-                    "Start database upgrade", Toast.LENGTH_LONG).show();
-            ArrayList<OldBase> listOldBase = new ArrayList<OldBase>();
-            db.open();
-            Cursor c = db.getAllRecords();
-            if (c.moveToFirst()) {
-                do {
-                    String performer = c.getString(PERF_COLUMN);
-                    String title = c.getString(TITLE_COLUMN);
-                    String tablature = c.getString(TAB_COLUMN);
-                    String url = c.getString(URL_COLUMN);
-                    OldBase oldBase = new OldBase(performer, title, tablature, url);
-                    listOldBase.add(oldBase);
-                } while (c.moveToNext());
-            }
-            c.close();
-            db.dropDB(oldVersion, newVersion);
-            db.close();
-            db.open();
-            for (int i = 0; i < listOldBase.size(); i++) {
-                String performer = listOldBase.get(i).getPerformer();
-                String title = listOldBase.get(i).getTitle();
-                String tab = listOldBase.get(i).getTablature();
-                String songUrl = listOldBase.get(i).getUrl();
-                db.insertRecord(performer, title, tab, songUrl);
-            }
-            Toast.makeText(this.context.getApplicationContext(),
-                    "Stop database upgrade", Toast.LENGTH_LONG).show();
-            db.close();
-        }
-    }
-    
-    public boolean doesDatabaseExist(String dbName) {
-        File dbFile = this.context.getDatabasePath(dbName);
-        return dbFile.exists();
-    }*/
 
     public boolean isIdExistByUrl(String songUrl) {
         String url;
@@ -86,10 +46,13 @@ public class DBUtils {
                 url = c.getString(URL_COLUMN);
                 idFromBase = getIdFromUrl(url);
                 if (idFromNet.equals(idFromBase)) {
+                    c.close();
+                    db.close();
                     return true;
                 }
             } while (c.moveToNext());
         }
+        c.close();
         db.close();
         return false;
     }
@@ -100,11 +63,13 @@ public class DBUtils {
         if (c.moveToFirst()) {
             do {
                 if (songUrl.equals(c.getString(URL_COLUMN))) {
+                    c.close();
                     db.close();
                     return true;
                 }
             } while (c.moveToNext());
         }
+        c.close();
         db.close();
         return false;
     }
@@ -131,11 +96,13 @@ public class DBUtils {
                     if (!title.equals(c.getString(TITLE_COLUMN))) {
                         updateSongTitle2(title, tabId);
                     }
+                    c.close();
                     db.close();
                     return true;
                 }
             } while (c.moveToNext());
         }
+        c.close();
         db.close();
         return false;
     }
@@ -194,20 +161,21 @@ public class DBUtils {
 
     public long getId(String url) {
         long rowId = 0;
-        this.db.open();
+        db.open();
         Cursor c = this.db.getRecordUrl(url);
         if (c.moveToFirst()) {
             do {
                 rowId = c.getLong(0);
             } while (c.moveToNext());
         }
-        this.db.close();
+        c.close();
+        db.close();
         return rowId;
     }
     
     public long getId2(String url, String type) {
         long rowId = 0;
-        this.db.open();
+        db.open();
         Cursor c = this.db.getRecordUrl2(url);
         if (c.moveToFirst()) {
             do {
@@ -217,13 +185,13 @@ public class DBUtils {
             } while (c.moveToNext());
         }
         c.close();
-        this.db.close();
+        db.close();
         return rowId;
     }
     
     public String getType(String url, String date) {
         String type = "";
-        this.db.open();
+        db.open();
         Cursor c = this.db.getRecordUrl2(url);
         if (c.moveToFirst()) {
             do {
@@ -232,26 +200,28 @@ public class DBUtils {
                 }
             } while (c.moveToNext());
         }
-        this.db.close();
+        c.close();
+        db.close();
         return type;
     }
 
     public String getTablature(String url) {
         String tabl = "";
-        this.db.open();
+        db.open();
         Cursor c = this.db.getRecordUrl(url);
         if (c.moveToFirst()) {
             do {
                 tabl = c.getString(TAB_COLUMN);
             } while(c.moveToNext());
         }
-        this.db.close();
+        c.close();
+        db.close();
         return tabl;
     }
     
     public String getTablature2(String url, String type) {
         String tabl = "";
-        this.db.open();
+        db.open();
         Cursor c = this.db.getRecordUrl2(url);
         if (c.moveToFirst()) {
             do {
@@ -260,33 +230,36 @@ public class DBUtils {
                 }
             } while(c.moveToNext());
         }
-        this.db.close();
+        c.close();
+        db.close();
         return tabl;
     }
     
     public String getPerformer(String url) {
         String perf = "";
-        this.db.open();
+        db.open();
         Cursor c = this.db.getRecordUrl(url);
         if (c.moveToFirst()) {
             do {
                 perf = c.getString(PERF_COLUMN);
             } while(c.moveToNext());
         }
-        this.db.close();
+        c.close();
+        db.close();
         return perf;
     }
     
     public String getTitle(String url) {
         String title = "";
-        this.db.open();
+        db.open();
         Cursor c = this.db.getRecordUrl(url);
         if (c.moveToFirst()) {
             do {
                 title = c.getString(TITLE_COLUMN);
             } while(c.moveToNext());
         }
-        this.db.close();
+        c.close();
+        db.close();
         return title;
     }
 
@@ -318,6 +291,7 @@ public class DBUtils {
                 }
             } while (c.moveToNext());
         }
+        c.close();
         db.close();
         Collections.sort(list, comparator);
         return list;
@@ -339,6 +313,7 @@ public class DBUtils {
                 list.add(item);
             } while (c.moveToNext());
         }
+        c.close();
         db.close();
         return list;
     }
@@ -352,6 +327,7 @@ public class DBUtils {
                 list.add(c.getString(1));
             } while (c.moveToNext());
         }
+        c.close();
         db.close();
         return list;
     }
@@ -365,6 +341,7 @@ public class DBUtils {
                 list.add(c.getString(2));
             } while (c.moveToNext());
         }
+        c.close();
         db.close();
         return list;
     }
@@ -378,6 +355,7 @@ public class DBUtils {
                 list.add(c.getString(4));
             } while (c.moveToNext());
         }
+        c.close();
         db.close();
         return list;
     }
@@ -391,6 +369,7 @@ public class DBUtils {
                 list.add(c.getString(5));
             } while (c.moveToNext());
         }
+        c.close();
         db.close();
         return list;
     }
@@ -404,6 +383,7 @@ public class DBUtils {
                 list.add(c.getString(6));
             } while (c.moveToNext());
         }
+        c.close();
         db.close();
         return list;
     }
@@ -425,6 +405,7 @@ public class DBUtils {
                 mapTitlesUrls.put(c.getString(2), c.getString(URL_COLUMN));
             } while (c.moveToNext());
         }
+        c.close();
         db.close();
         ArrayList<String> listTitles = new ArrayList<String>(mapTitlesUrls.keySet());
         ArrayList<String> listUrl = new ArrayList<String>(mapTitlesUrls.values());
@@ -453,10 +434,12 @@ public class DBUtils {
         if (c.moveToFirst()) {
             do {
                 if (songUrl.equals(c.getString(URL_COLUMN))) {
+                    c.close();
                     return true;
                 }
             } while (c.moveToNext());
         }
+        c.close();
         return false;
     }
 
@@ -474,6 +457,7 @@ public class DBUtils {
                 listUrl.add(c.getString(URL_COLUMN));
             } while (c.moveToNext());
         }
+        c.close();
         for (long id : listId) {
             db.updatePerfName(newPerfName, id);
             splitTab = listUrl.get(i).split("/");
@@ -504,6 +488,7 @@ public class DBUtils {
                 listUrl.add(c.getString(URL_COLUMN));
             } while (c.moveToNext());
         }
+        c.close();
         for (long id : listId) {
             db.updateSongTitle(newSongTitle, id);
             splitTab = listUrl.get(i).split("/");
