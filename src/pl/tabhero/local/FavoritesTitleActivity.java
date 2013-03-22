@@ -15,7 +15,9 @@ import pl.tabhero.utils.MyTelephonyManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -91,6 +93,31 @@ public class FavoritesTitleActivity extends Activity {
         ArrayList<ArrayList<String>> listOfLists = dbUtils.addTitleFromBase(performerName);
         ArrayList<String> listTitle = listOfLists.get(0);
         ArrayList<String> listUrl = listOfLists.get(1);
+        
+        //dynamiczne wyszukiwanie
+        editFavTitle.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 0) {
+                    searchFavTitleListView.clearTextFilter();
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                    int after) {           
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                    int count) {
+                searchFavTitleListView.setTextFilterEnabled(true);
+                searchFavTitleListView.setFilterText(s.toString());
+            }
+            
+        });
+        
         device.hideKeyboard(editFavTitle);
 
         if (title.length() > 0) {
