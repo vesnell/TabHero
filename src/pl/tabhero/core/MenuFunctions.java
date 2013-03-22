@@ -19,6 +19,7 @@ import pl.tabhero.local.FavoritesTitleActivity;
 import pl.tabhero.net.TabViewActivity;
 import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.MyFilter;
+import pl.tabhero.utils.MyFilterDialog;
 import pl.tabhero.utils.selector.MyLastTenAdapter;
 import pl.tabhero.utils.selector.SelectArralAdapter;
 import pl.tabhero.utils.selector.ItemsOnCheckboxList;
@@ -189,6 +190,7 @@ public class MenuFunctions {
     }
 
     private InputFilter filter = new MyFilter();
+    private InputFilter filterDialog = new MyFilterDialog();
 
     public void buildAlertDialogToAddOwnTab() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
@@ -265,7 +267,7 @@ public class MenuFunctions {
     public void buildAlertDialogToChangeRecordName(final String oldRecordName, final String url) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
         final EditText input = new EditText(this.context);
-        input.setFilters(new InputFilter[]{filter});
+        input.setFilters(new InputFilter[]{filterDialog});
         if (className.equals(FAV_PERF_VIEW)) {
             builder.setMessage(R.string.changePerf);
         } else if (className.equals(FAV_TITLE_VIEW)) {
