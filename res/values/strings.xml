@@ -10,7 +10,7 @@
     <string name="srchPerf">Artist searching&#8230;</string>
     <string name="srchSong">Song searching&#8230; </string>
     <string name="srchTab">Downloading tablature&#8230;</string>
-    <string name="wait">Please wait</string>
+    <string name="wait">Please wait&#8230;</string>
     <string name="hintEmpty">You have to enter the artist!</string>
     <string name="hintSpace">The first character must not be a space or dot.</string>
     <string name="connectionError">Internet connection problem</string>
@@ -80,7 +80,7 @@
     <string name="dontShowAgain">Don\'t show again</string>
     <string name="hint">Hint</string>
     <string name="infoAboutHintEmpty">Press magnifier icon with empty textbox to find this performer\'s all available songs</string>
-    <string name="menuRecentlyShown">Last 10 viewed</string>
+    <string name="menuRecentlyShown">Last viewed</string>
     <string name="lastShown">Recently shown</string>
     <string name="fav">Favorites</string>
     <string name="net">Internet</string>

@@ -7,7 +7,7 @@
     android:paddingTop="2sp"
     android:paddingBottom="2sp"
     android:background="#000000" >
-    <LinearLayout 
+    <RelativeLayout 
         android:id="@+id/LinearLayout01"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent" >
@@ -21,28 +21,30 @@
         android:textStyle="bold"
         android:textColor="#ffffff" >
     </TextView>
-    <TextView 
+    <!-- <TextView 
         android:layout_height="wrap_content"
     	android:layout_width="wrap_content" 
     	android:id="@+id/mysl"
+    	android:layout_toRightOf="@id/perf"
         android:text=" - " 
         android:typeface="sans" 
         android:textSize="16sp" 
         android:textStyle="bold"
         android:textColor="#ffffff" >
-    </TextView>
+    </TextView> -->
     <TextView 
         android:layout_height="wrap_content"
     	android:layout_width="wrap_content" 
     	android:id="@+id/title"
+    	android:layout_below="@id/perf"
         android:text="Title" 
         android:typeface="sans" 
-        android:textSize="16sp" 
-        android:textStyle="bold"
+        android:textSize="14sp" 
+        android:textStyle="italic"
         android:textColor="#ffffff" >
     </TextView>
-    </LinearLayout>
-    <RelativeLayout 
+    
+    <!-- <RelativeLayout 
         android:id="@+id/LinearLayout02"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
@@ -65,14 +67,13 @@
             android:text="date"
             android:textSize="13sp"
             android:textColor="#ffffff" >
-  
         </TextView>
-        </RelativeLayout> 
-        <RelativeLayout 
+        </RelativeLayout>  -->
+        <!-- <RelativeLayout 
             android:id="@+id/LinearLayout03"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent" >       
-			<TextView
+            android:layout_width="fill_parent" >  -->    
+			<!-- <TextView
                 android:id="@+id/type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,8 +81,26 @@
                 android:text="type"
                 android:textSize="13sp"
                 android:textColor="#ffffff" >
-            </TextView>
-            <TextView
+            </TextView> -->
+            <ImageView 
+                android:id="@+id/favImage"
+                android:src="@drawable/favorites"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:scaleX="0.5"
+                android:scaleY="0.5" />
+            <ImageView
+                android:id="@+id/netImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/web_icon"
+                android:scaleX="0.5"
+                android:scaleY="0.5" />
+            <!-- <TextView
                 android:id="@+id/typeString"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -92,15 +111,16 @@
                 android:textSize="13sp"
                 android:textStyle="bold" >
 
-            </TextView>
+            </TextView> -->
             <!-- <Button 
                 android:layout_width="wrap_content" 
                 android:id="@+id/btnRemove" 
                 android:text="Remove" 
                 android:layout_height="40dip">
             </Button> -->
-        </RelativeLayout>
+        <!-- </RelativeLayout> -->
 
+		</RelativeLayout>
 <!-- <TextView
 	android:id="@+id/boxOfLastTenListView"   
 	android:layout_width="fill_parent"   

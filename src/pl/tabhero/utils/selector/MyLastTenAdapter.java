@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MyLastTenAdapter extends BaseAdapter implements OnClickListener {
@@ -44,14 +45,23 @@ public class MyLastTenAdapter extends BaseAdapter implements OnClickListener {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.boxoflasttenlistview, null);
         }
+        ImageView favImage = (ImageView) convertView.findViewById(R.id.favImage);
+        ImageView netImage = (ImageView) convertView.findViewById(R.id.netImage);
+        favImage.setVisibility(View.INVISIBLE);
+        netImage.setVisibility(View.INVISIBLE);
         TextView tvPerf = (TextView) convertView.findViewById(R.id.perf);
         tvPerf.setText(entry.getPerformer());
         TextView tvTitle = (TextView) convertView.findViewById(R.id.title);
-        tvTitle.setText(entry.getTitle());
-        TextView tvDate = (TextView) convertView.findViewById(R.id.date);
+        tvTitle.setText(entry.getTitle() + " ");
+        if (entry.getType().equals(context.getString(R.string.fav))) {
+            favImage.setVisibility(View.VISIBLE);
+        } else if (entry.getType().equals(context.getString(R.string.net))) {
+            netImage.setVisibility(View.VISIBLE);
+        }
+        /*TextView tvDate = (TextView) convertView.findViewById(R.id.date);
         tvDate.setText(entry.getDate());
         TextView tvType = (TextView) convertView.findViewById(R.id.type);
-        tvType.setText(entry.getType());
+        tvType.setText(entry.getType());*/
         return convertView;
     }
 
