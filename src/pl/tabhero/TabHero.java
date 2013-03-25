@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 public class TabHero extends Activity {
@@ -28,7 +29,6 @@ public class TabHero extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.main);
 
         btnOnline = (Button) findViewById(R.id.online);
@@ -77,14 +77,14 @@ public class TabHero extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         MenuFunctions menuFunc = new MenuFunctions(this);
         switch (item.getItemId()) {
+        case R.id.lastten:
+            menuFunc.showLastTen();
+            return true;
         case R.id.info:
             menuFunc.showInfo();
             return true;
         case R.id.minmax:
             menuFunc.minMax();
-            return true;
-        case R.id.lastten:
-            menuFunc.showLastTen();
             return true;
         default:
             return super.onOptionsItemSelected(item);

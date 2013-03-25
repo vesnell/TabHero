@@ -1,13 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/lastten"
+          android:title="@string/menuRecentlyShown"
+          android:icon="@drawable/red_eye"
+  		  android:showAsAction="always" />
     <item android:id="@+id/info"
         android:title="@string/info"
         android:icon="@drawable/info"
-        android:showAsAction="ifRoom|withText" />
+        android:showAsAction="always" />
     <item android:id="@+id/minmax"
           android:title="@string/minmax"
           android:icon="@drawable/minmax"
           android:showAsAction="always" />
-    <item android:id="@+id/lastten"
-          android:title="@string/menuRecentlyShown"
-  		  android:showAsAction="never" />
 </menu>
