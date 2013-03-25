@@ -116,6 +116,11 @@
     <string name="describeMain3">Go to tablature Internet search.</string>
     <string name="describeMain4">Go to tablature Favorites search.</string>
     <string name="describeMain5">Instead of pressing buttons (3) and (4), you can go to the those sections by swiping screen to left or right.</string>
+    <string name="describeMain6">Menu button which shows last ten viewed tablatures.\n
+        - The list consists of the name of the performer, the song title and one of the two icons:\n
+        * planet means, the tablature was shown via Internet;\n
+        * star means, the tablature was shown in Favorites.\n
+        - The tablature appear when you select one of the items from the list. You don\'t need an Internet connection.</string>
     <string name="searchScreen">Search via Internet</string>
     <string name="describeSearch1">\”Home\” button.</string>
     <string name="describeSearch2">Pressing this button turns WiFi off. Shown when WiFi is on.</string>

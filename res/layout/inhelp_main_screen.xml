@@ -114,8 +114,32 @@
 					android:textColor="#ffffff"
 					android:layout_toRightOf="@id/img14" />
 			</RelativeLayout>
-			<TextView
+			<RelativeLayout 
+			    android:id="@+id/main5"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/main4" >
+				<ImageView
+			    	android:id="@+id/img15"
+			    	android:layout_width="wrap_content"
+			    	android:layout_height="wrap_content"
+			    	android:layout_alignParentLeft="true"
+			    	android:layout_alignParentTop="true"
+			    	android:src="@drawable/a5"
+			    	android:contentDescription="@string/imageDesc6" />
+				<TextView
 			    	android:id="@+id/describeMainText5"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeMain6"
+					android:textColor="#ffffff"
+					android:layout_toRightOf="@id/img15" />
+			</RelativeLayout>
+			<TextView
+			    	android:id="@+id/describeMainText6"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
 					android:layout_gravity="center"
@@ -123,5 +147,5 @@
 					android:textSize="12sp"
 					android:text="@string/describeMain5"
 					android:textColor="#ffffff"
-					android:layout_below="@id/main4" />
+					android:layout_below="@id/main5" />
 			</RelativeLayout>
