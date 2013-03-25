@@ -146,6 +146,7 @@ public class TabViewActivity extends Activity {
         FileUtils fileUtils = new FileUtils(this);
         fileUtils.saveTabSize(tab);
         TabViewActivity.this.finish();
+        mWakeLock.release();
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
     }
