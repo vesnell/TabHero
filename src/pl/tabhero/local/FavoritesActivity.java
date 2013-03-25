@@ -13,12 +13,11 @@ import pl.tabhero.utils.MyGestureDetector;
 import pl.tabhero.utils.MyOnKeyListener;
 import pl.tabhero.utils.MyOnTouchListener;
 import pl.tabhero.utils.MyTelephonyManager;
+import pl.tabhero.utils.MyTextWatcher;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -80,38 +79,15 @@ public class FavoritesActivity extends Activity {
 
         OnKeyListener myOnKeyListener = new MyOnKeyListener(imgBtn);
         editFavPerformer.setOnKeyListener(myOnKeyListener);
+        
+        MyTextWatcher myTextWatcher = new MyTextWatcher(searchListView, imgBtn);
+        editFavPerformer.addTextChangedListener(myTextWatcher);
     }
 
     public void searchView(View v) {
         ArrayList<String> listOfPerfs = dbUtils.addPerfFromBase();
         String performer = new String();
         performer = editFavPerformer.getText().toString().toLowerCase(Locale.getDefault());
-        
-        //dynamiczne wyszukiwanie
-        editFavPerformer.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.length() == 0) {
-                    searchListView.clearTextFilter();
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                    int after) {           
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                    int count) {
-                searchListView.setTextFilterEnabled(true);
-                searchListView.setFilterText(s.toString());
-            }
-            
-        });
-        
-        device.hideKeyboard(editFavPerformer);
 
         if (performer.length() > 0) {
             if (performer.charAt(0) == ' ') {
