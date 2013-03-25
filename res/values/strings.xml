@@ -120,7 +120,7 @@
         - The list consists of the name of the performer, the song title and one of the two icons:\n
         * planet means, the tablature was shown via Internet;\n
         * star means, the tablature was shown in Favorites.\n
-        - The tablature appear when you select one of the items from the list. You don\'t need an Internet connection.</string>
+        - The tablature appears when you select one of the items from the list. You don\'t need an Internet connection.</string>
     <string name="searchScreen">Search via Internet</string>
     <string name="describeSearch1">\”Home\” button.</string>
     <string name="describeSearch2">Pressing this button turns WiFi off. Shown when WiFi is on.</string>

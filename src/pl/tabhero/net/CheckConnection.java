@@ -1,6 +1,8 @@
 package pl.tabhero.net;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import pl.tabhero.R;
 import android.content.Context;
@@ -37,21 +39,43 @@ public class CheckConnection extends AsyncTask<Void, Void, Boolean> {
     }
 
     public boolean isConnected() {
-        try {
+        //try {
             ConnectivityManager cm = (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = cm.getActiveNetworkInfo();
             if (netInfo != null && netInfo.isConnected()) {
-                URL url = new URL(this.chordsUrl);
-                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                URL url = null;
+                try {
+                    url = new URL(this.chordsUrl);
+                } catch (MalformedURLException e) {
+                    Toast.makeText(this.context.getApplicationContext(),
+                            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
+                }
+                HttpURLConnection urlc = null;
+                try {
+                    urlc = (HttpURLConnection) url.openConnection();
+                } catch (IOException e) {
+                    Toast.makeText(this.context.getApplicationContext(),
+                            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
+                }
                 urlc.setRequestProperty("Connection", "close");
                 urlc.setConnectTimeout(MILSEC_CONNECT_TIMEOUT);
-                urlc.connect();
-                return urlc.getResponseCode() == RESPONSE_CODE_AVAILABLE;
+                try {
+                    urlc.connect();
+                } catch (IOException e) {
+                    Toast.makeText(this.context.getApplicationContext(),
+                            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
+                }
+                try {
+                    return urlc.getResponseCode() == RESPONSE_CODE_AVAILABLE;
+                } catch (IOException e) {
+                    Toast.makeText(this.context.getApplicationContext(),
+                            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
+                }
             }
-        } catch (Exception e) {
-            Toast.makeText(this.context.getApplicationContext(),
-                    R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
-        }
+        //} catch (Exception e) {
+        //    Toast.makeText(this.context.getApplicationContext(),
+        //            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
+        //}
         return false;
     }
 }
