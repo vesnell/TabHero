@@ -1,7 +1,6 @@
 package pl.tabhero.net;
 
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 import org.jsoup.nodes.Document;
 import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
@@ -14,6 +13,7 @@ import pl.tabhero.utils.MobileData;
 import pl.tabhero.utils.MyEditorKeyActions;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
+import pl.tabhero.utils.MyLayout;
 import pl.tabhero.utils.MyOnTouchListener;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.WifiConnection;
@@ -87,6 +87,8 @@ public class SearchTitleActivity extends Activity {
         //AlertDialog info with checkbox "dont show again" about how to find all available titles
         MenuFunctions menuFunc = new MenuFunctions(this);
         menuFunc.searchTitleRun();
+        
+        new MyLayout(this).customizeFastScroller(searchListView);
     }
 
     public void searchTitleView(View v) {
@@ -101,21 +103,21 @@ public class SearchTitleActivity extends Activity {
         if (!(myWifi.checkInternetConnection())) {
             Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
         } else {
-            AsyncTask<Void, Void, Boolean> checkConnection = new CheckConnection(this).execute();
-            try {
-                if (checkConnection.get()) {
+            //AsyncTask<Void, Void, Boolean> checkConnection = new CheckConnection(this).execute();
+            //try {
+            //    if (checkConnection.get()) {
                     new ConnectToTitles().execute(song);
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
-                }
-            } catch (InterruptedException e) {
-                Toast.makeText(getApplicationContext(),
-                        R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
-            } catch (ExecutionException e) {
-                Toast.makeText(getApplicationContext(),
-                        R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
-            }
+            //    } else {
+            //        Toast.makeText(getApplicationContext(),
+            //                R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
+            //    }
+            //} catch (InterruptedException e) {
+            //    Toast.makeText(getApplicationContext(),
+            //            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
+            //} catch (ExecutionException e) {
+            //    Toast.makeText(getApplicationContext(),
+            //            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
+            //}
         }
     }
 
@@ -144,21 +146,21 @@ public class SearchTitleActivity extends Activity {
                                 Toast.makeText(getApplicationContext(),
                                         R.string.connectionError, Toast.LENGTH_LONG).show();
                             } else {
-                                AsyncTask<Void, Void, Boolean> checkConnection2 = new CheckConnection(SearchTitleActivity.this).execute();
-                                try {
-                                    if (checkConnection2.get()) {
+                                //AsyncTask<Void, Void, Boolean> checkConnection2 = new CheckConnection(SearchTitleActivity.this).execute();
+                                //try {
+                                //    if (checkConnection2.get()) {
                                         new GetTablature().execute(tablature);
-                                    } else {
-                                        Toast.makeText(getApplicationContext(),
-                                                R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
-                                    }
-                                } catch (InterruptedException e) {
-                                    Toast.makeText(getApplicationContext(),
-                                            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
-                                } catch (ExecutionException e) {
-                                    Toast.makeText(getApplicationContext(),
-                                            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
-                                }
+                                //    } else {
+                                //        Toast.makeText(getApplicationContext(),
+                                //                R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
+                                //    }
+                                //} catch (InterruptedException e) {
+                                //    Toast.makeText(getApplicationContext(),
+                                //            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
+                                //} catch (ExecutionException e) {
+                                //    Toast.makeText(getApplicationContext(),
+                                //            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
+                                //}
                             }
                         }
                     });
@@ -175,10 +177,15 @@ public class SearchTitleActivity extends Activity {
         @Override
         protected Songs doInBackground(Songs... params) {
             Songs song = params[0];
-            Document doc = connect.tryEnable(chordsUrl + song.getPerformerUrl());
-            if (!connect.isErrorConnection()) {
-                song.setMapOfChosenTitles(doc);
-            }
+            int count = 0;
+            do {
+                Document doc = connect.tryEnable(chordsUrl + song.getPerformerUrl());
+                if (!connect.isErrorConnection()) {
+                    song.setMapOfChosenTitles(doc);
+                } else {
+                    count++;
+                }
+            } while (connect.isErrorConnection() && count < 2);
             return song;
         }
     }
@@ -216,10 +223,15 @@ public class SearchTitleActivity extends Activity {
         @Override
         protected Tablature doInBackground(Tablature... params) {
             Tablature tablature = params[0];
-            Document tablatureDocument = connect.tryEnable(tablature.getSongUrl());
-            if (!connect.isErrorConnection()) {
-                tablature.setSongTablature(tablatureDocument);
-            }
+            int count = 0;
+            do {
+                Document tablatureDocument = connect.tryEnable(tablature.getSongUrl());
+                if (!connect.isErrorConnection()) {
+                    tablature.setSongTablature(tablatureDocument);
+                } else {
+                    count++;
+                }
+            } while (connect.isErrorConnection() && count < 2);
             return tablature;
         }
     }

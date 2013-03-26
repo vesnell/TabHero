@@ -1,7 +1,6 @@
 package pl.tabhero.net;
 
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 import org.jsoup.nodes.Document;
 import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
@@ -13,6 +12,7 @@ import pl.tabhero.utils.MobileData;
 import pl.tabhero.utils.MyEditorKeyActions;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
+import pl.tabhero.utils.MyLayout;
 import pl.tabhero.utils.MyOnTouchListener;
 import pl.tabhero.utils.MyTelephonyManager;
 import pl.tabhero.utils.WifiConnection;
@@ -74,6 +74,8 @@ public class SearchActivity extends Activity {
 
         OnTouchListener myOnTouchListener = new MyOnTouchListener(gestureDetector);
         searchListView.setOnTouchListener(myOnTouchListener);
+        
+        new MyLayout(this).customizeFastScroller(searchListView);
     }
 
     public void searchView(View v) {
@@ -90,21 +92,21 @@ public class SearchActivity extends Activity {
         } else if (!(myWifi.checkInternetConnection())) {
             Toast.makeText(getApplicationContext(), R.string.connectionError, Toast.LENGTH_LONG).show();
         } else {
-            AsyncTask<Void, Void, Boolean> checkConnection = new CheckConnection(this).execute();
-            try {
-                if (checkConnection.get()) {
+            //AsyncTask<Void, Void, Boolean> checkConnection = new CheckConnection(this).execute();
+            //try {
+            //    if (checkConnection.get()) {
                     new ConnectToPerformers().execute(performer);
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
-                }
-            } catch (InterruptedException e) {
-                Toast.makeText(getApplicationContext(),
-                        R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
-            } catch (ExecutionException e) {
-                Toast.makeText(getApplicationContext(),
-                        R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
-            }
+            //    } else {
+            //        Toast.makeText(getApplicationContext(),
+            //                R.string.errorInInternetConnection, Toast.LENGTH_LONG).show();
+            //    }
+            //} catch (InterruptedException e) {
+            //    Toast.makeText(getApplicationContext(),
+            //            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
+            //} catch (ExecutionException e) {
+            //    Toast.makeText(getApplicationContext(),
+            //            R.string.unknownConnectionError, Toast.LENGTH_LONG).show();
+            //}
         }
     }
 
@@ -150,10 +152,15 @@ public class SearchActivity extends Activity {
         protected Performers doInBackground(Performers... params) {
             Performers performer = params[0];
             String url = chordsUrl;
-            Document doc = prepareAndConnect(performer.getTypedName(), url);
-            if (!connect.isErrorConnection()) {
-                performer.setMapOfChosenPerformers(doc);
-            }
+            int count = 0;
+            do {
+                Document doc = prepareAndConnect(performer.getTypedName(), url);
+                if (!connect.isErrorConnection()) {
+                    performer.setMapOfChosenPerformers(doc);
+                } else {
+                    count++;
+                }
+            } while (connect.isErrorConnection() && count < 2);
             return performer;
         }
     }

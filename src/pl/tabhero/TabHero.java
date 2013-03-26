@@ -22,7 +22,6 @@ public class TabHero extends Activity {
     private Button btnOnline;
     private Button btnOnBase;
     private GestureDetector gestureDetector;
-    //private static final String DATABASE_NAME = "TabHeroDB";
 
     @SuppressWarnings("deprecation")
     @Override

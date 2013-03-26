@@ -90,6 +90,7 @@
     <string name="isFirstRun">isFirstRun</string>
     <string name="dateString">Data:</string>
     <string name="typeString">Ostatnio oglądane w:</string>
+    <string name="fastScrollError">Błąd podczas ładowania fastscroll\'a</string>
     
     <string name="configNameFile">My_Preferences</string>
     <string name="isCheckedInConfig">isCheckedInConfig</string>

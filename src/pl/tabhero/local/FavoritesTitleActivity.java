@@ -9,6 +9,7 @@ import pl.tabhero.utils.FileUtils;
 import pl.tabhero.utils.LongClickOnItemToChangeRecordName;
 import pl.tabhero.utils.MyFilter;
 import pl.tabhero.utils.MyGestureDetector;
+import pl.tabhero.utils.MyLayout;
 import pl.tabhero.utils.MyOnKeyListener;
 import pl.tabhero.utils.MyOnTouchListener;
 import pl.tabhero.utils.MyTelephonyManager;
@@ -87,6 +88,8 @@ public class FavoritesTitleActivity extends Activity {
         
         MyTextWatcher myTextWatcher = new MyTextWatcher(searchFavTitleListView, imgBtn);
         editFavTitle.addTextChangedListener(myTextWatcher);
+        
+        new MyLayout(this).customizeFastScroller(searchFavTitleListView);
     }
 
     public void searchTitleView(View v) {
