@@ -2,7 +2,6 @@ package pl.tabhero.net;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.utils.ButtonsScale;

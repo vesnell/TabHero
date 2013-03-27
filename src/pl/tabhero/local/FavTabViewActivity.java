@@ -3,7 +3,6 @@ package pl.tabhero.local;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import pl.tabhero.R;
 import pl.tabhero.core.MenuFunctions;
 import pl.tabhero.db.DBUtils;
@@ -23,11 +22,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+//import android.view.ViewGroup;
+//import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
+//import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FavTabViewActivity extends Activity {
+public class FavTabViewActivity extends Activity /*implements View.OnTouchListener*/ {
+    
+    //private TextView _view;
+    //private ViewGroup _root;
+    //private int _xDelta;
+    //private int _yDelta;
 
     private WakeLock mWakeLock = null;
     private TextView tab;
@@ -56,6 +63,7 @@ public class FavTabViewActivity extends Activity {
 
         head = (TextView) findViewById(R.id.performerAndTitle);
         tab = (TextView) findViewById(R.id.tabInTabView);
+        //tab = new TextView(this);
         Float size = fileUtils.setSizeText();
         tab.setTextSize(size);
 
@@ -95,10 +103,28 @@ public class FavTabViewActivity extends Activity {
 
         MyLongClickAdapterToLock myLongClickAdapterToLock = new MyLongClickAdapterToLock(this, lockButtons);
         tab.setOnLongClickListener(myLongClickAdapterToLock);
+        //head.setOnLongClickListener(myLongClickAdapterToLock);
 
         PinchZoom pinchZoom = new PinchZoom(this, tab, tablature);
         pinchZoom.drawMatrix();
         tab.setOnTouchListener(pinchZoom);
+        
+        
+        //obsługa poruszania palcem
+        
+        /*_root = (ViewGroup)findViewById(R.id.tabview);
+        //_view = new TextView(this);
+        //_view.setText("TextView!!!!!!!!");
+
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        layoutParams.leftMargin = 50;
+        layoutParams.topMargin = 50;
+        layoutParams.bottomMargin = -250;
+        layoutParams.rightMargin = -250;
+        tab.setLayoutParams(layoutParams);
+
+        tab.setOnTouchListener(this);
+        _root.addView(tab);*/
     }
 
     @Override
@@ -165,4 +191,33 @@ public class FavTabViewActivity extends Activity {
         super.onResume();
         mWakeLock.acquire();
     }
+
+    /*@Override
+    public boolean onTouch(View view, MotionEvent event) {
+        final int X = (int) event.getRawX();
+        final int Y = (int) event.getRawY();
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
+                _xDelta = X - lParams.leftMargin;
+                _yDelta = Y - lParams.topMargin;
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                break;
+            case MotionEvent.ACTION_MOVE:
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
+                layoutParams.leftMargin = X - _xDelta;
+                layoutParams.topMargin = Y - _yDelta;
+                layoutParams.rightMargin = -250;
+                layoutParams.bottomMargin = -250;
+                view.setLayoutParams(layoutParams);
+                break;
+        }
+        _root.invalidate();
+        return true;
+    }*/
 }
