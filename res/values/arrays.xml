@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+	<string-array name="select_wall_items">
+        <item>Wallpaper 1</item>
+        <item>Wallpaper 2</item>
+        <item>Wallpaper 3</item>
+        <item>Wallpaper 4</item>
+    </string-array>
+    
+</resources>

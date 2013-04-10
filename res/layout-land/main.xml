@@ -2,9 +2,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:background="@drawable/tap3" >
-    <!-- android:background="#eaeaea" > -->
+    android:orientation="vertical" >
+    <!-- android:background="@drawable/tap3" 
+     android:background="#eaeaea" > -->
 
      <Button
          android:id="@+id/online"
@@ -35,5 +35,17 @@
          android:drawableRight="@drawable/arrowblack"
          android:textColor="#ffffff"
          android:background="#000000" />
+     
+     <LinearLayout 
+         android:id="@+id/transparentLayout"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:background="#aa000000" >
+         <ImageView 
+             android:id="@+id/transparentImage"
+             android:layout_width="fill_parent"
+         	 android:layout_height="fill_parent"
+             android:src="@drawable/transparent_activity_text_landscape" />
+     </LinearLayout>
 
 </RelativeLayout>

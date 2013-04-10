@@ -139,6 +139,16 @@
 					android:layout_toRightOf="@id/img15" />
 			</RelativeLayout>
 			<TextView
+			    	android:id="@+id/describeMainText7"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_gravity="center"
+					android:padding="5sp"
+					android:textSize="12sp"
+					android:text="@string/describeMain7"
+					android:textColor="#ffffff"
+					android:layout_below="@id/main5" />
+			<TextView
 			    	android:id="@+id/describeMainText6"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
@@ -147,5 +157,5 @@
 					android:textSize="12sp"
 					android:text="@string/describeMain5"
 					android:textColor="#ffffff"
-					android:layout_below="@id/main5" />
+					android:layout_below="@id/describeMainText7" />
 			</RelativeLayout>

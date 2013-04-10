@@ -34,6 +34,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -42,6 +43,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -359,14 +362,18 @@ public class MenuFunctions {
 
     public void firstRun() {
         String configName = this.context.getString(R.string.configNameFile);
-        SharedPreferences preferences = this.context.getSharedPreferences(configName, Activity.MODE_PRIVATE);
+        final SharedPreferences preferences = this.context.getSharedPreferences(configName, Activity.MODE_PRIVATE);
         boolean isFirstRun = preferences.getBoolean(this.context.getString(R.string.isFirstRun), true);
         if (isFirstRun) {
+            final SharedPreferences.Editor preferencesEditor = preferences.edit();
             AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
             builder.setTitle(R.string.hello);
             builder.setMessage(this.context.getString(R.string.firstRun));
             builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
+                    preferencesEditor.putBoolean(context.getString(R.string.isFirstRun), false);
+                    //preferencesEditor.putBoolean("transparent", true);
+                    preferencesEditor.commit();
                     dialog.dismiss();
                 }
             });
@@ -375,16 +382,15 @@ public class MenuFunctions {
                     Intent intent = new Intent(context, HelpActivity.class);
                     context.startActivity(intent);
                     activity.overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+                    preferencesEditor.putBoolean(context.getString(R.string.isFirstRun), false);
+                    //preferencesEditor.putBoolean("transparent", true);
+                    preferencesEditor.commit();
                     dialog.dismiss();
                 }
             });
             AlertDialog alert = builder.create();
             alert.show();
-            isFirstRun = false;
         }
-        SharedPreferences.Editor preferencesEditor = preferences.edit();
-        preferencesEditor.putBoolean(this.context.getString(R.string.isFirstRun), isFirstRun);
-        preferencesEditor.commit();
     }
     
     public void searchTitleRun() {
@@ -476,5 +482,85 @@ public class MenuFunctions {
             }
             n = n - 1;
         } while (n > 1);
+    }
+    
+    public void getTransparent() {
+        String configName = this.context.getString(R.string.configNameFile);
+        final SharedPreferences preferences = this.context.getSharedPreferences(configName, Activity.MODE_PRIVATE);
+        boolean isFirstRun = preferences.getBoolean(this.context.getString(R.string.isFirstRun), true);
+        final LinearLayout transpLin = (LinearLayout) this.activity.findViewById(R.id.transparentLayout);
+        final ImageView transpImg = (ImageView) this.activity.findViewById(R.id.transparentImage);
+        transpLin.setVisibility(View.INVISIBLE);
+        transpImg.setVisibility(View.INVISIBLE);
+        boolean transparent = preferences.getBoolean("transparent", false);
+        if (!transparent /*&& !isFirstRun*/) {
+            transpLin.setVisibility(View.VISIBLE);
+            transpImg.setVisibility(View.VISIBLE);
+            transpImg.setOnClickListener(new View.OnClickListener() {        
+                @Override
+                public void onClick(View view) {
+                    transpLin.setVisibility(View.INVISIBLE);
+                    transpImg.setVisibility(View.INVISIBLE);
+                    SharedPreferences.Editor preferencesEditor = preferences.edit();
+                    preferencesEditor.putBoolean("transparent", true);
+                    preferencesEditor.commit();
+                }
+            });
+        }
+    }
+    
+    public void changeWallpaper() {
+        String configName = this.context.getString(R.string.configNameFile);
+        final SharedPreferences preferences = this.context.getSharedPreferences(configName, Activity.MODE_PRIVATE);
+        int orientation = this.context.getResources().getConfiguration().orientation;
+        if (orientation == 1) {
+            ImageView robot = (ImageView) this.activity.findViewById(R.id.robot);
+            robot.setOnLongClickListener(new View.OnLongClickListener() {
+                
+                @Override
+                public boolean onLongClick(View v) {
+                    Log.d("KLIK", "KLIK");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle(R.string.chooseWallpaper);
+                    builder.setItems(R.array.select_wall_items, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            /* User clicked so do some stuff */
+                            //String[] items = context.getResources().getStringArray(R.array.select_wall_items);
+                            //new AlertDialog.Builder(context)
+                            //        .setMessage("You selected: " + which + " , " + items[which])
+                            //       .show();
+                            int wallpaper = which + 1;
+                            setWallpaper(wallpaper);
+                            SharedPreferences.Editor preferencesEditor = preferences.edit();
+                            preferencesEditor.putInt("wallpaper", wallpaper);
+                            preferencesEditor.commit();
+                        }
+                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return false;
+                }
+            });
+        }
+        int wallpaper = preferences.getInt("wallpaper", 3);
+        setWallpaper(wallpaper);
+    }
+    
+    private void setWallpaper(int wallpaper) {
+        switch (wallpaper) {
+            case 1:
+                this.activity.getWindow().setBackgroundDrawableResource(R.drawable.tap1);
+                break;
+            case 2:
+                this.activity.getWindow().setBackgroundDrawableResource(R.drawable.tap2);
+                break;
+            case 3:
+                this.activity.getWindow().setBackgroundDrawableResource(R.drawable.tap3);
+                break;
+            case 4:
+                this.activity.getWindow().setBackgroundDrawableResource(R.drawable.tap4);
+                break;
+        }  
     }
 }

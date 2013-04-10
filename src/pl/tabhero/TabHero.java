@@ -36,7 +36,9 @@ public class TabHero extends Activity {
         fileUtils.fillUIFromPreferences();
         
         MenuFunctions menuFunc = new MenuFunctions(this);
+        menuFunc.getTransparent();
         menuFunc.firstRun();
+        menuFunc.changeWallpaper();
 
         gestureDetector = new GestureDetector(new MyGestureDetector(this));
         final MyGestureDetector myGestureDetector = new MyGestureDetector(this);
@@ -52,6 +54,7 @@ public class TabHero extends Activity {
                 myGestureDetector.onClickStartLeftActivity(FavoritesActivity.class);
             }
         });
+        
     }
 
     @Override

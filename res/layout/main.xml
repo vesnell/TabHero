@@ -2,9 +2,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:background="@drawable/tap3" >
-    <!-- android:background="#eaeaea" >  -->
+    android:orientation="vertical" >
+    <!-- android:background="@drawable/tap3" 
+     android:background="#eaeaea" >  -->
 
      <Button
          android:id="@+id/online"
@@ -37,7 +37,7 @@
          android:background="#000000" />
 
      <ImageView
-         android:id="@+id/imageView1"
+         android:id="@+id/robot"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_below="@+id/favorites"
@@ -45,5 +45,17 @@
          android:layout_marginTop="44dp"
          android:src="@drawable/icon_obrys"
          android:contentDescription="@string/imageDescAppIcon" />
+     
+     <LinearLayout 
+         android:id="@+id/transparentLayout"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:background="#aa000000" >
+         <ImageView 
+             android:id="@+id/transparentImage"
+             android:layout_width="fill_parent"
+         	 android:layout_height="fill_parent"
+             android:src="@drawable/transparent_activity_text" />
+     </LinearLayout>
 
 </RelativeLayout>

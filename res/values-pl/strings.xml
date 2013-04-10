@@ -91,6 +91,7 @@
     <string name="dateString">Data:</string>
     <string name="typeString">Ostatnio oglądane w:</string>
     <string name="fastScrollError">Błąd podczas ładowania fastscroll\'a</string>
+    <string name="chooseWallpaper">Wybierz tapetę</string>
     
     <string name="configNameFile">My_Preferences</string>
     <string name="isCheckedInConfig">isCheckedInConfig</string>
@@ -117,12 +118,13 @@
     <string name="describeMain2">Klawisz menu do chowania lub odkrywania górnego paska. Opcja niedostępna dla tabletów.</string>
     <string name="describeMain3">Przycisk przenoszący do wyszukania tabulatury w Internecie.</string>
     <string name="describeMain4">Przycisk przenoszący do wyszukania tabulatury spośród ulubionych.</string>
-    <string name="describeMain5">Dodatkową opcją zastępującą klikanie przycisków (3) i (4) jest możliwość przejścia do następnego ekranu przez odpowiedni gest smyrnięcia ekranu w prawo lub lewo.</string>
+    <string name="describeMain5">- Dodatkową opcją zastępującą klikanie przycisków (3) i (4) jest możliwość przejścia do następnego ekranu przez odpowiedni gest smyrnięcia ekranu w prawo lub lewo.</string>
     <string name="describeMain6">Klawisz menu pokazujący listę 10-ciu ostatnio wyświetlonych tabulatur.\n
         - Lista składa się z nazwy zespołu, tytułu utworu oraz jednej z dwóch ikonek:\n
         * planeta oznaczająca, że tabulatura była oglądana poprzez Internet;\n
         * gwiazdka oznaczająca, że tabulatura była oglądana w dziale Ulubione.\n
         - Wybranie którejś z pozycji wyświetli daną tabulaturę i to niezależnie od połączenia internetowego.</string>
+    <string name="describeMain7">- Długie tapnięcie na robota na środku ekranu wywoła okno pozwalające na zmianę tapety ekranu głównego.</string>
     <string name="searchScreen">Ekran wyszukiwania w Internecie</string>
     <string name="describeSearch1">Klawisz pozwalający na wrócenie się od razu do ekranu głównego z każdego innego ekranu.</string>
     <string name="describeSearch2">Klawisz menu do wyłączenia wifi. Ikonka informuje, że jest ustanowione połączenie wifi.</string>
