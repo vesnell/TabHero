@@ -123,7 +123,7 @@
         * planet means, the tablature was shown via Internet;\n
         * star means, the tablature was shown in Favorites.\n
         - The tablature appears when you select one of the items from the list. You don\'t need an Internet connection.</string>
-    <string name="describeMain7">- Long click on the robot in the middle of the screen will pop up the window to change the home screen wallpaper.</string>
+    <string name="describeMain7">- Long press the robot in the middle of the screen to show wallpaper change pop up window.</string>
     <string name="searchScreen">Search via Internet</string>
     <string name="describeSearch1">\”Home\” button.</string>
     <string name="describeSearch2">Pressing this button turns WiFi off. Shown when WiFi is on.</string>
