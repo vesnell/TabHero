@@ -34,7 +34,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -519,7 +518,7 @@ public class MenuFunctions {
                 
                 @Override
                 public boolean onLongClick(View v) {
-                    Log.d("KLIK", "KLIK");
+                    //Log.d("KLIK", "KLIK");
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle(R.string.chooseWallpaper);
                     builder.setItems(R.array.select_wall_items, new DialogInterface.OnClickListener() {
